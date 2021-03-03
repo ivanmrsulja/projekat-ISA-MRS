@@ -5,4 +5,4 @@ Projektni zadatak iz predmeta Internet softverske arhitekture i Metodologije raz
 - Baćić Stefan   SW/68-2018
 - Mršulja Ivan   SW/65-2018
 - Marković Petar SW/73-2018
-- Antić Dušan    SW/81-2018
+- Antić Dušan    SW/81-2019
