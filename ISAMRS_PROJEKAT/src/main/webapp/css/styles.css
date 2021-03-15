@@ -1,0 +1,284 @@
+@charset "UTF-8";
+
+/*HEADER*/
+
+.header {
+  padding: 45px;
+  text-align: center;
+  background: url("header.jpg");
+  color: white;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  font-size: 25px;
+}
+
+body {
+    --background-color: #ffffff;
+    --text-color: #000000;
+}
+
+/*Pregled manifestacija*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 15px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width:600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+/* Linkovi */
+
+a.navigacija {
+  background-color: red;
+  color: white;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition-duration: 0.4s;
+}
+
+a:hover {
+  background-color: #555;
+  cursor: pointer;
+}
+
+a:active {
+  background-color: black;
+}
+
+/* Pocetna strana */
+
+.card {
+	width:43%; 
+	margin-bottom:17px;
+}
+
+.post-container {
+    margin: 20px 20px 0 0;  
+    border: 5px solid #333;
+    overflow: auto;
+    background-image: url("background.jpg");
+	background-size: cover;
+}
+.post-thumb {
+    float: left
+}
+.post-thumb img {
+    display: block;
+    height: 200px;
+    width: 300px;
+}
+.post-content {
+    margin-left: 210px
+}
+.post-title {
+    font-weight: bold;
+    font-size: 200%
+}
+
+.button1 {
+  background-color: red;
+  color: white;
+  border: 2px solid red; /* Green */
+  transition-duration: 0.4s;
+}
+
+.button1:hover {
+  background-color: #555; /* Green */
+  border: 2px solid #555;
+  color: white;
+}
+
+/* Komentari */
+
+.comment {
+        width: 15%;
+        height: 100px;
+        padding: 10px;
+        border-left: 6px solid red;
+        background-color: white;
+        font: 1.4em/1.6em cursive;
+        color: #095484;
+}
+
+.rating {
+  display: inline-block;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  font-size: 50px;
+}
+
+.rating label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  cursor: pointer;
+}
+
+.rating label:last-child {
+  position: static;
+}
+
+.rating label:nth-child(1) {
+  z-index: 5;
+}
+
+.rating label:nth-child(2) {
+  z-index: 4;
+}
+
+.rating label:nth-child(3) {
+  z-index: 3;
+}
+
+.rating label:nth-child(4) {
+  z-index: 2;
+}
+
+.rating label:nth-child(5) {
+  z-index: 1;
+}
+
+.rating label input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.rating label .icon {
+  float: left;
+  color: transparent;
+}
+
+.rating label:last-child .icon {
+  color: #000;
+}
+
+.rating:not(:hover) label input:checked ~ .icon,
+.rating:hover label:hover input ~ .icon {
+  color: red;
+}
+
+.rating label input:focus:not(:checked) ~ .icon:last-child {
+  color: #000;
+  text-shadow: 0 0 5px #09f;
+}
+
+/* ADMIN */
+.sumnjiv{
+	background-color: #d132e6;
+}
+
+/* The sidebar menu */
+.sidebar {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0;
+  left: 0;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+/* The sidebar links */
+.sidebar a {
+  padding: 1px 1px 1px 1px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* The button used to open the sidebar */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s; /* If you want a transition effect */
+  padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+
+/* PRIKAZ POJEDINACNE */
+
+div.gallery {
+  display: inline-block;
+  padding-bottom: 10px;
+  border: 1px solid #000;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+.map {
+        width: 26%;
+  		height: 300px;
+  		border: 1px solid black;
+}
+
+.map-right {
+        width: 26%;
+  		height: 300px;
+  		border: 1px solid black;
+  		display: inline-block;
+}
