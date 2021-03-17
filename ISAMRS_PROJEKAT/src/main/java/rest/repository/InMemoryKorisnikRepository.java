@@ -21,7 +21,8 @@ public class InMemoryKorisnikRepository implements KorisnikRepository {
 	@PostConstruct
 	public void initMetoda() throws Exception {
 		System.out.println("Poziv init metode posle inicijalizacije komponente");
-		users.put(1l, new Korisnik(1l, "Ivan", "Mrsulja", "ivan123", "ivan123"));
+		users.put(1l, new Korisnik(1l, "Ivan", "Mrsulja", "ivan123", "ivan123","email",true,"telefon",null,null));
+		counter.incrementAndGet();
 	}
 	
 	@Override
