@@ -5,7 +5,8 @@
 	<link href="css/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/ol.css" rel="stylesheet"/>
 	<link href="css/styles.css" rel="stylesheet"/>
-	<meta charset="utf-8"/>	
+	<meta charset="utf-8"/>
+	<title> ISA_MRS_2021_TIM_06 </title>
 </head> 
 
 <body>
@@ -16,10 +17,10 @@
   <h2>Tim: 06</h2>
 </div>
 
-<a class="navigacija" href="#/" v-bind:hidden="korisnik.uloga == 'ADMIN' || korisnik.uloga=='ZAPOSLEN'">Pocetna</a>
-<a class="navigacija" href="#/" v-bind:hidden="korisnik.uloga != 'GOST'">Register</a>
-<a class="navigacija" href="#/" v-bind:hidden="korisnik.uloga != 'GOST'">Login</a>
-<a class="navigacija" href="#/" v-bind:hidden="korisnik.uloga == 'GOST'">Moj Profil</a>
+<a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG'">Pocetna</a>
+<a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
+<a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
+<a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Moj Profil</a>
 
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.uloga == 'GOST'">Logout</a>

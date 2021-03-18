@@ -47,7 +47,7 @@ body {
   }
 }
 
-/* Linkovi */
+/* Linkovi (navigacija) */
 
 a.navigacija {
   background-color: red;
@@ -110,17 +110,7 @@ a:active {
   color: white;
 }
 
-/* Komentari */
-
-.comment {
-        width: 15%;
-        height: 100px;
-        padding: 10px;
-        border-left: 6px solid red;
-        background-color: white;
-        font: 1.4em/1.6em cursive;
-        color: #095484;
-}
+/* Rating zvezdice */
 
 .rating {
   display: inline-block;
@@ -188,10 +178,6 @@ a:active {
   text-shadow: 0 0 5px #09f;
 }
 
-/* ADMIN */
-.sumnjiv{
-	background-color: #d132e6;
-}
 
 /* The sidebar menu */
 .sidebar {
@@ -257,7 +243,7 @@ a:active {
   .sidebar a {font-size: 18px;}
 }
 
-/* PRIKAZ POJEDINACNE */
+/* PRIKAZ POJEDINACNE APOTEKE (inicijalni layout) */
 
 div.gallery {
   display: inline-block;

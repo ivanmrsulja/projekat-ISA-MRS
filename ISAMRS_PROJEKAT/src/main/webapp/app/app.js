@@ -33,7 +33,7 @@ var app = new Vue({
     			.get("/api/users/logout")
     			.then(function(resp){
     				if(resp.data == "OK"){
-    					self.korisnik = {uloga : "GOST"};
+    					self.korisnik = {zaposlenjeKorisnika : "GOST"};
     					window.location.href = "#/";
     					self.$root.$emit('loggingUserOut', self.korisnik);
     				}

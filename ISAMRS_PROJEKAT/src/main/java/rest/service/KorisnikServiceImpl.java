@@ -11,18 +11,22 @@ import rest.repository.InMemoryKorisnikRepository;
 @Service
 public class KorisnikServiceImpl implements KorisnikService {
 
+	private InMemoryKorisnikRepository korisnikRepository;
+	
 	@Autowired
-	private InMemoryKorisnikRepository greetingRepository;
+	public KorisnikServiceImpl(InMemoryKorisnikRepository imkr) {
+		this.korisnikRepository = imkr;
+	}
 
 	@Override
 	public Collection<Korisnik> findAll() {
-		Collection<Korisnik> users = greetingRepository.findAll();
+		Collection<Korisnik> users = korisnikRepository.findAll();
 		return users;
 	}
 
 	@Override
 	public Korisnik findOne(Long id) {
-		Korisnik user = greetingRepository.findOne(id);
+		Korisnik user = korisnikRepository.findOne(id);
 		return user;
 	}
 
@@ -31,8 +35,8 @@ public class KorisnikServiceImpl implements KorisnikService {
 		if (user.getId() != null) {
 			throw new Exception("Id mora biti null prilikom perzistencije novog entiteta.");
 		}
-		Korisnik savedGreeting = greetingRepository.create(user);
-		return savedGreeting;
+		Korisnik savedUser = korisnikRepository.create(user);
+		return savedUser;
 	}
 
 	@Override
@@ -42,13 +46,13 @@ public class KorisnikServiceImpl implements KorisnikService {
 			throw new Exception("Trazeni entitet nije pronadjen.");
 		}
 		userToUpdate.setIme(user.getIme());
-		Korisnik updatedUSer = greetingRepository.create(userToUpdate);
+		Korisnik updatedUSer = korisnikRepository.create(userToUpdate);
 		return updatedUSer;
 	}
 
 	@Override
 	public void delete(Long id) {
-		greetingRepository.delete(id);
+		korisnikRepository.delete(id);
 	}
 
 }

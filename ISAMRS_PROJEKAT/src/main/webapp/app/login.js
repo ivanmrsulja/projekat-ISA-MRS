@@ -38,13 +38,13 @@ Vue.component("pocetna-strana", {
     		.then(function(response){
 				if(response.data == "OK"){
 					axios
-					.get("/api/users/getCurrent")
+					.get("/api/users/currentUser")
 					.then(function(resp){
 						temp.$root.$emit('sendingUser', resp.data);
-						if(resp.data.uloga == "ADMIN"){
-							window.location.href = "#/adminManif";
-						}else if(resp.data.uloga == "PRODAVAC"){
-							window.location.href = "#/addManif";
+						if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA"){
+							window.location.href = "#/";
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							window.location.href = "#/";
 						}else{
 							window.location.href = "#/";
 						}

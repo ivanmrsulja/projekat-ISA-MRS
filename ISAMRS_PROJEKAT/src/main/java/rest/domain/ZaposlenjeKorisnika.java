@@ -2,5 +2,8 @@ package rest.domain;
 
 public enum ZaposlenjeKorisnika {
 	DERMATOLOG,
-	FARMACEUT
+	FARMACEUT,
+	ADMIN_SISTEMA,
+	ADMIN_APOTEKE,
+	PACIJENT
 }

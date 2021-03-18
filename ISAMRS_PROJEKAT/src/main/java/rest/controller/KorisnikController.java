@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Korisnik;
+import rest.domain.ZaposlenjeKorisnika;
 import rest.service.KorisnikService;
 
 /*
@@ -28,9 +29,13 @@ import rest.service.KorisnikService;
 @RequestMapping("/api/users")
 public class KorisnikController {
 
-	@Autowired
 	private KorisnikService userService;
-
+	
+	@Autowired
+	public KorisnikController(KorisnikService us) {
+		this.userService = us;
+	}
+	
 	/*
 	 * Prilikom poziva metoda potrebno je navesti nekoliko parametara
 	 * unutar @@GetMapping anotacije: url kao vrednost 'value' atributa (ukoliko se
@@ -50,11 +55,19 @@ public class KorisnikController {
 	}
 	
 	@GetMapping(value = "/currentUser", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> currentUser(){
+	public Korisnik currentUser(){
 		// TODO: Ovo samo da se ne crveni na frontu
-		return null;
+		Korisnik k = new Korisnik();
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_SISTEMA);
+		return k;
 	}
-
+	
+	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> login(){
+		// TODO: Ovo samo da se ne crveni na frontu
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
 	/*
 	 * U viticastim zagradama se navodi promenljivi deo putanje.
 	 * 
