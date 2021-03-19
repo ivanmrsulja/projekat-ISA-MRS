@@ -1,9 +1,11 @@
 const PocetnaStrana = { template: '<pocetna-strana></pocetna-strana>' }
+const Tabela = { template: '<pocetna-stranas></pocetna-stranas>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: PocetnaStrana},
+	    { path: '/tab', component: Tabela}
 	  ]
 });
 

@@ -3,7 +3,7 @@ package rest.domain;
 import java.util.Date;
 
 public class Ponuda {
-	private Long id;
+	private int id;
 	private StatusPonude status;
 	private double ukupnaCena;
 	private Date rokIsporuke;
@@ -13,7 +13,7 @@ public class Ponuda {
 	
 	public Ponuda()	{};
 	
-	public Ponuda(Long id,StatusPonude status, double ukupnaCena, Date rokIsporuke, Narudzbenica narudzbenica,
+	public Ponuda(int id,StatusPonude status, double ukupnaCena, Date rokIsporuke, Narudzbenica narudzbenica,
 			Dobavljac dobavljac) {
 		super();
 		this.id=id;
@@ -24,11 +24,11 @@ public class Ponuda {
 		this.dobavljac = dobavljac;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

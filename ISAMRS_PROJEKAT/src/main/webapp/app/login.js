@@ -56,6 +56,7 @@ Vue.component("pocetna-strana", {
 		}  
 	},
 	mounted () {
+		console.log("DASDSAD");
 		this.user = { uloga: "GOST"};
 		let self = this;
         this.$root.$on('sendingUser', (data) => {
