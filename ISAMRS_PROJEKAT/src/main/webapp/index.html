@@ -21,6 +21,7 @@
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Moj Profil</a>
+<a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Moje ponude</a>
 
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.uloga == 'GOST'">Logout</a>
