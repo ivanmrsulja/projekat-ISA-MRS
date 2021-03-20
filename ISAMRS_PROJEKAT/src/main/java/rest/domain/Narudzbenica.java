@@ -1,43 +1,44 @@
 package rest.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Narudzbenica {
-	private Long id;
-	private Date rok;
+	private int id;
+	private LocalDate rok;
 
 	private Set<NaruceniProizvod> naruceniProizvodi;
 	private AdminApoteke adminApoteke;
 	private Set<Ponuda> ponude;
 	
-	public Narudzbenica() {}
+	public Narudzbenica() {
+		this.naruceniProizvodi = new HashSet<NaruceniProizvod>();
+		this.ponude = new HashSet<Ponuda>();
+	}
 	
-	public Narudzbenica(Long id,Date rok, Set<NaruceniProizvod> naruceniProizvodi, AdminApoteke adminApoteke,
-			Set<Ponuda> ponude) {
-		super();
+	public Narudzbenica(int id,LocalDate rok, AdminApoteke adminApoteke) {
+		this();
 		this.id=id;
 		this.rok = rok;
-		this.naruceniProizvodi = naruceniProizvodi;
 		this.adminApoteke = adminApoteke;
-		this.ponude = ponude;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 
 
-	public Date getRok() {
+	public LocalDate getRok() {
 		return rok;
 	}
 
-	public void setRok(Date rok) {
+	public void setRok(LocalDate rok) {
 		this.rok = rok;
 	}
 

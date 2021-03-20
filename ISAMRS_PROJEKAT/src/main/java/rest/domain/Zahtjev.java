@@ -1,24 +1,24 @@
 package rest.domain;
 
 public class Zahtjev {
-	private Long id;
+	private int id;
 	private TipZahtjeva tip;
 	private StatusZahtjeva status;
 	
 	public Zahtjev() {}
 	
-	public Zahtjev(Long id,TipZahtjeva tip, StatusZahtjeva status) {
+	public Zahtjev(int id,TipZahtjeva tip, StatusZahtjeva status) {
 		super();
 		this.id=id;
 		this.tip = tip;
 		this.status = status;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

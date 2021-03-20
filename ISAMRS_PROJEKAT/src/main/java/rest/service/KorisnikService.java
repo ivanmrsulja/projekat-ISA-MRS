@@ -8,12 +8,12 @@ public interface KorisnikService {
 
 	Collection<Korisnik> findAll();
 
-	Korisnik findOne(Long id);
+	Korisnik findOne(int id);
 
 	Korisnik create(Korisnik greeting) throws Exception;
 
 	Korisnik update(Korisnik greeting) throws Exception;
 
-	void delete(Long id);
+	void delete(int id);
 	
 }

@@ -1,19 +1,19 @@
 package rest.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Ponuda {
 	private int id;
 	private StatusPonude status;
 	private double ukupnaCena;
-	private Date rokIsporuke;
+	private LocalDate rokIsporuke;
 	
 	private Narudzbenica narudzbenica;
 	private Dobavljac dobavljac;
 	
 	public Ponuda()	{};
 	
-	public Ponuda(int id,StatusPonude status, double ukupnaCena, Date rokIsporuke, Narudzbenica narudzbenica,
+	public Ponuda(int id,StatusPonude status, double ukupnaCena, LocalDate rokIsporuke, Narudzbenica narudzbenica,
 			Dobavljac dobavljac) {
 		super();
 		this.id=id;
@@ -48,11 +48,11 @@ public class Ponuda {
 		this.ukupnaCena = ukupnaCena;
 	}
 
-	public Date getRokIsporuke() {
+	public LocalDate getRokIsporuke() {
 		return rokIsporuke;
 	}
 
-	public void setRokIsporuke(Date rokIsporuke) {
+	public void setRokIsporuke(LocalDate rokIsporuke) {
 		this.rokIsporuke = rokIsporuke;
 	}
 

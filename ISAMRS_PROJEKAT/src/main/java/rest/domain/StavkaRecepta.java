@@ -2,25 +2,25 @@ package rest.domain;
 
 
 public class StavkaRecepta {
-	private Long id;
+	private int id;
 	private int kolicina;
 	
 	private Preparat preparat;
 	
 	public StavkaRecepta() {}
 
-	public StavkaRecepta(Long id,int kolicina, Preparat preparat) {
+	public StavkaRecepta(int id,int kolicina, Preparat preparat) {
 		super();
 		this.id=id;
 		this.kolicina = kolicina;
 		this.preparat = preparat;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

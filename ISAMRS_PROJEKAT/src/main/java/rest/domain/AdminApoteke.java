@@ -1,5 +1,6 @@
 package rest.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class AdminApoteke extends Korisnik {
@@ -8,14 +9,17 @@ public class AdminApoteke extends Korisnik {
 	private Set<AkcijaPromocija> akcijeIPromocije;
 	private Set<Narudzbenica> nerudzbenice;
 
-	public AdminApoteke() {}
+	public AdminApoteke() {
+		this.akcijeIPromocije = new HashSet<AkcijaPromocija>();
+		this.nerudzbenice = new HashSet<Narudzbenica>();
+	}
 	
-	public AdminApoteke(Long id, String ime, String prezime, String username, String password, String email,
-			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,Apoteka apoteka,Set<AkcijaPromocija> akcijeIPromocije,Set<Narudzbenica> nerudzbenice) {
+	public AdminApoteke(int id, String ime, String prezime, String username, String password, String email,
+			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,Apoteka apoteka) {
 		super(id, ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.apoteka = apoteka;
-		this.akcijeIPromocije = akcijeIPromocije;
-		this.nerudzbenice = nerudzbenice;
+		this.akcijeIPromocije = new HashSet<AkcijaPromocija>();
+		this.nerudzbenice = new HashSet<Narudzbenica>();
 	}
 	
 	public Apoteka getApoteka() {

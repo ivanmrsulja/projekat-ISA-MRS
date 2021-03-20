@@ -1,5 +1,6 @@
 package rest.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Dermatolog extends Korisnik implements Ocenjivo{
@@ -9,14 +10,16 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 	
 	private Set<Zaposlenje> zaposlenja;
 	
-	public Dermatolog() {}
+	public Dermatolog() {
+		this.zaposlenja = new HashSet<Zaposlenje>();
+	}
 	
-	public Dermatolog(Long id, String ime, String prezime, String username, String password, String email,
-			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,int brojOcena,int sumaOcena,Set<Zaposlenje> zaposlenje) {
+	public Dermatolog(int id, String ime, String prezime, String username, String password, String email,
+			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,int brojOcena,int sumaOcena) {
 		super(id, ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
-		this.zaposlenja = zaposlenje;
+		this.zaposlenja = new HashSet<Zaposlenje>();
 		this.ocena=izracunajOcenu();
 	}
 

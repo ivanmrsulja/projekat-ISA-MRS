@@ -1,9 +1,10 @@
 package rest.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Preparat implements Ocenjivo{
-	private Long sifra;
+	private int sifra;
 	private String naziv;
 	private TipLeka tip;
 	private String kontraindikacije;
@@ -19,12 +20,13 @@ public class Preparat implements Ocenjivo{
 	
 	private Set<Preparat> zamjenskiPreparati;
 	
-	public Preparat(){}
+	public Preparat(){
+		this.zamjenskiPreparati = new HashSet<Preparat>();
+	}
 
-	public Preparat(Long sifra, String naziv, TipLeka tip, String kontraindikacije, String sastav, int preporuceniUnos,
-			int poeni, String oblik, String proizvodjac, RezimIzdavanja izdavanje, int brojOcena, int sumaOcena,
-			Set<Preparat> zamjenskiPreparati) {
-		super();
+	public Preparat(int sifra, String naziv, TipLeka tip, String kontraindikacije, String sastav, int preporuceniUnos,
+			int poeni, String oblik, String proizvodjac, RezimIzdavanja izdavanje, int brojOcena, int sumaOcena) {
+		this();
 		this.sifra = sifra;
 		this.naziv = naziv;
 		this.tip = tip;
@@ -37,7 +39,6 @@ public class Preparat implements Ocenjivo{
 		this.izdavanje = izdavanje;
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
-		this.zamjenskiPreparati = zamjenskiPreparati;
 		this.ocena=izracunajOcenu();
 	}
 	
@@ -49,11 +50,11 @@ public class Preparat implements Ocenjivo{
 		return 0;
 	}
 
-	public Long getSifra() {
+	public int getSifra() {
 		return sifra;
 	}
 
-	public void setSifra(Long sifra) {
+	public void setSifra(int sifra) {
 		this.sifra = sifra;
 	}
 

@@ -1,7 +1,7 @@
 package rest.domain;
 
 public class NaruceniProizvod {
-	private Long id;
+	private int id;
 	private int kolicina;
 	
 	private Preparat preparat;
@@ -9,7 +9,7 @@ public class NaruceniProizvod {
 	
 	public NaruceniProizvod() {}
 
-	public NaruceniProizvod(Long id,int kolicina, Preparat preparat, Narudzbenica narudzbenica) {
+	public NaruceniProizvod(int id,int kolicina, Preparat preparat, Narudzbenica narudzbenica) {
 		super();
 		this.id=id;
 		this.kolicina = kolicina;
@@ -17,11 +17,11 @@ public class NaruceniProizvod {
 		this.narudzbenica = narudzbenica;
 	}
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	

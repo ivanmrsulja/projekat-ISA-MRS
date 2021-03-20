@@ -2,14 +2,14 @@ package rest.domain;
 
 public class TipKorisnika {
 
-	private Long id;
+	private int id;
 	private String naziv;
 	private int bodovi;
 	private double popust;
 	
 	public TipKorisnika() {}
 	
-	public TipKorisnika(Long id,String naziv, int bodovi, double popust) {
+	public TipKorisnika(int id,String naziv, int bodovi, double popust) {
 		super();
 		this.id=id;
 		this.naziv = naziv;
@@ -17,11 +17,11 @@ public class TipKorisnika {
 		this.popust = popust;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

@@ -1,7 +1,7 @@
 package rest.domain;
 
 public class Lokacija {
-	private Long id;
+	private int id;
 	private double sirina;
 	private double duzina;
 	private String ulica;
@@ -10,7 +10,7 @@ public class Lokacija {
 	
 	public Lokacija() {}
 	
-	public Lokacija(Long id,double sirina, double duzina, String ulica, String grad, String drzava) {
+	public Lokacija(int id,double sirina, double duzina, String ulica, String grad, String drzava) {
 		super();
 		this.id=id;
 		this.sirina = sirina;
@@ -20,11 +20,11 @@ public class Lokacija {
 		this.drzava = drzava;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

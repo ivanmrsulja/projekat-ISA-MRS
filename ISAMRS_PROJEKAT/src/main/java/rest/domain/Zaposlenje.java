@@ -2,7 +2,7 @@ package rest.domain;
 
 
 public class Zaposlenje {
-	private Long id;
+	private int id;
 	private int pocetakRadnogVremena;
 	private int krajRadnogVremena;
 	
@@ -11,7 +11,7 @@ public class Zaposlenje {
 	
 	public Zaposlenje() {}
 	
-	public Zaposlenje(Long id,int pocetakRadnogVremena, int krajRadnogVremena, Apoteka apoteka,Korisnik korisnik) {
+	public Zaposlenje(int id,int pocetakRadnogVremena, int krajRadnogVremena, Apoteka apoteka,Korisnik korisnik) {
 		super();
 		this.id=id;
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
@@ -20,11 +20,11 @@ public class Zaposlenje {
 		this.korisnik=korisnik;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

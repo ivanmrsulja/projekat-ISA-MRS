@@ -1,7 +1,7 @@
 package rest.domain;
 
 public class Zalba {
-	private Long Id;
+	private int Id;
 	private String text;
 	
 	private AdminSistema adminSistema;
@@ -9,7 +9,7 @@ public class Zalba {
 	
 	public Zalba() {}
 	
-	public Zalba(Long id, String text, AdminSistema adminSistema, Pacijent pacijent) {
+	public Zalba(int id, String text, AdminSistema adminSistema, Pacijent pacijent) {
 		super();
 		Id = id;
 		this.text = text;
@@ -17,11 +17,11 @@ public class Zalba {
 		this.pacijent = pacijent;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return Id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		Id = id;
 	}
 

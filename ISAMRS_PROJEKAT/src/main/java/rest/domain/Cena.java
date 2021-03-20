@@ -1,6 +1,8 @@
 package rest.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Cena {
@@ -8,14 +10,15 @@ public class Cena {
 	private Set<DostupanProizvod> dostupniProizvodi;
 	private Apoteka apoteka;
 
-	private Date pocetakVazenja;
+	private LocalDate pocetakVazenja;
 	
-	public Cena() {}
+	public Cena() {
+		this.dostupniProizvodi = new HashSet<DostupanProizvod>();
+	}
 
-	public Cena(Long id,Set<DostupanProizvod> dostupniProizvodi, Apoteka apoteka, Date pocetakVazenja) {
-		super();
+	public Cena(Long id, Apoteka apoteka, LocalDate pocetakVazenja) {
+		this();
 		this.id=id;
-		this.dostupniProizvodi = dostupniProizvodi;
 		this.apoteka = apoteka;
 		this.pocetakVazenja = pocetakVazenja;
 	}
@@ -44,11 +47,11 @@ public class Cena {
 		this.apoteka = apoteka;
 	}
 
-	public Date getPocetakVazenja() {
+	public LocalDate getPocetakVazenja() {
 		return pocetakVazenja;
 	}
 
-	public void setPocetakVazenja(Date pocetakVazenja) {
+	public void setPocetakVazenja(LocalDate pocetakVazenja) {
 		this.pocetakVazenja = pocetakVazenja;
 	}
 	

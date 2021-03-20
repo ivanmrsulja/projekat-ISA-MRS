@@ -3,6 +3,7 @@ package rest.repository;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.PostConstruct;
@@ -14,14 +15,14 @@ import rest.domain.Korisnik;
 @Repository
 public class InMemoryKorisnikRepository implements KorisnikRepository {
 
-	private static AtomicLong counter = new AtomicLong();
+	private static AtomicInteger counter = new AtomicInteger();
 
-	private final ConcurrentMap<Long, Korisnik> users = new ConcurrentHashMap<Long, Korisnik>();
+	private final ConcurrentMap<Integer, Korisnik> users = new ConcurrentHashMap<Integer, Korisnik>();
 	
 	@PostConstruct
 	public void initMetoda() throws Exception {
 		System.out.println("Poziv init metode posle inicijalizacije komponente");
-		users.put(1l, new Korisnik(1l, "Ivan", "Mrsulja", "ivan123", "ivan123","email",true,"telefon",null,null));
+		users.put(1, new Korisnik(1, "Ivan", "Mrsulja", "ivan123", "ivan123","email",true,"telefon",null,null));
 		counter.incrementAndGet();
 	}
 	
@@ -32,9 +33,9 @@ public class InMemoryKorisnikRepository implements KorisnikRepository {
 
 	@Override
 	public Korisnik create(Korisnik user) {
-		Long id = user.getId();
+		int id = user.getId();
 
-		if (id == null) {
+		if (id == 0) {
 			id = counter.incrementAndGet();
 			user.setId(id);
 		}
@@ -44,20 +45,20 @@ public class InMemoryKorisnikRepository implements KorisnikRepository {
 	}
 
 	@Override
-	public Korisnik findOne(Long id) {
+	public Korisnik findOne(int id) {
 		return this.users.get(id);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(int id) {
 		this.users.remove(id);
 	}
 
 	@Override
 	public Korisnik update(Korisnik greeting) {
-		Long id = greeting.getId();
+		int id = greeting.getId();
 
-		if (id != null) {
+		if (id != 0) {
 			this.users.put(id, greeting);
 		}
 

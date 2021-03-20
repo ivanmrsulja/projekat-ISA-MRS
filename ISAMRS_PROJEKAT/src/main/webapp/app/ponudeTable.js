@@ -5,7 +5,10 @@ Vue.component("pocetna-stranas", {
 		    }
 	},
 	template: ` 
-<div align = center>
+<div align = center style="width:75%">
+		
+		<h1>Moje ponude</h1>
+		<br/>
 		<table class="table table-hover">
             <thead>
             	<tr>
@@ -23,8 +26,8 @@ Vue.component("pocetna-stranas", {
                                 <th scope="row">{{offer.id}}</th>
                                 <td>{{offer.status}}</td>
                                 <td>{{offer.ukupnaCena}}</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{offer.rokIsporuke}}</td>
+                                <td>{{offer.narudzbenica.id}}</td>
                                 <td>{{offer.dobavljac.username}}</td>
             	</tr>           
             </tbody>

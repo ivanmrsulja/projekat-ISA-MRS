@@ -1,41 +1,43 @@
 package rest.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ERecept {
 
-	private Long sifra;
-	private Date datumIzdavanja;
+	private int sifra;
+	private LocalDate datumIzdavanja;
 	
 	private Set<StavkaRecepta> stavkaRecepata;
 	private Pacijent pacijent;
 	
-	public ERecept() {}
+	public ERecept() {
+		this.stavkaRecepata = new HashSet<StavkaRecepta>();
+	}
 
-	public ERecept(Long sifra, Date datumIzdavanja, Set<StavkaRecepta> stavkaRecepata, Pacijent pacijent) {
-		super();
+	public ERecept(int sifra, LocalDate datumIzdavanja, Pacijent pacijent) {
+		this();
 		this.sifra = sifra;
 		this.datumIzdavanja = datumIzdavanja;
-		this.stavkaRecepata = stavkaRecepata;
 		this.pacijent = pacijent;
 	}
 
 
 
-	public Long getSifra() {
+	public int getSifra() {
 		return sifra;
 	}
 
-	public void setSifra(Long sifra) {
+	public void setSifra(int sifra) {
 		this.sifra = sifra;
 	}
 
-	public Date getDatumIzdavanja() {
+	public LocalDate getDatumIzdavanja() {
 		return datumIzdavanja;
 	}
 
-	public void setDatumIzdavanja(Date datumIzdavanja) {
+	public void setDatumIzdavanja(LocalDate datumIzdavanja) {
 		this.datumIzdavanja = datumIzdavanja;
 	}
 

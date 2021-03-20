@@ -1,36 +1,37 @@
 package rest.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Penal {
 
-	private Long id;
-	private Date datum;
+	private int id;
+	private LocalDate datum;
 	
 	private Pacijent pacijent;
 	
 	public Penal() {}
 
-	public Penal(Long id,Date datum, Pacijent pacijent) {
+	public Penal(int id,LocalDate datum, Pacijent pacijent) {
 		super();
 		this.id=id;
 		this.datum = datum;
 		this.pacijent = pacijent;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Date getDatum() {
+	public LocalDate getDatum() {
 		return datum;
 	}
 
-	public void setDatum(Date datum) {
+	public void setDatum(LocalDate datum) {
 		this.datum = datum;
 	}
 

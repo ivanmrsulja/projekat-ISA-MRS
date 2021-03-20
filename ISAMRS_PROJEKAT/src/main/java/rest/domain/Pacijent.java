@@ -1,5 +1,6 @@
 package rest.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Pacijent extends Korisnik {
@@ -17,26 +18,34 @@ public class Pacijent extends Korisnik {
 	private Set<Apoteka> apoteke;
 	private Set<Pregled> pregledi;
 	
-	public Pacijent() {}
+	public Pacijent() {
+		this.eRecepti = new HashSet<ERecept>();
+		this.penali = new HashSet<Penal>();
+		this.zalbe = new HashSet<Zalba>();
+		this.ocene = new HashSet<Ocena>();
+		this.rezervacije = new HashSet<Rezervacija>();
+		this.alergije = new HashSet<Preparat>();
+		this.kupljeniPreparati = new HashSet<Preparat>();
+		this.apoteke = new HashSet<Apoteka>();
+		this.pregledi = new HashSet<Pregled>();
+	}
 	
-	public Pacijent(Long id, String ime, String prezime, String username, String password, String email,
+	public Pacijent(int id, String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon,ZaposlenjeKorisnika zaposlenjeKorisnika, Lokacija lokacija, StatusNaloga statusNaloga, int brojPoena,
-			TipKorisnika tipKorisnika, Set<ERecept> eRecepti, Set<Penal> penali, Set<Zalba> zalbe, Set<Ocena> ocene,
-			Set<Rezervacija> rezervacije, Set<Preparat> alergije, Set<Preparat> kupljeniPreparati, Set<Apoteka> apoteke,
-			Set<Pregled> pregledi) {
+			TipKorisnika tipKorisnika) {
 		super(id, ime, prezime, username, password, email, loggedBefore, telefon, lokacija,zaposlenjeKorisnika);
 		this.statusNaloga = statusNaloga;
 		this.brojPoena = brojPoena;
 		this.tipKorisnika = tipKorisnika;
-		this.eRecepti = eRecepti;
-		this.penali = penali;
-		this.zalbe = zalbe;
-		this.ocene = ocene;
-		this.rezervacije = rezervacije;
-		this.alergije = alergije;
-		this.kupljeniPreparati = kupljeniPreparati;
-		this.apoteke = apoteke;
-		this.pregledi = pregledi;
+		this.eRecepti = new HashSet<ERecept>();
+		this.penali = new HashSet<Penal>();
+		this.zalbe = new HashSet<Zalba>();
+		this.ocene = new HashSet<Ocena>();
+		this.rezervacije = new HashSet<Rezervacija>();
+		this.alergije = new HashSet<Preparat>();
+		this.kupljeniPreparati = new HashSet<Preparat>();
+		this.apoteke = new HashSet<Apoteka>();
+		this.pregledi = new HashSet<Pregled>();
 	}
 
 	public StatusNaloga getStatusNaloga() {

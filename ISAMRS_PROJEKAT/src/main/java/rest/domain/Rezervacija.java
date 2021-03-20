@@ -1,18 +1,18 @@
 package rest.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Rezervacija {
-	private Long id;
+	private int id;
 	private StatusRezervacije status;
-	private Date datumPreuzimanja;
+	private LocalDate datumPreuzimanja;
 	
 	private Pacijent pacijent;
 	private Preparat preparat;
 	
 	public Rezervacija() {}
 	
-	public Rezervacija(Long id,StatusRezervacije status, Date datumPreuzimanja, Pacijent pacijent, Preparat preparat) {
+	public Rezervacija(int id,StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat) {
 		super();
 		this.id=id;
 		this.status = status;
@@ -21,11 +21,11 @@ public class Rezervacija {
 		this.preparat = preparat;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -37,11 +37,11 @@ public class Rezervacija {
 		this.status = status;
 	}
 
-	public Date getDatumPreuzimanja() {
+	public LocalDate getDatumPreuzimanja() {
 		return datumPreuzimanja;
 	}
 
-	public void setDatumPreuzimanja(Date datumPreuzimanja) {
+	public void setDatumPreuzimanja(LocalDate datumPreuzimanja) {
 		this.datumPreuzimanja = datumPreuzimanja;
 	}
 

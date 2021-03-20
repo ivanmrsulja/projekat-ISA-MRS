@@ -1,15 +1,16 @@
 package rest.domain;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Pregled {
-	private Long id;
+	private int id;
 	private String izvjestaj;
 	private StatusPregleda status;
 	private TipPregleda tip;
-	private Date datum;
+	private LocalDate datum;
 	private Time vrijeme;
 	private int trajanje;
 	private double cijena;
@@ -19,11 +20,13 @@ public class Pregled {
 	private Apoteka apoteka;
 	private Set<Preparat> terapija;
 	
-	public Pregled() {}
+	public Pregled() {
+		this.terapija = new HashSet<Preparat>();
+	}
 	
-	public Pregled(Long id,String izvjestaj, StatusPregleda status, TipPregleda tip, Date datum, Time vrijeme, int trajanje,
-			double cijena, Korisnik zaposleni, Pacijent pacijent, Apoteka apoteka, Set<Preparat> terapija) {
-		super();
+	public Pregled(int id,String izvjestaj, StatusPregleda status, TipPregleda tip, LocalDate datum, Time vrijeme, int trajanje,
+			double cijena, Korisnik zaposleni, Pacijent pacijent, Apoteka apoteka) {
+		this();
 		this.id=id;
 		this.izvjestaj = izvjestaj;
 		this.status = status;
@@ -35,14 +38,13 @@ public class Pregled {
 		this.zaposleni = zaposleni;
 		this.pacijent = pacijent;
 		this.apoteka = apoteka;
-		this.terapija = terapija;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -78,11 +80,11 @@ public class Pregled {
 		this.tip = tip;
 	}
 
-	public Date getDatum() {
+	public LocalDate getDatum() {
 		return datum;
 	}
 
-	public void setDatum(Date datum) {
+	public void setDatum(LocalDate datum) {
 		this.datum = datum;
 	}
 

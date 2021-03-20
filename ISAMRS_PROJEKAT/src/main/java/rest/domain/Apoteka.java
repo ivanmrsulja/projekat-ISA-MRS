@@ -1,9 +1,10 @@
 package rest.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Apoteka implements Ocenjivo{
-	private Long id;
+	private int id;
 	private String naziv;
 	private String opis;
 	private int brojOcena;
@@ -16,23 +17,22 @@ public class Apoteka implements Ocenjivo{
 	private Lokacija lokacija;
 	private Set<AdminApoteke> adminiApoteke;
 	
-	public Apoteka() {}
+	public Apoteka() {
+		this.pacijenti = new HashSet<Pacijent>();
+		this.pregledi = new HashSet<Pregled>();
+		this.cene = new HashSet<Cena>();
+		this.zaposlenja = new HashSet<Zaposlenje>();
+		this.adminiApoteke = new HashSet<AdminApoteke>();
+	}
 	
-	public Apoteka(Long id,String naziv, String opis, int brojOcena, int sumaOcena, Set<Pacijent> pacijenti,
-			Set<Pregled> pregledi, Set<Cena> cene, Set<Zaposlenje> zaposlenja, Lokacija lokacija,
-			Set<AdminApoteke> adminiApoteke) {
-		super();
+	public Apoteka(int id,String naziv, String opis, int brojOcena, int sumaOcena, Lokacija lokacija) {
+		this();
 		this.id=id;
 		this.naziv = naziv;
 		this.opis = opis;
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
-		this.pacijenti = pacijenti;
-		this.pregledi = pregledi;
-		this.cene = cene;
-		this.zaposlenja = zaposlenja;
 		this.lokacija = lokacija;
-		this.adminiApoteke = adminiApoteke;
 	}
 	
 	public int izracunajOcenu()
@@ -43,11 +43,11 @@ public class Apoteka implements Ocenjivo{
 		return 0;
 	}
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

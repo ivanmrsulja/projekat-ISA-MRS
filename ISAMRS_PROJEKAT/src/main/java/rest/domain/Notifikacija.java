@@ -1,11 +1,11 @@
 package rest.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Notifikacija {
-	private Long id;
+	private int id;
 	private String nazivPreparata;
-	private Date datum;
+	private LocalDate datum;
 	private Apoteka apoteka;
 	private Boolean pregledana;
 	
@@ -13,7 +13,7 @@ public class Notifikacija {
 	
 	public Notifikacija() {}
 
-	public Notifikacija(Long id,String nazivPreparata, Date datum, Apoteka apoteka, Korisnik korisnik) {
+	public Notifikacija(int id,String nazivPreparata, LocalDate datum, Apoteka apoteka, Korisnik korisnik) {
 		super();
 		this.id=id;
 		this.nazivPreparata = nazivPreparata;
@@ -23,11 +23,11 @@ public class Notifikacija {
 		this.pregledana=false;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -39,11 +39,11 @@ public class Notifikacija {
 		this.nazivPreparata = nazivPreparata;
 	}
 
-	public Date getDatum() {
+	public LocalDate getDatum() {
 		return datum;
 	}
 
-	public void setDatum(Date datum) {
+	public void setDatum(LocalDate datum) {
 		this.datum = datum;
 	}
 

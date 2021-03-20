@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Korisnik {
-	private Long Id;
+	private int Id;
 	private String ime;
 	private String prezime;
 	private String username;
@@ -20,11 +20,15 @@ public class Korisnik {
 	private Set<Pregled> pregledi;
 		
 	
-	public Korisnik() {	}
+	public Korisnik() {	
+		this.zahtjevi = new HashSet<Zahtjev>();		
+		this.notifikacije = new HashSet<Notifikacija>();
+		this.pregledi = new HashSet<Pregled>();
+	}
 
-	public Korisnik(Long id, String ime, String prezime, String username, String password, String email,
+	public Korisnik(int id, String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon, Lokacija lokacije,ZaposlenjeKorisnika zaposlenjeKorisnika) {
-		super();
+		this();
 		Id = id;
 		this.ime = ime;
 		this.prezime = prezime;
@@ -35,16 +39,13 @@ public class Korisnik {
 		this.telefon = telefon;
 		this.lokacija = lokacije;
 		this.zaposlenjeKorisnika=zaposlenjeKorisnika;
-		this.zahtjevi = new HashSet<Zahtjev>();		
-		this.notifikacije = new HashSet<Notifikacija>();
-		this.pregledi = new HashSet<Pregled>();
 	}	
 
-	public Long getId() {
+	public int getId() {
 		return Id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		Id = id;
 	}
 

@@ -10,10 +10,10 @@ public interface KorisnikRepository {
 
 	Korisnik create(Korisnik user);
 
-	Korisnik findOne(Long id);
+	Korisnik findOne(int id);
 	
 	Korisnik update(Korisnik user);
 
-	void delete(Long id);
+	void delete(int id);
 
 }

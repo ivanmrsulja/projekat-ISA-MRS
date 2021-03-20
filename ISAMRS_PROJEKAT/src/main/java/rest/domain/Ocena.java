@@ -1,7 +1,7 @@
 package rest.domain;
 
 public class Ocena {
-	private Long id;
+	private int id;
 	private int ocena;
 	
 	private Pacijent pacijent;
@@ -9,7 +9,7 @@ public class Ocena {
 	
 	public Ocena() {}
 
-	public Ocena(Long id,int ocena, Pacijent pacijent,Ocenjivo ocenjivo) {
+	public Ocena(int id,int ocena, Pacijent pacijent,Ocenjivo ocenjivo) {
 		super();
 		this.id=id;
 		this.ocena = ocena;
@@ -17,11 +17,11 @@ public class Ocena {
 		this.ocenjivo=ocenjivo;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

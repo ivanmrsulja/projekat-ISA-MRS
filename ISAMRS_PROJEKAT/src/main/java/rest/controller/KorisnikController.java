@@ -74,7 +74,7 @@ public class KorisnikController {
 	 * url: /api/users/1 GET
 	 */
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> getUSer(@PathVariable("id") Long id) {
+	public ResponseEntity<Korisnik> getUSer(@PathVariable("id") int id) {
 		Korisnik user = userService.findOne(id);
 
 		if (user == null) {
@@ -93,7 +93,7 @@ public class KorisnikController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> updateUser(@RequestBody Korisnik user, @PathVariable Long id)
+	public ResponseEntity<Korisnik> updateUser(@RequestBody Korisnik user, @PathVariable int id)
 			throws Exception {
 		Korisnik userForUpdate = userService.findOne(id);
 
@@ -110,7 +110,7 @@ public class KorisnikController {
 	 * url: /api/users/1 DELETE
 	 */
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
+	public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
 		userService.delete(id);
 		return new ResponseEntity<String>("OK.", HttpStatus.OK);
 	}

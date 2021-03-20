@@ -25,14 +25,14 @@ public class KorisnikServiceImpl implements KorisnikService {
 	}
 
 	@Override
-	public Korisnik findOne(Long id) {
+	public Korisnik findOne(int id) {
 		Korisnik user = korisnikRepository.findOne(id);
 		return user;
 	}
 
 	@Override
 	public Korisnik create(Korisnik user) throws Exception {
-		if (user.getId() != null) {
+		if (user.getId() != 0) {
 			throw new Exception("Id mora biti null prilikom perzistencije novog entiteta.");
 		}
 		Korisnik savedUser = korisnikRepository.create(user);
@@ -51,7 +51,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(int id) {
 		korisnikRepository.delete(id);
 	}
 
