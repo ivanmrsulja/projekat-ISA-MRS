@@ -42,7 +42,7 @@ public class Preparat implements Ocenjivo{
 		this.ocena=izracunajOcenu();
 	}
 	
-	public int izracunajOcenu()
+	public double izracunajOcenu()
 	{
 		if(this.brojOcena!=0) {
 			return this.sumaOcena/this.brojOcena;

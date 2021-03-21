@@ -55,14 +55,14 @@ public class InMemoryKorisnikRepository implements KorisnikRepository {
 	}
 
 	@Override
-	public Korisnik update(Korisnik greeting) {
-		int id = greeting.getId();
+	public Korisnik update(Korisnik user) {
+		int id = user.getId();
 
 		if (id != 0) {
-			this.users.put(id, greeting);
+			this.users.put(id, user);
 		}
 
-		return greeting;
+		return user;
 	}
 
 }

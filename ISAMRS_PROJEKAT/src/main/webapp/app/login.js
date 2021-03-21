@@ -56,7 +56,6 @@ Vue.component("pocetna-strana", {
 		}  
 	},
 	mounted () {
-		console.log("DASDSAD");
 		this.user = { zaposlenjeKorisnika: "GOST"};
 		let self = this;
         this.$root.$on('sendingUser', (data) => {

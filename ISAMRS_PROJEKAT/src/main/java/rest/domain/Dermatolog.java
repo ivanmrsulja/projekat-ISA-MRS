@@ -23,7 +23,7 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 		this.ocena=izracunajOcenu();
 	}
 
-	public int izracunajOcenu()
+	public double izracunajOcenu()
 	{
 		if(this.brojOcena!=0) {
 			return this.sumaOcena/this.brojOcena;

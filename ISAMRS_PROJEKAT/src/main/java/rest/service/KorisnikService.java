@@ -10,9 +10,9 @@ public interface KorisnikService {
 
 	Korisnik findOne(int id);
 
-	Korisnik create(Korisnik greeting) throws Exception;
+	Korisnik create(Korisnik user) throws Exception;
 
-	Korisnik update(Korisnik greeting) throws Exception;
+	Korisnik update(Korisnik user) throws Exception;
 
 	void delete(int id);
 	

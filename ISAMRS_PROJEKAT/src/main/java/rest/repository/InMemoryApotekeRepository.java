@@ -32,4 +32,15 @@ public class InMemoryApotekeRepository implements ApotekeRepository {
 		return this.apoteke.values();
 	}
 
+	@Override
+	public Apoteka findByID(int id) {
+		return this.apoteke.get(id);
+	}
+
+	@Override
+	public Apoteka update(Apoteka apoteka) {
+		apoteke.put(apoteka.getId(), apoteka);
+		return apoteka;
+	}
+
 }

@@ -2,6 +2,7 @@ const PocetnaStrana = { template: '<pocetna-strana></pocetna-strana>' }
 const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
 const RegistracijaKorisnika = {template: '<register-user></register-user>'}
 const PregledApoteka = {template: '<pregled-apoteka></pregled-apoteka>'}
+const ProfilApoteke = {template: '<profil-apoteke></profil-apoteke>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -9,7 +10,8 @@ const router = new VueRouter({
 	    { path: '/', component: PocetnaStrana},
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/register', component: RegistracijaKorisnika},
-	    { path: '/apoteke', component: PregledApoteka}
+	    { path: '/apoteke', component: PregledApoteka},
+		{ path: '/profileApoteke', component: ProfilApoteke},
 	  ]
 });
 
@@ -26,8 +28,6 @@ var app = new Vue({
 		this.$root.$on('sendingUser', (data) => {
 			this.korisnik = data;
 		});
-		
-		alert(korisnik.zaposlenjeKorisnika);
     },
      methods: {
     	logout : function() {
