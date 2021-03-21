@@ -9,6 +9,7 @@ public class Apoteka implements Ocenjivo{
 	private String opis;
 	private int brojOcena;
 	private int sumaOcena;
+	private int ocena;
 	
 	private Set<Pacijent> pacijenti;
 	private Set<Pregled> pregledi;
@@ -33,6 +34,7 @@ public class Apoteka implements Ocenjivo{
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
 		this.lokacija = lokacija;
+		this.ocena = this.izracunajOcenu();
 	}
 	
 	public int izracunajOcenu()
@@ -129,6 +131,14 @@ public class Apoteka implements Ocenjivo{
 
 	public void setAdminiApoteke(Set<AdminApoteke> adminiApoteke) {
 		this.adminiApoteke = adminiApoteke;
+	}
+
+	public int getOcena() {
+		return ocena;
+	}
+
+	public void setOcena(int ocena) {
+		this.ocena = ocena;
 	}
 	
 }

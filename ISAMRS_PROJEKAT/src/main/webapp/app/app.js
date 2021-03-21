@@ -1,13 +1,15 @@
 const PocetnaStrana = { template: '<pocetna-strana></pocetna-strana>' }
 const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
 const RegistracijaKorisnika = {template: '<register-user></register-user>'}
+const PregledApoteka = {template: '<pregled-apoteka></pregled-apoteka>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: PocetnaStrana},
 	    { path: '/tab', component: TabelaPonuda},
-	    { path: '/register', component: RegistracijaKorisnika}
+	    { path: '/register', component: RegistracijaKorisnika},
+	    { path: '/apoteke', component: PregledApoteka}
 	  ]
 });
 

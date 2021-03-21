@@ -98,7 +98,7 @@ public class KorisnikController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> updateUser(@RequestBody Korisnik user, @PathVariable int id)
+	public ResponseEntity<Korisnik> updateUser(@RequestBody Korisnik user, @PathVariable("id") int id)
 			throws Exception {
 		Korisnik userForUpdate = userService.findOne(id);
 
