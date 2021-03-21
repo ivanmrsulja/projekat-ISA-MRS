@@ -41,7 +41,7 @@ Vue.component("pocetna-strana", {
 					.get("/api/users/currentUser")
 					.then(function(resp){
 						temp.$root.$emit('sendingUser', resp.data);
-						if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA"){
+						if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
 							window.location.href = "#/";
 						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
 							window.location.href = "#/";
@@ -57,7 +57,7 @@ Vue.component("pocetna-strana", {
 	},
 	mounted () {
 		console.log("DASDSAD");
-		this.user = { uloga: "GOST"};
+		this.user = { zaposlenjeKorisnika: "GOST"};
 		let self = this;
         this.$root.$on('sendingUser', (data) => {
 			self.user = data;

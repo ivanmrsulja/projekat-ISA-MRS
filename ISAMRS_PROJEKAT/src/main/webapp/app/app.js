@@ -1,11 +1,13 @@
 const PocetnaStrana = { template: '<pocetna-strana></pocetna-strana>' }
-const Tabela = { template: '<pocetna-stranas></pocetna-stranas>' }
+const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
+const RegistracijaKorisnika = {template: '<register-user></register-user>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: PocetnaStrana},
-	    { path: '/tab', component: Tabela}
+	    { path: '/tab', component: TabelaPonuda},
+	    { path: '/register', component: RegistracijaKorisnika}
 	  ]
 });
 
@@ -14,19 +16,16 @@ var app = new Vue({
 	router,
 	el: '#apoteke',
 	data: {
-        korisnik: {uloga : "GOST"},
+        korisnik: {zaposlenjeKorisnika : "GOST"},
     },
 	mounted () {
 		let self = this;
-		$.get("/api/users/currentUser", function(data){
-			if(data){
-				self.korisnik = data;
-			}
-		});
 		
 		this.$root.$on('sendingUser', (data) => {
 			this.korisnik = data;
 		});
+		
+		alert(korisnik.zaposlenjeKorisnika);
     },
      methods: {
     	logout : function() {

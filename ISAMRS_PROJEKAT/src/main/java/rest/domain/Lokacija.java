@@ -4,20 +4,16 @@ public class Lokacija {
 	private int id;
 	private double sirina;
 	private double duzina;
-	private String ulica;
-	private String grad;
-	private String drzava;
+	private String adresa;
 	
 	public Lokacija() {}
 	
-	public Lokacija(int id,double sirina, double duzina, String ulica, String grad, String drzava) {
+	public Lokacija(int id,double sirina, double duzina, String adresa) {
 		super();
 		this.id=id;
 		this.sirina = sirina;
 		this.duzina = duzina;
-		this.ulica = ulica;
-		this.grad = grad;
-		this.drzava = drzava;
+		this.adresa = adresa;
 	}
 
 	public int getId() {
@@ -45,27 +41,11 @@ public class Lokacija {
 	}
 
 	public String getUlica() {
-		return ulica;
+		return adresa;
 	}
 
-	public void setUlica(String ulica) {
-		this.ulica = ulica;
-	}
-
-	public String getGrad() {
-		return grad;
-	}
-
-	public void setGrad(String grad) {
-		this.grad = grad;
-	}
-
-	public String getDrzava() {
-		return drzava;
-	}
-
-	public void setDrzava(String drzava) {
-		this.drzava = drzava;
+	public void setUlica(String adresa) {
+		this.adresa = adresa;
 	}
 	
 	

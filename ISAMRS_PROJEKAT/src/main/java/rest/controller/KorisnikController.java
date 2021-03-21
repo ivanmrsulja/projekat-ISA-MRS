@@ -58,7 +58,7 @@ public class KorisnikController {
 	public Korisnik currentUser(){
 		// TODO: Ovo samo da se ne crveni na frontu
 		Korisnik k = new Korisnik();
-		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_SISTEMA);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_APOTEKE);
 		return k;
 	}
 	
@@ -66,6 +66,11 @@ public class KorisnikController {
 	public ResponseEntity<String> login(){
 		// TODO: Ovo samo da se ne crveni na frontu
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
+	@GetMapping("/logout")
+	public String logout() {
+		return "OK";
 	}
 	
 	/*
