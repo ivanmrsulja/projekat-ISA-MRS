@@ -17,7 +17,7 @@ Vue.component("pocetna-stranas", {
                 <th scope="col">Ukupna cena</th>
                	<th scope="col">Rok isporuke</th>
              	<th scope="col">Narudzbenica</th>
-           		<th scope="col">Dostavljac</th>
+           		<th scope="col">Dobavljac</th>
 
                 </tr>
            	</thead>

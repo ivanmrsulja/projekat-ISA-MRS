@@ -15,9 +15,10 @@ Vue.component("pregled-apoteka", {
 	      <div class="post-thumb"><img src="css/drugstore.jpg" style="height:200px;"></img></div>
 		  <div class="post-content">
 	      <h2 style="margin-bottom:6px">{{a.naziv}}</h2>
-	      <h5>{{a.opis}}</h5>
+	      <p>{{a.lokacija.ulica}}</p>
 	      
-	      <p>{{a.lokacija.adresa}}</p>
+	      <p>{{a.opis}}</p>
+	      
 	      <table>
 	      	<tr><td><input type="button" class="button1" value="Vise informacija" v-on:click="pregledaj(a)" /></td><td style="padding = 0px; margin = 0px;" v-bind:hidden=" a.ocena == 0" ><strong>Ocena: {{a.ocena}}</strong></td></tr>
 	      </table>

@@ -41,7 +41,7 @@ public class ApotekaController {
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApotekaDTO> updateApoteka(@RequestBody ApotekaDTO apoteka)
 			throws Exception {
-
+		
 		if (apoteka == null) {
 			return new ResponseEntity<ApotekaDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

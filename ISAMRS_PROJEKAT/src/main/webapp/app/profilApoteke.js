@@ -2,8 +2,10 @@ Vue.component("profil-apoteke", {
 	data: function () {
 		    return {
 				apoteka : {
-                    lokacija: {ulica: ""}
-                }
+					naziv: "",
+                    lokacija: {ulica: ""},
+                    opis: ""
+                },
 		    }
 	},
 	template: ` 
@@ -12,9 +14,9 @@ Vue.component("profil-apoteke", {
 		<h1>Profil apoteke</h1>
 		<br/>
         <table>
-            <tr><td><h2>Naziv: </h2></td><td><input type="text" v-model="this.apoteka.naziv"/></td></tr>
-            <tr><td><h2>Opis: </h2></td><td><textarea rows="6">{{this.apoteka.opis}}</textarea></td></tr>
-            <tr><td><h2>Adresa: </h2></td><td><textarea rows="3" disabled>{{this.apoteka.lokacija.ulica}}</textarea></td></tr>
+            <tr><td><h2>Naziv: </h2></td><td><input type="text" v-model="apoteka.naziv"/></td></tr>
+            <tr><td><h2>Opis: </h2></td><td><textarea rows="6" name="opis">{{apoteka.opis}}</textarea></td></tr>
+            <tr><td><h2>Adresa: </h2></td><td><textarea rows="3" disabled>{{apoteka.lokacija.ulica}}</textarea></td></tr>
         </table>
         <br/>
 		<input type="button" value="Sacuvaj" v-on:click="saveData()"/>
@@ -82,12 +84,15 @@ Vue.component("profil-apoteke", {
 			
 		},
         saveData : function(){
-            let self = this;
-            alert("AAAAAAAAAA");
+            let opis = $("textarea[name=opis]").val();
+            this.apoteka.opis = opis;
             axios
-                .put("api/apoteke/update", self.apoteka)
+                .put("api/apoteke/update", this.apoteka)
                 .then(response => {
-                    self.apoteka = response.data;
+                    this.apoteka = response.data;
+                    alert("Uspesno azurirano.");
+            }).catch(err => {
+            	alert("Azuriranje nije uspelo.");
             });
         } 
 	},
