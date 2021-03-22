@@ -1,5 +1,6 @@
 package rest.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,13 @@ public class ApotekaController {
 	}
 	
 	@GetMapping(value="/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<Apoteka> getAll() {
-		return apotekaService.getAllDrugStores();
+	public Collection<ApotekaDTO> getAll() {
+		Collection<Apoteka> apoteke = apotekaService.getAllDrugStores();
+		ArrayList<ApotekaDTO> retVals = new ArrayList<ApotekaDTO>();
+		for(Apoteka a : apoteke) {
+			retVals.add(new ApotekaDTO(a));
+		}
+		return retVals;
 	}
 
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
