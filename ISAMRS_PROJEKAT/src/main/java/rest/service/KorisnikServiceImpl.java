@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Korisnik;
-import rest.repository.InMemoryKorisnikRepository;
+import rest.repository.KorisnikRepository;
 
 @Service
 public class KorisnikServiceImpl implements KorisnikService {
 
-	private InMemoryKorisnikRepository korisnikRepository;
+	private KorisnikRepository korisnikRepository;
 	
 	@Autowired
-	public KorisnikServiceImpl(InMemoryKorisnikRepository imkr) {
+	public KorisnikServiceImpl(KorisnikRepository imkr) {
 		this.korisnikRepository = imkr;
 	}
 
@@ -26,7 +26,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	@Override
 	public Korisnik findOne(int id) {
-		Korisnik user = korisnikRepository.findOne(id);
+		Korisnik user = korisnikRepository.findById(id).get();
 		return user;
 	}
 
@@ -35,7 +35,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 		if (user.getId() != 0) {
 			throw new Exception("Id mora biti null prilikom perzistencije novog entiteta.");
 		}
-		Korisnik savedUser = korisnikRepository.create(user);
+		Korisnik savedUser = korisnikRepository.save(user);
 		return savedUser;
 	}
 
@@ -46,13 +46,13 @@ public class KorisnikServiceImpl implements KorisnikService {
 			throw new Exception("Trazeni entitet nije pronadjen.");
 		}
 		userToUpdate.setIme(user.getIme());
-		Korisnik updatedUSer = korisnikRepository.create(userToUpdate);
+		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
 		return updatedUSer;
 	}
 
 	@Override
 	public void delete(int id) {
-		korisnikRepository.delete(id);
+		korisnikRepository.deleteById(id);
 	}
 
 }

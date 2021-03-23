@@ -1,10 +1,25 @@
 package rest.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+@Entity
 public class DostupanProizvod {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "kolicina", nullable = false)
 	private int kolicina;
+	@Column(name = "cena", nullable = false)
 	private double cena;
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
 	private Preparat preparat;
 	
 	public DostupanProizvod() {}

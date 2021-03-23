@@ -3,20 +3,32 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Dermatolog extends Korisnik implements Ocenjivo{
+	@Column(name = "brojOcena", nullable = true)
 	private int brojOcena;
+	@Column(name = "sumaOcena", nullable = true)
 	private int sumaOcena;
+	@Column(name = "ocena", nullable = true)
 	private double ocena;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Zaposlenje> zaposlenja;
 	
 	public Dermatolog() {
+		super();
 		this.zaposlenja = new HashSet<Zaposlenje>();
 	}
 	
-	public Dermatolog(int id, String ime, String prezime, String username, String password, String email,
+	public Dermatolog(String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,int brojOcena,int sumaOcena) {
-		super(id, ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
+		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
 		this.zaposlenja = new HashSet<Zaposlenje>();

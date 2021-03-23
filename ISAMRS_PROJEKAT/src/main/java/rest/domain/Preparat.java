@@ -3,21 +3,46 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Preparat implements Ocenjivo{
-	private int sifra;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	@Column(name = "naziv", nullable = false)
 	private String naziv;
+	@Column(name = "tip", nullable = false)
 	private TipLeka tip;
+	@Column(name = "kontraindikacije", nullable = false)
 	private String kontraindikacije;
+	@Column(name = "sastav", nullable = false)
 	private String sastav;
+	@Column(name = "preporuceniUnos", nullable = false)
 	private int preporuceniUnos;
+	@Column(name = "poeni", nullable = false)
 	private int poeni;
+	@Column(name = "oblik", nullable = false)
 	private String oblik;
+	@Column(name = "proizvodjac", nullable = false)
 	private String proizvodjac;
+	@Column(name = "izdavanje", nullable = false)
 	private RezimIzdavanja izdavanje;
+	@Column(name = "brojOcena", nullable = false)
 	private int brojOcena;
+	@Column(name = "sumaOcena", nullable = false)
 	private int sumaOcena;
+	@Column(name = "ocena", nullable = false)
 	private double ocena;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Preparat> zamjenskiPreparati;
 	
 	public Preparat(){
@@ -27,7 +52,7 @@ public class Preparat implements Ocenjivo{
 	public Preparat(int sifra, String naziv, TipLeka tip, String kontraindikacije, String sastav, int preporuceniUnos,
 			int poeni, String oblik, String proizvodjac, RezimIzdavanja izdavanje, int brojOcena, int sumaOcena) {
 		this();
-		this.sifra = sifra;
+		this.id = sifra;
 		this.naziv = naziv;
 		this.tip = tip;
 		this.kontraindikacije = kontraindikacije;
@@ -50,12 +75,12 @@ public class Preparat implements Ocenjivo{
 		return 0;
 	}
 
-	public int getSifra() {
-		return sifra;
+	public int getId() {
+		return id;
 	}
 
-	public void setSifra(int sifra) {
-		this.sifra = sifra;
+	public void setId(int sifra) {
+		this.id = sifra;
 	}
 
 	public String getNaziv() {

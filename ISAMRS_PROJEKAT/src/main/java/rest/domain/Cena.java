@@ -5,29 +5,44 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Cena {
-	private Long id;
-	private Set<DostupanProizvod> dostupniProizvodi;
-	private Apoteka apoteka;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+@Entity
+public class Cena {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<DostupanProizvod> dostupniProizvodi;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Apoteka apoteka;
+	@Column(name = "pocetakVazenja", nullable = false)
 	private LocalDate pocetakVazenja;
 	
 	public Cena() {
 		this.dostupniProizvodi = new HashSet<DostupanProizvod>();
 	}
 
-	public Cena(Long id, Apoteka apoteka, LocalDate pocetakVazenja) {
+	public Cena(int id, Apoteka apoteka, LocalDate pocetakVazenja) {
 		this();
 		this.id=id;
 		this.apoteka = apoteka;
 		this.pocetakVazenja = pocetakVazenja;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

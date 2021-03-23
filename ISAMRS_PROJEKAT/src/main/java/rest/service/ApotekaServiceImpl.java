@@ -22,13 +22,13 @@ public class ApotekaServiceImpl implements ApotekaService {
 	
 	@Override
 	public Collection<Apoteka> getAllDrugStores() {
-		Collection<Apoteka> allStores = apoteke.findAllDrugStores();
+		Collection<Apoteka> allStores = apoteke.findAll();
 		return allStores;
 	}
 
 	@Override
 	public Apoteka getByID(int id) {
-		return this.apoteke.findByID(id);
+		return this.apoteke.findById(id).get();
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		apotekaToUpdate.setNaziv(apoteka.getNaziv());
 		apotekaToUpdate.setOpis(apoteka.getOpis());
 		apotekaToUpdate.setLokacija(apoteka.getLokacija());
-		apoteke.update(apotekaToUpdate);
+		apoteke.save(apotekaToUpdate);
 	}
 
 }

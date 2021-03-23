@@ -3,19 +3,46 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Apoteka implements Ocenjivo{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "naziv", nullable = false)
 	private String naziv;
+	@Column(name = "opis", nullable = false)
 	private String opis;
+	@Column(name = "brojOcena", nullable = false)
 	private int brojOcena;
+	@Column(name = "sumaOcena", nullable = false)
 	private int sumaOcena;
+	@Column(name = "ocena", nullable = true)
 	private double ocena;
 	
+	@ManyToMany(mappedBy = "apoteke")
 	private Set<Pacijent> pacijenti;
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Pregled> pregledi;
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
 	private Set<Cena> cene;
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Zaposlenje> zaposlenja;
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Lokacija lokacija;
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AdminApoteke> adminiApoteke;
 	
 	public Apoteka() {
@@ -26,9 +53,8 @@ public class Apoteka implements Ocenjivo{
 		this.adminiApoteke = new HashSet<AdminApoteke>();
 	}
 	
-	public Apoteka(int id,String naziv, String opis, int brojOcena, int sumaOcena, Lokacija lokacija) {
+	public Apoteka(String naziv, String opis, int brojOcena, int sumaOcena, Lokacija lokacija) {
 		this();
-		this.id=id;
 		this.naziv = naziv;
 		this.opis = opis;
 		this.brojOcena = brojOcena;

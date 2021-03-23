@@ -1,19 +1,31 @@
 package rest.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Lokacija {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "sirina", nullable = false)
 	private double sirina;
+	@Column(name = "duzina", nullable = false)
 	private double duzina;
-	private String adresa;
+	@Column(name = "ulica", nullable = false)
+	private String ulica;
 	
 	public Lokacija() {}
 	
-	public Lokacija(int id,double sirina, double duzina, String adresa) {
+	public Lokacija(double sirina, double duzina, String adresa) {
 		super();
-		this.id=id;
 		this.sirina = sirina;
 		this.duzina = duzina;
-		this.adresa = adresa;
+		this.ulica = adresa;
 	}
 
 	public int getId() {
@@ -41,11 +53,11 @@ public class Lokacija {
 	}
 
 	public String getUlica() {
-		return adresa;
+		return ulica;
 	}
 
 	public void setUlica(String adresa) {
-		this.adresa = adresa;
+		this.ulica = adresa;
 	}
 	
 	

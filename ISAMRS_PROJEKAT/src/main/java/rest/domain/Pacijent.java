@@ -3,26 +3,53 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Pacijent extends Korisnik {
-	private StatusNaloga statusNaloga;
-	private int brojPoena;
 	
+	@Column(name = "statusNaloga", nullable = true)
+	private StatusNaloga statusNaloga;
+	@Column(name = "brojPoena", nullable = true)
+	private int brojPoena;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "tip_korisnika_id", referencedColumnName = "id")
 	private TipKorisnika tipKorisnika;
+	
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<ERecept> eRecepti;
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Penal> penali;
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Zalba> zalbe;
-	private Set<Ocena> ocene;
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<OcenaApoteke> ocene;
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Rezervacija> rezervacije;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
 	private Set<Preparat> alergije;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Preparat> kupljeniPreparati;
+	@ManyToMany
+	@JoinTable(joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private Set<Apoteka> apoteke;
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Pregled> pregledi;
 	
 	public Pacijent() {
+		super();
 		this.eRecepti = new HashSet<ERecept>();
 		this.penali = new HashSet<Penal>();
 		this.zalbe = new HashSet<Zalba>();
-		this.ocene = new HashSet<Ocena>();
+		this.ocene = new HashSet<OcenaApoteke>();
 		this.rezervacije = new HashSet<Rezervacija>();
 		this.alergije = new HashSet<Preparat>();
 		this.kupljeniPreparati = new HashSet<Preparat>();
@@ -30,17 +57,17 @@ public class Pacijent extends Korisnik {
 		this.pregledi = new HashSet<Pregled>();
 	}
 	
-	public Pacijent(int id, String ime, String prezime, String username, String password, String email,
+	public Pacijent(String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon,ZaposlenjeKorisnika zaposlenjeKorisnika, Lokacija lokacija, StatusNaloga statusNaloga, int brojPoena,
 			TipKorisnika tipKorisnika) {
-		super(id, ime, prezime, username, password, email, loggedBefore, telefon, lokacija,zaposlenjeKorisnika);
+		super(ime, prezime, username, password, email, loggedBefore, telefon, lokacija,zaposlenjeKorisnika);
 		this.statusNaloga = statusNaloga;
 		this.brojPoena = brojPoena;
 		this.tipKorisnika = tipKorisnika;
 		this.eRecepti = new HashSet<ERecept>();
 		this.penali = new HashSet<Penal>();
 		this.zalbe = new HashSet<Zalba>();
-		this.ocene = new HashSet<Ocena>();
+		this.ocene = new HashSet<OcenaApoteke>();
 		this.rezervacije = new HashSet<Rezervacija>();
 		this.alergije = new HashSet<Preparat>();
 		this.kupljeniPreparati = new HashSet<Preparat>();
@@ -96,11 +123,11 @@ public class Pacijent extends Korisnik {
 		this.zalbe = zalbe;
 	}
 
-	public Set<Ocena> getOcene() {
+	public Set<OcenaApoteke> getOcene() {
 		return ocene;
 	}
 
-	public void setOcene(Set<Ocena> ocene) {
+	public void setOcene(Set<OcenaApoteke> ocene) {
 		this.ocene = ocene;
 	}
 

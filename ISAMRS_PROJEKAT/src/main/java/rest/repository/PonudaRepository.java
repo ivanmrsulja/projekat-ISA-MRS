@@ -1,13 +1,10 @@
 package rest.repository;
 
-import java.util.Collection;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import rest.domain.Apoteka;
+import rest.domain.Ponuda;
 
 @Repository
-public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
-
+public interface PonudaRepository extends JpaRepository<Ponuda, Integer> {
 }

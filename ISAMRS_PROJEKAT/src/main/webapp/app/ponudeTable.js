@@ -27,8 +27,8 @@ Vue.component("pocetna-stranas", {
                                 <td>{{offer.status}}</td>
                                 <td>{{offer.ukupnaCena}}</td>
                                 <td>{{offer.rokIsporuke}}</td>
-                                <td>{{offer.narudzbenica.id}}</td>
-                                <td>{{offer.dobavljac.username}}</td>
+                                <td>{{offer.idNarudzbenice}}</td>
+                                <td>{{offer.dobavljac}}</td>
             	</tr>           
             </tbody>
      	</table>

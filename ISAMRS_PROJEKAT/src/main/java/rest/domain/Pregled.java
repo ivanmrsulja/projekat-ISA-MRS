@@ -1,30 +1,55 @@
 package rest.domain;
 
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Pregled {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "izvjestaj", nullable = false)
 	private String izvjestaj;
+	@Column(name = "status", nullable = false)
 	private StatusPregleda status;
+	@Column(name = "tip", nullable = false)
 	private TipPregleda tip;
+	@Column(name = "datum", nullable = false)
 	private LocalDate datum;
-	private Time vrijeme;
+	@Column(name = "vrijeme", nullable = false)
+	private LocalTime vrijeme;
+	@Column(name = "trajanje", nullable = false)
 	private int trajanje;
+	@Column(name = "cijena", nullable = false)
 	private double cijena;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Korisnik zaposleni;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Preparat> terapija;
 	
 	public Pregled() {
 		this.terapija = new HashSet<Preparat>();
 	}
 	
-	public Pregled(int id,String izvjestaj, StatusPregleda status, TipPregleda tip, LocalDate datum, Time vrijeme, int trajanje,
+	public Pregled(int id,String izvjestaj, StatusPregleda status, TipPregleda tip, LocalDate datum, LocalTime vrijeme, int trajanje,
 			double cijena, Korisnik zaposleni, Pacijent pacijent, Apoteka apoteka) {
 		this();
 		this.id=id;
@@ -88,11 +113,11 @@ public class Pregled {
 		this.datum = datum;
 	}
 
-	public Time getVrijeme() {
+	public LocalTime getVrijeme() {
 		return vrijeme;
 	}
 
-	public void setVrijeme(Time vrijeme) {
+	public void setVrijeme(LocalTime vrijeme) {
 		this.vrijeme = vrijeme;
 	}
 

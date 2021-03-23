@@ -1,12 +1,29 @@
 package rest.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
+@Entity
 public class Zaposlenje {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "pocetakRadnogVremena", nullable = false)
 	private int pocetakRadnogVremena;
+	@Column(name = "krajRadnogVremena", nullable = false)
 	private int krajRadnogVremena;
-	
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "korisnik_id", referencedColumnName = "id")
 	private Korisnik korisnik;
 	
 	public Zaposlenje() {}

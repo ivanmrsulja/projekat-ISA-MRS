@@ -5,5 +5,6 @@ public enum ZaposlenjeKorisnika {
 	FARMACEUT,
 	ADMIN_SISTEMA,
 	ADMIN_APOTEKE,
-	PACIJENT
+	PACIJENT,
+	DOBAVLJAC
 }

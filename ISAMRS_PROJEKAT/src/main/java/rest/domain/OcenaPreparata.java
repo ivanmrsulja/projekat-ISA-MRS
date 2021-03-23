@@ -3,30 +3,35 @@ package rest.domain;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class StavkaRecepta {
+public class OcenaPreparata {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "datumIzdavanja", nullable = false)
-	private int kolicina;
+	@Column(name = "ocena", nullable = false)
+	private int ocena;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Pacijent pacijent;
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
+	@JoinColumn(name = "apoteka_id", referencedColumnName = "id")
 	private Preparat preparat;
 	
-	public StavkaRecepta() {}
-
-	public StavkaRecepta(int id,int kolicina, Preparat preparat) {
-		super();
-		this.id=id;
-		this.kolicina = kolicina;
+	public OcenaPreparata() {}
+	
+	public OcenaPreparata(int id, int ocena, Pacijent pacijent, Preparat preparat) {
+		this.id = id;
+		this.ocena = ocena;
+		this.pacijent = pacijent;
 		this.preparat = preparat;
 	}
 
@@ -38,12 +43,20 @@ public class StavkaRecepta {
 		this.id = id;
 	}
 
-	public int getKolicina() {
-		return kolicina;
+	public int getOcena() {
+		return ocena;
 	}
 
-	public void setKolicina(int kolicina) {
-		this.kolicina = kolicina;
+	public void setOcena(int ocena) {
+		this.ocena = ocena;
+	}
+
+	public Pacijent getPacijent() {
+		return pacijent;
+	}
+
+	public void setPacijent(Pacijent pacijent) {
+		this.pacijent = pacijent;
 	}
 
 	public Preparat getPreparat() {
@@ -53,5 +66,6 @@ public class StavkaRecepta {
 	public void setPreparat(Preparat preparat) {
 		this.preparat = preparat;
 	}
+	
 	
 }

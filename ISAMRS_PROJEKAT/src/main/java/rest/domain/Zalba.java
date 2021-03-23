@@ -1,10 +1,24 @@
 package rest.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Zalba {
-	private int Id;
-	private String text;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int Id;
+	@Column(name = "text", nullable = false)
+	private String text;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private AdminSistema adminSistema;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
 	public Zalba() {}

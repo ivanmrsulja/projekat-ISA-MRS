@@ -1,19 +1,12 @@
 package rest.repository;
 
-import java.util.Collection;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import rest.domain.Korisnik;
 
-public interface KorisnikRepository {
+@Repository
+public interface KorisnikRepository extends JpaRepository<Korisnik, Integer> {
 
-	Collection<Korisnik> findAll();
-
-	Korisnik create(Korisnik user);
-
-	Korisnik findOne(int id);
-	
-	Korisnik update(Korisnik user);
-
-	void delete(int id);
 
 }

@@ -1,17 +1,27 @@
 package rest.domain;
 
-public class TipKorisnika {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class TipKorisnika {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "naziv", nullable = false)
 	private String naziv;
+	@Column(name = "bodovi", nullable = false)
 	private int bodovi;
+	@Column(name = "popust", nullable = false)
 	private double popust;
 	
 	public TipKorisnika() {}
 	
-	public TipKorisnika(int id,String naziv, int bodovi, double popust) {
+	public TipKorisnika(String naziv, int bodovi, double popust) {
 		super();
-		this.id=id;
 		this.naziv = naziv;
 		this.bodovi = bodovi;
 		this.popust = popust;

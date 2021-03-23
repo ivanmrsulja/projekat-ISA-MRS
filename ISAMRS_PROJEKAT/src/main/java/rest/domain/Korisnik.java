@@ -3,20 +3,49 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Korisnik {
-	private int Id;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	@Column(name = "ime", nullable = false)
 	private String ime;
+	@Column(name = "prezime", nullable = false)
 	private String prezime;
+	@Column(name = "username", nullable = false)
 	private String username;
+	@Column(name = "password", nullable = false)
 	private String password;
+	@Column(name = "email", nullable = false)
 	private String email;
+	@Column(name = "loggedBefore", nullable = false)
 	private Boolean loggedBefore;
+	@Column(name = "telefon", nullable = false)
 	private String telefon;
+	@Column(name = "zaposlenjeKorisnika", nullable = true)
 	private ZaposlenjeKorisnika zaposlenjeKorisnika;
 	
-	private Set<Zahtjev> zahtjevi;
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Lokacija lokacija;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Zahtjev> zahtjevi;
+	@OneToMany(mappedBy = "korisnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Notifikacija> notifikacije;
+	@OneToMany(mappedBy = "zaposleni", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Pregled> pregledi;
 		
 	
@@ -26,10 +55,9 @@ public class Korisnik {
 		this.pregledi = new HashSet<Pregled>();
 	}
 
-	public Korisnik(int id, String ime, String prezime, String username, String password, String email,
+	public Korisnik(String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon, Lokacija lokacije,ZaposlenjeKorisnika zaposlenjeKorisnika) {
 		this();
-		Id = id;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.username = username;
@@ -42,11 +70,11 @@ public class Korisnik {
 	}	
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getIme() {
@@ -144,7 +172,5 @@ public class Korisnik {
 	public void setLokacija(Lokacija lokacija) {
 		this.lokacija = lokacija;
 	}
-	
-	
 		
 }

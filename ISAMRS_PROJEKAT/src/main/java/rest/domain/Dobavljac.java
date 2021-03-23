@@ -3,17 +3,25 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Dobavljac extends Korisnik {
 	
+	@OneToMany(mappedBy = "dobavljac", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Ponuda> ponude;
 	
 	public Dobavljac() {
+		super();
 		this.ponude = new HashSet<Ponuda>();
 	}
 	
-	public Dobavljac(int id, String ime, String prezime, String username, String password, String email,
+	public Dobavljac(String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon,Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika) {
-		super(id, ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
+		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.ponude = new HashSet<Ponuda>();
 	}
 

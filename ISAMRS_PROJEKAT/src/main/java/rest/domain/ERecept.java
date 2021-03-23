@@ -4,12 +4,27 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ERecept {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-	private int sifra;
-	private LocalDate datumIzdavanja;
+@Entity
+public class ERecept {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	@Column(name = "datumIzdavanja", nullable = false)
+	private LocalDate datumIzdavanja;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<StavkaRecepta> stavkaRecepata;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
 	public ERecept() {
@@ -18,19 +33,19 @@ public class ERecept {
 
 	public ERecept(int sifra, LocalDate datumIzdavanja, Pacijent pacijent) {
 		this();
-		this.sifra = sifra;
+		this.id = sifra;
 		this.datumIzdavanja = datumIzdavanja;
 		this.pacijent = pacijent;
 	}
 
 
 
-	public int getSifra() {
-		return sifra;
+	public int getId() {
+		return id;
 	}
 
-	public void setSifra(int sifra) {
-		this.sifra = sifra;
+	public void setId(int sifra) {
+		this.id = sifra;
 	}
 
 	public LocalDate getDatumIzdavanja() {

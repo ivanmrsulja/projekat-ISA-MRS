@@ -5,25 +5,22 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rest.domain.Korisnik;
 import rest.domain.Ponuda;
-import rest.repository.InMemoryAdminRepository;
-import rest.repository.InMemoryKorisnikRepository;
+import rest.repository.PonudaRepository;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
-	private InMemoryAdminRepository adminRepository;
+	private PonudaRepository ponudaRepository;
 	
 	@Autowired
-	public AdminServiceImpl(InMemoryAdminRepository imar) {
-		this.adminRepository = imar;
+	public AdminServiceImpl(PonudaRepository imar) {
+		this.ponudaRepository = imar;
 	}
 
 	@Override
 	public Collection<Ponuda> findAllOffers() {
-		// TODO Auto-generated method stub
-		Collection<Ponuda> offers = adminRepository.findAllOffers();
+		Collection<Ponuda> offers = ponudaRepository.findAll();
 		return offers;
 	}
 

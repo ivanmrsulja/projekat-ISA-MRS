@@ -2,12 +2,27 @@ package rest.domain;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Rezervacija {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "status", nullable = false)
 	private StatusRezervacije status;
+	@Column(name = "datumPreuzimanja", nullable = false)
 	private LocalDate datumPreuzimanja;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Preparat preparat;
 	
 	public Rezervacija() {}
