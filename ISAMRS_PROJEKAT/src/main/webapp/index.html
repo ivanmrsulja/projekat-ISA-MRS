@@ -23,6 +23,7 @@
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Moj Profil</a>
 <a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moje ponude</a>
+<a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Dermatologa</a>
 
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>
@@ -43,6 +44,7 @@
 <script src="app/registracija.js"></script>
 <script src="app/pregledApoteka.js"></script>
 <script src="app/profilApoteke.js"></script>
+<script src="app/dermatologTable.js"></script>
 
 <script src="app/app.js"></script>
 </body>

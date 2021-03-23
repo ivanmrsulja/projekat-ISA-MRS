@@ -3,12 +3,14 @@ const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
 const RegistracijaKorisnika = {template: '<register-user></register-user>'}
 const PregledApoteka = {template: '<pregled-apoteka></pregled-apoteka>'}
 const ProfilApoteke = {template: '<profil-apoteke></profil-apoteke>'}
+const dermatoloziTable = {template: '<profil-dermatolozi></profil-dermatolozi>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: PocetnaStrana},
 	    { path: '/tab', component: TabelaPonuda},
+	    { path: '/dermatolozi', component: dermatoloziTable},
 	    { path: '/register', component: RegistracijaKorisnika},
 	    { path: '/apoteke', component: PregledApoteka},
 		{ path: '/profileApoteke', component: ProfilApoteke},
