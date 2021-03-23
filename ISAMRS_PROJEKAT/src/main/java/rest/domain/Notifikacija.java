@@ -18,7 +18,7 @@ public class Notifikacija {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "nazivPreparata", nullable = false)
 	private String nazivPreparata;
 	@Column(name = "datum", nullable = false)
@@ -34,9 +34,8 @@ public class Notifikacija {
 	
 	public Notifikacija() {}
 
-	public Notifikacija(int id,String nazivPreparata, LocalDate datum, Apoteka apoteka, Korisnik korisnik) {
+	public Notifikacija(String nazivPreparata, LocalDate datum, Apoteka apoteka, Korisnik korisnik) {
 		super();
-		this.id=id;
 		this.nazivPreparata = nazivPreparata;
 		this.datum = datum;
 		this.apoteka = apoteka;
@@ -44,11 +43,11 @@ public class Notifikacija {
 		this.pregledana=false;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

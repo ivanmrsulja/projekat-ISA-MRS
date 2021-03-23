@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class TipKorisnika {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "naziv", nullable = false)
 	private String naziv;
 	@Column(name = "bodovi", nullable = false)
@@ -27,11 +27,11 @@ public class TipKorisnika {
 		this.popust = popust;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

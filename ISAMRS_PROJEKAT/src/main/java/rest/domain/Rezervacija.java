@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 public class Rezervacija {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "status", nullable = false)
 	private StatusRezervacije status;
 	@Column(name = "datumPreuzimanja", nullable = false)
@@ -27,20 +27,19 @@ public class Rezervacija {
 	
 	public Rezervacija() {}
 	
-	public Rezervacija(int id,StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat) {
+	public Rezervacija(StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat) {
 		super();
-		this.id=id;
 		this.status = status;
 		this.datumPreuzimanja = datumPreuzimanja;
 		this.pacijent = pacijent;
 		this.preparat = preparat;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

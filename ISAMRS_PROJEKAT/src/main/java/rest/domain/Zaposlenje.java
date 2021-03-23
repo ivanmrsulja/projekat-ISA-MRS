@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 public class Zaposlenje {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "pocetakRadnogVremena", nullable = false)
 	private int pocetakRadnogVremena;
 	@Column(name = "krajRadnogVremena", nullable = false)
@@ -28,20 +28,19 @@ public class Zaposlenje {
 	
 	public Zaposlenje() {}
 	
-	public Zaposlenje(int id,int pocetakRadnogVremena, int krajRadnogVremena, Apoteka apoteka,Korisnik korisnik) {
+	public Zaposlenje(int pocetakRadnogVremena, int krajRadnogVremena, Apoteka apoteka,Korisnik korisnik) {
 		super();
-		this.id=id;
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 		this.krajRadnogVremena = krajRadnogVremena;
 		this.apoteka = apoteka;
 		this.korisnik=korisnik;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -20,7 +20,7 @@ public class Pregled {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "izvjestaj", nullable = false)
 	private String izvjestaj;
 	@Column(name = "status", nullable = false)
@@ -49,10 +49,9 @@ public class Pregled {
 		this.terapija = new HashSet<Preparat>();
 	}
 	
-	public Pregled(int id,String izvjestaj, StatusPregleda status, TipPregleda tip, LocalDate datum, LocalTime vrijeme, int trajanje,
+	public Pregled(String izvjestaj, StatusPregleda status, TipPregleda tip, LocalDate datum, LocalTime vrijeme, int trajanje,
 			double cijena, Korisnik zaposleni, Pacijent pacijent, Apoteka apoteka) {
 		this();
-		this.id=id;
 		this.izvjestaj = izvjestaj;
 		this.status = status;
 		this.tip = tip;
@@ -65,11 +64,11 @@ public class Pregled {
 		this.apoteka = apoteka;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

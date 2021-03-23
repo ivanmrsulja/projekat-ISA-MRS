@@ -19,7 +19,7 @@ import javax.persistence.OneToOne;
 public class Apoteka implements Ocenjivo{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "naziv", nullable = false)
 	private String naziv;
 	@Column(name = "opis", nullable = false)
@@ -71,11 +71,11 @@ public class Apoteka implements Ocenjivo{
 		return 0;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 public class NaruceniProizvod {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "kolicina", nullable = false)
 	private int kolicina;
 	@OneToOne(cascade = CascadeType.ALL)
@@ -26,19 +26,18 @@ public class NaruceniProizvod {
 	
 	public NaruceniProizvod() {}
 
-	public NaruceniProizvod(int id,int kolicina, Preparat preparat, Narudzbenica narudzbenica) {
+	public NaruceniProizvod(int kolicina, Preparat preparat, Narudzbenica narudzbenica) {
 		super();
-		this.id=id;
 		this.kolicina = kolicina;
 		this.preparat = preparat;
 		this.narudzbenica = narudzbenica;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 public class Preparat implements Ocenjivo{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "naziv", nullable = false)
 	private String naziv;
 	@Column(name = "tip", nullable = false)
@@ -49,10 +49,9 @@ public class Preparat implements Ocenjivo{
 		this.zamjenskiPreparati = new HashSet<Preparat>();
 	}
 
-	public Preparat(int sifra, String naziv, TipLeka tip, String kontraindikacije, String sastav, int preporuceniUnos,
+	public Preparat(String naziv, TipLeka tip, String kontraindikacije, String sastav, int preporuceniUnos,
 			int poeni, String oblik, String proizvodjac, RezimIzdavanja izdavanje, int brojOcena, int sumaOcena) {
 		this();
-		this.id = sifra;
 		this.naziv = naziv;
 		this.tip = tip;
 		this.kontraindikacije = kontraindikacije;
@@ -75,11 +74,11 @@ public class Preparat implements Ocenjivo{
 		return 0;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int sifra) {
+	public void setId(Integer sifra) {
 		this.id = sifra;
 	}
 

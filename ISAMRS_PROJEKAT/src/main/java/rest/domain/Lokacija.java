@@ -11,7 +11,7 @@ public class Lokacija {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "sirina", nullable = false)
 	private double sirina;
 	@Column(name = "duzina", nullable = false)
@@ -28,11 +28,11 @@ public class Lokacija {
 		this.ulica = adresa;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

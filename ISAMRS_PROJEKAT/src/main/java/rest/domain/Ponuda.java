@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 public class Ponuda {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "status", nullable = false)
 	private StatusPonude status;
 	@Column(name = "ukupnaCena", nullable = false)
@@ -39,11 +39,11 @@ public class Ponuda {
 		this.dobavljac = dobavljac;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

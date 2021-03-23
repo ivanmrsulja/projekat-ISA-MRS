@@ -19,7 +19,7 @@ public class Narudzbenica {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "rok", nullable = false)
 	private LocalDate rok;
 	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -34,18 +34,17 @@ public class Narudzbenica {
 		this.ponude = new HashSet<Ponuda>();
 	}
 	
-	public Narudzbenica(int id,LocalDate rok, AdminApoteke adminApoteke) {
+	public Narudzbenica(LocalDate rok, AdminApoteke adminApoteke) {
 		this();
-		this.id=id;
 		this.rok = rok;
 		this.adminApoteke = adminApoteke;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

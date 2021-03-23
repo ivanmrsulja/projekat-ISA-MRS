@@ -11,7 +11,7 @@ public class Zahtjev {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "tip", nullable = false)
 	private TipZahtjeva tip;
 	@Column(name = "status", nullable = false)
@@ -19,18 +19,17 @@ public class Zahtjev {
 	
 	public Zahtjev() {}
 	
-	public Zahtjev(int id,TipZahtjeva tip, StatusZahtjeva status) {
+	public Zahtjev(TipZahtjeva tip, StatusZahtjeva status) {
 		super();
-		this.id=id;
 		this.tip = tip;
 		this.status = status;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

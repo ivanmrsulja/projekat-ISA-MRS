@@ -13,7 +13,7 @@ public class AkcijaPromocija {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	@Column(name = "tekst", nullable = false)
 	private String tekst;
 	
@@ -22,20 +22,19 @@ public class AkcijaPromocija {
 	
 	public AkcijaPromocija() {}
 
-	public AkcijaPromocija(Long id,String tekst, AdminApoteke adminApoteke) {
+	public AkcijaPromocija(String tekst, AdminApoteke adminApoteke) {
 		super();
-		this.id=id;
 		this.tekst = tekst;
 		this.adminApoteke = adminApoteke;
 	}
 	
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

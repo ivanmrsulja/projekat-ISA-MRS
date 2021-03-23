@@ -19,7 +19,7 @@ public class Korisnik {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "ime", nullable = false)
 	private String ime;
 	@Column(name = "prezime", nullable = false)
@@ -69,11 +69,11 @@ public class Korisnik {
 		this.zaposlenjeKorisnika=zaposlenjeKorisnika;
 	}	
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

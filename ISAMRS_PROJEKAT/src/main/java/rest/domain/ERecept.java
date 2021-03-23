@@ -19,7 +19,7 @@ public class ERecept {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "datumIzdavanja", nullable = false)
 	private LocalDate datumIzdavanja;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -31,20 +31,19 @@ public class ERecept {
 		this.stavkaRecepata = new HashSet<StavkaRecepta>();
 	}
 
-	public ERecept(int sifra, LocalDate datumIzdavanja, Pacijent pacijent) {
+	public ERecept(LocalDate datumIzdavanja, Pacijent pacijent) {
 		this();
-		this.id = sifra;
 		this.datumIzdavanja = datumIzdavanja;
 		this.pacijent = pacijent;
 	}
 
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int sifra) {
+	public void setId(Integer sifra) {
 		this.id = sifra;
 	}
 

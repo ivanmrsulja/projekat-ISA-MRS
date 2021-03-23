@@ -13,7 +13,7 @@ public class Zalba {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int Id;
+	private Integer Id;
 	@Column(name = "text", nullable = false)
 	private String text;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -23,19 +23,18 @@ public class Zalba {
 	
 	public Zalba() {}
 	
-	public Zalba(int id, String text, AdminSistema adminSistema, Pacijent pacijent) {
+	public Zalba(String text, AdminSistema adminSistema, Pacijent pacijent) {
 		super();
-		Id = id;
 		this.text = text;
 		this.adminSistema = adminSistema;
 		this.pacijent = pacijent;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return Id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		Id = id;
 	}
 

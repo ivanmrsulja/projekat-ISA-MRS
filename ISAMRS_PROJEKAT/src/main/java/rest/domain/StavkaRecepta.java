@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 public class StavkaRecepta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "datumIzdavanja", nullable = false)
 	private int kolicina;
 	
@@ -23,18 +23,17 @@ public class StavkaRecepta {
 	
 	public StavkaRecepta() {}
 
-	public StavkaRecepta(int id,int kolicina, Preparat preparat) {
+	public StavkaRecepta(int kolicina, Preparat preparat) {
 		super();
-		this.id=id;
 		this.kolicina = kolicina;
 		this.preparat = preparat;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

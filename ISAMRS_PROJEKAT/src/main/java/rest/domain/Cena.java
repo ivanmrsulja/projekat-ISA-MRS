@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 public class Cena {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<DostupanProizvod> dostupniProizvodi;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -31,18 +31,17 @@ public class Cena {
 		this.dostupniProizvodi = new HashSet<DostupanProizvod>();
 	}
 
-	public Cena(int id, Apoteka apoteka, LocalDate pocetakVazenja) {
+	public Cena( Apoteka apoteka, LocalDate pocetakVazenja) {
 		this();
-		this.id=id;
 		this.apoteka = apoteka;
 		this.pocetakVazenja = pocetakVazenja;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

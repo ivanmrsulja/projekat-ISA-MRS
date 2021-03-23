@@ -16,7 +16,7 @@ public class OcenaApoteke {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "ocena", nullable = false)
 	private int ocena;
 	
@@ -28,19 +28,18 @@ public class OcenaApoteke {
 	
 	public OcenaApoteke() {}
 
-	public OcenaApoteke(int id,int ocena, Pacijent pacijent,Apoteka ocenjivo) {
+	public OcenaApoteke(int ocena, Pacijent pacijent,Apoteka ocenjivo) {
 		super();
-		this.id=id;
 		this.ocena = ocena;
 		this.pacijent = pacijent;
 		this.apoteka=ocenjivo;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

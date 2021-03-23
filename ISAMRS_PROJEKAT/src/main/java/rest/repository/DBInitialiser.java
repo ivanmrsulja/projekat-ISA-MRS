@@ -51,7 +51,7 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(p2);
 		
 		Dobavljac d = new Dobavljac("Pera", "Peric", "perica99", "perhan123", "pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
-		Narudzbenica n = new Narudzbenica(1, LocalDate.parse("2020-04-07"), null);
+		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-07"), null);
 		korisnici.save(d);
 		narudzbenicaRepo.save(n);
 		adminRepo.save(new Ponuda(StatusPonude.CEKA_NA_ODGOVOR, 400.23, LocalDate.parse("2020-04-04"), n, d));
