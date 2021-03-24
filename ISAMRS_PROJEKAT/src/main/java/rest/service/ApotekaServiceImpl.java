@@ -13,7 +13,8 @@ import rest.repository.ApotekeRepository;
 public class ApotekaServiceImpl implements ApotekaService {
 
 	private ApotekeRepository apoteke;
-	
+	private static final int pageSize = 1;
+
 	@Autowired
 	public ApotekaServiceImpl(ApotekeRepository ar) {
 		apoteke = ar;
@@ -21,7 +22,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 	
 	@Override
 	public Page<Apoteka> getAllDrugStores(int stranica) {
-		Page<Apoteka> allStores = apoteke.findAll(new PageRequest(stranica, 1));
+		Page<Apoteka> allStores = apoteke.findAll(new PageRequest(stranica, pageSize));
 		return allStores;
 	}
 
@@ -44,7 +45,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public int getNumOf() {
-		return apoteke.getNumOf();
+		return apoteke.getNumOf() / pageSize;
 	}
 
 }
