@@ -33,6 +33,7 @@ Vue.component("profil-dermatolozi", {
     		this.dermatolog.telefon = this.backup[4];
     		this.dermatolog.lokacija = this.backup[5];
     		this.mode = 'BROWSE';
+    		this.dermatolog={};
     	}
     },
     filters: {
@@ -42,21 +43,22 @@ Vue.component("profil-dermatolozi", {
     	}
    	},
 	template: ` 
+	
 <div align = center style="width:75%">
 		
 
-	<label>Id:</label>
-	<input type="text" v-model="dermatolog.id" v-bind:disabled="mode=='BROWSE'" /> <br />
-	<label>Ime:</label>
-	<input name="ime" type="text" v-model="dermatolog.ime" v-bind:disabled="mode=='BROWSE'" /> <br />
-	<label>Prezime:</label>
-	<input type="text" v-model="dermatolog.prezime" v-bind:disabled="mode=='BROWSE'" /> <br />
-	<label>Username:</label>
-	<input type="text" v-model="dermatolog.username" v-bind:disabled="mode=='BROWSE'" /> <br />
-	<label>Email:</label>
-	<input type="text" v-model="dermatolog.email" v-bind:disabled="mode=='BROWSE'" /> <br />
-	<label>Telefon:</label>
-	<input type="text" v-model="dermatolog.telefon" v-bind:disabled="mode=='BROWSE'" /> <br />
+	<label style="width:7%; text-align: right;" >Id:</label>
+	<input type="text" v-model="dermatolog.id" v-bind:disabled="mode=='BROWSE'" style="width:15%; text-align: center; " /> <br />
+	<label style="width:7%;text-align: right;">Ime:</label>
+	<input name="ime" type="text" v-model="dermatolog.ime" v-bind:disabled="mode=='BROWSE'" style="width:15%; text-align: center;" /> <br />
+	<label style="width:7%;text-align: right;">Prezime:</label>
+	<input type="text" v-model="dermatolog.prezime" v-bind:disabled="mode=='BROWSE'" style="width:15%; text-align: center;"/> <br />
+	<label style="width:7%;text-align: right;">Username:</label>
+	<input type="text" v-model="dermatolog.username" v-bind:disabled="mode=='BROWSE'" style="width:15%; text-align: center;"/> <br />
+	<label style="width:7%;text-align: right;">Email:</label>
+	<input type="text" v-model="dermatolog.email" v-bind:disabled="mode=='BROWSE'" style="width:15%; text-align: center;"/> <br />
+	<label style="width:7%;text-align: right;">Telefon:</label>
+	<input type="text" v-model="dermatolog.telefon" v-bind:disabled="mode=='BROWSE'" style="width:15%; text-align: center;"/> <br />
 	
 	<button v-on:click="updateDermatolog(dermatolog)" v-bind:disabled="mode=='BROWSE'">Save</button>
 	<button v-on:click="cancelEditing" v-bind:disabled="mode=='BROWSE'">Cancel</button> <br />

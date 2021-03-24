@@ -10,13 +10,18 @@ import org.springframework.stereotype.Component;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
+
+import rest.domain.Farmaceut;
+
 import rest.domain.Lokacija;
 import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.StatusNaloga;
 import rest.domain.StatusPonude;
+
 import rest.domain.TipKorisnika;
+
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 
@@ -67,11 +72,11 @@ public class DBInitialiser implements ApplicationRunner {
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2020-04-06"), n, d));
 		
 		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);		
-		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);
-		
+		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);		
 		korisnici.save(d1);
 		korisnici.save(d2);
 		
+
 		Zaposlenje z1 = new Zaposlenje(9, 5, a1, d1);
 		Zaposlenje z2 = new Zaposlenje(9, 5, a1, d2);
 		Zaposlenje z3 = new Zaposlenje(5, 22, a2, d2);
@@ -84,6 +89,12 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		korisnici.save(d1);
 		korisnici.save(d2);
+
+		Farmaceut f1=new Farmaceut("Marko", "Markovic", "marko123", "marko123","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
+		korisnici.save(f1);
+		korisnici.save(f2);
+
 	}
 
 }

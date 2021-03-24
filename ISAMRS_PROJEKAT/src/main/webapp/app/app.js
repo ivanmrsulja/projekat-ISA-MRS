@@ -4,6 +4,7 @@ const RegistracijaKorisnika = {template: '<register-user></register-user>'}
 const PregledApoteka = {template: '<pregled-apoteka></pregled-apoteka>'}
 const ProfilApoteke = {template: '<profil-apoteke></profil-apoteke>'}
 const dermatoloziTable = {template: '<profil-dermatolozi></profil-dermatolozi>'}
+const farmaceutiTable = {template: '<profil-farmaceuti></profil-farmaceuti>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -11,6 +12,7 @@ const router = new VueRouter({
 	    { path: '/', component: PocetnaStrana},
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
+	    { path: '/farmaceuti', component: farmaceutiTable},
 	    { path: '/register', component: RegistracijaKorisnika},
 	    { path: '/apoteke/:page', component: PregledApoteka},
 		{ path: '/profileApoteke', component: ProfilApoteke},

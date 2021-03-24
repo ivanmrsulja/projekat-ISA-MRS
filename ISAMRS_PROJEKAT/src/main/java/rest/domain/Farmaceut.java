@@ -23,8 +23,8 @@ public class Farmaceut extends Korisnik implements Ocenjivo{
 	}
 	
 	public Farmaceut(String ime, String prezime, String username, String password, String email,
-			Boolean loggedBefore, String telefon,ZaposlenjeKorisnika zaposlenjeKorisnika, Lokacija lokacija,
-			Zaposlenje zaposlenje,int brojOcena,int sumaOcena) {
+			Boolean loggedBefore, String telefon, Lokacija lokacija,
+			ZaposlenjeKorisnika zaposlenjeKorisnika,int brojOcena,int sumaOcena,Zaposlenje zaposlenje) {
 		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
