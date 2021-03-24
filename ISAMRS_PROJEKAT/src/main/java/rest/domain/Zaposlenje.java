@@ -22,7 +22,7 @@ public class Zaposlenje {
 	private int krajRadnogVremena;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "korisnik_id", referencedColumnName = "id")
 	private Korisnik korisnik;
 	

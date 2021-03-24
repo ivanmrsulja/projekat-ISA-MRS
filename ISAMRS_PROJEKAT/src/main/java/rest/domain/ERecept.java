@@ -22,7 +22,7 @@ public class ERecept {
 	private Integer id;
 	@Column(name = "datumIzdavanja", nullable = false)
 	private LocalDate datumIzdavanja;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<StavkaRecepta> stavkaRecepata;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;

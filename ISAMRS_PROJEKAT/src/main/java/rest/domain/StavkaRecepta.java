@@ -17,7 +17,7 @@ public class StavkaRecepta {
 	@Column(name = "datumIzdavanja", nullable = false)
 	private int kolicina;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
 	private Preparat preparat;
 	

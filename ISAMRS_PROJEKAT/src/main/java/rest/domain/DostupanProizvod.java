@@ -18,7 +18,7 @@ public class DostupanProizvod {
 	private int kolicina;
 	@Column(name = "cena", nullable = false)
 	private double cena;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
 	private Preparat preparat;
 	

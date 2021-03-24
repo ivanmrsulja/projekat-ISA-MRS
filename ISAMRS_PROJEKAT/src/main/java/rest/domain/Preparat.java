@@ -42,7 +42,7 @@ public class Preparat implements Ocenjivo{
 	@Column(name = "ocena", nullable = false)
 	private double ocena;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Preparat> zamjenskiPreparati;
 	
 	public Preparat(){

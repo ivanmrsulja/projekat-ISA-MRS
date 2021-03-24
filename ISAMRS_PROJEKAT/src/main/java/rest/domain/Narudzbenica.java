@@ -40,6 +40,7 @@ public class Narudzbenica {
 		this.adminApoteke = adminApoteke;
 	}
 
+	
 	public Integer getId() {
 		return id;
 	}
@@ -47,8 +48,6 @@ public class Narudzbenica {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 
 	public LocalDate getRok() {
 		return rok;

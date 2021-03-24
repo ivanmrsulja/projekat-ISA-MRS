@@ -17,12 +17,12 @@ public class AdminApoteke extends Korisnik {
 	@OneToMany(mappedBy = "adminApoteke", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AkcijaPromocija> akcijeIPromocije;
 	@OneToMany(mappedBy = "adminApoteke", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Narudzbenica> nerudzbenice;
+	private Set<Narudzbenica> narudzbenice;
 
 	public AdminApoteke() {
 		super();
 		this.akcijeIPromocije = new HashSet<AkcijaPromocija>();
-		this.nerudzbenice = new HashSet<Narudzbenica>();
+		this.narudzbenice = new HashSet<Narudzbenica>();
 	}
 	
 	public AdminApoteke(String ime, String prezime, String username, String password, String email,
@@ -30,7 +30,27 @@ public class AdminApoteke extends Korisnik {
 		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.apoteka = apoteka;
 		this.akcijeIPromocije = new HashSet<AkcijaPromocija>();
-		this.nerudzbenice = new HashSet<Narudzbenica>();
+		this.narudzbenice = new HashSet<Narudzbenica>();
+	}
+	
+	public void addAkcijaPromocija(AkcijaPromocija ap) {
+		akcijeIPromocije.add(ap);
+		ap.setAdminApoteke(this);
+	}
+	
+	public void removeAkcijaPromocija(AkcijaPromocija ap) {
+		akcijeIPromocije.remove(ap);
+		ap.setAdminApoteke(null);
+	}
+	
+	public void addNarudzbenica(Narudzbenica na) {
+		narudzbenice.add(na);
+		na.setAdminApoteke(this);
+	}
+	
+	public void removeNarudzbenica(Narudzbenica na) {
+		narudzbenice.remove(na);
+		na.setAdminApoteke(null);
 	}
 	
 	public Apoteka getApoteka() {
@@ -49,11 +69,11 @@ public class AdminApoteke extends Korisnik {
 		this.akcijeIPromocije = akcijeIPromocije;
 	}
 
-	public Set<Narudzbenica> getNerudzbenice() {
-		return nerudzbenice;
+	public Set<Narudzbenica> getNarudzbenice() {
+		return narudzbenice;
 	}
 
-	public void setNerudzbenice(Set<Narudzbenica> nerudzbenice) {
-		this.nerudzbenice = nerudzbenice;
+	public void setNarudzbenice(Set<Narudzbenica> nerudzbenice) {
+		this.narudzbenice = nerudzbenice;
 	}
 }

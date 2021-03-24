@@ -22,7 +22,7 @@ public class OcenaApoteke {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "apoteka_id", referencedColumnName = "id")
 	private Apoteka apoteka;
 	

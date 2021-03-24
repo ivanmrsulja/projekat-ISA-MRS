@@ -63,12 +63,62 @@ public class Apoteka implements Ocenjivo{
 		this.ocena = this.izracunajOcenu();
 	}
 	
+	public void addZaposlenje(Zaposlenje z) {
+		zaposlenja.add(z);
+		z.setApoteka(this);
+	}
+	
+	public void removeZaposlenje(Zaposlenje z) {
+		zaposlenja.remove(z);
+		z.setApoteka(null);
+	}
+	
+	public void addCena(Cena c) {
+		cene.add(c);
+		c.setApoteka(this);
+	}
+	
+	public void removeCena(Cena c) {
+		cene.remove(c);
+		c.setApoteka(null);
+	}
+	
 	public double izracunajOcenu()
 	{
 		if(this.brojOcena!=0) {
 			return this.sumaOcena/this.brojOcena;
 		}
 		return 0;
+	}
+	
+	public void addPregled(Pregled p) {
+		pregledi.add(p);
+		p.setApoteka(this);
+	}
+	
+	public void removePregled(Pregled p) {
+		pregledi.remove(p);
+		p.setApoteka(null);
+	}
+	
+	public void addPacijent(Pacijent p) {
+		pacijenti.add(p);
+		p.addApoteka(this);
+	}
+	
+	public void removePacijent(Pacijent p) {
+		pacijenti.remove(p);
+		p.removeApoteka(this);
+	}
+	
+	public void addAdmin(AdminApoteke a) {
+		adminiApoteke.add(a);
+		a.setApoteka(this);
+	}
+	
+	public void removeAdmin(AdminApoteke a) {
+		adminiApoteke.remove(a);
+		a.setApoteka(null);
 	}
 	
 	public Integer getId() {

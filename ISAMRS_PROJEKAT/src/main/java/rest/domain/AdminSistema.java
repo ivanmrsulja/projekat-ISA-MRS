@@ -33,5 +33,13 @@ public class AdminSistema extends Korisnik {
 		this.zalbe = zalbe;
 	}
 	
+	public void addZalba(Zalba z) {
+		zalbe.add(z);
+		z.setAdminSistema(this);
+	}
 	
+	public void removeZalba(Zalba z) {
+		zalbe.remove(z);
+		z.setAdminSistema(null);
+	}
 }

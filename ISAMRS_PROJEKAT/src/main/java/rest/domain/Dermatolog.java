@@ -34,7 +34,17 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 		this.zaposlenja = new HashSet<Zaposlenje>();
 		this.ocena=izracunajOcenu();
 	}
-
+	
+	public void addZaposlenje(Zaposlenje z) {
+		zaposlenja.add(z);
+		z.setKorisnik(this);
+	}
+	
+	public void removeZaposlenje(Zaposlenje z) {
+		zaposlenja.remove(z);
+		z.setKorisnik(null);
+	}
+	
 	public double izracunajOcenu()
 	{
 		if(this.brojOcena!=0) {

@@ -20,7 +20,7 @@ public class Cena {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<DostupanProizvod> dostupniProizvodi;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;

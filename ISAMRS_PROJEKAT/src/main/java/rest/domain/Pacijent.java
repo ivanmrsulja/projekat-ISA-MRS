@@ -20,7 +20,7 @@ public class Pacijent extends Korisnik {
 	private StatusNaloga statusNaloga;
 	@Column(name = "brojPoena", nullable = true)
 	private int brojPoena;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "tip_korisnika_id", referencedColumnName = "id")
 	private TipKorisnika tipKorisnika;
 	
@@ -34,9 +34,9 @@ public class Pacijent extends Korisnik {
 	private Set<OcenaApoteke> ocene;
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Rezervacija> rezervacije;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = false)
 	private Set<Preparat> alergije;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Preparat> kupljeniPreparati;
 	@ManyToMany
 	@JoinTable(joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
@@ -74,7 +74,67 @@ public class Pacijent extends Korisnik {
 		this.apoteke = new HashSet<Apoteka>();
 		this.pregledi = new HashSet<Pregled>();
 	}
-
+	
+	public void addPregled(Pregled p) {
+		pregledi.add(p);
+		p.setPacijent(this);
+	}
+	
+	public void removePregled(Pregled p) {
+		pregledi.remove(p);
+		p.setPacijent(null);
+	}
+	
+	public void addRezervacija(Rezervacija r) {
+		rezervacije.add(r);
+		r.setPacijent(this);
+	}
+	
+	public void removeRezervacija(Rezervacija r) {
+		rezervacije.remove(r);
+		r.setPacijent(null);
+	}
+	
+	public void addZalba(Zalba z) {
+		zalbe.add(z);
+		z.setPacijent(this);
+	}
+	
+	public void removeZalba(Zalba z) {
+		zalbe.remove(z);
+		z.setPacijent(null);
+	}
+	
+	public void addPenal(Penal p) {
+		penali.add(p);
+		p.setPacijent(this);
+	}
+	
+	public void removePenal(Penal p) {
+		penali.remove(p);
+		p.setPacijent(null);
+	}
+	
+	public void addERecept(ERecept er) {
+		eRecepti.add(er);
+		er.setPacijent(this);
+	}
+	
+	public void removeERecept(ERecept er) {
+		eRecepti.remove(er);
+		er.setPacijent(null);
+	}
+	
+	public void addApoteka(Apoteka a) {
+		apoteke.add(a);
+		a.addPacijent(this);
+	}
+	
+	public void removeApoteka(Apoteka a) {
+		apoteke.remove(a);
+		a.removePacijent(this);
+	}
+	
 	public StatusNaloga getStatusNaloga() {
 		return statusNaloga;
 	}

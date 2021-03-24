@@ -42,7 +42,7 @@ public class Pregled {
 	private Pacijent pacijent;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Preparat> terapija;
 	
 	public Pregled() {

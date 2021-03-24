@@ -2,9 +2,11 @@ package rest.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Zahtjev {
@@ -16,13 +18,16 @@ public class Zahtjev {
 	private TipZahtjeva tip;
 	@Column(name = "status", nullable = false)
 	private StatusZahtjeva status;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Korisnik korisnik;
 	
 	public Zahtjev() {}
 	
-	public Zahtjev(TipZahtjeva tip, StatusZahtjeva status) {
+	public Zahtjev(TipZahtjeva tip, StatusZahtjeva status, Korisnik k) {
 		super();
 		this.tip = tip;
 		this.status = status;
+		this.korisnik = k;
 	}
 
 	public Integer getId() {
@@ -48,6 +53,13 @@ public class Zahtjev {
 	public void setStatus(StatusZahtjeva status) {
 		this.status = status;
 	}
-	
+
+	public Korisnik getKorisnik() {
+		return korisnik;
+	}
+
+	public void setKorisnik(Korisnik korisnik) {
+		this.korisnik = korisnik;
+	}
 	
 }

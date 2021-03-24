@@ -41,7 +41,7 @@ public class Korisnik {
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Lokacija lokacija;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "korisnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Zahtjev> zahtjevi;
 	@OneToMany(mappedBy = "korisnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Notifikacija> notifikacije;
@@ -68,7 +68,37 @@ public class Korisnik {
 		this.lokacija = lokacije;
 		this.zaposlenjeKorisnika=zaposlenjeKorisnika;
 	}	
-
+	
+	public void addNotifikacija(Notifikacija n) {
+		notifikacije.add(n);
+		n.setKorisnik(this);
+	}
+	
+	public void removeNotifikacija(Notifikacija n) {
+		notifikacije.remove(n);
+		n.setKorisnik(null);
+	}
+	
+	public void addZahtjev(Zahtjev z) {
+		zahtjevi.add(z);
+		z.setKorisnik(this);
+	}
+	
+	public void removeZahtjev(Zahtjev z) {
+		zahtjevi.remove(z);
+		z.setKorisnik(null);
+	}
+	
+	public void addPregled(Pregled p) {
+		pregledi.add(p);
+		p.setZaposleni(this);
+	}
+	
+	public void removePregled(Pregled p) {
+		pregledi.remove(p);
+		p.setZaposleni(null);
+	}
+	
 	public Integer getId() {
 		return id;
 	}

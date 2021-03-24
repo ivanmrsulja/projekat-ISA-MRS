@@ -10,13 +10,14 @@ import org.springframework.stereotype.Component;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
-import rest.domain.Korisnik;
 import rest.domain.Lokacija;
 import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.StatusNaloga;
 import rest.domain.StatusPonude;
+import rest.domain.TipKorisnika;
+import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 
 @Component
@@ -32,9 +33,16 @@ public class DBInitialiser implements ApplicationRunner {
 	private LokacijaRepository lokacijaRepo;
 	@Autowired
 	private ApotekeRepository apotekaRepo;
+	@Autowired
+	private ZaposlenjeRepository zaposlenjeRepo;
+	@Autowired
+	private TipKorisnikaRepository tipKorisnikaRepo;
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		TipKorisnika tk1 = new TipKorisnika("REGULAR", 0, 1);
+		tipKorisnikaRepo.save(tk1);
+		
 		Lokacija l1 = new Lokacija(45.2474, 19.85112, "Bulevar Cara Lazara 3, Novi Sad");
 		Lokacija l2 = new Lokacija(45.2474, 19.85112, "Bulevar Cara Lazara 4, Novi Sad");
 		lokacijaRepo.save(l1);
@@ -45,8 +53,8 @@ public class DBInitialiser implements ApplicationRunner {
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
 		
-		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 0, null);
-		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l2, StatusNaloga.AKTIVAN, 0, null);
+		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 0, tk1);
+		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l2, StatusNaloga.AKTIVAN, 0, tk1);
 		korisnici.save(p1);
 		korisnici.save(p2);
 		
@@ -60,6 +68,19 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);		
 		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);
+		
+		korisnici.save(d1);
+		korisnici.save(d2);
+		
+		Zaposlenje z1 = new Zaposlenje(9, 5, a1, d1);
+		Zaposlenje z2 = new Zaposlenje(9, 5, a1, d2);
+		Zaposlenje z3 = new Zaposlenje(5, 22, a2, d2);
+		zaposlenjeRepo.save(z1);
+		zaposlenjeRepo.save(z2);
+		zaposlenjeRepo.save(z3);
+		d1.addZaposlenje(z1);
+		d2.addZaposlenje(z2);
+		d2.addZaposlenje(z3);
 		
 		korisnici.save(d1);
 		korisnici.save(d2);

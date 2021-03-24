@@ -24,7 +24,17 @@ public class Dobavljac extends Korisnik {
 		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.ponude = new HashSet<Ponuda>();
 	}
-
+	
+	public void addPonuda(Ponuda p) {
+		ponude.add(p);
+		p.setDobavljac(this);
+	}
+	
+	public void removePonuda(Ponuda p) {
+		ponude.remove(p);
+		p.setDobavljac(null);
+	}
+	
 	public Set<Ponuda> getPonude() {
 		return ponude;
 	}
