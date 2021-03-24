@@ -12,7 +12,7 @@ const router = new VueRouter({
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
 	    { path: '/register', component: RegistracijaKorisnika},
-	    { path: '/apoteke', component: PregledApoteka},
+	    { path: '/apoteke/:page', component: PregledApoteka},
 		{ path: '/profileApoteke', component: ProfilApoteke},
 	  ]
 });

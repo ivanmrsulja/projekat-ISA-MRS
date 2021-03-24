@@ -1,16 +1,17 @@
 package rest.service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
 
 import rest.domain.Apoteka;
 import rest.dto.ApotekaDTO;
 
 public interface ApotekaService {
 
-	Collection<Apoteka> getAllDrugStores();
+	Page<Apoteka> getAllDrugStores(int stranica);
 
 	Apoteka getByID(int id);
 
 	void update(ApotekaDTO apoteka) throws Exception;
-
+	
+	int getNumOf();
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,16 +30,21 @@ public class ApotekaController {
 		apotekaService = as;
 	}
 	
-	@GetMapping(value="/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<ApotekaDTO> getAll() {
-		Collection<Apoteka> apoteke = apotekaService.getAllDrugStores();
+	@GetMapping(value="/all/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<ApotekaDTO> getAll(@PathVariable("page") int page) {
+		Page<Apoteka> apoteke = apotekaService.getAllDrugStores(page);
 		ArrayList<ApotekaDTO> retVals = new ArrayList<ApotekaDTO>();
 		for(Apoteka a : apoteke) {
 			retVals.add(new ApotekaDTO(a));
 		}
 		return retVals;
 	}
-
+	
+	@GetMapping(value="/count")
+	public int getCount() {
+		return apotekaService.getNumOf();
+	}
+	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOne(@PathVariable int id) {
 		return new ApotekaDTO(this.apotekaService.getByID(id));

@@ -1,7 +1,8 @@
 Vue.component("pregled-apoteka", {
 	data: function () {
 		    return {
-				apoteke : {}
+				apoteke : {},
+				numPages: 1
 		    }
 	},
 	template: ` 
@@ -24,15 +25,32 @@ Vue.component("pregled-apoteka", {
 	      </table>
 	      </div></div>
 	    </div>
-	
+		
+		<div class="pagination" v-for="i in numPages+1" :key="i" >
+		  <a :href="'#/apoteke/'+(i-1)" v-on:click="loadNext(i-1)">{{i}}</a>
+		</div>
 </div>		  
 `
 	,
-	mounted: function() {
-		axios
-			.get("api/apoteke/all")
+	methods: {
+		loadNext: function(p){
+			axios
+			.get("api/apoteke/all/" + p)
 			.then(response => {
 				this.apoteke = response.data
+			});
+		}
+	},
+	mounted: function() {
+		axios
+			.get("api/apoteke/all/" + this.$route.params.page)
+			.then(response => {
+				this.apoteke = response.data
+				axios
+					.get("api/apoteke/count")
+					.then(response => {
+				this.numPages = response.data - 1;
+			});
 			});
     }
 });

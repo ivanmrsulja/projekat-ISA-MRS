@@ -1,9 +1,8 @@
 package rest.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
@@ -21,8 +20,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 	}
 	
 	@Override
-	public Collection<Apoteka> getAllDrugStores() {
-		Collection<Apoteka> allStores = apoteke.findAll();
+	public Page<Apoteka> getAllDrugStores(int stranica) {
+		Page<Apoteka> allStores = apoteke.findAll(new PageRequest(stranica, 1));
 		return allStores;
 	}
 
@@ -41,6 +40,11 @@ public class ApotekaServiceImpl implements ApotekaService {
 		apotekaToUpdate.setOpis(apoteka.getOpis());
 		apotekaToUpdate.setLokacija(apoteka.getLokacija());
 		apoteke.save(apotekaToUpdate);
+	}
+
+	@Override
+	public int getNumOf() {
+		return apoteke.getNumOf();
 	}
 
 }
