@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -42,7 +45,9 @@ public class Preparat implements Ocenjivo{
 	@Column(name = "ocena", nullable = false)
 	private double ocena;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	//@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@ManyToMany
+	@JoinTable(name = "zamenski_preparati", joinColumns = @JoinColumn(name = "id_prvog", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_drugog", referencedColumnName = "id"))
 	private Set<Preparat> zamjenskiPreparati;
 	
 	public Preparat(){
@@ -72,6 +77,16 @@ public class Preparat implements Ocenjivo{
 			return this.sumaOcena/this.brojOcena;
 		}
 		return 0;
+	}
+	
+	public void addZamenskiPreparat(Preparat p) {
+		zamjenskiPreparati.add(p);
+		p.getZamjenskiPreparati().add(this);
+	}
+	
+	public void removeZamenskiPreparat(Preparat p) {
+		zamjenskiPreparati.remove(p);
+		p.getZamjenskiPreparati().remove(this);
 	}
 
 	public Integer getId() {

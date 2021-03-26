@@ -21,8 +21,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 	}
 	
 	@Override
-	public Page<Apoteka> getAllDrugStores(int stranica) {
-		Page<Apoteka> allStores = apoteke.findAll(new PageRequest(stranica, pageSize));
+	public Page<ApotekaDTO> getAllDrugStores(int stranica) {
+		Page<ApotekaDTO> allStores = apoteke.findAll(new PageRequest(stranica, pageSize)).map(a -> new ApotekaDTO(a));
 		return allStores;
 	}
 
@@ -41,11 +41,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 		apotekaToUpdate.setOpis(apoteka.getOpis());
 		apotekaToUpdate.setLokacija(apoteka.getLokacija());
 		apoteke.save(apotekaToUpdate);
-	}
-
-	@Override
-	public int getNumOf() {
-		return apoteke.getNumOf() / pageSize;
 	}
 
 }

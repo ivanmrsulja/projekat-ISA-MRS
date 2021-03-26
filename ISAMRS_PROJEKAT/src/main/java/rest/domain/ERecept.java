@@ -22,6 +22,8 @@ public class ERecept {
 	private Integer id;
 	@Column(name = "datumIzdavanja", nullable = false)
 	private LocalDate datumIzdavanja;
+	@Column(name = "status", nullable = false)
+	private StatusERecepta status;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<StavkaRecepta> stavkaRecepata;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -31,13 +33,20 @@ public class ERecept {
 		this.stavkaRecepata = new HashSet<StavkaRecepta>();
 	}
 
-	public ERecept(LocalDate datumIzdavanja, Pacijent pacijent) {
+	public ERecept(LocalDate datumIzdavanja, Pacijent pacijent, StatusERecepta status) {
 		this();
 		this.datumIzdavanja = datumIzdavanja;
 		this.pacijent = pacijent;
+		this.status = status;
 	}
 
+	public StatusERecepta getStatus() {
+		return status;
+	}
 
+	public void setStatus(StatusERecepta status) {
+		this.status = status;
+	}
 
 	public Integer getId() {
 		return id;

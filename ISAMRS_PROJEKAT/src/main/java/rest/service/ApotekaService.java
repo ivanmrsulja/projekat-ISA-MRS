@@ -7,11 +7,9 @@ import rest.dto.ApotekaDTO;
 
 public interface ApotekaService {
 
-	Page<Apoteka> getAllDrugStores(int stranica);
+	Page<ApotekaDTO> getAllDrugStores(int stranica);
 
 	Apoteka getByID(int id);
 
 	void update(ApotekaDTO apoteka) throws Exception;
-	
-	int getNumOf();
 }

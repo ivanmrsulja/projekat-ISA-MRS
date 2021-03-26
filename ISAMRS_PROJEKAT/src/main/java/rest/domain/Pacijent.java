@@ -127,12 +127,12 @@ public class Pacijent extends Korisnik {
 	
 	public void addApoteka(Apoteka a) {
 		apoteke.add(a);
-		a.addPacijent(this);
+		a.getPacijenti().add(this);
 	}
 	
 	public void removeApoteka(Apoteka a) {
 		apoteke.remove(a);
-		a.removePacijent(this);
+		a.getPacijenti().remove(this);
 	}
 	
 	public StatusNaloga getStatusNaloga() {

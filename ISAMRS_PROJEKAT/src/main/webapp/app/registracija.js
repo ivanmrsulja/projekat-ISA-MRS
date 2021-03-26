@@ -8,6 +8,7 @@ Vue.component("register-user", {
 <div>
 		<h1>Registracija korisnika: </h1>
 		
+		
 		<div style="display: inline-block; margin-right: 50px">
 		<table>
 			<tr>
@@ -49,7 +50,7 @@ Vue.component("register-user", {
 		</div>
 		
 		<div id="map" class="map-right" ></div>
-	
+		
 </div>		  
 `
 	, 

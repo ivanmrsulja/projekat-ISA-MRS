@@ -31,18 +31,13 @@ public class ApotekaController {
 	}
 	
 	@GetMapping(value="/all/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<ApotekaDTO> getAll(@PathVariable("page") int page) {
-		Page<Apoteka> apoteke = apotekaService.getAllDrugStores(page);
+	public Page<ApotekaDTO> getAll(@PathVariable("page") int page) {
+		Page<ApotekaDTO> apoteke = apotekaService.getAllDrugStores(page);
 		ArrayList<ApotekaDTO> retVals = new ArrayList<ApotekaDTO>();
-		for(Apoteka a : apoteke) {
-			retVals.add(new ApotekaDTO(a));
+		for(ApotekaDTO a : apoteke) {
+			retVals.add(a);
 		}
-		return retVals;
-	}
-	
-	@GetMapping(value="/count")
-	public int getCount() {
-		return apotekaService.getNumOf();
+		return apoteke;
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

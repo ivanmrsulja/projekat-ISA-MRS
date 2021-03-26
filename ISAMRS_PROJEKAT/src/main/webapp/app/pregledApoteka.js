@@ -37,7 +37,7 @@ Vue.component("pregled-apoteka", {
 			axios
 			.get("api/apoteke/all/" + p)
 			.then(response => {
-				this.apoteke = response.data
+				this.apoteke = response.data.content;
 			});
 		}
 	},
@@ -45,12 +45,9 @@ Vue.component("pregled-apoteka", {
 		axios
 			.get("api/apoteke/all/" + this.$route.params.page)
 			.then(response => {
-				this.apoteke = response.data
-				axios
-					.get("api/apoteke/count")
-					.then(response => {
-				this.numPages = response.data - 1;
-			});
+				this.apoteke = response.data.content;
+				this.numPages = response.data.totalPages - 1;
+				
 			});
     }
 });

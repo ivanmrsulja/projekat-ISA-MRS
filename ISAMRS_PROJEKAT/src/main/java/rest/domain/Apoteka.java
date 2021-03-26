@@ -103,12 +103,12 @@ public class Apoteka implements Ocenjivo{
 	
 	public void addPacijent(Pacijent p) {
 		pacijenti.add(p);
-		p.addApoteka(this);
+		p.getApoteke().add(this);
 	}
 	
 	public void removePacijent(Pacijent p) {
 		pacijenti.remove(p);
-		p.removeApoteka(this);
+		p.getApoteke().remove(this);
 	}
 	
 	public void addAdmin(AdminApoteke a) {
