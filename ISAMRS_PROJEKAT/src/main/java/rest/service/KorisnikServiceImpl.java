@@ -6,16 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Korisnik;
+import rest.domain.Penal;
 import rest.repository.KorisnikRepository;
+import rest.repository.PenalRepository;
 
 @Service
 public class KorisnikServiceImpl implements KorisnikService {
 
 	private KorisnikRepository korisnikRepository;
+	private PenalRepository penalRepository;
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr) {
+	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr) {
 		this.korisnikRepository = imkr;
+		this.penalRepository = pr;
 	}
 
 	@Override
@@ -53,6 +57,11 @@ public class KorisnikServiceImpl implements KorisnikService {
 	@Override
 	public void delete(int id) {
 		korisnikRepository.deleteById(id);
+	}
+
+	@Override
+	public Collection<Penal> getPenali(int id) {
+		return penalRepository.penalForUser(id);
 	}
 
 }

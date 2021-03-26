@@ -16,15 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Korisnik;
+import rest.domain.Penal;
 import rest.domain.ZaposlenjeKorisnika;
+import rest.dto.PenalDTO;
 import rest.service.KorisnikService;
 
-/*
- * @RestController je anotacija nastala od @Controller tako da predstavlja bean komponentu.
- * 
- * @RequestMapping anotacija ukoliko se napise iznad kontrolera oznacava da sve rute ovog kontrolera imaju navedeni prefiks. 
- * U nasem primeru svaka rute kontrolera ima prefiks 'api/greetings'.
- */
 @RestController
 @RequestMapping("/api/users")
 public class KorisnikController {
@@ -36,18 +32,6 @@ public class KorisnikController {
 		this.userService = us;
 	}
 	
-	/*
-	 * Prilikom poziva metoda potrebno je navesti nekoliko parametara
-	 * unutar @@GetMapping anotacije: url kao vrednost 'value' atributa (ukoliko se
-	 * izostavi, ruta do metode je ruta do kontrolera), u slucaju GET zahteva
-	 * atribut 'produce' sa naznakom tipa odgovora (u nasem slucaju JSON).
-	 * 
-	 * Kao povratna vrednost moze se vracati klasa ResponseEntity koja sadrzi i telo
-	 * (sam podatak) i zaglavlje (metapodatke) i status kod, ili samo telo ako se
-	 * metoda anotira sa @ResponseBody.
-	 * 
-	 * url: /api/users GET
-	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Korisnik>> getUsers() {
 		Collection<Korisnik> users = userService.findAll();
@@ -73,11 +57,6 @@ public class KorisnikController {
 		return "OK";
 	}
 	
-	/*
-	 * U viticastim zagradama se navodi promenljivi deo putanje.
-	 * 
-	 * url: /api/users/1 GET
-	 */
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> getUSer(@PathVariable("id") int id) {
 		Korisnik user = userService.findOne(id);
@@ -111,13 +90,15 @@ public class KorisnikController {
 		return new ResponseEntity<Korisnik>(updatedUser, HttpStatus.OK);
 	}
 
-	/*
-	 * url: /api/users/1 DELETE
-	 */
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
 		userService.delete(id);
 		return new ResponseEntity<String>("OK.", HttpStatus.OK);
 	}
-
+	
+	@GetMapping(value = "/penali/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object[] getPenali(@PathVariable("id") int id){
+		return userService.getPenali(id).stream().map(p -> new PenalDTO(p)).toArray();
+	}
+	
 }

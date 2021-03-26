@@ -3,6 +3,7 @@ package rest.service;
 import java.util.Collection;
 
 import rest.domain.Korisnik;
+import rest.domain.Penal;
 
 public interface KorisnikService {
 
@@ -15,5 +16,7 @@ public interface KorisnikService {
 	Korisnik update(Korisnik user) throws Exception;
 
 	void delete(int id);
+	
+	Collection<Penal> getPenali(int id);
 	
 }
