@@ -16,6 +16,7 @@
   <h1>Aplikacija za menadžment apoteka</h1>
   <h2>Tim: 06</h2>
 </div>
+<br/>
 
 <a class="navigacija" href="#/apoteke/0" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG'">Pocetna</a>
 <a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Apoteke</a>
