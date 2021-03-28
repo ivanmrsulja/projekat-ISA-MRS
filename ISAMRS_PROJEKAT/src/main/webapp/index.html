@@ -21,7 +21,13 @@
 <a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Apoteke</a>
 <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
-<a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Moj Profil</a>
+<a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moj Profil</a>
+
+<a class="navigacija" href="#/istorijaPregleda/0/PLAIN" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Istorija pregleda</a>
+<a class="navigacija" href="#/zakazaniPregledi/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Zakazani pregledi</a>
+<a class="navigacija" href="#/pregledRezervacija" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moje rezervacije</a>
+<a class="navigacija" href="#/eRecepti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">eRecepti</a>
+
 <a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moje ponude</a>
 <a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Dermatologa</a>
 <a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Farmaceuta</a>
@@ -38,6 +44,7 @@
 <script src="js/vue-router.js"></script>
 <script src="js/axios.js"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.js"></script>
 <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 <script src="css/ol.js"></script>
 <script src="app/ponudeTable.js"></script>
@@ -47,6 +54,11 @@
 <script src="app/profilApoteke.js"></script>
 <script src="app/dermatologTable.js"></script>
 <script src="app/farmaceutTable.js"></script>
+<script src="app/istorijaPregleda.js"></script>
+<script src="app/zakazaniPregledi.js"></script>
+<script src="app/profilPacijenta.js"></script>
+<script src="app/pregledRezervacija.js"></script>
+<script src="app/prikazErecepta.js"></script>
 
 <script src="app/app.js"></script>
 </body>

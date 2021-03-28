@@ -20,7 +20,7 @@ public class Pacijent extends Korisnik {
 	private StatusNaloga statusNaloga;
 	@Column(name = "brojPoena", nullable = true)
 	private int brojPoena;
-	@OneToOne(cascade = CascadeType.MERGE)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "tip_korisnika_id", referencedColumnName = "id")
 	private TipKorisnika tipKorisnika;
 	

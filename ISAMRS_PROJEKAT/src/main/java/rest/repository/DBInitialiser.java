@@ -80,7 +80,7 @@ public class DBInitialiser implements ApplicationRunner {
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
 		
-		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 0, tk1);
+		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 200, tk1);
 		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l2, StatusNaloga.AKTIVAN, 0, tk1);
 		korisnici.save(p1);
 		korisnici.save(p2);
@@ -134,6 +134,15 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(f1);
 		korisnici.save(f2);
 		
+		Zaposlenje z4 = new Zaposlenje(5, 22, a1, f1);
+		Zaposlenje z5 = new Zaposlenje(5, 22, a2, f2);
+		zaposlenjeRepo.save(z4);
+		zaposlenjeRepo.save(z5);
+		f1.setZaposlenje(z4);
+		f1.setZaposlenje(z5);
+		korisnici.save(f1);
+		korisnici.save(f2);
+		
 		Preparat pr1 = new Preparat("Alirex", TipLeka.ANTIHISTAMINIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 2, 200, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 0, 0);
 		Preparat pr2 = new Preparat("Andol", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 300, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 3, 15);
 		Preparat pr3 = new Preparat("Block Max", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 400, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 2, 4);
@@ -160,16 +169,22 @@ public class DBInitialiser implements ApplicationRunner {
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
 		
-		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2020-04-07"), p1, pr1);
-		Rezervacija rez2 = new Rezervacija(StatusRezervacije.PODIGNUTO, LocalDate.parse("2020-03-07"), p2, pr1);
+		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-04-07"), p1, pr1);
+		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1);
 		rezervacijaRepo.save(rez1);
 		rezervacijaRepo.save(rez2);
 		p1.addRezervacija(rez1);
 		p1.addRezervacija(rez2);
 		korisnici.save(p1);
 		
-		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-07"), LocalTime.parse("13:00"), 45, 5000, d1, p1, a1);
+		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-07"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
+		Pregled pre3 = new Pregled("Lorem ipsum solor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
+		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
 		pregledRepo.save(pre1);
+		pregledRepo.save(pre2);
+		pregledRepo.save(pre3);
+		pregledRepo.save(pre4);
 	}
 
 }

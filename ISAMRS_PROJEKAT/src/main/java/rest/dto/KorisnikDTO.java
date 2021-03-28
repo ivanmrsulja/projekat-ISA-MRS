@@ -14,6 +14,8 @@ public class KorisnikDTO {
 	private String telefon;
 	private Lokacija lokacija;
 	private ZaposlenjeKorisnika zaposlenjeKorisnika;
+	private String stariPassw;
+	private String noviPassw;
 	
 	public KorisnikDTO() {
 		super();
@@ -29,6 +31,8 @@ public class KorisnikDTO {
 		this.telefon=korisnik.getTelefon();
 		this.lokacija=korisnik.getLokacija();
 		this.zaposlenjeKorisnika=korisnik.getZaposlenjeKorisnika();
+		this.stariPassw = null;
+		this.noviPassw = null;
 	}	
 
 	@Override

@@ -271,6 +271,13 @@ div.desc {
   		vertical-align: top;
 }
 
+.penali {
+        width: 26%;
+  		display: inline-block;
+  		margin-top: 65px;
+  		vertical-align: top;
+}
+
 /* PAGINACIJA */
 
 .pagination {

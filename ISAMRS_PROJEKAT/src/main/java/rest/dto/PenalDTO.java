@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import rest.domain.Penal;
 
 public class PenalDTO {
+	private int id;
 	private LocalDate datum;
 	
 	public PenalDTO() {}
 	public PenalDTO(Penal p) {
 		this.datum = p.getDatum();
+		this.id = p.getId();
 	}
 	
 	public LocalDate getDatum() {
@@ -20,5 +22,12 @@ public class PenalDTO {
 		this.datum = datum;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 }

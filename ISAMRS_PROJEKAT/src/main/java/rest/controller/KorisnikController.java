@@ -3,6 +3,7 @@ package rest.controller;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Korisnik;
-import rest.domain.Penal;
 import rest.domain.ZaposlenjeKorisnika;
+import rest.dto.PacijentDTO;
 import rest.dto.PenalDTO;
+import rest.dto.PregledDTO;
+import rest.dto.RezervacijaDTO;
 import rest.service.KorisnikService;
 
 @RestController
@@ -99,6 +102,26 @@ public class KorisnikController {
 	@GetMapping(value = "/penali/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object[] getPenali(@PathVariable("id") int id){
 		return userService.getPenali(id).stream().map(p -> new PenalDTO(p)).toArray();
+	}
+	
+	@GetMapping(value = "/istorijaPregleda/{id}/{page}/{criteria}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum, @PathVariable("criteria") String criteria){
+		return userService.preglediZaKorisnika(id, pageNum, criteria);
+	}
+	
+	@GetMapping(value = "/pregledi/{id}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum){
+		return userService.zakazivanjaZaKorisnika(id, pageNum);
+	}
+	
+	@GetMapping(value = "/rezervacije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<RezervacijaDTO> getIstorijaPregleda(@PathVariable("id") int id){
+		return userService.rezervacijeZaKorisnika(id);
+	}
+	
+	@GetMapping(value = "/pacijent/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PacijentDTO getPacijent(@PathVariable("id") int id){
+		return userService.findPacijentById(id);
 	}
 	
 }
