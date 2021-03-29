@@ -1,13 +1,38 @@
 Vue.component("pregled-erecepata", {
 	data: function () {
 		    return {
-				recepti : []
+				recepti : [],
+				descending: undefined
 		    }
 	},
 	template: ` 
 <div align = center style="width:75%">
 		
 		<h1>Moji eRecepti</h1>
+		<br/>
+		
+		<h5 style="display: inline-block">Sortiraj po datumu:</h5>
+		<div class="form-check form-check-inline">
+		  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="false" v-model="descending" />
+		  <label class="form-check-label" for="inlineRadio1">Opadajuce</label>
+		</div>
+		<div class="form-check form-check-inline">
+		  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="true" v-model="descending" />
+		  <label class="form-check-label" for="inlineRadio2">Rastuce</label>
+		</div>
+		
+		<div class="dropdown">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Filtriraj po:
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" v-on:click="filtriraj('NOV')" >NOV</a>
+		    <a class="dropdown-item" v-on:click="filtriraj('OBRADJEN')" >OBRADJEN</a>
+		    <a class="dropdown-item" v-on:click="filtriraj('ODBIJEN')" >ODBIJEN</a>
+		    <a class="dropdown-item" v-on:click="filtriraj('SVI')" >SVI</a>
+		  </div>
+		</div>
+		
 		<br/>
 		<table class="table table-hover">
             <thead>
@@ -33,6 +58,24 @@ Vue.component("pregled-erecepata", {
 </div>		  
 `
 	,
+	methods: {
+		filtriraj: function(filter){
+			let sort, descending;
+			if(this.descending == undefined){
+				sort = 'false';
+				descending = 'false';
+			}else{
+				sort = 'true';
+				descending = this.descending;
+			}
+			
+			axios
+			.get("api/eRecept/all/" + "1" + "?sort=" + sort + "&descending=" + descending + "&status=" + filter)
+			.then(response => {
+				this.recepti = response.data;
+			});
+		}
+	},
 	mounted: function() {
 		axios
 			.get("api/eRecept/all/" + "1" + "?sort=false&descending=false&status=SVI")
