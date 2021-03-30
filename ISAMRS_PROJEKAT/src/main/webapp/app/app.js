@@ -1,15 +1,16 @@
 const PocetnaStrana = { template: '<pocetna-strana></pocetna-strana>' }
 const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
-const RegistracijaKorisnika = {template: '<register-user></register-user>'}
-const PregledApoteka = {template: '<pregled-apoteka></pregled-apoteka>'}
-const ProfilApoteke = {template: '<profil-apoteke></profil-apoteke>'}
-const dermatoloziTable = {template: '<profil-dermatolozi></profil-dermatolozi>'}
-const farmaceutiTable = {template: '<profil-farmaceuti></profil-farmaceuti>'}
-const IstorijaPregleda = {template: '<istorija-pregleda></istorija-pregleda>'}
-const ZakazaniPregledi = {template: '<zakazani-pregledi></zakazani-pregledi>'}
-const ProfilPacijenta = {template: '<profil-pacijenta></profil-pacijenta>'};
-const PregledRezervacija = {template: '<lista-rezervacija></lista-rezervacija>'};
-const PregledErecepata = {template: '<pregled-erecepata></pregled-erecepata>'};
+const RegistracijaKorisnika = { template: '<register-user></register-user>'}
+const PregledApoteka = { template: '<pregled-apoteka></pregled-apoteka>'}
+const ProfilApoteke = { template: '<profil-apoteke></profil-apoteke>'}
+const dermatoloziTable = { template: '<profil-dermatolozi></profil-dermatolozi>'}
+const farmaceutiTable = { template: '<profil-farmaceuti></profil-farmaceuti>'}
+const IstorijaPregleda = { template: '<istorija-pregleda></istorija-pregleda>'}
+const ZakazaniPregledi = { template: '<zakazani-pregledi></zakazani-pregledi>'}
+const ProfilPacijenta = { template: '<profil-pacijenta></profil-pacijenta>'};
+const PregledRezervacija = { template: '<lista-rezervacija></lista-rezervacija>'};
+const PregledErecepata = { template: '<pregled-erecepata></pregled-erecepata>'};
+const PregledStavkiErecepta = { template: '<pojedinacni-erecept></pojedinacni-erecept>'};
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -25,7 +26,8 @@ const router = new VueRouter({
 		{ path: '/zakazaniPregledi/:page', component: ZakazaniPregledi},
 		{ path: '/profilPacijenta', component: ProfilPacijenta},
 		{ path: '/pregledRezervacija', component: PregledRezervacija},
-		{path: '/eRecepti', component: PregledErecepata }
+		{ path: '/eRecepti', component: PregledErecepata },
+		{ path: '/eRecepti/:recept', component: PregledStavkiErecepta }
 	  ]
 });
 

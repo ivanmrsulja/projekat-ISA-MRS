@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.StatusERecepta;
 import rest.dto.EReceptDTO;
+import rest.dto.StavkaReceptaDTO;
 import rest.service.EReceptSortFilterParams;
 import rest.service.EreceptService;
 import rest.service.KorisnikService;
@@ -30,10 +31,15 @@ public class EReceptController {
 	}
 	
 	@GetMapping(value = "all/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<EReceptDTO> getPacijent(@PathVariable("id") int id, @RequestParam("sort") boolean s, @RequestParam("descending") boolean d, @RequestParam("status") String st){
+	public Collection<EReceptDTO> getForPacijent(@PathVariable("id") int id, @RequestParam("sort") boolean s, @RequestParam("descending") boolean d, @RequestParam("status") String st){
 		if(st.equals("SVI")) {
 			return eReceptService.getForUser(id, new EReceptSortFilterParams(s, d, null));
 		}
 		return eReceptService.getForUser(id, new EReceptSortFilterParams(s, d, StatusERecepta.valueOf(st)));
+	}
+	
+	@GetMapping(value = "stavke/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<StavkaReceptaDTO> getStavke(@PathVariable("id") int id){
+		return eReceptService.getStavkeRecepta(id);
 	}
 }

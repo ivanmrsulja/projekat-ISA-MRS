@@ -48,7 +48,7 @@ Vue.component("pregled-erecepata", {
                     <th>{{r.id}}</th>
                     <td>{{r.status}}</td>
                     <td>{{r.datumIzdavanja}}</td>
-                    <td><input type="button" value="Pregledaj"/></td>
+                    <td><input type="button" value="Pregledaj" v-on:click="pregledajRecept(r)"/></td>
             	</tr>           
             </tbody>
      	</table>
@@ -74,6 +74,9 @@ Vue.component("pregled-erecepata", {
 			.then(response => {
 				this.recepti = response.data;
 			});
+		},
+		pregledajRecept : function(r){
+			window.location.href = "#/eRecepti/" + r.id;
 		}
 	},
 	mounted: function() {

@@ -9,17 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.ERecept;
+import rest.domain.StavkaRecepta;
 import rest.dto.EReceptDTO;
+import rest.dto.StavkaReceptaDTO;
 import rest.repository.EReceptRepository;
+import rest.repository.StavkaReceptaRepository;
 
 @Service
 public class EReceptServiceImpl implements EreceptService {
 
 	private EReceptRepository eReceptRepo;
+	private StavkaReceptaRepository stavkaRepository;
 	
 	@Autowired
-	public EReceptServiceImpl(EReceptRepository er) {
+	public EReceptServiceImpl(EReceptRepository er, StavkaReceptaRepository sr) {
 		this.eReceptRepo = er;
+		this.stavkaRepository = sr;
 	}
 	
 	@Override
@@ -47,6 +52,16 @@ public class EReceptServiceImpl implements EreceptService {
 			if(!parameters.isDescending()) {
 				Collections.reverse(ret);
 			}
+		}
+		return ret;
+	}
+
+	@Override
+	public Collection<StavkaReceptaDTO> getStavkeRecepta(int id) {
+		Collection<StavkaRecepta> stavke = stavkaRepository.getForRecipeId(id);
+		ArrayList<StavkaReceptaDTO> ret = new ArrayList<StavkaReceptaDTO>();
+		for(StavkaRecepta sr : stavke) {
+			ret.add(new StavkaReceptaDTO(sr));
 		}
 		return ret;
 	}
