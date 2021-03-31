@@ -11,6 +11,7 @@ const ProfilPacijenta = { template: '<profil-pacijenta></profil-pacijenta>'};
 const PregledRezervacija = { template: '<lista-rezervacija></lista-rezervacija>'};
 const PregledErecepata = { template: '<pregled-erecepata></pregled-erecepata>'};
 const PregledStavkiErecepta = { template: '<pojedinacni-erecept></pojedinacni-erecept>'};
+const PregledApoteke = { template: '<pregled-apoteke></pregled-apoteke>'};
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -27,7 +28,8 @@ const router = new VueRouter({
 		{ path: '/profilPacijenta', component: ProfilPacijenta},
 		{ path: '/pregledRezervacija', component: PregledRezervacija},
 		{ path: '/eRecepti', component: PregledErecepata },
-		{ path: '/eRecepti/:recept', component: PregledStavkiErecepta }
+		{ path: '/eRecepti/:recept', component: PregledStavkiErecepta },
+		{ path: '/apoteke/pregled/:id', component: PregledApoteke, name: "PregledApoteke" },
 	  ]
 });
 
