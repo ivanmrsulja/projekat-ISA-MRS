@@ -41,7 +41,7 @@ Vue.component("pregled-apoteka", {
 			});
 		},
 		pregledaj: function(a){
-			this.$router.push({ name: "PregledApoteke", params: {id: this.$route.params.id}});
+			this.$router.push({ name: "PregledApoteke", params: {id: a.id}});
 		}
 	},
 	mounted: function() {
