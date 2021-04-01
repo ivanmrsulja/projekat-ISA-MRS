@@ -13,7 +13,7 @@ import rest.repository.ApotekeRepository;
 public class ApotekaServiceImpl implements ApotekaService {
 
 	private ApotekeRepository apoteke;
-	private static final int pageSize = 1;
+	private static final int pageSize = 10;
 
 	@Autowired
 	public ApotekaServiceImpl(ApotekeRepository ar) {

@@ -2,7 +2,8 @@ Vue.component("pregled-erecepata", {
 	data: function () {
 		    return {
 				recepti : [],
-				descending: undefined
+				descending: undefined,
+				korisnik: {}
 		    }
 	},
 	template: ` 
@@ -34,7 +35,8 @@ Vue.component("pregled-erecepata", {
 		</div>
 		
 		<br/>
-		<table class="table table-hover">
+		<h2 v-bind:hidden="recepti.length > 0" >Nema rezultata pretrage.</h2>
+		<table class="table table-hover" v-bind:hidden="recepti.length == 0" >
             <thead>
             	<tr>
                 <th scope="col">Id</th>
@@ -70,7 +72,7 @@ Vue.component("pregled-erecepata", {
 			}
 			
 			axios
-			.get("api/eRecept/all/" + "1" + "?sort=" + sort + "&descending=" + descending + "&status=" + filter)
+			.get("api/eRecept/all/" + this.korisnik.id + "?sort=" + sort + "&descending=" + descending + "&status=" + filter)
 			.then(response => {
 				this.recepti = response.data;
 			});
@@ -80,10 +82,16 @@ Vue.component("pregled-erecepata", {
 		}
 	},
 	mounted: function() {
-		axios
-			.get("api/eRecept/all/" + "1" + "?sort=false&descending=false&status=SVI")
-			.then(response => {
-				this.recepti = response.data;
-			});
+		axios.get("/api/users/currentUser").then(data => {
+			this.korisnik = data.data;
+            if(data.data){
+                axios
+				.get("api/eRecept/all/" + data.data.id + "?sort=false&descending=false&status=SVI")
+				.then(response => {
+					this.recepti = response.data;
+				});
+            }
+        });
+		
     }
 });

@@ -1,4 +1,4 @@
-const PocetnaStrana = { template: '<pocetna-strana></pocetna-strana>' }
+const LoginStrana = { template: '<pocetna-strana></pocetna-strana>' }
 const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
 const RegistracijaKorisnika = { template: '<register-user></register-user>'}
 const PregledApoteka = { template: '<pregled-apoteka></pregled-apoteka>'}
@@ -16,7 +16,7 @@ const PregledApoteke = { template: '<pregled-apoteke></pregled-apoteke>'};
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	    { path: '/', component: PocetnaStrana},
+	    { path: '/', component: LoginStrana},
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
 	    { path: '/farmaceuti', component: farmaceutiTable},
@@ -59,7 +59,7 @@ var app = new Vue({
     			.then(function(resp){
     				if(resp.data == "OK"){
     					self.korisnik = {zaposlenjeKorisnika : "GOST"};
-    					window.location.href = "#/";
+    					self.$router.push({path: "/"});
     					self.$root.$emit('loggingUserOut', self.korisnik);
     				}
     			});

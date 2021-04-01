@@ -12,6 +12,7 @@ import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Rezervacija;
+import rest.domain.TipKorisnika;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
@@ -21,6 +22,7 @@ import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
 import rest.repository.RezervacijaRepository;
+import rest.repository.TipKorisnikaRepository;
 
 @Service
 public class KorisnikServiceImpl implements KorisnikService {
@@ -32,15 +34,17 @@ public class KorisnikServiceImpl implements KorisnikService {
 	private PregledRepository pregledRepository;
 	private RezervacijaRepository rezervacijeRepository;
 	private LokacijaRepository lokacijaRepository;
+	private TipKorisnikaRepository tipRepo;
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr) {
+	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt) {
 		this.korisnikRepository = imkr;
 		this.penalRepository = pr;
 		this.rezervacijeRepository = rr;
 		this.pregledRepository = prer;
 		this.pacijentRepository = pacr;
 		this.lokacijaRepository = locr;
+		this.tipRepo = rt;
 	}
 
 	@Override
@@ -119,6 +123,11 @@ public class KorisnikServiceImpl implements KorisnikService {
 	public PacijentDTO findPacijentById(int id) {
 		Pacijent p = pacijentRepository.findById(id).get();
 		return new PacijentDTO(p);
+	}
+
+	@Override
+	public TipKorisnika pocetniTip() {
+		return tipRepo.findById(1).get();
 	}
 	
 }

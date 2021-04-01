@@ -2,7 +2,8 @@ Vue.component("istorija-pregleda", {
 	data: function () {
 		    return {
 				pregledi : [],
-				numPages: 1
+				numPages: 1,
+				korisnik: {}
 		    }
 	},
 	template: ` 
@@ -11,7 +12,9 @@ Vue.component("istorija-pregleda", {
 		<h1>Istorija pregleda</h1>
 		<br/>
 		
-		<div class="dropdown">
+		<h2 v-bind:hidden="pregledi.length > 0" >Nemate ni jedan obavljen pregled/savetovanje.</h2>
+		
+		<div class="dropdown" v-bind:hidden="pregledi.length == 0" >
 		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    Sortiraj po:
 		  </button>
@@ -24,7 +27,7 @@ Vue.component("istorija-pregleda", {
 		</div>
 		
 		<br/>
-		<table class="table table-hover">
+		<table class="table table-hover" v-bind:hidden="pregledi.length == 0" >
             <thead>
             	<tr>
                 <th scope="col">Status</th>
@@ -74,7 +77,7 @@ Vue.component("istorija-pregleda", {
 			}
 			
 			axios
-			.get("api/users/istorijaPregleda/" + "1" + "/" + p + "/" + criteria)
+			.get("api/users/istorijaPregleda/" + this.korisnik.id + "/" + p + "/" + criteria)
 			.then(response => {
 				this.pregledi = response.data.content;
 			});
@@ -82,10 +85,16 @@ Vue.component("istorija-pregleda", {
 	},
 	mounted: function() {
 		axios
-			.get("api/users/istorijaPregleda/" + "1" + "/" + this.$route.params.page + "/" + this.$route.params.criteria)
-			.then(response => {
-				this.pregledi = response.data.content;
-				this.numPages = response.data.totalPages - 1;
-			});
+			.get("/api/users/currentUser").then(response => {
+	            if(response.data){
+	            	this.korisnik = response.data;
+	                axios
+						.get("api/users/istorijaPregleda/" + response.data.id + "/" + this.$route.params.page + "/" + this.$route.params.criteria)
+						.then(response => {
+							this.pregledi = response.data.content;
+							this.numPages = response.data.totalPages - 1;
+						});
+	            }
+        });
     }
 });

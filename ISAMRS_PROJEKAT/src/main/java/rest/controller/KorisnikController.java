@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Korisnik;
-import rest.domain.Lokacija;
+import rest.domain.Pacijent;
+import rest.domain.StatusNaloga;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
@@ -89,8 +90,7 @@ public class KorisnikController {
 
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody KorisnikDTO user) throws Exception {
-		System.out.println(user.toString() + " DASDDSADSASDSDAS");
-		Korisnik k = new Korisnik();
+		Pacijent k = new Pacijent();
 		k.setIme(user.getIme());
 		k.setPrezime(user.getPrezime());
 		k.setUsername(user.getUsername());
@@ -101,6 +101,9 @@ public class KorisnikController {
 		k.setPassword(user.getNoviPassw());
 		k.setLoggedBefore(false);
 		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.PACIJENT);
+		k.setBrojPoena(0);
+		k.setTipKorisnika(userService.pocetniTip());
+		k.setStatusNaloga(StatusNaloga.AKTIVAN); //ovo se menja
 		userService.create(k);
 		return "OK";
 	}

@@ -56,7 +56,7 @@ Vue.component("profil-pacijenta", {
 		
 		<div class="penali">
 		<h2>Broj penala: {{penali.length}} </h2>
-		<table class="table table-hover">
+		<table class="table table-hover" v-bind:hidden="penali.length == 0" >
             <thead>
             	<tr>
                 <th scope="col">Redni broj</th>
@@ -78,15 +78,20 @@ Vue.component("profil-pacijenta", {
 		
 	},
 	mounted: function() {
-		axios
-			.get("api/users/penali/" + "1")
-			.then(response => {
-				this.penali = response.data;
-			});
-		axios
-			.get("api/users/pacijent/" + "1")
-			.then(response => {
-				this.pacijent = response.data;
-			});
+		axios.get("/api/users/currentUser").then(data => {
+            if(data.data){
+                axios
+					.get("api/users/penali/" + data.data.id)
+					.then(response => {
+						this.penali = response.data;
+					});
+				axios
+					.get("api/users/pacijent/" + data.data.id)
+					.then(response => {
+						this.pacijent = response.data;
+					});
+            }
+        });
+		
     }
 });

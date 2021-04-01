@@ -9,7 +9,10 @@ Vue.component("lista-rezervacija", {
 		
 		<h1>Moje rezervacije</h1>
 		<br/>
-		<table class="table table-hover">
+		
+		<h2 v-bind:hidden="rezervacije.length > 0" >Nemate aktuelne rezervacije.</h2>
+		
+		<table class="table table-hover" v-bind:hidden="rezervacije.length == 0" >
             <thead>
             	<tr>
                 <th scope="col">Id</th>
@@ -34,10 +37,14 @@ Vue.component("lista-rezervacija", {
 `
 	,
 	mounted: function() {
-		axios
-			.get("api/users/rezervacije/" + "1")
-			.then(response => {
-				this.rezervacije = response.data;
-			});
+		axios.get("/api/users/currentUser").then(data =>{
+            if(data.data){
+            	axios
+				.get("api/users/rezervacije/" + data.data.id)
+				.then(response => {
+					this.rezervacije = response.data;
+				});
+            }
+        });
     }
 });

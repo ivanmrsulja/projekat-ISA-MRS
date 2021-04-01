@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import rest.domain.AdminApoteke;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
@@ -76,9 +77,14 @@ public class DBInitialiser implements ApplicationRunner {
 		lokacijaRepo.save(l2);
 		
 		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l1);
-		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 0, l2);
+		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l2);
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
+		
+		AdminApoteke adma1 = new AdminApoteke("Stefan", "Bacic", "admin", "admin", "adm@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a1);
+		korisnici.save(adma1);
+		a1.addAdmin(adma1);
+		apotekaRepo.save(a1);
 		
 		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 200, tk1);
 		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l2, StatusNaloga.AKTIVAN, 0, tk1);
@@ -102,7 +108,7 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(p2);
 		
 		
-		Dobavljac d = new Dobavljac("Pera", "Peric", "perica99", "perhan123", "pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
+		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
 		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-07"), null);
 		korisnici.save(d);
 		narudzbenicaRepo.save(n);
@@ -129,7 +135,7 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d1);
 		korisnici.save(d2);
 
-		Farmaceut f1=new Farmaceut("Marko", "Markovic", "marko123", "marko123","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
+		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
 		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
 		korisnici.save(f1);
 		korisnici.save(f2);

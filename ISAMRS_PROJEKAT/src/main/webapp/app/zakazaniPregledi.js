@@ -10,7 +10,8 @@ Vue.component("zakazani-pregledi", {
 		
 		<h1>Zakazani pregledi</h1>
 		<br/>
-		<table class="table table-hover">
+		<h2 v-bind:hidden="pregledi.length > 0" >Nemate ni jedan zakazan pregled.</h2>
+		<table class="table table-hover" v-bind:hidden="pregledi.length == 0">
             <thead>
             	<tr>
                 <th scope="col">Status</th>
@@ -34,7 +35,7 @@ Vue.component("zakazani-pregledi", {
             </tbody>
      	</table>
 
-		<div class="pagination" v-for="i in numPages+1" :key="i" >
+		<div class="pagination" v-for="i in numPages+1" :key="i" v-bind:hidden="pregledi.length == 0" >
 		  <a :href="'#/zakazaniPregledi/'+(i-1)" v-on:click="loadNext(i-1)">{{i}}</a>
 		</div>
 	
@@ -44,18 +45,24 @@ Vue.component("zakazani-pregledi", {
 	methods: {
 		loadNext: function(p){
 			axios
-			.get("api/users/pregledi/" + "1" + "/" + p)
+			.get("api/users/pregledi/" + this.korisnik.id + "/" + p)
 			.then(response => {
 				this.pregledi = response.data.content;
 			});
 		}
 	},
 	mounted: function() {
-		axios
-			.get("api/users/pregledi/" + "1" + "/" + this.$route.params.page)
-			.then(response => {
-				this.pregledi = response.data.content;
-				this.numPages = response.data.totalPages - 1;
-			});
+		axios.get("/api/users/currentUser").then(response => {
+            this.korisnik = response.data;
+            if(response.data){
+                axios
+				.get("api/users/pregledi/" + response.data.id + "/" + this.$route.params.page)
+				.then(response => {
+					this.pregledi = response.data.content;
+					this.numPages = response.data.totalPages - 1;
+				});
+            }
+        });
+			
     }
 });
