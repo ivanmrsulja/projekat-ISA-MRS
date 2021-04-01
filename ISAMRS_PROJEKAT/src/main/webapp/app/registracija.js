@@ -78,13 +78,16 @@ Vue.component("register-user", {
 				return;
 			}
 			
-			let lok = {sirina: sir, duzina: duz, adresa: adr};
+			let lok = {sirina: sir, duzina: duz, ulica: adr};
 			
-			newUser = {username: usr, password: pas, ime: ime, prezime : prz, email: email, telefon: tel, lokacija: lok};
-			let addr = '/rest/users/registerUser';
+			let newUser = {username: usr, noviPassw: pas, ime: ime, prezime : prz, email: email, telefon: tel, lokacija: lok};
 			
 			console.log(newUser);
-			//ovdje ajax poziv ide
+			axios.post("/api/users/register", newUser).then(data => {
+				if(data.data == "OK") {
+					alert("Uspesno ste se registrovali! Mozete se ulogovati");
+				}
+			});
 		},
 		reverseGeolocation: function(coords){
 			let self = this;

@@ -2,7 +2,7 @@ Vue.component("profil-pacijenta", {
 	data: function () {
 		    return {
 				penali : {},
-				pacijent: {}
+				pacijent: {korisnik:"", tip:""}
 		    }
 	},
 	template: ` 

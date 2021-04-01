@@ -42,7 +42,11 @@ var app = new Vue({
     },
 	mounted () {
 		let self = this;
-		
+        axios.get("/api/users/currentUser").then(function(data){
+            if(data.data){
+                self.korisnik = data.data;
+            }
+        });
 		this.$root.$on('sendingUser', (data) => {
 			this.korisnik = data;
 		});

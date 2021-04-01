@@ -2,6 +2,8 @@ package rest.controller;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Korisnik;
+import rest.domain.Lokacija;
 import rest.domain.ZaposlenjeKorisnika;
+import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PenalDTO;
 import rest.dto.PregledDTO;
@@ -42,21 +47,32 @@ public class KorisnikController {
 	}
 	
 	@GetMapping(value = "/currentUser", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Korisnik currentUser(){
-		// TODO: Ovo samo da se ne crveni na frontu
-		Korisnik k = new Korisnik();
-		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_APOTEKE);
-		return k;
+	public KorisnikDTO currentUser(HttpServletRequest request){
+		KorisnikDTO u = null;
+		u = (KorisnikDTO) request.getSession().getAttribute("user");
+		return u;
 	}
 	
-	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> login(){
-		// TODO: Ovo samo da se ne crveni na frontu
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	@GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> login(HttpServletRequest request, @RequestParam String user, @RequestParam String pass){
+		Collection<Korisnik> users = userService.findAll();
+		for (Korisnik korisnik : users) {
+			if(korisnik.getUsername().equals(user) && korisnik.getPassword().equals(pass)) {
+				KorisnikDTO k = new KorisnikDTO(korisnik);
+				request.getSession().setAttribute("user", k);
+				return new ResponseEntity<String>("OK", HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<String>("neispravan username/password", HttpStatus.OK);
 	}
 	
 	@GetMapping("/logout")
-	public String logout() {
+	public String logout(HttpServletRequest request) {
+		KorisnikDTO u = null;
+		u = (KorisnikDTO) request.getSession().getAttribute("user");
+		if(u != null) {
+			request.getSession().invalidate();
+		}
 		return "OK";
 	}
 	
@@ -71,6 +87,23 @@ public class KorisnikController {
 		return new ResponseEntity<Korisnik>(user, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String register(@RequestBody KorisnikDTO user) throws Exception {
+		System.out.println(user.toString() + " DASDDSADSASDSDAS");
+		Korisnik k = new Korisnik();
+		k.setIme(user.getIme());
+		k.setPrezime(user.getPrezime());
+		k.setUsername(user.getUsername());
+		k.setEmail(user.getEmail());
+		k.setTelefon(user.getTelefon());
+		k.setLokacija(user.getLokacija());
+		k.setZaposlenjeKorisnika(user.getZaposlenjeKorisnika());
+		k.setPassword(user.getNoviPassw());
+		k.setLoggedBefore(false);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.PACIJENT);
+		userService.create(k);
+		return "OK";
+	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> createUser(@RequestBody Korisnik user) throws Exception {

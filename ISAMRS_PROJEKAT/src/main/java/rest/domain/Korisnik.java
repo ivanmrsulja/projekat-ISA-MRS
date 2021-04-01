@@ -53,6 +53,7 @@ public class Korisnik {
 		this.zahtjevi = new HashSet<Zahtjev>();		
 		this.notifikacije = new HashSet<Notifikacija>();
 		this.pregledi = new HashSet<Pregled>();
+		this.loggedBefore = false;
 	}
 
 	public Korisnik(String ime, String prezime, String username, String password, String email,

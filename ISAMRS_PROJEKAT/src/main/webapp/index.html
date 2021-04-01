@@ -18,20 +18,20 @@
 </div>
 <br/>
 
-<a class="navigacija" href="#/apoteke/0" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG'">Pocetna</a>
+<a class="navigacija" href="#/apoteke/0" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG' || korisnik.zaposlenjeKorisnika=='FARMACEUT' || korisnik.zaposlenjeKorisnika=='DOBAVLJAC' || korisnik.zaposlenjeKorisnika=='ADMIN_APOTEKE'">Pocetna</a>
 <a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Apoteke</a>
 <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
-<a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moj Profil</a>
+<a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
 
-<a class="navigacija" href="#/istorijaPregleda/0/PLAIN" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Istorija pregleda</a>
-<a class="navigacija" href="#/zakazaniPregledi/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Zakazani pregledi</a>
-<a class="navigacija" href="#/pregledRezervacija" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moje rezervacije</a>
-<a class="navigacija" href="#/eRecepti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">eRecepti</a>
+<a class="navigacija" href="#/istorijaPregleda/0/PLAIN" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Istorija pregleda</a>
+<a class="navigacija" href="#/zakazaniPregledi/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Zakazani pregledi</a>
+<a class="navigacija" href="#/pregledRezervacija" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moje rezervacije</a>
+<a class="navigacija" href="#/eRecepti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">eRecepti</a>
 
-<a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moje ponude</a>
-<a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Dermatologa</a>
-<a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Farmaceuta</a>
+<a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Moje ponude</a>
+<a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
+<a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
 
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>

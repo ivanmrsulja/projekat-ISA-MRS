@@ -16,6 +16,7 @@ import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
 import rest.repository.KorisnikRepository;
+import rest.repository.LokacijaRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
@@ -30,14 +31,16 @@ public class KorisnikServiceImpl implements KorisnikService {
 	private PenalRepository penalRepository;
 	private PregledRepository pregledRepository;
 	private RezervacijaRepository rezervacijeRepository;
+	private LokacijaRepository lokacijaRepository;
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr) {
+	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr) {
 		this.korisnikRepository = imkr;
 		this.penalRepository = pr;
 		this.rezervacijeRepository = rr;
 		this.pregledRepository = prer;
 		this.pacijentRepository = pacr;
+		this.lokacijaRepository = locr;
 	}
 
 	@Override
@@ -54,9 +57,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	@Override
 	public Korisnik create(Korisnik user) throws Exception {
-		if (user.getId() != 0) {
-			throw new Exception("Id mora biti null prilikom perzistencije novog entiteta.");
-		}
+		lokacijaRepository.save(user.getLokacija());
 		Korisnik savedUser = korisnikRepository.save(user);
 		return savedUser;
 	}

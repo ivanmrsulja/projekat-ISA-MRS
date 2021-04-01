@@ -27,14 +27,13 @@ Vue.component("pocetna-strana", {
 	, 
 	methods : { 
 		logUserIn : function () {
-			let us = $("input[name=username]").val();
+			let user = $("input[name=username]").val();
 			let pass = $("input[name=pass]").val();
 			
-			let u = {username: us, password: pass};
 			let temp = this;
 			
 			axios
-    		.post("api/users/login", u)
+    		.get("api/users/login?user="+user+"&pass="+pass)
     		.then(function(response){
 				if(response.data == "OK"){
 					axios
@@ -42,12 +41,19 @@ Vue.component("pocetna-strana", {
 					.then(function(resp){
 						temp.$root.$emit('sendingUser', resp.data);
 						if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
-							window.location.href = "#/";
+							temp.$router.push({ path: "/profileApoteke" });
 						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
-							window.location.href = "#/";
-						}else{
-							window.location.href = "#/";
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							temp.$router.push({ path: "/tab" });
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else {
+							temp.$router.push({ path: "/" });
 						}
+						
 					});
 				}else{
 					alert(response.data);

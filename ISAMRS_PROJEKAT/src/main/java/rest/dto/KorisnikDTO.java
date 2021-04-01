@@ -105,6 +105,23 @@ public class KorisnikDTO {
 	public void setZaposlenjeKorisnika(ZaposlenjeKorisnika zaposlenjeKorisnika) {
 		this.zaposlenjeKorisnika = zaposlenjeKorisnika;
 	}
+
+	public String getStariPassw() {
+		return stariPassw;
+	}
+
+	public void setStariPassw(String stariPassw) {
+		this.stariPassw = stariPassw;
+	}
+
+	public String getNoviPassw() {
+		return noviPassw;
+	}
+
+	public void setNoviPassw(String noviPassw) {
+		this.noviPassw = noviPassw;
+	}
+	
 	
 	
 }
