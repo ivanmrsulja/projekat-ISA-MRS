@@ -33,6 +33,8 @@
 <a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
 <a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
 
+<a class="navigacija" href="#/preparati" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Preparati</a>
+
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>
 <br/>
@@ -62,6 +64,8 @@
 <script src="app/prikazErecepta.js"></script>
 <script src="app/pregledPojedinacnogERecepta.js"></script>
 <script src="app/pregledApoteke.js"></script>
+<script src="app/preparatTable.js"></script>
+<script src="app/pregledPojedinacnogPreparata.js"></script>
 
 <script src="app/app.js"></script>
 </body>

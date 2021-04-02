@@ -11,7 +11,11 @@ const ProfilPacijenta = { template: '<profil-pacijenta></profil-pacijenta>'};
 const PregledRezervacija = { template: '<lista-rezervacija></lista-rezervacija>'};
 const PregledErecepata = { template: '<pregled-erecepata></pregled-erecepata>'};
 const PregledStavkiErecepta = { template: '<pojedinacni-erecept></pojedinacni-erecept>'};
+
 const PregledApoteke = { template: '<pregled-apoteke></pregled-apoteke>'};
+const preparatiTable = {template: '<profil-preparati></profil-preparati>'}
+const PregledStavkiPreparata = { template: '<pojedinacni-preparat></pojedinacni-preparat>'};
+
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -19,6 +23,8 @@ const router = new VueRouter({
 	    { path: '/', component: LoginStrana},
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
+	    { path: '/preparati', component: preparatiTable},
+	    { path: '/preparati/:spec', component: PregledStavkiPreparata },
 	    { path: '/farmaceuti', component: farmaceutiTable},
 	    { path: '/register', component: RegistracijaKorisnika},
 	    { path: '/apoteke/:page', component: PregledApoteka},

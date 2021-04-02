@@ -78,7 +78,8 @@ Vue.component("pregled-erecepata", {
 			});
 		},
 		pregledajRecept : function(r){
-			window.location.href = "#/eRecepti/" + r.id;
+			//window.location.href = "#/eRecepti/" + r.id;
+			setTimeout(function () {window.location.href = "#/eRecepti/"+r.id;},0);
 		}
 	},
 	mounted: function() {
