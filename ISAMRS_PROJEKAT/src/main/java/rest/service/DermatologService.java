@@ -12,6 +12,7 @@ public interface DermatologService {
 	Dermatolog findOne(int id);
 
 	Collection<Dermatolog> findAll();
+	Collection<Dermatolog> findAllForPharmacy(int id);
 
 	Korisnik create(Dermatolog user) throws Exception;
 

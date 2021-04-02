@@ -65,4 +65,9 @@ public class DermatologServiceImpl implements DermatologService {
 		dermatologRepository.deleteById(id);
 	}
 
+	@Override
+	public Collection<Dermatolog> findAllForPharmacy(int id) {
+		return dermatologRepository.getWithEmployments(id);
+	}
+
 }

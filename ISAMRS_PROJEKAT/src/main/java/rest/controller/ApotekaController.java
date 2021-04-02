@@ -44,6 +44,11 @@ public class ApotekaController {
 	public ApotekaDTO getOne(@PathVariable int id) {
 		return new ApotekaDTO(this.apotekaService.getByID(id));
 	}
+	
+	@GetMapping(value="admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ApotekaDTO getOneForAdmin(@PathVariable int id) {
+		return new ApotekaDTO(this.apotekaService.getForAdmin(id));
+	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApotekaDTO> updateApoteka(@RequestBody ApotekaDTO apoteka)

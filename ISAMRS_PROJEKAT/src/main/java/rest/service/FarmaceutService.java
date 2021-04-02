@@ -12,6 +12,7 @@ public interface FarmaceutService {
 	Farmaceut findOne(int id);
 
 	Collection<Farmaceut> findAll();
+	Collection<Farmaceut> findAllForPharmacy(int id);
 
 	Korisnik create(Farmaceut user) throws Exception;
 

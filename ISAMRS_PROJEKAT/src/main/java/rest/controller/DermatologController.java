@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Dermatolog;
+import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
 import rest.domain.Ponuda;
 import rest.domain.ZaposlenjeKorisnika;
@@ -42,6 +43,15 @@ public class DermatologController {
 	public ArrayList<KorisnikDTO> getUsers() {
 		Collection<Dermatolog> users = dermatologService.findAll();
 		ArrayList<KorisnikDTO> dermatolozi=new ArrayList<KorisnikDTO>();
+		for(Dermatolog d : users)
+			dermatolozi.add(new KorisnikDTO(d));
+		return dermatolozi;
+	}
+	
+	@GetMapping(value="/apoteka/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<KorisnikDTO> getUsersForPharmacy(@PathVariable("id") int id) {
+		Collection<Dermatolog> users = dermatologService.findAllForPharmacy(id);
+		ArrayList<KorisnikDTO> dermatolozi = new ArrayList<KorisnikDTO>();
 		for(Dermatolog d : users)
 			dermatolozi.add(new KorisnikDTO(d));
 		return dermatolozi;

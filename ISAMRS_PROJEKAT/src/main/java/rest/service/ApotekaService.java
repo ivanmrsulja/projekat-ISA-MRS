@@ -12,4 +12,6 @@ public interface ApotekaService {
 	Apoteka getByID(int id);
 
 	void update(ApotekaDTO apoteka) throws Exception;
+	
+	Apoteka getForAdmin(int id);
 }

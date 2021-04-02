@@ -6,6 +6,8 @@ Vue.component("pregled-apoteke", {
                     lokacija: {ulica: ""},
                     opis: ""
                 },
+                farmaceuti: [],
+                dermatolozi: [],
 		    }
 	},
 	template: ` 
@@ -21,6 +23,43 @@ Vue.component("pregled-apoteke", {
         </table>
         <br/>
         <div id="map" class="map"></div>
+
+        <br><br>
+
+        <h2>Zaposleni farmaceuti</h2>
+        <table class="table table-hover">
+	 <thead>
+		<tr bgcolor="lightgrey">
+			<th>Ime</th>
+			<th>Prezime</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="s in farmaceuti">
+		<td>{{s.ime}}</td>
+		<td>{{s.prezime}}</td>
+	</tr>
+	</tbody>
+	</table>
+	
+    <h2>Zaposleni dermatolozi</h2>
+        <table class="table table-hover">
+	 <thead>
+		<tr bgcolor="lightgrey">
+			<th>Ime</th>
+			<th>Prezime</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="s in dermatolozi">
+		<td>{{s.ime}}</td>
+		<td>{{s.prezime}}</td>
+	</tr>
+	</tbody>
+	</table>
+	
+
+
 	
 </div>		  
 `
@@ -53,11 +92,21 @@ Vue.component("pregled-apoteke", {
         },        
     },
     mounted: function(){
-            axios
+        axios
             .get("/api/apoteke/" + this.$route.params.id)
             .then(response => {
                 this.apoteka = response.data;
                 this.showMap();
+            });
+            axios
+            .get("/api/farmaceut/apoteka/" + this.$route.params.id)
+            .then(response => {
+                this.farmaceuti = response.data;
+            });
+            axios
+            .get("/api/dermatolog/apoteka/" + this.$route.params.id)
+            .then(response => {
+                this.dermatolozi = response.data;
             });
     }
 });

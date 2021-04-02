@@ -145,7 +145,7 @@ public class DBInitialiser implements ApplicationRunner {
 		zaposlenjeRepo.save(z4);
 		zaposlenjeRepo.save(z5);
 		f1.setZaposlenje(z4);
-		f1.setZaposlenje(z5);
+		f2.setZaposlenje(z5);
 		korisnici.save(f1);
 		korisnici.save(f2);
 		

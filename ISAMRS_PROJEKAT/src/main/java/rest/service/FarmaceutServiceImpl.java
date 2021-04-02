@@ -65,4 +65,9 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 		farmaceutRepository.deleteById(id);
 	}
 
+	@Override
+	public Collection<Farmaceut> findAllForPharmacy(int id) {
+		return farmaceutRepository.getWithEmployments(id);
+	}
+
 }

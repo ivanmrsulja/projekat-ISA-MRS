@@ -5,19 +5,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import rest.domain.AdminApoteke;
 import rest.domain.Apoteka;
 import rest.dto.ApotekaDTO;
+import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 
 @Service
 public class ApotekaServiceImpl implements ApotekaService {
 
 	private ApotekeRepository apoteke;
+	private AdminApotekeRepository admin;
 	private static final int pageSize = 10;
 
 	@Autowired
-	public ApotekaServiceImpl(ApotekeRepository ar) {
+	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are) {
 		apoteke = ar;
+		admin = are;
 	}
 	
 	@Override
@@ -41,6 +45,11 @@ public class ApotekaServiceImpl implements ApotekaService {
 		apotekaToUpdate.setOpis(apoteka.getOpis());
 		apotekaToUpdate.setLokacija(apoteka.getLokacija());
 		apoteke.save(apotekaToUpdate);
+	}
+
+	@Override
+	public Apoteka getForAdmin(int id) {
+		return admin.getApoteka(id);
 	}
 
 }
