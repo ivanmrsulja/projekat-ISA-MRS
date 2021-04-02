@@ -26,36 +26,36 @@ Vue.component("pregled-apoteke", {
 
         <br><br>
 
-        <h2>Zaposleni farmaceuti</h2>
-        <table class="table table-hover">
-	 <thead>
-		<tr bgcolor="lightgrey">
-			<th>Ime</th>
-			<th>Prezime</th>
+     <h2>Zaposleni farmaceuti</h2>
+     <table class="table table-hover" style="width: 50%" >
+		 <thead>
+			<tr bgcolor="lightgrey">
+				<th>Ime</th>
+				<th>Prezime</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr v-for="s in farmaceuti">
+			<td>{{s.ime}}</td>
+			<td>{{s.prezime}}</td>
 		</tr>
-	</thead>
-	<tbody>
-	<tr v-for="s in farmaceuti">
-		<td>{{s.ime}}</td>
-		<td>{{s.prezime}}</td>
-	</tr>
-	</tbody>
+		</tbody>
 	</table>
 	
-    <h2>Zaposleni dermatolozi</h2>
-        <table class="table table-hover">
-	 <thead>
-		<tr bgcolor="lightgrey">
-			<th>Ime</th>
-			<th>Prezime</th>
+     <h2>Zaposleni dermatolozi</h2>
+     <table class="table table-hover" style="width: 50%" >
+		 <thead>
+			<tr bgcolor="lightgrey">
+				<th>Ime</th>
+				<th>Prezime</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr v-for="s in dermatolozi">
+			<td>{{s.ime}}</td>
+			<td>{{s.prezime}}</td>
 		</tr>
-	</thead>
-	<tbody>
-	<tr v-for="s in dermatolozi">
-		<td>{{s.ime}}</td>
-		<td>{{s.prezime}}</td>
-	</tr>
-	</tbody>
+		</tbody>
 	</table>
 	
 

@@ -15,20 +15,22 @@ Vue.component("profil-apoteke", {
 		
 		<h1>Profil apoteke</h1>
 		<br/>
-        <table>
-            <tr><td><h2>Naziv: </h2></td><td><input type="text" v-model="apoteka.naziv"/></td></tr>
-            <tr><td><h2>Opis: </h2></td><td><textarea rows="6" name="opis">{{apoteka.opis}}</textarea></td></tr>
-            <tr><td><h2>Adresa: </h2></td><td><textarea rows="3" disabled>{{apoteka.lokacija.ulica}}</textarea></td></tr>
-        </table>
-        <br/>
-		<input type="button" value="Sacuvaj" v-on:click="saveData()"/>
-		<br/>
-		<br/>
+        <div style="display: inline-block; margin-right: 50px">
+	        <table>
+	            <tr><td><h2>Naziv: </h2></td><td><input type="text" v-model="apoteka.naziv"/></td></tr>
+	            <tr><td><h2>Opis: </h2></td><td><textarea rows="6" name="opis">{{apoteka.opis}}</textarea></td></tr>
+	            <tr><td><h2>Adresa: </h2></td><td><textarea rows="3" disabled>{{apoteka.lokacija.ulica}}</textarea></td></tr>
+	        </table>
+	        <br/>
+			<input type="button" value="Sacuvaj" v-on:click="saveData()"/>
+			<br/>
+			<br/>
+		</div>
         <div id="map" class="map"></div>
 
 		<br><br>
 		<h2>Zaposleni farmaceuti</h2>
-<table class="table table-hover">
+	<table class="table table-hover" style="width: 50%" >
 	 <thead>
 		<tr bgcolor="lightgrey">
 			<th>Ime</th>
@@ -43,8 +45,8 @@ Vue.component("profil-apoteke", {
 	</tbody>
 	</table>
 
-<h2>Zaposleni dermatolozi</h2>
-<table class="table table-hover">
+	<h2>Zaposleni dermatolozi</h2>
+	<table class="table table-hover" style="width: 50%" >
 	 <thead>
 		<tr bgcolor="lightgrey">
 			<th>Ime</th>
@@ -148,7 +150,7 @@ Vue.component("profil-apoteke", {
 			  this.farmaceuti = response.data;
 		  });
 		  axios
-		  .get("api/dermatolog/apoteka" + response.data.id)
+		  .get("api/dermatolog/apoteka/" + response.data.id)
 		  .then(response => {
 			  this.dermatolozi = response.data;
 		  });
