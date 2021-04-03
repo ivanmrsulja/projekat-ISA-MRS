@@ -49,7 +49,7 @@ Vue.component("profil-pacijenta", {
 				<td> <input type="text" v-model="pacijent.tip.naziv" disabled/> </td>
 			</tr>
 			<tr>
-				<td colspan="2" align=center> <input type="button" value="Posalji"/> </td>
+				<td colspan="2" align=center> <input type="button" value="Posalji" v-on:click="update()" /> </td>
 			</tr>
 		</table>
 		</div>
@@ -75,7 +75,16 @@ Vue.component("profil-pacijenta", {
 `
 	,
 	methods: {
-		
+		update: function(){
+			axios
+				.put("api/users/" + this.pacijent.korisnik.id, this.pacijent.korisnik)
+				.then(response => {
+					alert(response.data);
+				})
+				.catch(err => {
+					alert(err.data);
+				});
+		}
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(data => {

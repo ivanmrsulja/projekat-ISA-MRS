@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import rest.domain.Korisnik;
 import rest.domain.Penal;
 import rest.domain.TipKorisnika;
+import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
@@ -19,7 +20,7 @@ public interface KorisnikService {
 
 	Korisnik create(Korisnik user) throws Exception;
 
-	Korisnik update(Korisnik user) throws Exception;
+	Korisnik update(KorisnikDTO user) throws Exception;
 
 	void delete(int id);
 	

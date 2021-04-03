@@ -7,6 +7,19 @@
 	<link href="css/styles.css" rel="stylesheet"/>
 	<meta charset="utf-8"/>
 	<title> ISA_MRS_2021_TIM_06 </title>
+	
+	<script type="text/javascript">
+	/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+		function openNav() {
+		  document.getElementById("mySidebar").style.width = "300px";
+		}
+	
+		/* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+		function closeNav() {
+		  document.getElementById("mySidebar").style.width = "0";
+		}
+	</script>
+	
 </head> 
 
 <body style="background: #2980B9; background: linear-gradient(90deg, #F5F5F5 0%, #FFFFFF 100%);">
@@ -28,6 +41,7 @@
 <a class="navigacija" href="#/zakazaniPregledi/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Zakazani pregledi</a>
 <a class="navigacija" href="#/pregledRezervacija" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moje rezervacije</a>
 <a class="navigacija" href="#/eRecepti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">eRecepti</a>
+<a class="navigacija" href="#/akcijePromocije" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Akcije i promocije</a>
 
 <a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Moje ponude</a>
 <a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
@@ -66,6 +80,7 @@
 <script src="app/pregledApoteke.js"></script>
 <script src="app/preparatTable.js"></script>
 <script src="app/pregledPojedinacnogPreparata.js"></script>
+<script src="app/akcijePromocijePregled.js"></script>
 
 <script src="app/app.js"></script>
 </body>

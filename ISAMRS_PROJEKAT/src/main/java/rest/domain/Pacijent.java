@@ -38,7 +38,7 @@ public class Pacijent extends Korisnik {
 	private Set<Preparat> alergije;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Preparat> kupljeniPreparati;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private Set<Apoteka> apoteke;
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

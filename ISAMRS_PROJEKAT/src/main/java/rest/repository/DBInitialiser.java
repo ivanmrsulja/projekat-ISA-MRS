@@ -9,6 +9,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import rest.domain.AdminApoteke;
+import rest.domain.AkcijaPromocija;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
@@ -65,26 +66,35 @@ public class DBInitialiser implements ApplicationRunner {
 	private RezervacijaRepository rezervacijaRepo;
 	@Autowired
 	private PregledRepository pregledRepo;
+	@Autowired
+	private AkcijaPromocijaRepository akcijaRepo;
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		TipKorisnika tk1 = new TipKorisnika("REGULAR", 0, 1);
 		tipKorisnikaRepo.save(tk1);
 		
-		Lokacija l1 = new Lokacija(45.2474, 19.85112, "Bulevar Cara Lazara 3, Novi Sad");
-		Lokacija l2 = new Lokacija(45.2474, 19.85112, "Bulevar Cara Lazara 4, Novi Sad");
+		Lokacija l1 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
+		Lokacija l2 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
 		lokacijaRepo.save(l1);
 		lokacijaRepo.save(l2);
 		
-		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l1);
-		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l2);
+		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l2);
+		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 0, l1);
+		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l1);
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
+		apotekaRepo.save(a3);
 		
 		AdminApoteke adma1 = new AdminApoteke("Stefan", "Bacic", "admin", "admin", "adm@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a1);
 		korisnici.save(adma1);
 		a1.addAdmin(adma1);
 		apotekaRepo.save(a1);
+		
+		AdminApoteke adma2 = new AdminApoteke("Marko", "Cupic", "marko", "marko", "adm@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a2);
+		korisnici.save(adma2);
+		a2.addAdmin(adma2);
+		apotekaRepo.save(a2);
 		
 		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 200, tk1);
 		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l2, StatusNaloga.AKTIVAN, 0, tk1);
@@ -191,6 +201,16 @@ public class DBInitialiser implements ApplicationRunner {
 		pregledRepo.save(pre2);
 		pregledRepo.save(pre3);
 		pregledRepo.save(pre4);
+		
+		AkcijaPromocija ap1 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma1);
+		AkcijaPromocija ap2 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma2);
+		akcijaRepo.save(ap1);
+		akcijaRepo.save(ap2);
+		
+		p1.addApoteka(a1);
+		p2.addApoteka(a2);
+		korisnici.save(p1);
+		korisnici.save(p2);
 	}
 
 }

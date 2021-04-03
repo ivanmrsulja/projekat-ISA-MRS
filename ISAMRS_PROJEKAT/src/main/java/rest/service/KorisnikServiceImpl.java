@@ -13,6 +13,7 @@ import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Rezervacija;
 import rest.domain.TipKorisnika;
+import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
@@ -67,12 +68,24 @@ public class KorisnikServiceImpl implements KorisnikService {
 	}
 
 	@Override
-	public Korisnik update(Korisnik user) throws Exception {
+	public Korisnik update(KorisnikDTO user) throws Exception {
 		Korisnik userToUpdate = findOne(user.getId());
 		if (userToUpdate == null) {
 			throw new Exception("Trazeni entitet nije pronadjen.");
 		}
 		userToUpdate.setIme(user.getIme());
+		userToUpdate.setPrezime(user.getPrezime());
+		userToUpdate.setUsername(user.getUsername());
+		userToUpdate.setTelefon(user.getTelefon());
+		lokacijaRepository.save(user.getLokacija());
+		userToUpdate.setLokacija(user.getLokacija());
+		
+		if(user.getStariPassw() != null && user.getStariPassw().equals(userToUpdate.getPassword())) {
+			if(user.getNoviPassw() == null || user.getNoviPassw().trim().equals("")) {
+				throw new Exception("Novi password je u losem formatu.");
+			}
+			userToUpdate.setPassword(user.getNoviPassw());
+		}
 		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
 		return updatedUSer;
 	}

@@ -2,15 +2,42 @@ Vue.component("pregled-apoteka", {
 	data: function () {
 		    return {
 				apoteke : {},
-				numPages: 1
+				numPages: 1,
+				searchParams: {naziv : "", lokacija: "", startOcena: 0, endOcena: 1000000, rastojanje: 50000, kriterijumSortiranja: "NAZIV", opadajuce: false},
+				ulogovan: false
 		    }
 	},
 	template: ` 
 <div align = center style="width:75%">
 		
 		<h1>Pregled apoteka</h1>
-		<br/>
 		
+		<div id="mySidebar" class="sidebar">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <table>
+			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Unesite naziv" v-model="searchParams.naziv" /></td></tr>
+			  <tr><td colspan=2 ><input type="text" name="lokacija" placeholder="Unesite adresu" v-model="searchParams.lokacija" /></td></tr>
+			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" name="startOcena" v-model="searchParams.startOcena" ></td></tr>
+			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" name="endOcena" v-model="searchParams.endOcena" ></td></tr>
+			  <tr v-bind:hidden="!ulogovan" ><td style="color:white">Rastojanje do(km):</td> <td><input type="number" name="rastojanje" v-model="searchParams.rastojanje" ></td></tr>
+			  <tr><td style="color:white">Sortiraj po:</td> 
+			  		<td>
+				  		<select name="tip" id="kriterijum" v-model="searchParams.kriterijumSortiranja" >
+						  <option value="NAZIV">NAZIV</option>
+						  <option value="LOKACIJA.ULICA">GRAD</option>
+						  <option value="OCENA">OCENA</option>
+						</select>
+					</td></tr>
+			  <tr><td style="color:white">Sortiraj opadajuce:</td> <td><input type="checkbox" name="opadajuce" v-model="searchParams.opadajuce" ></td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi" v-on:click="loadNext($route.params.page)" /></td></tr>
+		  </table>
+		</div>
+		
+		<div id="main">
+		  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
+		</div>
+		
+		<br/>
 		<div class="card" v-for="a in this.apoteke">
 		  <div class="post-container">
 	      <div class="post-thumb"><img src="css/drugstore.jpg" style="height:200px;"></img></div>
@@ -35,7 +62,7 @@ Vue.component("pregled-apoteka", {
 	methods: {
 		loadNext: function(p){
 			axios
-			.get("api/apoteke/all/" + p)
+			.get("api/apoteke/all/" + p + "/?naziv=" + this.searchParams.naziv + "&adresa=" + this.searchParams.lokacija + "&dOcena=" + this.searchParams.startOcena + "&gOcena=" + this.searchParams.endOcena + "&rastojanje=" + this.searchParams.rastojanje + "&kriterijum=" + this.searchParams.kriterijumSortiranja + "&smer=" + this.searchParams.opadajuce)
 			.then(response => {
 				this.apoteke = response.data.content;
 			});
@@ -46,11 +73,20 @@ Vue.component("pregled-apoteka", {
 	},
 	mounted: function() {
 		axios
-			.get("api/apoteke/all/" + this.$route.params.page)
+			.get("api/apoteke/all/" + this.$route.params.page + "?naziv=" + this.searchParams.naziv + "&adresa=" + this.searchParams.lokacija + "&dOcena=" + this.searchParams.startOcena + "&gOcena=" + this.searchParams.endOcena + "&rastojanje=" + this.searchParams.rastojanje + "&kriterijum=" + this.searchParams.kriterijumSortiranja + "&smer=" + this.searchParams.opadajuce)
 			.then(response => {
 				this.apoteke = response.data.content;
 				this.numPages = response.data.totalPages - 1;
 				
 			});
+		axios
+			.get("/api/users/currentUser")
+			.then(response => { 
+			 if(response.data == ""){
+			 	this.ulogovan = false; 
+			 } else { 
+			 	this.ulogovan = true;
+			 }
+			 });
     }
 });

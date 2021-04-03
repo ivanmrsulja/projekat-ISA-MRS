@@ -23,11 +23,13 @@ import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.StatusNaloga;
 import rest.domain.ZaposlenjeKorisnika;
+import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PenalDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
+import rest.service.AkcijaPromocijaService;
 import rest.service.KorisnikService;
 
 @RestController
@@ -35,10 +37,12 @@ import rest.service.KorisnikService;
 public class KorisnikController {
 
 	private KorisnikService userService;
+	private AkcijaPromocijaService akcijaService;
 	
 	@Autowired
-	public KorisnikController(KorisnikService us) {
+	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps) {
 		this.userService = us;
+		this.akcijaService = aps;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -116,17 +120,25 @@ public class KorisnikController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> updateUser(@RequestBody Korisnik user, @PathVariable("id") int id)
+	public String updateUser(@RequestBody KorisnikDTO user, @PathVariable("id") int id)
 			throws Exception {
-		Korisnik userForUpdate = userService.findOne(id);
-
-		Korisnik updatedUser = userService.update(userForUpdate);
-
-		if (updatedUser == null) {
-			return new ResponseEntity<Korisnik>(HttpStatus.INTERNAL_SERVER_ERROR);
+		
+		if(user.getUsername().trim().equals("") || user.getPrezime().trim().equals("") || user.getIme().trim().equals("") || user.getLokacija() == null || user.getTelefon().trim().equals("")) {
+			return "Unesite sve podatke.";
 		}
 		
-		return new ResponseEntity<Korisnik>(updatedUser, HttpStatus.OK);
+		Korisnik updatedUser = null;
+		try {
+			updatedUser = userService.update(user);
+		}catch(Exception e){
+			return e.getMessage();
+		}
+
+		if (updatedUser == null) {
+			return "Neuspelo azuriranje, pokusajte ponovo.";
+		}
+		
+		return "Azuriranje uspesno";
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -158,6 +170,11 @@ public class KorisnikController {
 	@GetMapping(value = "/pacijent/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PacijentDTO getPacijent(@PathVariable("id") int id){
 		return userService.findPacijentById(id);
+	}
+	
+	@GetMapping(value = "/akcije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<ApotekaDTO> getActionsPromotions(@PathVariable("id") int id){
+		return akcijaService.getForUser(id);
 	}
 	
 }

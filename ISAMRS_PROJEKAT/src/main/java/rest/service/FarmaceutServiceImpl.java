@@ -52,7 +52,6 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 		userToUpdate.setIme(user.getIme());
 		userToUpdate.setPrezime(user.getPrezime());
 		userToUpdate.setUsername(user.getUsername());
-		userToUpdate.setEmail(user.getEmail());
 		userToUpdate.setTelefon(user.getTelefon());
 		userToUpdate.setLokacija(user.getLokacija());
 		

@@ -3,6 +3,7 @@ package rest.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import rest.domain.AdminApoteke;
@@ -10,6 +11,7 @@ import rest.domain.Apoteka;
 import rest.dto.ApotekaDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
+import rest.util.ApotekaSearchParams;
 
 @Service
 public class ApotekaServiceImpl implements ApotekaService {
@@ -25,8 +27,14 @@ public class ApotekaServiceImpl implements ApotekaService {
 	}
 	
 	@Override
-	public Page<ApotekaDTO> getAllDrugStores(int stranica) {
-		Page<ApotekaDTO> allStores = apoteke.findAll(new PageRequest(stranica, pageSize)).map(a -> new ApotekaDTO(a));
+	public Page<ApotekaDTO> getAllDrugStores(int stranica, ApotekaSearchParams params, double lat, double lon) {
+		Direction dir;
+		if(params.isOpadajuce()) {
+			dir = Direction.DESC;
+		}else {
+			dir = Direction.ASC;
+		}
+		Page<ApotekaDTO> allStores = apoteke.findAll(new PageRequest(stranica, pageSize, dir, params.getKriterijumSortiranja().toLowerCase()), params.getNaziv().toUpperCase(), params.getAdresa().toUpperCase(), params.getdOcena(), params.getgOcena(), lat, lon, params.getRastojanje()).map(a -> new ApotekaDTO(a));
 		return allStores;
 	}
 

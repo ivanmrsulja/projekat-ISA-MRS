@@ -50,7 +50,7 @@ body {
 /* Linkovi (navigacija) */
 
 a.navigacija {
-  background-color: red;
+  background-color: #455a64;
   color: white;
   padding: 0.5em 1em;
   text-decoration: none;
@@ -59,7 +59,7 @@ a.navigacija {
 }
 
 a:hover {
-  background-color: #555;
+  background-color: #78909c;
   cursor: pointer;
 }
 
@@ -70,7 +70,7 @@ a:active {
 /* Pocetna strana */
 
 .card {
-	width:43%; 
+	width:50%; 
 	margin-bottom:17px;
 }
 
@@ -97,15 +97,15 @@ a:active {
 }
 
 .button1 {
-  background-color: red;
+  background-color: #455a64;
   color: white;
-  border: 2px solid red; /* Green */
+  border: 2px solid #455a64;
   transition-duration: 0.4s;
 }
 
 .button1:hover {
-  background-color: #555; /* Green */
-  border: 2px solid #555;
+  background-color: #78909c; 
+  border: 2px solid #78909c;
   color: white;
 }
 
