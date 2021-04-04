@@ -1,5 +1,7 @@
 package rest.repository;
 
+import java.util.Collection;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import rest.domain.Apoteka;
+import rest.domain.Pregled;
 
 @Repository
 public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
@@ -19,4 +22,7 @@ public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
 	
 	@Query("select count(a) from Apoteka a")
 	public int getNumOf();
+	
+	@Query("select p from Apoteka a join a.pregledi p where p.status = 1 and a.id = ?1")
+	public Collection<Pregled> getPreCreated(int id);
 }

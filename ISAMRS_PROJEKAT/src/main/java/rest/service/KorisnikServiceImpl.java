@@ -105,13 +105,13 @@ public class KorisnikServiceImpl implements KorisnikService {
 	public Page<PregledDTO> preglediZaKorisnika(int id, int page, String criteria) {
 		switch(criteria) {
 		case "PLAIN":
-			return pregledRepository.istorijaPregledaZaKorisnika(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p));
+			return pregledRepository.istorijaPregledaZaKorisnika(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p, 0));
 		case "DATUM":
-			return pregledRepository.istorijaPregledaZaKorisnikaDatumSort(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p));
+			return pregledRepository.istorijaPregledaZaKorisnikaDatumSort(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p, 0));
 		case "CENA":
-			return pregledRepository.istorijaPregledaZaKorisnikaCenaSort(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p));
+			return pregledRepository.istorijaPregledaZaKorisnikaCenaSort(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p, 0));
 		case "TRAJANJE":
-			return pregledRepository.istorijaPregledaZaKorisnikaTrajanjeSort(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p));
+			return pregledRepository.istorijaPregledaZaKorisnikaTrajanjeSort(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p, 0));
 		}
 		return null;
 	}
@@ -119,7 +119,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 	@Override
 	@SuppressWarnings("deprecation")
 	public Page<PregledDTO> zakazivanjaZaKorisnika(int id, int page) {
-		return pregledRepository.rezervacijePregledaZaKorisnika(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p));
+		return pregledRepository.rezervacijePregledaZaKorisnika(id, new PageRequest(page, defaultPageSize)).map(p -> new PregledDTO(p, 0));
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package rest.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.PregledDTO;
 import rest.service.ApotekaService;
 import rest.util.ApotekaSearchParams;
 
@@ -60,6 +61,11 @@ public class ApotekaController {
 	@GetMapping(value="admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOneForAdmin(@PathVariable int id) {
 		return new ApotekaDTO(this.apotekaService.getForAdmin(id));
+	}
+	
+	@GetMapping(value="pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PregledDTO> getPreCreatedExaminations(@PathVariable int id) {
+		return apotekaService.getPregledi(id);
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)

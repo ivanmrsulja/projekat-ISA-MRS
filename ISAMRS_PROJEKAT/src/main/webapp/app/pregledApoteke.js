@@ -8,6 +8,7 @@ Vue.component("pregled-apoteke", {
                 },
                 farmaceuti: [],
                 dermatolozi: [],
+                pregledi: []
 		    }
 	},
 	template: ` 
@@ -29,7 +30,7 @@ Vue.component("pregled-apoteke", {
      <h2>Zaposleni farmaceuti</h2>
      <table class="table table-hover" style="width: 50%" >
 		 <thead>
-			<tr bgcolor="lightgrey">
+			<tr bgcolor="#90a4ae">
 				<th>Ime</th>
 				<th>Prezime</th>
 			</tr>
@@ -42,10 +43,12 @@ Vue.component("pregled-apoteke", {
 		</tbody>
 	</table>
 	
+	<br/><br/>
+	
      <h2>Zaposleni dermatolozi</h2>
      <table class="table table-hover" style="width: 50%" >
 		 <thead>
-			<tr bgcolor="lightgrey">
+			<tr bgcolor="#90a4ae">
 				<th>Ime</th>
 				<th>Prezime</th>
 			</tr>
@@ -58,7 +61,31 @@ Vue.component("pregled-apoteke", {
 		</tbody>
 	</table>
 	
-
+	<br/><br/>
+	
+	<h2>Slobodni termini pregleda</h2>
+     <table class="table table-hover" style="width: 60%" >
+		 <thead>
+			<tr  bgcolor="#90a4ae">
+				<th>Dermatolog</th>
+				<th>Datum termina</th>
+				<th>Vreme</th>
+				<th>Cena</th>
+				<th>Ocena dermatologa</th>
+				<th>Akcija</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr v-for="p in pregledi">
+			<td>{{p.zaposleni.ime}} {{p.zaposleni.prezime}}</td>
+			<td>{{p.datum}}</td>
+			<td>{{p.vrijeme}}</td>
+			<td>{{p.cijena}}</td>
+			<td>{{p.ocena}} </td>
+			<td><input type="button" value="Zakazi pregled" /></td>
+		</tr>
+		</tbody>
+	</table>
 
 	
 </div>		  
@@ -89,24 +116,29 @@ Vue.component("pregled-apoteke", {
                  })
              });
              map.addLayer(layer);
-        },        
+        },      
     },
     mounted: function(){
         axios
-            .get("/api/apoteke/" + this.$route.params.id)
-            .then(response => {
-                this.apoteka = response.data;
-                this.showMap();
-            });
-            axios
-            .get("/api/farmaceut/apoteka/" + this.$route.params.id)
-            .then(response => {
-                this.farmaceuti = response.data;
-            });
-            axios
-            .get("/api/dermatolog/apoteka/" + this.$route.params.id)
-            .then(response => {
-                this.dermatolozi = response.data;
-            });
+        .get("/api/apoteke/" + this.$route.params.id)
+        .then(response => {
+            this.apoteka = response.data;
+            this.showMap();
+        });
+        axios
+        .get("/api/farmaceut/apoteka/" + this.$route.params.id)
+        .then(response => {
+            this.farmaceuti = response.data;
+        });
+        axios
+        .get("/api/dermatolog/apoteka/" + this.$route.params.id)
+        .then(response => {
+            this.dermatolozi = response.data;
+        });
+        axios
+        .get("/api/apoteke/pregledi/" + this.$route.params.id)
+        .then(response => {
+            this.pregledi = response.data;
+        });
     }
 });

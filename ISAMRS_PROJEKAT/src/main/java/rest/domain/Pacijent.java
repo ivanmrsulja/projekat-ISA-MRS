@@ -18,29 +18,40 @@ public class Pacijent extends Korisnik {
 	
 	@Column(name = "statusNaloga", nullable = true)
 	private StatusNaloga statusNaloga;
+	
 	@Column(name = "brojPoena", nullable = true)
 	private int brojPoena;
+	
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "tip_korisnika_id", referencedColumnName = "id")
 	private TipKorisnika tipKorisnika;
 	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<ERecept> eRecepti;
+	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Penal> penali;
+	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Zalba> zalbe;
+	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<OcenaApoteke> ocene;
+	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Rezervacija> rezervacije;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = false)
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "preparat_id", referencedColumnName = "id"))
 	private Set<Preparat> alergije;
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Preparat> kupljeniPreparati;
+	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private Set<Apoteka> apoteke;
+	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Pregled> pregledi;
 	

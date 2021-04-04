@@ -49,7 +49,6 @@ Vue.component("profil-preparati", {
 			.get("api/preparat")
 			.then(response => {
 				this.preparati = response.data
-				
 			});
     }
 });

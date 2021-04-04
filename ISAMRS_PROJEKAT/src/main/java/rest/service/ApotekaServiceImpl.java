@@ -1,16 +1,22 @@
 package rest.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import rest.domain.AdminApoteke;
 import rest.domain.Apoteka;
+import rest.domain.Dermatolog;
+import rest.domain.Pregled;
 import rest.dto.ApotekaDTO;
+import rest.dto.PregledDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
+import rest.repository.DermatologRepository;
 import rest.util.ApotekaSearchParams;
 
 @Service
@@ -18,12 +24,15 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	private ApotekeRepository apoteke;
 	private AdminApotekeRepository admin;
+	private DermatologRepository dermatolozi;
+	
 	private static final int pageSize = 10;
 
 	@Autowired
-	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are) {
+	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr) {
 		apoteke = ar;
 		admin = are;
+		dermatolozi = dr;
 	}
 	
 	@Override
@@ -58,6 +67,17 @@ public class ApotekaServiceImpl implements ApotekaService {
 	@Override
 	public Apoteka getForAdmin(int id) {
 		return admin.getApoteka(id);
+	}
+
+	@Override
+	public Collection<PregledDTO> getPregledi(int id) {
+		Collection<Pregled> pregledi = apoteke.getPreCreated(id);
+		ArrayList<PregledDTO> ret = new ArrayList<PregledDTO>();
+		for(Pregled p : pregledi) {
+			Dermatolog d = dermatolozi.findById(p.getZaposleni().getId()).get();
+			ret.add(new PregledDTO(p, d.getOcena()));
+		}
+		return ret;
 	}
 
 }

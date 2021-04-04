@@ -16,7 +16,7 @@ body {
     --text-color: #000000;
 }
 
-/*Pregled manifestacija*/
+/* GENERAL */
 
 * {
   box-sizing: border-box;
@@ -302,3 +302,14 @@ div.desc {
 }
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+/* DROPDOWN SEARCH */
+
+.dropdown {
+  margin: 20px;
+}
+
+.dropdown-menu {
+  max-height: 20rem;
+  overflow-y: auto;
+}

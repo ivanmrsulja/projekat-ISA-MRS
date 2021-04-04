@@ -1,8 +1,11 @@
 Vue.component("profil-pacijenta", {
 	data: function () {
 		    return {
-				penali : {},
-				pacijent: {korisnik:"", tip:""}
+				penali: [],
+				pacijent: {korisnik:"", tip:""},
+				alergije: [],
+				searchPhrase: "",
+				preparati: []
 		    }
 	},
 	template: ` 
@@ -71,6 +74,49 @@ Vue.component("profil-pacijenta", {
             </tbody>
      	</table>
      	</div>
+     	
+     	<br/>
+     	<br/>
+     	<br/>
+     	<br/>
+     	
+     	<h2> Alergije </h2>
+     	
+     	<table class="table table-hover" style="width: 60%">
+            <thead>
+            	<tr>
+                <th scope="col">Naziv</th>
+                <th scope="col">Proizvodjac</th>
+                <th scope="col">Sastav</th>
+                <th scope="col">Akcija</th>
+                </tr>
+           	</thead>
+            <tbody>
+                <tr v-for="a in alergije">
+                    <td>{{a.naziv}}</td>
+                    <td>{{a.proizvodjac}}</td>
+                    <td>{{a.sastav}}</td>
+                    <td><input type="button" value="Ukloni" v-on:click="ukloniAlergiju(a)" /></td>
+            	</tr>           
+            </tbody>
+     	</table>
+     	
+     	<br/>
+     	<div class="dropdown">
+		    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_coins" data-toggle="dropdown" aria-haspopup="true"
+		        aria-expanded="false">
+		        Dodaj alergiju
+		    </button>
+		    <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_coins">
+		        <form class="px-4 py-2">
+		            <input type="search" class="form-control" id="searchPhrase" placeholder="Pretraga" autofocus="autofocus" v-on:input="filter()" v-model="searchPhrase" />
+		        </form>
+		        <div id="menuItems">
+		        	<input v-for="p in preparati" type="button" class="dropdown-item" :value="p.naziv + ' - ' + p.proizvodjac" v-on:click="dodajAlergiju(p)" />
+		        </div>
+		        <div id="empty" class="dropdown-header">No coins found</div>
+		    </div>
+		</div>
 </div>		  
 `
 	,
@@ -83,6 +129,46 @@ Vue.component("profil-pacijenta", {
 				})
 				.catch(err => {
 					alert(err.data);
+				});
+		},
+		filter: function(){
+			console.log(this.searchPhrase);
+		    let collection = [];
+		    let hidden = 0;
+		    let items = document.getElementsByClassName("dropdown-item")
+		    let length = items.length;
+		    let word = $("#searchPhrase").val();
+		    
+		    for (let i = 0; i < length; i++) {
+		    if (items[i].value.toLowerCase().includes(word)) {
+		        $(items[i]).show();
+		    }
+		    else {
+		        $(items[i]).hide()
+		        hidden++;
+		    }
+		    }
+		
+		    //If all items are hidden, show the empty view
+		    if (hidden === length) {
+		    	$('#empty').show();
+		    }
+		    else {
+		    	$('#empty').hide();
+		    }
+		},
+		dodajAlergiju: function(p){
+			axios
+				.get("api/users/dodajAlergije/" + parseInt(this.pacijent.korisnik.id) + "/" + parseInt(p.id))
+				.then(response => {
+					this.alergije = response.data;
+				});
+		},
+		ukloniAlergiju: function(a){
+			axios
+				.delete("api/users/alergije/" + parseInt(this.pacijent.korisnik.id) + "/" + parseInt(a.id))
+				.then(response => {
+					this.alergije = response.data;
 				});
 		}
 	},
@@ -99,8 +185,21 @@ Vue.component("profil-pacijenta", {
 					.then(response => {
 						this.pacijent = response.data;
 					});
+				axios
+					.get("api/users/alergije/" + data.data.id)
+					.then(response => {
+						this.alergije = response.data;
+					});
             }
         });
+        
+        axios
+			.get("api/preparat")
+			.then(response => {
+				this.preparati = response.data;
+			});
+		
+		$('#empty').hide();
 		
     }
 });

@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import rest.domain.Apoteka;
 import rest.domain.Pacijent;
+import rest.domain.Preparat;
 
 public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 
 	@Query("select a from Pacijent p join p.apoteke a where p.id = ?1")
 	Collection<Apoteka> getPharmaciesForUser(int id);
+	
+	@Query("select a from Pacijent p join p.alergije a where p.id = ?1")
+	Collection<Preparat> getAllergiesForUser(int id);
+	
 }

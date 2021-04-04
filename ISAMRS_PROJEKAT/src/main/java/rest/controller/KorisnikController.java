@@ -28,9 +28,11 @@ import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PenalDTO;
 import rest.dto.PregledDTO;
+import rest.dto.PreparatDTO;
 import rest.dto.RezervacijaDTO;
 import rest.service.AkcijaPromocijaService;
 import rest.service.KorisnikService;
+import rest.service.PacijentService;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,11 +40,13 @@ public class KorisnikController {
 
 	private KorisnikService userService;
 	private AkcijaPromocijaService akcijaService;
+	private PacijentService pacijentService;
 	
 	@Autowired
-	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps) {
+	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps, PacijentService pacijentService) {
 		this.userService = us;
 		this.akcijaService = aps;
+		this.pacijentService = pacijentService;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -177,4 +181,18 @@ public class KorisnikController {
 		return akcijaService.getForUser(id);
 	}
 	
+	@GetMapping(value = "/alergije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PreparatDTO> getAllergies(@PathVariable("id") int id){
+		return pacijentService.allergies(id);
+	}
+	
+	@GetMapping(value = "/dodajAlergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PreparatDTO> addAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
+		return pacijentService.addAllergy(id, idPrep);
+	}
+	
+	@DeleteMapping(value = "/alergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PreparatDTO> removeAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
+		return pacijentService.removeAllergy(id, idPrep);
+	}
 }

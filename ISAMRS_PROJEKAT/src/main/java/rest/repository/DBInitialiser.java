@@ -3,6 +3,8 @@ package rest.repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,7 +17,6 @@ import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
 import rest.domain.ERecept;
 import rest.domain.Farmaceut;
-
 import rest.domain.Lokacija;
 import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
@@ -70,6 +71,7 @@ public class DBInitialiser implements ApplicationRunner {
 	private AkcijaPromocijaRepository akcijaRepo;
 	
 	@Override
+	@Transactional
 	public void run(ApplicationArguments args) throws Exception {
 		TipKorisnika tk1 = new TipKorisnika("REGULAR", 0, 1);
 		tipKorisnikaRepo.save(tk1);
@@ -126,8 +128,8 @@ public class DBInitialiser implements ApplicationRunner {
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2020-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2020-04-06"), n, d));
 		
-		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);		
-		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,0,0);		
+		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
+		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,7,30);		
 		korisnici.save(d1);
 		korisnici.save(d2);
 		
@@ -167,6 +169,13 @@ public class DBInitialiser implements ApplicationRunner {
 		pr3.addZamenskiPreparat(pr2);
 		preparatRepo.save(pr3);
 		
+		p1.getAlergije().add(pr1);
+		korisnici.save(p1);
+		p1.getAlergije().add(pr2);
+		korisnici.save(p1);
+		p2.getAlergije().add(pr3);
+		korisnici.save(p2);
+		
 		ERecept er1 = new ERecept(LocalDate.parse("2020-03-07"), p1, StatusERecepta.NOV);
 		ERecept er2 = new ERecept(LocalDate.parse("2020-03-03"), p1, StatusERecepta.OBRADJEN);
 		eaReceptiRepo.save(er1);
@@ -197,10 +206,15 @@ public class DBInitialiser implements ApplicationRunner {
 		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
 		Pregled pre3 = new Pregled("Lorem ipsum solor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
 		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
+		Pregled pre5 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-11"), LocalTime.parse("09:00"), 45, 5000, d1, null, a1);
+		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-13"), LocalTime.parse("13:00"), 45, 4000, d1, null, a2);
+		
 		pregledRepo.save(pre1);
 		pregledRepo.save(pre2);
 		pregledRepo.save(pre3);
 		pregledRepo.save(pre4);
+		pregledRepo.save(pre5);
+		pregledRepo.save(pre6);
 		
 		AkcijaPromocija ap1 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma1);
 		AkcijaPromocija ap2 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma2);
@@ -209,8 +223,10 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		p1.addApoteka(a1);
 		p2.addApoteka(a2);
-		korisnici.save(p1);
-		korisnici.save(p2);
+		apotekaRepo.save(a1);
+		apotekaRepo.save(a2);
+		
+		
 	}
 
 }

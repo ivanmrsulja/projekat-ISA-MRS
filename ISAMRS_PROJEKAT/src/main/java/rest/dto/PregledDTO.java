@@ -16,9 +16,11 @@ public class PregledDTO {
 	private LocalTime vrijeme;
 	private int trajanje;
 	private double cijena;
+	private KorisnikDTO zaposleni;
+	private double ocena;
 	
 	public PregledDTO() {}
-	public PregledDTO(Pregled p) {
+	public PregledDTO(Pregled p, double ocena) {
 		id = p.getId();
 		izvjestaj = p.getIzvjestaj();
 		status = p.getStatus();
@@ -27,7 +29,10 @@ public class PregledDTO {
 		vrijeme = p.getVrijeme();
 		trajanje = p.getTrajanje();
 		cijena = p.getCijena();
+		zaposleni = new KorisnikDTO(p.getZaposleni());
+		this.ocena = ocena;
 	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -76,5 +81,16 @@ public class PregledDTO {
 	public void setCijena(double cijena) {
 		this.cijena = cijena;
 	}
-	
+	public KorisnikDTO getZaposleni() {
+		return zaposleni;
+	}
+	public void setZaposleni(KorisnikDTO zaposleni) {
+		this.zaposleni = zaposleni;
+	}
+	public double getOcena() {
+		return ocena;
+	}
+	public void setOcena(double ocena) {
+		this.ocena = ocena;
+	}
 }

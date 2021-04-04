@@ -40,7 +40,7 @@ Vue.component("pregled-apoteka", {
 		<br/>
 		<div class="card" v-for="a in this.apoteke">
 		  <div class="post-container">
-	      <div class="post-thumb"><img src="css/drugstore.jpg" style="height:200px;"></img></div>
+	      <div class="post-thumb"><img :src="randomItem(images)" style="height:200px;"></img></div>
 		  <div class="post-content">
 	      <h2 style="margin-bottom:6px">{{a.naziv}}</h2>
 	      <p>{{a.lokacija.ulica}}</p>
@@ -69,7 +69,10 @@ Vue.component("pregled-apoteka", {
 		},
 		pregledaj: function(a){
 			this.$router.push({ name: "PregledApoteke", params: {id: a.id}});
-		}
+		},
+		randomItem (items) {
+	    	return 'https://picsum.photos/900/500?random=' + Math.floor(Math.random() * 200);
+	    }
 	},
 	mounted: function() {
 		axios
