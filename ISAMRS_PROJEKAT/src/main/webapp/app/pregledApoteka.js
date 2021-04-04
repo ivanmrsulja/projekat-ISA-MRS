@@ -18,7 +18,7 @@ Vue.component("pregled-apoteka", {
 			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Unesite naziv" v-model="searchParams.naziv" /></td></tr>
 			  <tr><td colspan=2 ><input type="text" name="lokacija" placeholder="Unesite adresu" v-model="searchParams.lokacija" /></td></tr>
 			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" name="startOcena" v-model="searchParams.startOcena" ></td></tr>
-			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" name="endOcena" v-model="searchParams.endOcena" ></td></tr>
+			  <tr><td style="color:white">Ocena do:</td> <td><input type="number" name="endOcena" v-model="searchParams.endOcena" ></td></tr>
 			  <tr v-bind:hidden="!ulogovan" ><td style="color:white">Rastojanje do(km):</td> <td><input type="number" name="rastojanje" v-model="searchParams.rastojanje" ></td></tr>
 			  <tr><td style="color:white">Sortiraj po:</td> 
 			  		<td>
