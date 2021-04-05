@@ -32,10 +32,16 @@ Vue.component("pojedinacni-erecept", {
 `
 	,
 	mounted: function() {
-		axios
-			.get("api/eRecept/stavke/" + this.$route.params.recept)
-			.then(response => {
-				this.stavke = response.data;
-			});
+		axios.get("/api/users/currentUser").then(data => {
+            if(data.data){
+            	axios
+					.get("api/eRecept/stavke/" + this.$route.params.recept)
+					.then(response => {
+						this.stavke = response.data;
+					});
+           }else{
+            	this.$router.push({ path: "/" });
+            } 
+        });
     }
 });

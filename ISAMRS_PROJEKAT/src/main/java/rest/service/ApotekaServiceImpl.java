@@ -2,6 +2,8 @@ package rest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,10 +15,12 @@ import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Pregled;
 import rest.dto.ApotekaDTO;
+import rest.dto.EReceptDTO;
 import rest.dto.PregledDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.DermatologRepository;
+import rest.repository.PregledRepository;
 import rest.util.ApotekaSearchParams;
 
 @Service
@@ -70,13 +74,33 @@ public class ApotekaServiceImpl implements ApotekaService {
 	}
 
 	@Override
-	public Collection<PregledDTO> getPregledi(int id) {
+	public Collection<PregledDTO> getPregledi(int id, String criteria) {
 		Collection<Pregled> pregledi = apoteke.getPreCreated(id);
+		
 		ArrayList<PregledDTO> ret = new ArrayList<PregledDTO>();
 		for(Pregled p : pregledi) {
 			Dermatolog d = dermatolozi.findById(p.getZaposleni().getId()).get();
 			ret.add(new PregledDTO(p, d.getOcena()));
 		}
+		
+		if(criteria.equals("cena")) {
+			Collections.sort(ret, new Comparator<PregledDTO>() {
+							
+							@Override
+							public int compare(PregledDTO e1, PregledDTO e2) {
+								return Double.compare(e1.getCijena(), e2.getCijena());
+							}
+						});
+		}else if(criteria.equals("ocena")) {
+			Collections.sort(ret, new Comparator<PregledDTO>() {
+				
+				@Override
+				public int compare(PregledDTO e1, PregledDTO e2) {
+					return Double.compare(e2.getOcena(), e1.getOcena());
+				}
+			});
+		}
+		
 		return ret;
 	}
 

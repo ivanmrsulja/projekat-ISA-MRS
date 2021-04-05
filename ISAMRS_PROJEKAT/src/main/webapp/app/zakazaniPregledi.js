@@ -20,7 +20,7 @@ Vue.component("zakazani-pregledi", {
                	<th scope="col">Vrijeme</th>
              	<th scope="col">Trajanje</th>
            		<th scope="col">Cijena</th>
-
+				<th scope="col">Akcija</th>
                 </tr>
            	</thead>
             <tbody>
@@ -31,6 +31,8 @@ Vue.component("zakazani-pregledi", {
                     <td>{{p.vrijeme}}</td>
                     <td>{{p.trajanje}}</td>
 					<td>{{p.cijena}}</td>
+					<td v-if="!isValid(p)"><input type="button" value="Otkazi" v-on:click="otkazi(p)" /></td>
+					<td v-else ><h4 style="color: lightgray" >ISTEKLO</h4></td>
             	</tr>           
             </tbody>
      	</table>
@@ -49,18 +51,35 @@ Vue.component("zakazani-pregledi", {
 			.then(response => {
 				this.pregledi = response.data.content;
 			});
+		},
+		otkazi: function(p){
+			axios
+			.patch("api/apoteke/otkazi/" + p.id)
+			.then(response => {
+				if (response.data == "OK"){
+					this.loadNext(this.$route.params.page);
+				}else{
+					alert(response.data);
+				}
+			});
+		},
+		isValid: function(p){
+			let d = new Date(p.datum);
+			return (d.getTime()) + parseInt(p.vrijeme.split(':')[0]) * 3600000 > Date.now() - 86400000;
 		}
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(response => {
-            this.korisnik = response.data;
             if(response.data){
+            	this.korisnik = response.data;
                 axios
 				.get("api/users/pregledi/" + response.data.id + "/" + this.$route.params.page)
 				.then(response => {
 					this.pregledi = response.data.content;
 					this.numPages = response.data.totalPages - 1;
 				});
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
 			

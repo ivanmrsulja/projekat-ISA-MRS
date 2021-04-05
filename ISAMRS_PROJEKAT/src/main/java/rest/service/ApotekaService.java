@@ -19,5 +19,5 @@ public interface ApotekaService {
 	
 	Apoteka getForAdmin(int id);
 	
-	Collection<PregledDTO> getPregledi(int id);
+	Collection<PregledDTO> getPregledi(int id, String criteria);
 }

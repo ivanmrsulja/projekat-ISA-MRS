@@ -94,7 +94,9 @@ Vue.component("istorija-pregleda", {
 							this.pregledi = response.data.content;
 							this.numPages = response.data.totalPages - 1;
 						});
-	            }
+	            }else{
+            	this.$router.push({ path: "/" });
+            }
         });
     }
 });

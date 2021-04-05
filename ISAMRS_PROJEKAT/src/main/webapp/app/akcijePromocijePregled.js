@@ -42,6 +42,8 @@ Vue.component("akcije-promocije", {
 				.then(response => {
 					this.akcijePromocije = response.data
 				});
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
     }

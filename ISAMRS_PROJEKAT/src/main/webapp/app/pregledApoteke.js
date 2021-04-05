@@ -8,7 +8,8 @@ Vue.component("pregled-apoteke", {
                 },
                 farmaceuti: [],
                 dermatolozi: [],
-                pregledi: []
+                pregledi: [],
+                korisnik: null
 		    }
 	},
 	template: ` 
@@ -64,6 +65,16 @@ Vue.component("pregled-apoteke", {
 	<br/><br/>
 	
 	<h2>Slobodni termini pregleda</h2>
+	<div class="dropdown" v-bind:hidden="pregledi.length == 0" >
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Sortiraj po:
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" v-on:click="sortiraj('cena')">CENA</a>
+		    <a class="dropdown-item" v-on:click="sortiraj('ocena')">OCENA DERMATOLOGA</a>
+		  </div>
+	</div>
+	<br/>
      <table class="table table-hover" style="width: 60%" >
 		 <thead>
 			<tr  bgcolor="#90a4ae">
@@ -82,7 +93,7 @@ Vue.component("pregled-apoteke", {
 			<td>{{p.vrijeme}}</td>
 			<td>{{p.cijena}}</td>
 			<td>{{p.ocena}} </td>
-			<td><input type="button" value="Zakazi pregled" /></td>
+			<td><input type="button" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik" /></td>
 		</tr>
 		</tbody>
 	</table>
@@ -116,7 +127,39 @@ Vue.component("pregled-apoteke", {
                  })
              });
              map.addLayer(layer);
-        },      
+        },
+        zakazi: function(p){
+        	axios
+	        .get("/api/users/currentUser")
+	        .then(response => {
+	            if(response.data == null){
+	            	alert("Niste ulogovani");
+	            }else{
+	            console.log(response.data);
+	            	axios
+			        .put("/api/apoteke/zakaziPregled/" + p.id + "/" + response.data.id)
+			        .then(response => {
+			        	if(response.data != null){
+			            	this.pregledi = response.data;
+			            } else {
+			            	alert("Doslo je do greske prilikom zakazivanja.");
+			            	axios
+					        .get("/api/apoteke/pregledi/" + this.$route.params.id)
+					        .then(response => {
+					            this.pregledi = response.data;
+					        });
+			            }
+			        });
+	            }
+	        });
+        },
+        sortiraj: function(criteria){
+        	axios
+	        .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=" + criteria)
+	        .then(response => {
+	            this.pregledi = response.data;
+	        });
+        }
     },
     mounted: function(){
         axios
@@ -136,9 +179,14 @@ Vue.component("pregled-apoteke", {
             this.dermatolozi = response.data;
         });
         axios
-        .get("/api/apoteke/pregledi/" + this.$route.params.id)
+        .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=none")
         .then(response => {
             this.pregledi = response.data;
+        });
+        axios
+        .get("/api/users/currentUser")
+        .then(response => {
+            this.korisnik = response.data;
         });
     }
 });

@@ -52,7 +52,7 @@ public class Pacijent extends Korisnik {
 	@JoinTable(joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private Set<Apoteka> apoteke;
 	
-	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
 	private Set<Pregled> pregledi;
 	
 	public Pacijent() {

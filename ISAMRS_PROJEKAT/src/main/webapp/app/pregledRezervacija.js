@@ -44,6 +44,8 @@ Vue.component("lista-rezervacija", {
 				.then(response => {
 					this.rezervacije = response.data;
 				});
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
     }

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.aspect.Pacijent;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 import rest.service.ApotekaService;
+import rest.service.PregledService;
 import rest.util.ApotekaSearchParams;
 
 @RestController
@@ -29,10 +32,12 @@ import rest.util.ApotekaSearchParams;
 public class ApotekaController {
 	
 	private ApotekaService apotekaService;
+	private PregledService pregledService;
 	
 	@Autowired
-	public ApotekaController(ApotekaService as) {
+	public ApotekaController(ApotekaService as, PregledService ps) {
 		apotekaService = as;
+		pregledService = ps;
 	}
 	
 	@GetMapping(value="/all/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,8 +69,8 @@ public class ApotekaController {
 	}
 	
 	@GetMapping(value="pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<PregledDTO> getPreCreatedExaminations(@PathVariable int id) {
-		return apotekaService.getPregledi(id);
+	public Collection<PregledDTO> getPreCreatedExaminations(@PathVariable int id, @RequestParam String criteria) {
+		return apotekaService.getPregledi(id, criteria);
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -79,4 +84,26 @@ public class ApotekaController {
 		apotekaService.update(apoteka);
 		return new ResponseEntity<ApotekaDTO>(apoteka, HttpStatus.OK);
 	}
+	
+	@PutMapping(value="zakaziPregled/{idp}/{idpa}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<PregledDTO> scheduleExamination(@PathVariable int idp, @PathVariable int idpa) {
+		try {
+			return pregledService.zakaziPregled(idp, idpa);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@Pacijent
+	@PatchMapping(value="otkazi/{idp}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String unscheduleExamination(@PathVariable int idp) {
+		try {
+			pregledService.otkaziPregled(idp);
+			return "OK";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return e.getMessage();
+		}
+	}
+	
 }

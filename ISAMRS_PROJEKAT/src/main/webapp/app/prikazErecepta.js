@@ -84,13 +84,15 @@ Vue.component("pregled-erecepata", {
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(data => {
-			this.korisnik = data.data;
             if(data.data){
+            	this.korisnik = data.data;
                 axios
 				.get("api/eRecept/all/" + data.data.id + "?sort=false&descending=false&status=SVI")
 				.then(response => {
 					this.recepti = response.data;
 				});
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
 		

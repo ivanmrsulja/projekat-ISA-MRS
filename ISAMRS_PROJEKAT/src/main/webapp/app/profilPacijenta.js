@@ -190,6 +190,8 @@ Vue.component("profil-pacijenta", {
 					.then(response => {
 						this.alergije = response.data;
 					});
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
         

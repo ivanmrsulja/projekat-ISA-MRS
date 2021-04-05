@@ -28,7 +28,7 @@ import rest.repository.TipKorisnikaRepository;
 @Service
 public class KorisnikServiceImpl implements KorisnikService {
 
-	private static final int defaultPageSize = 1;
+	private static final int defaultPageSize = 10;
 	private KorisnikRepository korisnikRepository;
 	private PacijentRepository pacijentRepository;
 	private PenalRepository penalRepository;
