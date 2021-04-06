@@ -2,6 +2,8 @@ package rest.service;
 
 import java.util.Collection;
 
+import rest.domain.Pacijent;
+import rest.dto.PacijentDTO;
 import rest.dto.PreparatDTO;
 
 public interface PacijentService {
@@ -11,4 +13,10 @@ public interface PacijentService {
 	Collection<PreparatDTO> addAllergy(int id, int idPrep);
 	
 	Collection<PreparatDTO> removeAllergy(int id, int idPrep);
+	
+	Collection<Pacijent> getAll();
+	
+	Collection<Pacijent> getMine(int id);
+
+	Pacijent getOne(int id);
 }
