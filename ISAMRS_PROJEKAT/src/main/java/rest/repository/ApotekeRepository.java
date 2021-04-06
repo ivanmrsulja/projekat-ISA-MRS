@@ -25,4 +25,5 @@ public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
 	
 	@Query("select p from Apoteka a join a.pregledi p where p.status = 1 and a.id = ?1")
 	public Collection<Pregled> getPreCreated(int id);
+	
 }

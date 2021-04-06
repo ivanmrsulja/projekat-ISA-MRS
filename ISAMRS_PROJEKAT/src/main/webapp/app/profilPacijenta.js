@@ -79,7 +79,7 @@ Vue.component("profil-pacijenta", {
      	</table>
      	</div>
      	
-     	<div id="map" class="map"></div>
+     	<div id="map" class="map-right"></div>
      	
      	<br/>
      	<br/>

@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.aspect.Pacijent;
+import rest.domain.Korisnik;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 import rest.service.ApotekaService;
+import rest.service.KorisnikService;
 import rest.service.PregledService;
 import rest.util.ApotekaSearchParams;
 
@@ -33,11 +35,13 @@ public class ApotekaController {
 	
 	private ApotekaService apotekaService;
 	private PregledService pregledService;
+	private KorisnikService userService;
 	
 	@Autowired
-	public ApotekaController(ApotekaService as, PregledService ps) {
+	public ApotekaController(ApotekaService as, PregledService ps, KorisnikService us) {
 		apotekaService = as;
 		pregledService = ps;
+		userService = us;
 	}
 	
 	@GetMapping(value="/all/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,7 +53,8 @@ public class ApotekaController {
 			params.setRastojanje(50000);
 			apoteke = apotekaService.getAllDrugStores(page, params, 0.0, 0.0);
 		}else {
-			apoteke = apotekaService.getAllDrugStores(page, params, user.getLokacija().getSirina(), user.getLokacija().getDuzina());
+			Korisnik k = userService.findOne(user.getId());
+			apoteke = apotekaService.getAllDrugStores(page, params, k.getLokacija().getSirina(), k.getLokacija().getDuzina());
 		}
 		ArrayList<ApotekaDTO> retVals = new ArrayList<ApotekaDTO>();
 		for(ApotekaDTO a : apoteke) {
@@ -101,7 +106,6 @@ public class ApotekaController {
 			pregledService.otkaziPregled(idp);
 			return "OK";
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			return e.getMessage();
 		}
 	}

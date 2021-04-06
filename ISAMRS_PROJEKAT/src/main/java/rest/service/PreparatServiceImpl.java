@@ -12,6 +12,7 @@ import rest.domain.DostupanProizvod;
 import rest.domain.Preparat;
 import rest.repository.PreparatRepository;
 import rest.repository.ApotekeRepository;
+import rest.repository.CenaRepository;
 import rest.service.ApotekaService;
 
 @Service
@@ -19,11 +20,13 @@ public class PreparatServiceImpl implements PreparatService{
 
 private PreparatRepository preparatRepository;
 private ApotekeRepository apotekeRepository;
-private ApotekaService apotekaService;
+private CenaRepository cenaRepository;
 	
 	@Autowired
-	public PreparatServiceImpl(PreparatRepository pr) {
+	public PreparatServiceImpl(PreparatRepository pr, ApotekeRepository ar, CenaRepository cr) {
 		this.preparatRepository = pr;
+		this.apotekeRepository = ar;
+		this.cenaRepository = cr;
 	}
 	
 	@Override
@@ -40,6 +43,6 @@ private ApotekaService apotekaService;
 
 	@Override
 	public Collection<Preparat> getAllForPharmacy(int id) {
-		return null;
+		return cenaRepository.drugsForPharmacy(id);
 	}
 }

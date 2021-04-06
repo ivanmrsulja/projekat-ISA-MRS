@@ -4,7 +4,8 @@ Vue.component("pregled-apoteka", {
 				apoteke : {},
 				numPages: 1,
 				searchParams: {naziv : "", lokacija: "", startOcena: 0, endOcena: 1000000, rastojanje: 50000, kriterijumSortiranja: "NAZIV", opadajuce: false},
-				ulogovan: false
+				ulogovan: false,
+				imageMap: new Map()
 		    }
 	},
 	template: ` 
@@ -40,7 +41,7 @@ Vue.component("pregled-apoteka", {
 		<br/>
 		<div class="card" v-for="a in this.apoteke">
 		  <div class="post-container">
-	      <div class="post-thumb"><img :src="randomItem()" style="height:200px;"></img></div>
+	      <div class="post-thumb"><img :src="imageMap[a.id]" style="height:200px;"></img></div>
 		  <div class="post-content">
 	      <h2 style="margin-bottom:6px">{{a.naziv}}</h2>
 	      <p>{{a.lokacija.ulica}}</p>
@@ -80,7 +81,9 @@ Vue.component("pregled-apoteka", {
 			.then(response => {
 				this.apoteke = response.data.content;
 				this.numPages = response.data.totalPages - 1;
-				
+				for(a of this.apoteke){
+					this.imageMap[a.id] = this.randomItem();
+				}
 			});
 		axios
 			.get("/api/users/currentUser")

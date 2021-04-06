@@ -51,7 +51,12 @@ public class PreparatController {
 	@GetMapping(value = "apoteka/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getPreparatiForApoteka(@PathVariable("id") int id)
 	{
-		return null;
+		Collection<Preparat> preparati = preparatService.getAllForPharmacy(id);
+		ArrayList<PreparatDTO> ret = new ArrayList<PreparatDTO>();
+		for(Preparat p : preparati) {
+			ret.add(new PreparatDTO(p));
+		}
+		return ret;
 	}
 
 }

@@ -83,12 +83,27 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		Lokacija l1 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
 		Lokacija l2 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
+		Lokacija l3 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
+		Lokacija l4 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
+		Lokacija l5 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
+		Lokacija l6 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
+		Lokacija l7 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
+		Lokacija l8 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
+		Lokacija l9 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
 		lokacijaRepo.save(l1);
 		lokacijaRepo.save(l2);
+		lokacijaRepo.save(l3);
+		lokacijaRepo.save(l4);
+		lokacijaRepo.save(l5);
+		lokacijaRepo.save(l6);
+		lokacijaRepo.save(l7);
+		lokacijaRepo.save(l8);
+		lokacijaRepo.save(l9);
+		
 		
 		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l2);
 		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 0, l1);
-		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l1);
+		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l3);
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
 		apotekaRepo.save(a3);
@@ -103,8 +118,8 @@ public class DBInitialiser implements ApplicationRunner {
 		a2.addAdmin(adma2);
 		apotekaRepo.save(a2);
 		
-		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l1, StatusNaloga.AKTIVAN, 200, tk1);
-		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l2, StatusNaloga.AKTIVAN, 0, tk1);
+		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l4, StatusNaloga.AKTIVAN, 200, tk1);
+		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l5, StatusNaloga.AKTIVAN, 0, tk1);
 		korisnici.save(p1);
 		korisnici.save(p2);
 		
@@ -133,8 +148,8 @@ public class DBInitialiser implements ApplicationRunner {
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2020-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2020-04-06"), n, d));
 		
-		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
-		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.DERMATOLOG,7,10);		
+		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
+		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7,10);		
 		korisnici.save(d1);
 		korisnici.save(d2);
 		
@@ -152,8 +167,8 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d1);
 		korisnici.save(d2);
 
-		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
-		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l1,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
+		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","email",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
 		korisnici.save(f1);
 		korisnici.save(f2);
 		

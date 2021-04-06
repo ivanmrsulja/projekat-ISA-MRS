@@ -47,6 +47,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		}else {
 			dir = Direction.ASC;
 		}
+		System.out.println(lat + "-" + lon);
 		Page<ApotekaDTO> allStores = apoteke.findAll(new PageRequest(stranica, pageSize, dir, params.getKriterijumSortiranja().toLowerCase()), params.getNaziv().toUpperCase(), params.getAdresa().toUpperCase(), params.getdOcena(), params.getgOcena(), lat, lon, params.getRastojanje()).map(a -> new ApotekaDTO(a));
 		return allStores;
 	}
