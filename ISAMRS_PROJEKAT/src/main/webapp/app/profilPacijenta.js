@@ -2,7 +2,7 @@ Vue.component("profil-pacijenta", {
 	data: function () {
 		    return {
 				penali: [],
-				pacijent: {korisnik:"", tip:""},
+				pacijent: {korisnik: { lokacija: ""}, tip:""},
 				alergije: [],
 				searchPhrase: "",
 				preparati: []
@@ -52,6 +52,10 @@ Vue.component("profil-pacijenta", {
 				<td> <input type="text" v-model="pacijent.tip.naziv" disabled/> </td>
 			</tr>
 			<tr>
+				<td> <h2>Adresa:</h2> </td>
+				<td> <input type="text" v-model="pacijent.korisnik.lokacija.ulica" disabled/> </td>
+			</tr>
+			<tr>
 				<td colspan="2" align=center> <input type="button" value="Posalji" v-on:click="update()" /> </td>
 			</tr>
 		</table>
@@ -74,6 +78,8 @@ Vue.component("profil-pacijenta", {
             </tbody>
      	</table>
      	</div>
+     	
+     	<div id="map" class="map"></div>
      	
      	<br/>
      	<br/>
@@ -170,6 +176,61 @@ Vue.component("profil-pacijenta", {
 				.then(response => {
 					this.alergije = response.data;
 				});
+		},
+		reverseGeolocation: function(coords){
+			let self = this;
+		   	fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + coords[0] + '&lat=' + coords[1])
+			     .then(function(response) {
+			            return response.json();
+			        }).then(function(json) {
+			            console.log(json);
+			            if (json.address.house_number == undefined){
+			            	if (json.address.building == undefined){
+			            		self.pacijent.korisnik.lokacija.ulica = json.address.road + ", " + json.address.city;
+			            	}else{
+			            		self.pacijent.korisnik.lokacija.ulica = json.address.road + ", " + json.address.building + ", " + json.address.city;
+			            	}
+			            }else{
+			            	self.pacijent.korisnik.lokacija.ulica = json.address.road + " " + json.address.house_number + ", " + json.address.city;
+			            }
+			            
+			        });
+		},
+		showMap : function(){
+			let self = this;
+			
+			var vectorSource = new ol.source.Vector({});
+		    var vectorLayer = new ol.layer.Vector({source: vectorSource});
+			
+			var map = new ol.Map({
+		        target: 'map',
+		        layers: [
+		          new ol.layer.Tile({
+		            source: new ol.source.OSM()
+		          }),vectorLayer
+		        ],
+		        view: new ol.View({
+		          center: ol.proj.fromLonLat([self.pacijent.korisnik.lokacija.duzina, self.pacijent.korisnik.lokacija.sirina]),
+		          zoom: 11
+		        })
+		      });
+		      
+			var marker;
+			  
+			setMarker = function(position) {
+				marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(position)));
+				vectorSource.addFeature(marker);
+			}
+			
+			map.on("click", function(event){
+				let position = ol.proj.toLonLat(event.coordinate);
+				self.pacijent.korisnik.lokacija.sirina = parseFloat(position.toString().split(",")[1]).toFixed(6);
+				self.pacijent.korisnik.lokacija.duzina = parseFloat(position.toString().split(",")[0]).toFixed(6);
+				vectorSource.clear();
+				setMarker(position);
+				self.reverseGeolocation(position);
+			});
+			
 		}
 	},
 	mounted: function() {
@@ -184,6 +245,7 @@ Vue.component("profil-pacijenta", {
 					.get("api/users/pacijent/" + data.data.id)
 					.then(response => {
 						this.pacijent = response.data;
+						this.showMap();
 					});
 				axios
 					.get("api/users/alergije/" + data.data.id)
@@ -202,6 +264,5 @@ Vue.component("profil-pacijenta", {
 			});
 		
 		$('#empty').hide();
-		
     }
 });

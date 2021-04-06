@@ -70,7 +70,7 @@ Vue.component("pregled-apoteka", {
 		pregledaj: function(a){
 			this.$router.push({ name: "PregledApoteke", params: {id: a.id}});
 		},
-		randomItem () {
+		randomItem: function() {
 	    	return 'https://picsum.photos/900/500?random=' + Math.floor(Math.random() * 200);
 	    }
 	},
