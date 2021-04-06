@@ -21,12 +21,13 @@ Vue.component("profil-preparati", {
    	},
 	
 	template: ` 
-
+<div align = center style="width:50%">
 	
-<div align = center style="width:75%">
+	<h1>Pregled preparata</h1>
+	<br/>
 	<table class="table table-hover">
 	 <thead>
-		<tr bgcolor="lightgrey">
+		<tr bgcolor="#90a4ae">
 			<th>Id</th>
 			<th>Naziv</th>
 			<th></th>
@@ -36,7 +37,7 @@ Vue.component("profil-preparati", {
 		<tr v-for="preparat in preparati""	>
                 <td>{{preparat.id}}</td>
                 <td>{{preparat.naziv}}</td> 
-                <td><input type="button" value="Pregledaj" v-on:click="pregledajPreparat(preparat)"/></td>                               
+                <td align = center><input type="button" value="Pregledaj" v-on:click="pregledajPreparat(preparat)"/></td>                               
 		</tr>
 	</tbody>
 	</table>

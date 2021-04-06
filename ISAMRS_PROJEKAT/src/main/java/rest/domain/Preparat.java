@@ -45,7 +45,6 @@ public class Preparat implements Ocenjivo{
 	@Column(name = "ocena", nullable = false)
 	private double ocena;
 	
-	//@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@ManyToMany
 	@JoinTable(name = "zamenski_preparati", joinColumns = @JoinColumn(name = "id_prvog", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "id_drugog", referencedColumnName = "id"))
 	private Set<Preparat> zamjenskiPreparati;
