@@ -9,6 +9,7 @@ Vue.component("pregled-apoteke", {
                 farmaceuti: [],
                 dermatolozi: [],
                 pregledi: [],
+				lekovi: [],
                 korisnik: null
 		    }
 	},
@@ -34,12 +35,14 @@ Vue.component("pregled-apoteke", {
 			<tr bgcolor="#90a4ae">
 				<th>Ime</th>
 				<th>Prezime</th>
+				<th>Email</th>
 			</tr>
 		</thead>
 		<tbody>
-		<tr v-for="s in farmaceuti">
-			<td>{{s.ime}}</td>
-			<td>{{s.prezime}}</td>
+		<tr v-for="f in farmaceuti">
+			<td>{{f.ime}}</td>
+			<td>{{f.prezime}}</td>
+			<td>{{f.email}}</td>
 		</tr>
 		</tbody>
 	</table>
@@ -52,12 +55,32 @@ Vue.component("pregled-apoteke", {
 			<tr bgcolor="#90a4ae">
 				<th>Ime</th>
 				<th>Prezime</th>
+				<th>Email</th>
 			</tr>
 		</thead>
 		<tbody>
-		<tr v-for="s in dermatolozi">
-			<td>{{s.ime}}</td>
-			<td>{{s.prezime}}</td>
+		<tr v-for="d in dermatolozi">
+			<td>{{d.ime}}</td>
+			<td>{{d.prezime}}</td>
+			<td>{{d.email}}</td>
+		</tr>
+		</tbody>
+	</table>
+	
+	<br/><br/>
+
+	<h2>Dostupni lekovi</h2>
+     <table class="table table-hover" style="width: 50%" >
+		 <thead>
+			<tr bgcolor="#90a4ae">
+				<th>Ime preparata</th>
+				<th>Proizvodjac</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr v-for="l in lekovi">
+			<td>{{l.naziv}}</td>
+			<td>{{l.proizvodjac}}</td>
 		</tr>
 		</tbody>
 	</table>
@@ -188,5 +211,10 @@ Vue.component("pregled-apoteke", {
         .then(response => {
             this.korisnik = response.data;
         });
+		axios
+		.get("/api/preparat/apoteka/" + this.$route.params.id)
+		.then(response => {
+			this.lekovi = response.data;
+		})
     }
 });

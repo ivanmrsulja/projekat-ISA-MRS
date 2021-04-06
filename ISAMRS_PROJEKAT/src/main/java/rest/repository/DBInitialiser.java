@@ -2,17 +2,22 @@ package rest.repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.stereotype.Component;
 
+import rest.domain.DostupanProizvod;
 import rest.domain.AdminApoteke;
 import rest.domain.AkcijaPromocija;
 import rest.domain.Apoteka;
+import rest.domain.Cena;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
 import rest.domain.ERecept;
@@ -225,10 +230,19 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		p1.addApoteka(a1);
 		p2.addApoteka(a2);
+		
+		LocalDate ld = LocalDate.now();
+		Cena cena = new Cena(a1, ld);
+		Set<DostupanProizvod> dostupni_proizvodi = new HashSet<DostupanProizvod>();
+		DostupanProizvod dp1 = new DostupanProizvod(4, 1000, pr1);
+		DostupanProizvod dp2 = new DostupanProizvod(7, 600, pr2);
+		dostupni_proizvodi.add(dp1);
+		dostupni_proizvodi.add(dp2);
+		cena.setDostupniProizvodi(dostupni_proizvodi);
+		a1.addCena(cena);
+		
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
-		
-		
 	}
 
 }

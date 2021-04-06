@@ -28,6 +28,7 @@ public class DostupanProizvod {
 		super();
 		this.kolicina = kolicina;
 		this.cena = cena;
+		this.preparat = preparat;
 	}	
 
 	public Integer getId() {
