@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class ApotekaController {
 		pregledService = ps;
 		userService = us;
 	}
+	
 	
 	@GetMapping(value="/all/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<ApotekaDTO> getAll(HttpSession sess, @PathVariable("page") int page, @RequestParam String naziv, @RequestParam String adresa, @RequestParam double dOcena, @RequestParam double gOcena, @RequestParam double rastojanje, @RequestParam String kriterijum, @RequestParam boolean smer) {

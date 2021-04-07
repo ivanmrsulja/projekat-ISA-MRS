@@ -162,7 +162,7 @@ Vue.component("pregled-apoteke", {
 	            	axios
 			        .put("/api/apoteke/zakaziPregled/" + p.id + "/" + response.data.id)
 			        .then(response => {
-			        	if(response.data != null){
+			        	if(response.data){
 			            	this.pregledi = response.data;
 			            } else {
 			            	alert("Doslo je do greske prilikom zakazivanja.");

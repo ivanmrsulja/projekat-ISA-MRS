@@ -128,6 +128,12 @@ Vue.component("profil-pacijenta", {
 	,
 	methods: {
 		update: function(){
+			
+			if (this.pacijent.korisnik.username.trim() == "" || this.pacijent.korisnik.ime.trim() == "" || this.pacijent.korisnik.prezime.trim() == "" || this.pacijent.korisnik.email.trim() == "" || this.pacijent.korisnik.telefon.trim() == ""){
+				alert("Popunite sva polja.");
+				return;
+			}
+			
 			axios
 				.put("api/users/" + this.pacijent.korisnik.id, this.pacijent.korisnik)
 				.then(response => {

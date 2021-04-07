@@ -39,6 +39,11 @@ public class PregledServiceImpl implements PregledService {
 		if(p.getStatus().equals(StatusPregleda.ZAKAZAN)) {
 			throw new Exception("Termin je vec rezervisan.");
 		}
+		int brojPenala = pacijentiRepo.getNumOfPenalities(idpa);
+		System.out.println(brojPenala + "AAAAAAAAAAAAAAAAAA");
+		if(brojPenala >= 3) {
+			throw new Exception("Imate " + brojPenala + " penala, rezervacije su vam onemogucene do 1. u sledecem mesecu.");
+		}
 		Pacijent pa = pacijentiRepo.findById(idpa).get();
 		pa.addPregled(p);
 		p.setStatus(StatusPregleda.ZAKAZAN);

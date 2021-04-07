@@ -227,7 +227,7 @@ public class DBInitialiser implements ApplicationRunner {
 		Pregled pre3 = new Pregled("Lorem ipsum solor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
 		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
 		Pregled pre5 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.now(), LocalTime.parse("09:00"), 45, 5000, d1, null, a1);
-		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-13"), LocalTime.parse("13:00"), 45, 4000, d1, null, a2);
+		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-13"), LocalTime.parse("13:00"), 45, 4000, d2, null, a2);
 		Pregled pre7 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-13"), LocalTime.parse("13:00"), 30, 4000, d2, null, a1);
 		
 		pregledRepo.save(pre1);

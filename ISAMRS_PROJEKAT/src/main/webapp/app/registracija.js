@@ -73,6 +73,11 @@ Vue.component("register-user", {
 				return;
 			}
 			
+			if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
+				alert("Email je u neispravnom formatu.");
+				return;
+			}
+			
 			if(pas != pasConf){
 				alert("Password-i moraju da se podudaraju.");
 				return;

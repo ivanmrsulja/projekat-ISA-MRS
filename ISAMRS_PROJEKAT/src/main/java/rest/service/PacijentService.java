@@ -17,6 +17,8 @@ public interface PacijentService {
 	Collection<Pacijent> getAll();
 	
 	Collection<Pacijent> getMine(int id);
+	
+	void removeAllPenalities();
 
 	Pacijent getOne(int id);
 }
