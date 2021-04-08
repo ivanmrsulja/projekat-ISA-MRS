@@ -42,10 +42,10 @@ Vue.component("register-pharmacist", {
 				<td> <h2>Adresa: </h2> </td> <td> <input type="text" name="adresa" v-model="currentPosition.adresa" disabled/> </td>
 			</tr>
             <tr>
-                <td> <h2>Pocetak radnog vremena: </td> <td> <input type="time" name="pocetakRV" required> </td>
+                <td> <h2>Pocetak radnog vremena: </h2> </td> <td> <input type="time" name="pocetakRV" required> </td>
             </tr>
             <tr>
-                <td> <h2>Kraj radnog vremena: </td> <td> <input type="time" name="krajRV" required> </td>
+                <td> <h2>Kraj radnog vremena: </h2> </td> <td> <input type="time" name="krajRV" required> </td>
             </tr>
 			<tr>
 				<td align=center colspan=2> 
@@ -158,7 +158,12 @@ Vue.component("register-pharmacist", {
 			
 		} 
 	},
-	mounted () {
+	mounted: function() {
         this.showMap();
+        axios.get("/api/users/currentUser").then(data => {
+            if(!data.data){
+            	this.$router.push({ path: "/" });
+            }
+        });
     }
 });

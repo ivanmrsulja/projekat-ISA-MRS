@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rest.aspect.AsAdminApoteke;
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
 import rest.domain.Ponuda;
@@ -76,6 +77,7 @@ public class FarmaceutController {
 		return new ResponseEntity<KorisnikDTO>(new KorisnikDTO(updatedFarmaceut), HttpStatus.OK);
 	}
 
+	@AsAdminApoteke
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody FarmaceutDTO farmaceut) throws Exception {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
