@@ -118,6 +118,12 @@ public class DBInitialiser implements ApplicationRunner {
 		a2.addAdmin(adma2);
 		apotekaRepo.save(a2);
 		
+		AdminApoteke adma3 = new AdminApoteke("Petar", "Markovic", "peki1", "peki1", "adm3@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a3);
+		korisnici.save(adma3);
+		a3.addAdmin(adma3);
+		apotekaRepo.save(a3);
+		
+		
 		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l4, StatusNaloga.AKTIVAN, 200, tk1);
 		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l5, StatusNaloga.AKTIVAN, 0, tk1);
 		korisnici.save(p1);
