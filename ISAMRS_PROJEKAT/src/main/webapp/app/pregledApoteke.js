@@ -163,15 +163,15 @@ Vue.component("pregled-apoteke", {
 			        .put("/api/apoteke/zakaziPregled/" + p.id + "/" + response.data.id)
 			        .then(response => {
 			        	if(response.data){
-			            	this.pregledi = response.data;
+			            	alert(response.data);
 			            } else {
 			            	alert("Doslo je do greske prilikom zakazivanja.");
-			            	axios
-					        .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=none")
-					        .then(response => {
-					            this.pregledi = response.data;
-					        });
 			            }
+                        axios
+                            .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=none")
+                            .then(response => {
+                                this.pregledi = response.data;
+                            });
 			        });
 	            }
 	        });
