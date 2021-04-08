@@ -38,8 +38,8 @@
 <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
-<a class="navigacija" href="#/regDerm" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_APOTEKE'">Registrovanje dermatologa</a>
-<a class="navigacija" href="#/regSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_APOTEKE'">Registrovanje dobavljaca</a>
+<a class="navigacija" href="#/regDerm" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje dermatologa</a>
+<a class="navigacija" href="#/regSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje dobavljaca</a>
 <a class="navigacija" href="#/istorijaPregleda/0/PLAIN" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Istorija pregleda</a>
 <a class="navigacija" href="#/zakazaniPregledi/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Zakazani pregledi</a>
 <a class="navigacija" href="#/pregledRezervacija" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moje rezervacije</a>
