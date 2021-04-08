@@ -2,22 +2,35 @@ package rest.service;
 
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
+import rest.domain.Zaposlenje;
+import rest.domain.ZaposlenjeKorisnika;
+import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.repository.FarmaceutRepository;
+import rest.repository.LokacijaRepository;
+import rest.repository.ZaposlenjeRepository;
 
 @Service
 public class FarmaceutServiceImpl implements FarmaceutService {
 
 	private FarmaceutRepository farmaceutRepository;
+	private ApotekaService apotekaService;
+	private ZaposlenjeRepository zaposlenjeRepository;
+	private LokacijaRepository lokacijaRepository;
 	
 	@Autowired
-	public FarmaceutServiceImpl(FarmaceutRepository imfr) {
+	public FarmaceutServiceImpl(FarmaceutRepository imfr, ApotekaService as, ZaposlenjeRepository zr, LokacijaRepository lr) {
 		this.farmaceutRepository = imfr;
+		this.apotekaService = as;
+		this.zaposlenjeRepository = zr;
+		this.lokacijaRepository = lr;
 	}
 
 	@Override
@@ -33,11 +46,29 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 	}
 
 	@Override
-	public Korisnik create(Farmaceut user) throws Exception {
-		if (user.getId() != 0) {
-			throw new Exception("Id mora biti null prilikom perzistencije novog entiteta.");
-		}
-		Korisnik savedUser = farmaceutRepository.save(user);
+	@Transactional
+	public Farmaceut create(FarmaceutDTO farmaceut, int idApoteke) throws Exception {
+		lokacijaRepository.save(farmaceut.getLokacija());
+		Farmaceut f = new Farmaceut();
+		f.setIme(farmaceut.getIme());
+		f.setPrezime(farmaceut.getPrezime());
+		f.setUsername(farmaceut.getUsername());
+		f.setEmail(farmaceut.getEmail());
+		f.setTelefon(farmaceut.getTelefon());
+		f.setLokacija(farmaceut.getLokacija());
+		f.setZaposlenjeKorisnika(farmaceut.getZaposlenjeKorisnika());
+		f.setPassword(farmaceut.getNoviPassw());
+		f.setLoggedBefore(false);
+		f.setZaposlenjeKorisnika(ZaposlenjeKorisnika.FARMACEUT);
+		f.setBrojOcena(0);
+		f.setSumaOcena(0);
+		f.setOcena(0);
+
+
+		Zaposlenje zaposlenje = new Zaposlenje(farmaceut.getPocetakRadnogVremena(), farmaceut.getKrajRadnogVremena(), apotekaService.getForAdmin(idApoteke), f);
+		zaposlenjeRepository.save(zaposlenje);
+		f.setZaposlenje(zaposlenje);
+		Farmaceut savedUser = farmaceutRepository.save(f);
 		return savedUser;
 	}
 

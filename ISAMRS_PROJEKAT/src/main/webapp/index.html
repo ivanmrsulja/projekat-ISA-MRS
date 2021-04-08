@@ -35,6 +35,7 @@
 <a class="navigacija" href="#/apoteke/0" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG' || korisnik.zaposlenjeKorisnika=='FARMACEUT' || korisnik.zaposlenjeKorisnika=='DOBAVLJAC' || korisnik.zaposlenjeKorisnika=='ADMIN_APOTEKE'">Pocetna</a>
 <a class="navigacija" href="#/preparati" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT' && korisnik.zaposlenjeKorisnika != 'PACIJENT'&& korisnik.zaposlenjeKorisnika != 'GOST'">Preparati</a>
 <a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Apoteke</a>
+<a class="navigacija" href="#/registracijaFarmaceuta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Registracija farmaceuta</a>
 <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
@@ -98,6 +99,7 @@
 <script src="app/preparatTable.js"></script>
 <script src="app/pregledPojedinacnogPreparata.js"></script>
 <script src="app/akcijePromocijePregled.js"></script>
+<script src="app/registracijaFarmaceuta.js"></script>
 
 <script src="app/pacijentTable.js"></script>
 <script src="app/pregledPacijenta.js"></script>

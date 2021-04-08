@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
+import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 
 
@@ -14,7 +15,7 @@ public interface FarmaceutService {
 	Collection<Farmaceut> findAll();
 	Collection<Farmaceut> findAllForPharmacy(int id);
 
-	Korisnik create(Farmaceut user) throws Exception;
+	Farmaceut create(FarmaceutDTO user, int idApoteke) throws Exception;
 
 	void delete(int id);
 

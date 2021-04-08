@@ -75,12 +75,14 @@ Vue.component("pregled-apoteke", {
 			<tr bgcolor="#90a4ae">
 				<th>Ime preparata</th>
 				<th>Proizvodjac</th>
+				<th>Ocena</th>
 			</tr>
 		</thead>
 		<tbody>
 		<tr v-for="l in lekovi">
 			<td>{{l.naziv}}</td>
 			<td>{{l.proizvodjac}}</td>
+			<td>{{l.ocena}}</td>
 		</tr>
 		</tbody>
 	</table>
