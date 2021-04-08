@@ -73,12 +73,10 @@ public class KorisnikServiceImpl implements KorisnikService {
 		if (userToUpdate == null) {
 			throw new Exception("Trazeni entitet nije pronadjen.");
 		}
-		userToUpdate.setIme(user.getIme());
-		userToUpdate.setPrezime(user.getPrezime());
-		userToUpdate.setUsername(user.getUsername());
-		userToUpdate.setTelefon(user.getTelefon());
-		lokacijaRepository.save(user.getLokacija());
-		userToUpdate.setLokacija(user.getLokacija());
+		
+		if(user.getStariPassw() != null && !user.getStariPassw().equals(userToUpdate.getPassword())) {
+			throw new Exception("Stari password je neispravan.");
+		}
 		
 		if(user.getStariPassw() != null && user.getStariPassw().equals(userToUpdate.getPassword())) {
 			if(user.getNoviPassw() == null || user.getNoviPassw().trim().equals("")) {
@@ -86,6 +84,14 @@ public class KorisnikServiceImpl implements KorisnikService {
 			}
 			userToUpdate.setPassword(user.getNoviPassw());
 		}
+		
+		userToUpdate.setIme(user.getIme());
+		userToUpdate.setPrezime(user.getPrezime());
+		userToUpdate.setUsername(user.getUsername());
+		userToUpdate.setTelefon(user.getTelefon());
+		lokacijaRepository.save(user.getLokacija());
+		userToUpdate.setLokacija(user.getLokacija());
+		
 		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
 		return updatedUSer;
 	}

@@ -89,8 +89,8 @@ Vue.component("pregled-apoteke", {
 	
 	<br/><br/>
 	
-	<h2>Slobodni termini pregleda</h2>
-	<div class="dropdown" v-bind:hidden="pregledi.length == 0" >
+	<h2 v-bind:hidden=" pregledi.length == 0">Slobodni termini pregleda</h2>
+	<div class="dropdown" v-bind:hidden=" pregledi.length == 0" >
 		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    Sortiraj po:
 		  </button>
@@ -100,7 +100,7 @@ Vue.component("pregled-apoteke", {
 		  </div>
 	</div>
 	<br/>
-     <table class="table table-hover" style="width: 60%" >
+     <table class="table table-hover" style="width: 60%" v-bind:hidden=" pregledi.length == 0" >
 		 <thead>
 			<tr  bgcolor="#90a4ae">
 				<th>Dermatolog</th>
@@ -165,15 +165,15 @@ Vue.component("pregled-apoteke", {
 			        .put("/api/apoteke/zakaziPregled/" + p.id + "/" + response.data.id)
 			        .then(response => {
 			        	if(response.data){
-			            	this.pregledi = response.data;
+			            	alert(response.data);
 			            } else {
 			            	alert("Doslo je do greske prilikom zakazivanja.");
-			            	axios
-					        .get("/api/apoteke/pregledi/" + this.$route.params.id)
-					        .then(response => {
-					            this.pregledi = response.data;
-					        });
 			            }
+                        axios
+                            .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=none")
+                            .then(response => {
+                                this.pregledi = response.data;
+                            });
 			        });
 	            }
 	        });
@@ -207,7 +207,8 @@ Vue.component("pregled-apoteke", {
         .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=none")
         .then(response => {
             this.pregledi = response.data;
-        });
+        })
+        .catch(response => { console.log("a"); });
         axios
         .get("/api/users/currentUser")
         .then(response => {

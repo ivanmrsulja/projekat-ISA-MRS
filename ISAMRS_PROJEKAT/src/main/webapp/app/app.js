@@ -1,12 +1,12 @@
-const LoginStrana = { template: '<pocetna-strana></pocetna-strana>' }
-const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' }
-const RegistracijaKorisnika = { template: '<register-user></register-user>'}
-const PregledApoteka = { template: '<pregled-apoteka></pregled-apoteka>'}
-const ProfilApoteke = { template: '<profil-apoteke></profil-apoteke>'}
-const dermatoloziTable = { template: '<profil-dermatolozi></profil-dermatolozi>'}
-const farmaceutiTable = { template: '<profil-farmaceuti></profil-farmaceuti>'}
-const IstorijaPregleda = { template: '<istorija-pregleda></istorija-pregleda>'}
-const ZakazaniPregledi = { template: '<zakazani-pregledi></zakazani-pregledi>'}
+const LoginStrana = { template: '<pocetna-strana></pocetna-strana>' };
+const TabelaPonuda = { template: '<pocetna-stranas></pocetna-stranas>' };
+const RegistracijaKorisnika = { template: '<register-user></register-user>'};
+const PregledApoteka = { template: '<pregled-apoteka></pregled-apoteka>'};
+const ProfilApoteke = { template: '<profil-apoteke></profil-apoteke>'};
+const dermatoloziTable = { template: '<profil-dermatolozi></profil-dermatolozi>'};
+const farmaceutiTable = { template: '<profil-farmaceuti></profil-farmaceuti>'};
+const IstorijaPregleda = { template: '<istorija-pregleda></istorija-pregleda>'};
+const ZakazaniPregledi = { template: '<zakazani-pregledi></zakazani-pregledi>'};
 const ProfilPacijenta = { template: '<profil-pacijenta></profil-pacijenta>'};
 const PregledRezervacija = { template: '<lista-rezervacija></lista-rezervacija>'};
 const PregledErecepata = { template: '<pregled-erecepata></pregled-erecepata>'};
@@ -16,6 +16,8 @@ const PregledApoteke = { template: '<pregled-apoteke></pregled-apoteke>'};
 const preparatiTable = {template: '<profil-preparati></profil-preparati>'};
 const PregledStavkiPreparata = { template: '<pojedinacni-preparat></pojedinacni-preparat>'};
 const RegistracijaFarmaceuta = { template: '<register-pharmacist></register-pharmacist>'};
+const registracijaDobavljaca = { template: '<register-supplier></register-supplier>' };
+const registracijaDermatologa = { template: '<register-dermatolog></register-dermatolog>' };
 
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
@@ -42,42 +44,45 @@ const router = new VueRouter({
 		{ path: '/apoteke/pregled/:id', component: PregledApoteke, name: "PregledApoteke" },
 		{ path: '/akcijePromocije', component: AkcijePromocije },
 		{ path: '/registracijaFarmaceuta', component: RegistracijaFarmaceuta },
-
+		{ path: '/regSupp', component: registracijaDobavljaca },
+        { path: '/regDerm', component: registracijaDermatologa },
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
 	  ]
-});
+	});
+
+
 
 
 var app = new Vue({
-	router,
-	el: '#apoteke',
-	data: {
-        korisnik: {zaposlenjeKorisnika : "GOST"},
+    router,
+    el: '#apoteke',
+    data: {
+        korisnik: { zaposlenjeKorisnika: "GOST" },
     },
-	mounted () {
-		let self = this;
-        axios.get("/api/users/currentUser").then(function(data){
-            if(data.data){
+    mounted() {
+        let self = this;
+        axios.get("/api/users/currentUser").then(function(data) {
+            if (data.data) {
                 self.korisnik = data.data;
             }
         });
-		this.$root.$on('sendingUser', (data) => {
-			this.korisnik = data;
-		});
+        this.$root.$on('sendingUser', (data) => {
+            this.korisnik = data;
+        });
     },
-     methods: {
-    	logout : function() {
-    		let self = this;
-    		axios
-    			.get("/api/users/logout")
-    			.then(function(resp){
-    				if(resp.data == "OK"){
-    					self.korisnik = {zaposlenjeKorisnika : "GOST"};
-    					self.$router.push({path: "/"});
-    					self.$root.$emit('loggingUserOut', self.korisnik);
-    				}
-    			});
-    	}   
+    methods: {
+        logout: function() {
+            let self = this;
+            axios
+                .get("/api/users/logout")
+                .then(function(resp) {
+                    if (resp.data == "OK") {
+                        self.korisnik = { zaposlenjeKorisnika: "GOST" };
+                        self.$router.push({ path: "/" });
+                        self.$root.$emit('loggingUserOut', self.korisnik);
+                    }
+                });
+        }
     }
 });

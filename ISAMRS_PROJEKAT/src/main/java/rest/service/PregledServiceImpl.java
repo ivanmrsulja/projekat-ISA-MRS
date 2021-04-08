@@ -2,6 +2,7 @@ package rest.service;
 
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -36,11 +37,25 @@ public class PregledServiceImpl implements PregledService {
 	@Transactional
 	public Collection<PregledDTO> zakaziPregled(int idp, int idpa) throws Exception {
 		Pregled p = preglediRepo.findById(idp).get();
+
 		if(p.getStatus().equals(StatusPregleda.ZAKAZAN)) {
 			throw new Exception("Termin je vec rezervisan.");
 		}
+
+		Collection<Pregled> svi = preglediRepo.rezervacijeZaKorisnika(idpa);
+		int s2 = (p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000);
+		int e2 = s2 + p.getTrajanje() * 60000;
+		for(Pregled pr : svi){
+			int s1 = (pr.getVrijeme().getHour() * 3600000 + pr.getVrijeme().getMinute() * 60000);
+			int e1 = s1 + pr.getTrajanje() * 60000;
+			if (pr.getDatum().equals(p.getDatum())){
+				if ( ( s2 >= s1 && s2 <= e1 && e2 >= s1 && e2 <= e1 ) || ( s1 >= s2 && s1 <= e2 && e1 >= s2 && e1 <= e2 )
+						|| ( s1 >= s2 && s1 <= e2 && e1 >= e2 ) || ( s2 >= s1 && s2 <= e1 && e2 >= e1 ) ){
+					throw new Exception("U tom terminu imate vec rezervisan pregled/savetovanje.");
+				}
+			}
+		}
 		int brojPenala = pacijentiRepo.getNumOfPenalities(idpa);
-		System.out.println(brojPenala + "AAAAAAAAAAAAAAAAAA");
 		if(brojPenala >= 3) {
 			throw new Exception("Imate " + brojPenala + " penala, rezervacije su vam onemogucene do 1. u sledecem mesecu.");
 		}

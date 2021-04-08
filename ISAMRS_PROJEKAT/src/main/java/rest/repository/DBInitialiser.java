@@ -13,35 +13,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.stereotype.Component;
 
-import rest.domain.DostupanProizvod;
-import rest.domain.AdminApoteke;
-import rest.domain.AkcijaPromocija;
-import rest.domain.Apoteka;
-import rest.domain.Cena;
-import rest.domain.Dermatolog;
-import rest.domain.Dobavljac;
-import rest.domain.ERecept;
-import rest.domain.Farmaceut;
-import rest.domain.Lokacija;
-import rest.domain.Narudzbenica;
-import rest.domain.Pacijent;
-import rest.domain.Penal;
-import rest.domain.Ponuda;
-import rest.domain.Pregled;
-import rest.domain.Preparat;
-import rest.domain.Rezervacija;
-import rest.domain.RezimIzdavanja;
-import rest.domain.StatusERecepta;
-import rest.domain.StatusNaloga;
-import rest.domain.StatusPonude;
-import rest.domain.StatusPregleda;
-import rest.domain.StatusRezervacije;
-import rest.domain.StavkaRecepta;
-import rest.domain.TipKorisnika;
-import rest.domain.TipLeka;
-import rest.domain.TipPregleda;
-import rest.domain.Zaposlenje;
-import rest.domain.ZaposlenjeKorisnika;
+import rest.domain.*;
 
 @Component
 public class DBInitialiser implements ApplicationRunner {
@@ -118,6 +90,14 @@ public class DBInitialiser implements ApplicationRunner {
 		a2.addAdmin(adma2);
 		apotekaRepo.save(a2);
 		
+		AdminApoteke adma3 = new AdminApoteke("Petar", "Markovic", "peki1", "peki1", "adm3@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a3);
+		korisnici.save(adma3);
+		a3.addAdmin(adma3);
+		apotekaRepo.save(a3);
+
+		AdminSistema as1 = new AdminSistema("Petar", "Markovic", "peki2", "peki2", "admsys@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_SISTEMA);
+		korisnici.save(as1);
+
 		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l4, StatusNaloga.AKTIVAN, 200, tk1);
 		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l5, StatusNaloga.AKTIVAN, 0, tk1);
 		korisnici.save(p1);

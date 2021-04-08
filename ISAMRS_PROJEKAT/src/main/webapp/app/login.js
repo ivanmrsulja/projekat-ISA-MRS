@@ -51,7 +51,7 @@ Vue.component("pocetna-strana", {
 						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
 							temp.$router.push({ path: "/apoteke/0" });
 						}else {
-							temp.$router.push({ path: "/" });
+							temp.$router.push({ path: "/regDerm" });
 						}
 						
 					});

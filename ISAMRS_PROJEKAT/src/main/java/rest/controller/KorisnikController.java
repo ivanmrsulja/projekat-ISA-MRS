@@ -1,9 +1,10 @@
 package rest.controller;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +21,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rest.domain.Dermatolog;
+import rest.domain.Dobavljac;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
+import rest.domain.Ponuda;
+import rest.aspect.AsPacijent;
 import rest.domain.StatusNaloga;
+import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
@@ -123,16 +131,57 @@ public class KorisnikController {
 		return "OK";
 	}
 	
+	@PostMapping(value = "/registerSupp", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerSupp(@RequestBody KorisnikDTO user) throws Exception {
+		Dobavljac k = new Dobavljac();
+		k.setIme(user.getIme());
+		k.setPrezime(user.getPrezime());
+		k.setUsername(user.getUsername());
+		k.setEmail(user.getEmail());
+		k.setTelefon(user.getTelefon());
+		k.setLokacija(user.getLokacija());
+		k.setPassword(user.getNoviPassw());
+		k.setLoggedBefore(false);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DOBAVLJAC);
+		Set<Ponuda> p = new HashSet<Ponuda>();
+		k.setPonude(p);
+		userService.create(k);
+		return "OK";
+	}
+	
+	@PostMapping(value = "/registerDerm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerDerm(@RequestBody KorisnikDTO user) throws Exception {
+		Dermatolog k = new Dermatolog();
+		k.setIme(user.getIme());
+		k.setPrezime(user.getPrezime());
+		k.setUsername(user.getUsername());
+		k.setEmail(user.getEmail());
+		k.setTelefon(user.getTelefon());
+		k.setLokacija(user.getLokacija());
+		k.setPassword(user.getNoviPassw());
+		k.setLoggedBefore(false);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DERMATOLOG);
+		Set<Zaposlenje> p = new HashSet<Zaposlenje>();
+		k.setZaposlenja(p);;
+		userService.create(k);
+		return "OK";
+	}
+	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Korisnik> createUser(@RequestBody Korisnik user) throws Exception {
 		Korisnik savedUser = userService.create(user);
 		return new ResponseEntity<Korisnik>(savedUser, HttpStatus.CREATED);
 	}
 
-
+	@AsPacijent
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updateUser(@RequestBody KorisnikDTO user, @PathVariable("id") int id)
 			throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		
 		if(user.getUsername().trim().equals("") || user.getPrezime().trim().equals("") || user.getIme().trim().equals("") || user.getLokacija() == null || user.getTelefon().trim().equals("")) {
 			return "Unesite sve podatke.";
@@ -158,23 +207,47 @@ public class KorisnikController {
 		return new ResponseEntity<String>("OK.", HttpStatus.OK);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/penali/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object[] getPenali(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.getPenali(id).stream().map(p -> new PenalDTO(p)).toArray();
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/istorijaPregleda/{id}/{page}/{criteria}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum, @PathVariable("criteria") String criteria){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.preglediZaKorisnika(id, pageNum, criteria);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/pregledi/{id}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.zakazivanjaZaKorisnika(id, pageNum);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/rezervacije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<RezervacijaDTO> getIstorijaPregleda(@PathVariable("id") int id){
+	public Collection<RezervacijaDTO> getIstorijaRezervacijaa(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.rezervacijeZaKorisnika(id);
 	}
 	
@@ -183,23 +256,47 @@ public class KorisnikController {
 		return userService.findPacijentById(id);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/akcije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<ApotekaDTO> getActionsPromotions(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return akcijaService.getForUser(id);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/alergije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> getAllergies(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return pacijentService.allergies(id);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/dodajAlergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> addAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return pacijentService.addAllergy(id, idPrep);
 	}
 	
+	@AsPacijent
 	@DeleteMapping(value = "/alergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> removeAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return pacijentService.removeAllergy(id, idPrep);
 	}
 }
