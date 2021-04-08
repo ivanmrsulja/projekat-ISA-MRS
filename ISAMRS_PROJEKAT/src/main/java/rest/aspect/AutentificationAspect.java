@@ -14,7 +14,7 @@ import rest.dto.KorisnikDTO;
 @Aspect
 public class AutentificationAspect {
 	
-	@Around("@annotation(Farmaceut)")
+	@Around("@annotation(AsFarmaceut)")
 	public Object farmaceutBofore(ProceedingJoinPoint joinPoint) throws Throwable {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
@@ -25,7 +25,7 @@ public class AutentificationAspect {
 		return joinPoint.proceed();
 	}
 	
-	@Around("@annotation(Dermatolog)")
+	@Around("@annotation(AsDermatolog)")
 	public Object dermatologBofore(ProceedingJoinPoint joinPoint) throws Throwable {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
@@ -36,7 +36,7 @@ public class AutentificationAspect {
 		return joinPoint.proceed();
 	}
 	
-	@Around("@annotation(AdminSistema)")
+	@Around("@annotation(AsAdminSistema)")
 	public Object adminSistemaBefore(ProceedingJoinPoint joinPoint) throws Throwable {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
@@ -47,7 +47,7 @@ public class AutentificationAspect {
 		return joinPoint.proceed();
 	}
 	
-	@Around("@annotation(AdminApoteke)")
+	@Around("@annotation(AsAdminApoteke)")
 	public Object adminApotekeBefore(ProceedingJoinPoint joinPoint) throws Throwable {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
@@ -58,7 +58,7 @@ public class AutentificationAspect {
 		return joinPoint.proceed();
 	}
 	
-	@Around("@annotation(Pacijent)")
+	@Around("@annotation(AsPacijent)")
 	public Object pacijentBefore(ProceedingJoinPoint joinPoint) throws Throwable {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
@@ -69,7 +69,7 @@ public class AutentificationAspect {
 		return joinPoint.proceed();
 	}
 	
-	@Around("@annotation(Dobavljac)")
+	@Around("@annotation(AsDobavljac)")
 	public Object dobavljacBefore(ProceedingJoinPoint joinPoint) throws Throwable {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");

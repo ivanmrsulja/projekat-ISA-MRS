@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rest.aspect.Pacijent;
+import rest.aspect.AsPacijent;
 import rest.domain.Korisnik;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
@@ -75,6 +75,7 @@ public class ApotekaController {
 		return new ApotekaDTO(this.apotekaService.getForAdmin(id));
 	}
 	
+	@AsPacijent
 	@GetMapping(value="pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PregledDTO> getPreCreatedExaminations(@PathVariable int id, @RequestParam String criteria) {
 		return apotekaService.getPregledi(id, criteria);
@@ -92,6 +93,7 @@ public class ApotekaController {
 		return new ResponseEntity<ApotekaDTO>(apoteka, HttpStatus.OK);
 	}
 	
+	@AsPacijent
 	@PutMapping(value="zakaziPregled/{idp}/{idpa}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PregledDTO> scheduleExamination(@PathVariable int idp, @PathVariable int idpa) {
 		try {
@@ -101,7 +103,7 @@ public class ApotekaController {
 		}
 	}
 	
-	@Pacijent
+	@AsPacijent
 	@PatchMapping(value="otkazi/{idp}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String unscheduleExamination(@PathVariable int idp) {
 		try {

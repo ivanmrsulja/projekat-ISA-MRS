@@ -3,7 +3,6 @@ package rest.controller;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
+import rest.aspect.AsPacijent;
 import rest.domain.StatusNaloga;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
@@ -129,7 +129,7 @@ public class KorisnikController {
 		return new ResponseEntity<Korisnik>(savedUser, HttpStatus.CREATED);
 	}
 
-
+	@AsPacijent
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updateUser(@RequestBody KorisnikDTO user, @PathVariable("id") int id)
 			throws Exception {
@@ -158,23 +158,27 @@ public class KorisnikController {
 		return new ResponseEntity<String>("OK.", HttpStatus.OK);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/penali/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object[] getPenali(@PathVariable("id") int id){
 		return userService.getPenali(id).stream().map(p -> new PenalDTO(p)).toArray();
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/istorijaPregleda/{id}/{page}/{criteria}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum, @PathVariable("criteria") String criteria){
 		return userService.preglediZaKorisnika(id, pageNum, criteria);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/pregledi/{id}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum){
 		return userService.zakazivanjaZaKorisnika(id, pageNum);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/rezervacije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<RezervacijaDTO> getIstorijaPregleda(@PathVariable("id") int id){
+	public Collection<RezervacijaDTO> getIstorijaRezervacijaa(@PathVariable("id") int id){
 		return userService.rezervacijeZaKorisnika(id);
 	}
 	
@@ -183,21 +187,25 @@ public class KorisnikController {
 		return userService.findPacijentById(id);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/akcije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<ApotekaDTO> getActionsPromotions(@PathVariable("id") int id){
 		return akcijaService.getForUser(id);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/alergije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> getAllergies(@PathVariable("id") int id){
 		return pacijentService.allergies(id);
 	}
 	
+	@AsPacijent
 	@GetMapping(value = "/dodajAlergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> addAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
 		return pacijentService.addAllergy(id, idPrep);
 	}
 	
+	@AsPacijent
 	@DeleteMapping(value = "/alergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> removeAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
 		return pacijentService.removeAllergy(id, idPrep);
