@@ -97,7 +97,7 @@ public class ApotekaController {
 	
 	@AsPacijent
 	@PutMapping(value="zakaziPregled/{idp}/{idpa}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<PregledDTO> scheduleExamination(@PathVariable int idp, @PathVariable int idpa) {
+	public String scheduleExamination(@PathVariable int idp, @PathVariable int idpa) {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		if (currentUser.getId() != idpa) {
@@ -105,9 +105,10 @@ public class ApotekaController {
 		}
 			
 		try {
-			return pregledService.zakaziPregled(idp, idpa);
+			pregledService.zakaziPregled(idp, idpa);
+			return "Uspesno zakazan pregled.";
 		} catch (Exception e) {
-			return null;
+			return e.getMessage();
 		}
 	}
 	

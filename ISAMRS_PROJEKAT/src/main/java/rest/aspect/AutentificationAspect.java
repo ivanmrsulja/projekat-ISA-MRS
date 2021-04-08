@@ -3,9 +3,11 @@ package rest.aspect;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.server.ResponseStatusException;
 
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.KorisnikDTO;
@@ -20,7 +22,7 @@ public class AutentificationAspect {
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		
 		if(currentUser == null || !currentUser.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.FARMACEUT)) {
-			throw new Exception("Korisnik nije ulogovan kao farmaceut.");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		return joinPoint.proceed();
 	}
@@ -31,7 +33,7 @@ public class AutentificationAspect {
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		
 		if(currentUser == null || !currentUser.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.DERMATOLOG)) {
-			throw new Exception("Korisnik nije ulogovan kao dermatolog.");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		return joinPoint.proceed();
 	}
@@ -42,7 +44,7 @@ public class AutentificationAspect {
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		
 		if(currentUser == null || !currentUser.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.ADMIN_SISTEMA)) {
-			throw new Exception("Korisnik nije ulogovan kao admin sistema.");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		return joinPoint.proceed();
 	}
@@ -53,7 +55,7 @@ public class AutentificationAspect {
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		
 		if(currentUser == null || !currentUser.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.ADMIN_APOTEKE)) {
-			throw new Exception("Korisnik nije ulogovan kao admin apoteke.");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		return joinPoint.proceed();
 	}
@@ -64,7 +66,7 @@ public class AutentificationAspect {
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		
 		if(currentUser == null || !currentUser.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.PACIJENT)) {
-			throw new Exception("Korisnik nije ulogovan kao pacijent.");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		return joinPoint.proceed();
 	}
@@ -75,7 +77,7 @@ public class AutentificationAspect {
 		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
 		
 		if(currentUser == null || !currentUser.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.DOBAVLJAC)) {
-			throw new Exception("Korisnik nije ulogovan kao dobavljac.");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		return joinPoint.proceed();
 	}
