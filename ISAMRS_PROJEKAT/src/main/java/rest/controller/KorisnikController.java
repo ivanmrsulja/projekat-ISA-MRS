@@ -1,6 +1,8 @@
 package rest.controller;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,10 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rest.domain.Dermatolog;
+import rest.domain.Dobavljac;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
+import rest.domain.Ponuda;
 import rest.aspect.AsPacijent;
 import rest.domain.StatusNaloga;
+import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
@@ -121,6 +127,42 @@ public class KorisnikController {
 		k.setBrojPoena(0);
 		k.setTipKorisnika(userService.pocetniTip());
 		k.setStatusNaloga(StatusNaloga.AKTIVAN); //ovo se menja
+		userService.create(k);
+		return "OK";
+	}
+	
+	@PostMapping(value = "/registerSupp", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerSupp(@RequestBody KorisnikDTO user) throws Exception {
+		Dobavljac k = new Dobavljac();
+		k.setIme(user.getIme());
+		k.setPrezime(user.getPrezime());
+		k.setUsername(user.getUsername());
+		k.setEmail(user.getEmail());
+		k.setTelefon(user.getTelefon());
+		k.setLokacija(user.getLokacija());
+		k.setPassword(user.getNoviPassw());
+		k.setLoggedBefore(false);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DOBAVLJAC);
+		Set<Ponuda> p = new HashSet<Ponuda>();
+		k.setPonude(p);
+		userService.create(k);
+		return "OK";
+	}
+	
+	@PostMapping(value = "/registerDerm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerDerm(@RequestBody KorisnikDTO user) throws Exception {
+		Dermatolog k = new Dermatolog();
+		k.setIme(user.getIme());
+		k.setPrezime(user.getPrezime());
+		k.setUsername(user.getUsername());
+		k.setEmail(user.getEmail());
+		k.setTelefon(user.getTelefon());
+		k.setLokacija(user.getLokacija());
+		k.setPassword(user.getNoviPassw());
+		k.setLoggedBefore(false);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DERMATOLOG);
+		Set<Zaposlenje> p = new HashSet<Zaposlenje>();
+		k.setZaposlenja(p);;
 		userService.create(k);
 		return "OK";
 	}
