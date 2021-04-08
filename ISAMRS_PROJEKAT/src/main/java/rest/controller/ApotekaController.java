@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsPacijent;
 import rest.domain.Korisnik;
@@ -96,6 +98,12 @@ public class ApotekaController {
 	@AsPacijent
 	@PutMapping(value="zakaziPregled/{idp}/{idpa}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PregledDTO> scheduleExamination(@PathVariable int idp, @PathVariable int idpa) {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != idpa) {
+			return null;
+		}
+			
 		try {
 			return pregledService.zakaziPregled(idp, idpa);
 		} catch (Exception e) {

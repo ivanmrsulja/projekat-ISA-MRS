@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
@@ -133,6 +135,11 @@ public class KorisnikController {
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updateUser(@RequestBody KorisnikDTO user, @PathVariable("id") int id)
 			throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		
 		if(user.getUsername().trim().equals("") || user.getPrezime().trim().equals("") || user.getIme().trim().equals("") || user.getLokacija() == null || user.getTelefon().trim().equals("")) {
 			return "Unesite sve podatke.";
@@ -161,24 +168,44 @@ public class KorisnikController {
 	@AsPacijent
 	@GetMapping(value = "/penali/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object[] getPenali(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.getPenali(id).stream().map(p -> new PenalDTO(p)).toArray();
 	}
 	
 	@AsPacijent
 	@GetMapping(value = "/istorijaPregleda/{id}/{page}/{criteria}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum, @PathVariable("criteria") String criteria){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.preglediZaKorisnika(id, pageNum, criteria);
 	}
 	
 	@AsPacijent
 	@GetMapping(value = "/pregledi/{id}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<PregledDTO> getIstorijaPregleda(@PathVariable("id") int id, @PathVariable("page") int pageNum){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.zakazivanjaZaKorisnika(id, pageNum);
 	}
 	
 	@AsPacijent
 	@GetMapping(value = "/rezervacije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<RezervacijaDTO> getIstorijaRezervacijaa(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return userService.rezervacijeZaKorisnika(id);
 	}
 	
@@ -190,24 +217,44 @@ public class KorisnikController {
 	@AsPacijent
 	@GetMapping(value = "/akcije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<ApotekaDTO> getActionsPromotions(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return akcijaService.getForUser(id);
 	}
 	
 	@AsPacijent
 	@GetMapping(value = "/alergije/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> getAllergies(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return pacijentService.allergies(id);
 	}
 	
 	@AsPacijent
 	@GetMapping(value = "/dodajAlergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> addAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return pacijentService.addAllergy(id, idPrep);
 	}
 	
 	@AsPacijent
 	@DeleteMapping(value = "/alergije/{id}/{idprep}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PreparatDTO> removeAllergies(@PathVariable("id") int id, @PathVariable("idprep") int idPrep){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
 		return pacijentService.removeAllergy(id, idPrep);
 	}
 }
