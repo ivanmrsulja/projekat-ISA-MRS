@@ -1,5 +1,8 @@
 package rest.domain;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +20,9 @@ public class Zaposlenje {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "pocetakRadnogVremena", nullable = false)
-	private int pocetakRadnogVremena;
+	private LocalTime pocetakRadnogVremena;
 	@Column(name = "krajRadnogVremena", nullable = false)
-	private int krajRadnogVremena;
+	private LocalTime krajRadnogVremena;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
 	@OneToOne(cascade = CascadeType.MERGE)
@@ -28,7 +31,7 @@ public class Zaposlenje {
 	
 	public Zaposlenje() {}
 	
-	public Zaposlenje(int pocetakRadnogVremena, int krajRadnogVremena, Apoteka apoteka,Korisnik korisnik) {
+	public Zaposlenje(LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena, Apoteka apoteka, Korisnik korisnik) {
 		super();
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 		this.krajRadnogVremena = krajRadnogVremena;
@@ -52,19 +55,19 @@ public class Zaposlenje {
 		this.korisnik = korisnik;
 	}
 
-	public int getPocetakRadnogVremena() {
+	public LocalTime getPocetakRadnogVremena() {
 		return pocetakRadnogVremena;
 	}
 
-	public void setPocetakRadnogVremena(int pocetakRadnogVremena) {
+	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 	}
 
-	public int getKrajRadnogVremena() {
+	public LocalTime getKrajRadnogVremena() {
 		return krajRadnogVremena;
 	}
 
-	public void setKrajRadnogVremena(int krajRadnogVremena) {
+	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
 

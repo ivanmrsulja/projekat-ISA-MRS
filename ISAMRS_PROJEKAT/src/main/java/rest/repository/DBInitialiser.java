@@ -134,9 +134,9 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d2);
 		
 
-		Zaposlenje z1 = new Zaposlenje(9, 5, a1, d1);
-		Zaposlenje z2 = new Zaposlenje(9, 5, a1, d2);
-		Zaposlenje z3 = new Zaposlenje(5, 22, a2, d2);
+		Zaposlenje z1 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, d1);
+		Zaposlenje z2 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, d2);
+		Zaposlenje z3 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a2, d2);
 		zaposlenjeRepo.save(z1);
 		zaposlenjeRepo.save(z2);
 		zaposlenjeRepo.save(z3);
@@ -147,13 +147,13 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d1);
 		korisnici.save(d2);
 
-		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","email",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
-		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,0,0,new Zaposlenje());		
+		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","email",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
 		korisnici.save(f1);
 		korisnici.save(f2);
 		
-		Zaposlenje z4 = new Zaposlenje(5, 22, a1, f1);
-		Zaposlenje z5 = new Zaposlenje(5, 22, a2, f2);
+		Zaposlenje z4 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, f1);
+		Zaposlenje z5 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a2, f2);
 		zaposlenjeRepo.save(z4);
 		zaposlenjeRepo.save(z5);
 		f1.setZaposlenje(z4);
