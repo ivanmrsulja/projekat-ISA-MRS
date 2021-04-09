@@ -17,7 +17,6 @@ public interface PacijentService {
 	Collection<Pacijent> getAll();
 	
 	Collection<Pacijent> getMine(int id, String param, String criteria);
-
 	
 	void removeAllPenalities();
 

@@ -13,12 +13,12 @@ Vue.component("profil-pacijenti", {
     	pregledajPacijent : function(r){
     		this.$router.push({ path: "/pacijenti/"+r.korisnik.id });
 		},
-		searchSort: function(){
+		searchSort: function(kriterijum){
 			axios
 			.get("api/users/currentUser")
 			.then(response => {
 				axios
-				.get("api/pacijenti/pregledi/"+response.data.id + "?search=" + this.searchParam + "&criteria=none")
+				.get("api/pacijenti/pregledi/"+response.data.id + "?search=" + this.searchParam + "&criteria="+kriterijum)
 				.then(response => {
 					this.pacijenti = response.data
 				});
@@ -62,6 +62,17 @@ Vue.component("profil-pacijenti", {
     </div>
 	</div>
 
+	<div class="dropdown">
+	  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Sortiraj po:
+	  </button>
+	  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+	    <a class="dropdown-item" v-on:click="searchSort('IME')" >IME</a>
+	    <a class="dropdown-item" v-on:click="searchSort('PREZIME')" >PREZIME</a>
+	    <a class="dropdown-item" v-on:click="searchSort('DATUM')" >DATUM</a>
+	    <a class="dropdown-item" v-on:click="searchSort('NONE')" >BEZ SORTIRANJA</a>
+	  </div>
+	</div>
 
 	<table class="table table-hover">
 	 <thead>

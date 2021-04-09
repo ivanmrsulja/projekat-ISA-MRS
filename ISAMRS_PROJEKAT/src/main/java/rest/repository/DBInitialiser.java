@@ -209,7 +209,8 @@ public class DBInitialiser implements ApplicationRunner {
 		Pregled pre5 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.now(), LocalTime.parse("09:00"), 45, 5000, d1, null, a1);
 		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-13"), LocalTime.parse("13:00"), 45, 4000, d2, null, a2);
 		Pregled pre7 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-13"), LocalTime.parse("13:00"), 30, 4000, d2, null, a1);
-		
+		Pregled pre8 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, d1, p2, a1);
+
 		pregledRepo.save(pre1);
 		pregledRepo.save(pre2);
 		pregledRepo.save(pre3);
@@ -217,6 +218,7 @@ public class DBInitialiser implements ApplicationRunner {
 		pregledRepo.save(pre5);
 		pregledRepo.save(pre6);
 		pregledRepo.save(pre7);
+		pregledRepo.save(pre8);
 		
 		AkcijaPromocija ap1 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma1);
 		AkcijaPromocija ap2 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma2);
