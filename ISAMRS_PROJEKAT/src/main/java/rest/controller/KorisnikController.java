@@ -128,6 +128,7 @@ public class KorisnikController {
 		k.setTipKorisnika(userService.pocetniTip());
 		k.setStatusNaloga(StatusNaloga.AKTIVAN); //ovo se menja
 		userService.create(k);
+		userService.sendRegistrationMail(k);
 		return "OK";
 	}
 	

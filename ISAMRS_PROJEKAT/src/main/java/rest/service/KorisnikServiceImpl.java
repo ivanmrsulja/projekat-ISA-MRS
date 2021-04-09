@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Korisnik;
@@ -36,9 +40,12 @@ public class KorisnikServiceImpl implements KorisnikService {
 	private RezervacijaRepository rezervacijeRepository;
 	private LokacijaRepository lokacijaRepository;
 	private TipKorisnikaRepository tipRepo;
+	private Environment env;
+	private JavaMailSender javaMailSender;
+	
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt) {
+	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
 		this.korisnikRepository = imkr;
 		this.penalRepository = pr;
 		this.rezervacijeRepository = rr;
@@ -46,6 +53,8 @@ public class KorisnikServiceImpl implements KorisnikService {
 		this.pacijentRepository = pacr;
 		this.lokacijaRepository = locr;
 		this.tipRepo = rt;
+		this.env = e;
+		this.javaMailSender = jms;
 	}
 
 	@Override
@@ -148,5 +157,21 @@ public class KorisnikServiceImpl implements KorisnikService {
 	public TipKorisnika pocetniTip() {
 		return tipRepo.findById(1).get();
 	}
+
+	@Override
+	@Async
+	public void sendRegistrationMail(Pacijent p) {
+		// TODO Auto-generated method stub
+		SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(p.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Hvala sto ste se prijavili na nasu aplikaciju!");
+        mail.setText("Pozdrav " + p.getIme() + " " + p.getPrezime() + ",\n\nhvala što koristite nasu aplikaciju, kliknite na link ispod kako biste verifikovali nalog\nLorem ipsum dolor sit amet.");
+        javaMailSender.send(mail);
+
+        //System.out.println("Email poslat!");
+		
+	}
+	
 	
 }

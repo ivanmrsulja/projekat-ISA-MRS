@@ -3,8 +3,10 @@ package rest.service;
 import java.util.Collection;
 
 import org.springframework.data.domain.Page;
+import org.springframework.scheduling.annotation.Async;
 
 import rest.domain.Korisnik;
+import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.TipKorisnika;
 import rest.dto.KorisnikDTO;
@@ -31,4 +33,7 @@ public interface KorisnikService {
 	Collection<RezervacijaDTO> rezervacijeZaKorisnika(int id);
 	PacijentDTO findPacijentById(int id);
 	TipKorisnika pocetniTip();
+	
+	@Async
+	void sendRegistrationMail(Pacijent p);
 }
