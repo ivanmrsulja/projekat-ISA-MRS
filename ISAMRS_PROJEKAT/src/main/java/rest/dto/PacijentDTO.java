@@ -16,6 +16,21 @@ public class PacijentDTO {
 		tip = p.getTipKorisnika();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PacijentDTO other = (PacijentDTO) obj;
+		if (other.getKorisnik().getId() == this.korisnik.getId()) {
+			return true;
+		}
+		return false;
+	}
+	
 	public KorisnikDTO getKorisnik() {
 		return korisnik;
 	}

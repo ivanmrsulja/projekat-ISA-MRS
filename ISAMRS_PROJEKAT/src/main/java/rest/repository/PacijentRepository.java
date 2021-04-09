@@ -11,6 +11,7 @@ import rest.domain.Preparat;
 
 public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 
+
 	@Query("select a from Pacijent p join p.apoteke a where p.id = ?1")
 	Collection<Apoteka> getPharmaciesForUser(int id);
 	

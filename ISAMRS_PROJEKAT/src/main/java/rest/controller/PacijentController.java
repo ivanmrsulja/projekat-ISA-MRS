@@ -2,12 +2,14 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Pacijent;
@@ -44,12 +46,20 @@ public class PacijentController {
 	}
 	
 	@GetMapping(value = "pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<PacijentDTO> getMine(@PathVariable("id") int id){
-		Collection<Pacijent> pacijenti=pacijentService.getMine(id);
-		ArrayList<PacijentDTO> pacijentiDTO=new ArrayList<PacijentDTO>();
+	public Collection<PacijentDTO> getMine(@PathVariable("id") int id, @RequestParam("search") String searchParam, @RequestParam("criteria") String criteria){
+		Collection<Pacijent> pacijenti = pacijentService.getMine(id, searchParam, criteria);
+		ArrayList<PacijentDTO> pacijentiDTO = new ArrayList<PacijentDTO>();
 		for(Pacijent p: pacijenti)
 			pacijentiDTO.add(new PacijentDTO(p));
 		
-		return pacijentiDTO;
+		ArrayList<PacijentDTO> ret = new ArrayList<PacijentDTO>();
+		
+		for (PacijentDTO pa : pacijentiDTO) {
+			if(!ret.contains(pa)) {
+				ret.add(pa);
+			}
+		}
+		
+		return ret;
 	}
 }

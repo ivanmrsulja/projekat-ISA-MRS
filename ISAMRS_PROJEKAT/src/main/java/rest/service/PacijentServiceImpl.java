@@ -2,7 +2,8 @@ package rest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.Pacijent;
 import rest.domain.Penal;
+import rest.domain.Pregled;
 import rest.domain.Preparat;
 import rest.dto.PreparatDTO;
 import rest.repository.PacijentRepository;
@@ -80,8 +82,55 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 	
 	@Override
-	public Collection<Pacijent> getMine(int id){
-		return pregledRepository.getMine(id);
+	public Collection<Pacijent> getMine(int id, String param, String criteria){
+		Collection<Pregled> pregledi = pregledRepository.getMine(id);
+		ArrayList<Pacijent> pacijentiRet = new ArrayList<Pacijent>();
+		ArrayList<Pregled> preglediRet = new ArrayList<Pregled>();
+		
+		for(Pregled p : pregledi) {
+			if(p.getPacijent() != null) {
+				String imePrezime = p.getPacijent().getIme() + " " + p.getPacijent().getPrezime();
+				if(imePrezime.toLowerCase().contains(param.toLowerCase())) {
+					preglediRet.add(p);
+				}
+			}
+		}
+		
+		switch(criteria) {
+			case "IME":
+				Collections.sort(preglediRet, new Comparator<Pregled>() {
+
+					@Override
+					public int compare(Pregled arg0, Pregled arg1) {
+						return arg0.getPacijent().getIme().compareTo(arg1.getPacijent().getIme());
+					}
+				});
+				break;
+			case "PREZIME":
+				Collections.sort(preglediRet, new Comparator<Pregled>() {
+
+					@Override
+					public int compare(Pregled arg0, Pregled arg1) {
+						return arg0.getPacijent().getPrezime().compareTo(arg1.getPacijent().getPrezime());
+					}
+				});
+				break;
+			case "DATUM":
+				Collections.sort(preglediRet, new Comparator<Pregled>() {
+
+					@Override
+					public int compare(Pregled arg0, Pregled arg1) {
+						return arg0.getDatum().compareTo(arg1.getDatum());
+					}
+				});
+				break;
+		}
+		
+		for(Pregled p : preglediRet) {
+			pacijentiRet.add(p.getPacijent());
+		}
+		
+		return pacijentiRet;
 	}
 
 	@Override
