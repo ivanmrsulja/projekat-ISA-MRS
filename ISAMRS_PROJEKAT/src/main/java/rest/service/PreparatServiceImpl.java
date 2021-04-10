@@ -106,6 +106,10 @@ public class PreparatServiceImpl implements PreparatService{
 		}
 		
 		r.setStatus(StatusRezervacije.OTKAZANO);
+		Apoteka a = r.getApoteka();
+		DostupanProizvod dp = cenaRepository.getCount(r.getPreparat().getId(), a.getId());
+		dp.setKolicina(dp.getKolicina() + 1);
+		dostupanRepo.save(dp);
 		rezervacijaRepository.save(r);
 	}
 
@@ -130,7 +134,8 @@ public class PreparatServiceImpl implements PreparatService{
 		dp.setKolicina(dp.getKolicina() - 1);
 		Preparat p = preparatRepository.findById(idp).get();
 		Pacijent pa = pacijentRepository.findById(idpa).get();
-		Rezervacija rez = new Rezervacija(StatusRezervacije.REZERVISANO, datum, pa, p);
+		Apoteka a = apotekeRepository.findById(ida).get();
+		Rezervacija rez = new Rezervacija(StatusRezervacije.REZERVISANO, datum, pa, p, a);
 		
 		rezervacijaRepository.save(rez);
 		pa.addRezervacija(rez);

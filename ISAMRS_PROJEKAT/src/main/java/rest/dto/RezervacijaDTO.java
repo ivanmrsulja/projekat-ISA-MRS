@@ -11,6 +11,7 @@ public class RezervacijaDTO {
 	private StatusRezervacije status;
 	private LocalDate datumPreuzimanja;
 	private String preparat;
+	private String apoteka;
 	
 	public RezervacijaDTO() {}
 	public RezervacijaDTO(Rezervacija r) {
@@ -18,6 +19,7 @@ public class RezervacijaDTO {
 		status = r.getStatus();
 		datumPreuzimanja = r.getDatumPreuzimanja();
 		preparat = r.getPreparat().getNaziv();
+		apoteka = r.getApoteka().getNaziv() + " - " + r.getApoteka().getLokacija().getUlica();
 	}
 	
 	public Integer getId() {
@@ -43,6 +45,12 @@ public class RezervacijaDTO {
 	}
 	public void setPreparat(String preparat) {
 		this.preparat = preparat;
+	}
+	public String getApoteka() {
+		return apoteka;
+	}
+	public void setApoteka(String apoteka) {
+		this.apoteka = apoteka;
 	}
 	
 }
