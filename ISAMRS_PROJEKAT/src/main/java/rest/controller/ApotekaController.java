@@ -106,6 +106,7 @@ public class ApotekaController {
 			
 		try {
 			pregledService.zakaziPregled(idp, idpa);
+			pregledService.sendConfirmationEmail(currentUser);
 			return "Uspesno zakazan pregled.";
 		} catch (Exception e) {
 			return e.getMessage();

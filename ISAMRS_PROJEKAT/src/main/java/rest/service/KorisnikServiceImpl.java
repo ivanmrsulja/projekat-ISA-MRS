@@ -161,16 +161,12 @@ public class KorisnikServiceImpl implements KorisnikService {
 	@Override
 	@Async
 	public void sendRegistrationMail(Pacijent p) {
-		// TODO Auto-generated method stub
 		SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(p.getEmail());
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Hvala sto ste se prijavili na nasu aplikaciju!");
         mail.setText("Pozdrav " + p.getIme() + " " + p.getPrezime() + ",\n\nhvala što koristite nasu aplikaciju, kliknite na link ispod kako biste verifikovali nalog\nLorem ipsum dolor sit amet.");
         javaMailSender.send(mail);
-
-        //System.out.println("Email poslat!");
-		
 	}
 	
 	

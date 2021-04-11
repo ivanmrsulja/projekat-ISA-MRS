@@ -3,9 +3,9 @@ package rest.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import rest.domain.Preparat;
+import rest.domain.DostupanProizvod;
 
 @Repository
-public interface PreparatRepository extends JpaRepository<Preparat, Integer> {
-	
+public interface DostupanProizvodRepository extends JpaRepository<DostupanProizvod, Integer>{
+
 }

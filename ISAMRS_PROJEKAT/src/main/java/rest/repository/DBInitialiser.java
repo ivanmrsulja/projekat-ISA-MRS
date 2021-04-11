@@ -80,26 +80,26 @@ public class DBInitialiser implements ApplicationRunner {
 		apotekaRepo.save(a2);
 		apotekaRepo.save(a3);
 		
-		AdminApoteke adma1 = new AdminApoteke("Stefan", "Bacic", "admin", "admin", "adm@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a1);
+		AdminApoteke adma1 = new AdminApoteke("Stefan", "Bacic", "admin", "admin", "isamrstim06+adm@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a1);
 		korisnici.save(adma1);
 		a1.addAdmin(adma1);
 		apotekaRepo.save(a1);
 		
-		AdminApoteke adma2 = new AdminApoteke("Marko", "Cupic", "marko", "marko", "adm@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a2);
+		AdminApoteke adma2 = new AdminApoteke("Marko", "Cupic", "marko", "marko", "isamrstim06+adm2@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a2);
 		korisnici.save(adma2);
 		a2.addAdmin(adma2);
 		apotekaRepo.save(a2);
 		
-		AdminApoteke adma3 = new AdminApoteke("Petar", "Markovic", "peki1", "peki1", "adm3@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a3);
+		AdminApoteke adma3 = new AdminApoteke("Petar", "Markovic", "peki1", "peki1", "isamrstim06+adm3@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a3);
 		korisnici.save(adma3);
 		a3.addAdmin(adma3);
 		apotekaRepo.save(a3);
 
-		AdminSistema as1 = new AdminSistema("Petar", "Markovic", "peki2", "peki2", "admsys@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_SISTEMA);
+		AdminSistema as1 = new AdminSistema("Petar", "Markovic", "peki2", "peki2", "isamrstim06+admsys@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_SISTEMA);
 		korisnici.save(as1);
 
-		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","email@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l4, StatusNaloga.AKTIVAN, 200, tk1);
-		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","email@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l5, StatusNaloga.AKTIVAN, 0, tk1);
+		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","isamrstim06+im@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l4, StatusNaloga.AKTIVAN, 200, tk1);
+		Pacijent p2 =  new Pacijent("Ivan", "Ivanovic", "ivan1", "ivan1","isamrstim06+ii@gmail.com",true,"069887557",ZaposlenjeKorisnika.PACIJENT, l5, StatusNaloga.AKTIVAN, 0, tk1);
 		korisnici.save(p1);
 		korisnici.save(p2);
 		
@@ -120,7 +120,7 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(p2);
 		
 		
-		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
+		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
 		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-07"), null);
 		korisnici.save(d);
 		narudzbenicaRepo.save(n);
@@ -128,8 +128,8 @@ public class DBInitialiser implements ApplicationRunner {
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2020-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2020-04-06"), n, d));
 		
-		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","email",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
-		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","email",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7,10);		
+		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","isamrstim06+d1@gmail.com",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
+		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","isamrstim06+d2@gmail.com",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7,10);		
 		korisnici.save(d1);
 		korisnici.save(d2);
 		
@@ -147,8 +147,8 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d1);
 		korisnici.save(d2);
 
-		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","email",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
-		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","email",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
+		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","isamrstim06+f1@gmail.com",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
 		korisnici.save(f1);
 		korisnici.save(f2);
 		
@@ -194,8 +194,8 @@ public class DBInitialiser implements ApplicationRunner {
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
 		
-		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-04-07"), p1, pr1);
-		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1);
+		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-04-07"), p1, pr1, a1, 1000);
+		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1, a1, 750);
 		rezervacijaRepo.save(rez1);
 		rezervacijaRepo.save(rez2);
 		p1.addRezervacija(rez1);

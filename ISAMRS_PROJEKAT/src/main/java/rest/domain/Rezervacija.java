@@ -2,6 +2,7 @@ package rest.domain;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,20 +20,34 @@ public class Rezervacija {
 	private StatusRezervacije status;
 	@Column(name = "datumPreuzimanja", nullable = false)
 	private LocalDate datumPreuzimanja;
+	@Column(name = "cena", nullable = false)
+	private double cena;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Preparat preparat;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	private Apoteka apoteka;
 	
 	public Rezervacija() {}
 	
-	public Rezervacija(StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat) {
+	public Rezervacija(StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat, Apoteka a, double cena) {
 		super();
 		this.status = status;
 		this.datumPreuzimanja = datumPreuzimanja;
 		this.pacijent = pacijent;
 		this.preparat = preparat;
+		this.apoteka = a;
+		this.cena = cena;
+	}
+	
+	public Apoteka getApoteka() {
+		return apoteka;
+	}
+
+	public void setApoteka(Apoteka apoteka) {
+		this.apoteka = apoteka;
 	}
 
 	public Integer getId() {
@@ -74,5 +89,12 @@ public class Rezervacija {
 	public void setPreparat(Preparat preparat) {
 		this.preparat = preparat;
 	}
-		
+
+	public double getCena() {
+		return cena;
+	}
+
+	public void setCena(double cena) {
+		this.cena = cena;
+	}	
 }
