@@ -36,14 +36,16 @@ Vue.component("pojedinacni-preparat", {
 				<tr bgcolor="#90a4ae">
 					<th>Naziv</th>
 					<th>Adresa</th>
-					<th>Ocena</th>
+					<th>Cena</th>
+					<th>Ocena apoteke</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="a in apoteke"" v-on:click="select(a)">
-		                <td>{{a.naziv}}</td>
-		                <td>{{a.lokacija.ulica}}</td> 
-		                <td>{{a.ocena}}</td>                               
+		                <td>{{a.apoteka.naziv}}</td>
+		                <td>{{a.apoteka.lokacija.ulica}}</td> 
+		                <td>{{a.cena}}</td>
+		                <td>{{a.apoteka.ocena}}</td>                               
 				</tr>
 			</tbody>
 		</table>
@@ -61,7 +63,7 @@ Vue.component("pojedinacni-preparat", {
 	methods: {
 		select: function(apoteka){
 			this.mode = "ORDER";
-			this.selected = apoteka;
+			this.selected = apoteka.apoteka;
 		},
 		rezervisi: function(){
 			axios

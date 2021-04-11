@@ -20,6 +20,8 @@ public class Rezervacija {
 	private StatusRezervacije status;
 	@Column(name = "datumPreuzimanja", nullable = false)
 	private LocalDate datumPreuzimanja;
+	@Column(name = "cena", nullable = false)
+	private double cena;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
@@ -30,13 +32,14 @@ public class Rezervacija {
 	
 	public Rezervacija() {}
 	
-	public Rezervacija(StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat, Apoteka a) {
+	public Rezervacija(StatusRezervacije status, LocalDate datumPreuzimanja, Pacijent pacijent, Preparat preparat, Apoteka a, double cena) {
 		super();
 		this.status = status;
 		this.datumPreuzimanja = datumPreuzimanja;
 		this.pacijent = pacijent;
 		this.preparat = preparat;
 		this.apoteka = a;
+		this.cena = cena;
 	}
 	
 	public Apoteka getApoteka() {
@@ -86,5 +89,12 @@ public class Rezervacija {
 	public void setPreparat(Preparat preparat) {
 		this.preparat = preparat;
 	}
-		
+
+	public double getCena() {
+		return cena;
+	}
+
+	public void setCena(double cena) {
+		this.cena = cena;
+	}	
 }

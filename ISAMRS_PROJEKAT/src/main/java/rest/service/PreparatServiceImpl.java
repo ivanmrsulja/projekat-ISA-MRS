@@ -3,6 +3,7 @@ package rest.service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -20,6 +21,7 @@ import rest.domain.Pacijent;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
 import rest.domain.StatusRezervacije;
+import rest.dto.CenaDTO;
 import rest.dto.KorisnikDTO;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
@@ -83,8 +85,13 @@ public class PreparatServiceImpl implements PreparatService{
 	}
 
 	@Override
-	public Collection<Apoteka> getPharmaciesForDrug(int id) {
-		return cenaRepository.getPharmaciesForDrug(id);
+	public Collection<CenaDTO> getPharmaciesForDrug(int id) {
+		Collection<Apoteka> apoteke =  cenaRepository.getPharmaciesForDrug(id);
+		ArrayList<CenaDTO> cenovnik = new ArrayList<CenaDTO>();
+		for(Apoteka a : apoteke) {
+			cenovnik.add(new CenaDTO(a, cenaRepository.getPrice(id, a.getId())));
+		}
+		return cenovnik;
 	}
 
 	@Override
@@ -135,7 +142,9 @@ public class PreparatServiceImpl implements PreparatService{
 		Preparat p = preparatRepository.findById(idp).get();
 		Pacijent pa = pacijentRepository.findById(idpa).get();
 		Apoteka a = apotekeRepository.findById(ida).get();
-		Rezervacija rez = new Rezervacija(StatusRezervacije.REZERVISANO, datum, pa, p, a);
+		
+		double cena = dp.getCena() * pa.getTipKorisnika().getPopust();
+		Rezervacija rez = new Rezervacija(StatusRezervacije.REZERVISANO, datum, pa, p, a, cena);
 		
 		rezervacijaRepository.save(rez);
 		pa.addRezervacija(rez);

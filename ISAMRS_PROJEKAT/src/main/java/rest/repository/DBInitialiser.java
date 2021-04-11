@@ -194,8 +194,8 @@ public class DBInitialiser implements ApplicationRunner {
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
 		
-		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-04-07"), p1, pr1, a1);
-		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1, a1);
+		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-04-07"), p1, pr1, a1, 1000);
+		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1, a1, 750);
 		rezervacijaRepo.save(rez1);
 		rezervacijaRepo.save(rez2);
 		p1.addRezervacija(rez1);

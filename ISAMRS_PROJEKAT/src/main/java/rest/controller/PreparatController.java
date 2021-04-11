@@ -16,10 +16,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsPacijent;
-import rest.domain.Apoteka;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
-import rest.dto.ApotekaDTO;
+import rest.dto.CenaDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PreparatDTO;
 import rest.service.KorisnikService;
@@ -66,15 +65,8 @@ public class PreparatController {
 	
 	@AsPacijent
 	@GetMapping(value = "dostupnost/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<ApotekaDTO> getApoteke(@PathVariable("id") int id){
-		Collection<Apoteka> apoteke = preparatService.getPharmaciesForDrug(id);
-		ArrayList<ApotekaDTO> ret = new ArrayList<ApotekaDTO>();
-		
-		for(Apoteka a : apoteke) {
-			ret.add(new ApotekaDTO(a));
-		}
-		
-		return ret;
+	public Collection<CenaDTO> getApoteke(@PathVariable("id") int id){
+		return preparatService.getPharmaciesForDrug(id);
 	}
 	
 	@AsPacijent
