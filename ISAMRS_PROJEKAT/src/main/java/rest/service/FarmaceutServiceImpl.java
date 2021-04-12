@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.FarmaceutDTO;
@@ -18,6 +17,7 @@ import rest.repository.LokacijaRepository;
 import rest.repository.ZaposlenjeRepository;
 
 @Service
+@Transactional
 public class FarmaceutServiceImpl implements FarmaceutService {
 
 	private FarmaceutRepository farmaceutRepository;

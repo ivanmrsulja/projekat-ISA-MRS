@@ -31,6 +31,7 @@ import rest.repository.PreparatRepository;
 import rest.repository.RezervacijaRepository;
 
 @Service
+@Transactional
 public class PreparatServiceImpl implements PreparatService{
 
 	private PreparatRepository preparatRepository;
@@ -95,7 +96,6 @@ public class PreparatServiceImpl implements PreparatService{
 	}
 
 	@Override
-	@Transactional
 	public void otkazi(int idr, int id) throws Exception {
 		Rezervacija r = rezervacijaRepository.findById(idr).get();
 		
@@ -121,7 +121,6 @@ public class PreparatServiceImpl implements PreparatService{
 	}
 
 	@Override
-	@Transactional
 	public Rezervacija rezervisi(int idp, int idpa, int ida, LocalDate datum) throws Exception {
 		DostupanProizvod dp = cenaRepository.getCount(idp, ida);
 		

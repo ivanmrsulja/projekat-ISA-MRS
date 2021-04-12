@@ -10,10 +10,38 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.stereotype.Component;
 
-import rest.domain.*;
+import rest.domain.AdminApoteke;
+import rest.domain.AdminSistema;
+import rest.domain.AkcijaPromocija;
+import rest.domain.Apoteka;
+import rest.domain.Cena;
+import rest.domain.Dermatolog;
+import rest.domain.Dobavljac;
+import rest.domain.DostupanProizvod;
+import rest.domain.ERecept;
+import rest.domain.Farmaceut;
+import rest.domain.Lokacija;
+import rest.domain.Narudzbenica;
+import rest.domain.Pacijent;
+import rest.domain.Penal;
+import rest.domain.Ponuda;
+import rest.domain.Pregled;
+import rest.domain.Preparat;
+import rest.domain.Rezervacija;
+import rest.domain.RezimIzdavanja;
+import rest.domain.StatusERecepta;
+import rest.domain.StatusNaloga;
+import rest.domain.StatusPonude;
+import rest.domain.StatusPregleda;
+import rest.domain.StatusRezervacije;
+import rest.domain.StavkaRecepta;
+import rest.domain.TipKorisnika;
+import rest.domain.TipLeka;
+import rest.domain.TipPregleda;
+import rest.domain.Zaposlenje;
+import rest.domain.ZaposlenjeKorisnika;
 
 @Component
 public class DBInitialiser implements ApplicationRunner {

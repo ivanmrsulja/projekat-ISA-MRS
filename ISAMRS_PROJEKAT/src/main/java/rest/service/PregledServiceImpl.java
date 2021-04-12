@@ -23,6 +23,7 @@ import rest.repository.PacijentRepository;
 import rest.repository.PregledRepository;
 
 @Service
+@Transactional
 public class PregledServiceImpl implements PregledService {
 	
 	private ApotekaService apotekeServ;
@@ -42,7 +43,6 @@ public class PregledServiceImpl implements PregledService {
 	}
 
 	@Override
-	@Transactional
 	public Collection<PregledDTO> zakaziPregled(int idp, int idpa) throws Exception {
 		Pregled p = preglediRepo.findById(idp).get();
 
@@ -76,7 +76,6 @@ public class PregledServiceImpl implements PregledService {
 	}
 
 	@Override
-	@Transactional
 	public void otkaziPregled(int idp) throws Exception{
 		Pregled p = preglediRepo.findById(idp).get();
 		Instant instant = p.getDatum().atStartOfDay(ZoneId.systemDefault()).toInstant();	

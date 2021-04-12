@@ -3,6 +3,8 @@ package rest.service;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,7 @@ import rest.repository.RezervacijaRepository;
 import rest.repository.TipKorisnikaRepository;
 
 @Service
+@Transactional
 public class KorisnikServiceImpl implements KorisnikService {
 
 	private static final int defaultPageSize = 10;

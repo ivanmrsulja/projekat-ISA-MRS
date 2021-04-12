@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,15 +17,14 @@ import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Pregled;
 import rest.dto.ApotekaDTO;
-import rest.dto.EReceptDTO;
 import rest.dto.PregledDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.DermatologRepository;
-import rest.repository.PregledRepository;
 import rest.util.ApotekaSearchParams;
 
 @Service
+@Transactional
 public class ApotekaServiceImpl implements ApotekaService {
 
 	private ApotekeRepository apoteke;

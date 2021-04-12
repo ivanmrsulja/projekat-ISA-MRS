@@ -21,6 +21,7 @@ import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
 
 @Service
+@Transactional
 public class PacijentServiceImpl implements PacijentService {
 	
 	private PacijentRepository pacijentRepository;
@@ -48,7 +49,6 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 
 	@Override
-	@Transactional
 	public Collection<PreparatDTO> addAllergy(int id, int idPrep) {
 		Pacijent p = pacijentRepository.findById(id).get();
 		Preparat pr = preparatRepository.findById(idPrep).get();
@@ -59,7 +59,6 @@ public class PacijentServiceImpl implements PacijentService {
 
 
 	@Override
-	@Transactional
 	public Collection<PreparatDTO> removeAllergy(int id, int idPrep) {
 		Pacijent p = pacijentRepository.findById(id).get();
 		Preparat pr = preparatRepository.findById(idPrep).get();
@@ -69,7 +68,6 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 	
 	@Override
-	@Transactional
 	public Collection<Pacijent> getAll(){
 		Collection<Pacijent> users = pacijentRepository.findAll();
 		return users;
@@ -134,7 +132,6 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 
 	@Override
-	@Transactional
 	public void removeAllPenalities() {
 		Collection<Pacijent> patients = pacijentRepository.getWithPenalities();
 		Collection<Penal> penali = penaliRepository.findAll();
