@@ -70,6 +70,7 @@ public class PregledServiceImpl implements PregledService {
 		Pacijent pa = pacijentiRepo.findById(idpa).get();
 		pa.addPregled(p);
 		p.setStatus(StatusPregleda.ZAKAZAN);
+		p.setCijena(p.getCijena() * pa.getTipKorisnika().getPopust());
 		pacijentiRepo.save(pa);
 		return apotekeServ.getPregledi(p.getApoteka().getId(), "none");
 	}

@@ -275,8 +275,9 @@ div.desc {
 .penali {
         width: 26%;
   		display: inline-block;
-  		margin-top: 65px;
+  		margin-top: 100px;
   		vertical-align: top;
+  		margin-left: 20px;
 }
 
 /* PAGINACIJA */

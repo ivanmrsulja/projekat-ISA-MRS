@@ -22,7 +22,7 @@ Vue.component("pregled-apoteke", {
             <tr><td><h2>Naziv: </h2></td><td><h2>{{apoteka.naziv}}</h2></td></tr>
             <tr><td><h2>Opis: </h2></td><td><h2>{{apoteka.opis}}</h2></td></tr>
             <tr><td><h2>Adresa: </h2></td><td><h2>{{apoteka.lokacija.ulica}}</h2></td></tr>
-            <tr><td><h2>Ocena: </h2></td><td><h2>{{apoteka.ocena}}</h2></td></tr>
+            <tr><td><h2>Ocena: </h2></td><td><h2 v-bind:hidden="apoteka.ocena == 0" >{{apoteka.ocena}}</h2><h2 v-bind:hidden="apoteka.ocena != 0">Nije ocenjivano</h2></td></tr>
         </table>
         <br/>
         <div id="map" class="map"></div>

@@ -13,7 +13,7 @@ Vue.component("profil-pacijenta", {
 		
 		<h1>Moj profil</h1>
 		<br/>
-		<div style="display: inline-block; margin-right: 50px">
+		<div style="display: inline-block; margin-right: 10px">
 		<table>
 			<tr>
 				<td> <h2>Username:</h2> </td>
@@ -52,14 +52,20 @@ Vue.component("profil-pacijenta", {
 				<td> <input type="text" v-model="pacijent.tip.naziv" disabled/> </td>
 			</tr>
 			<tr>
+				<td> <h2>Popust:</h2> </td>
+				<td> <input type="text" :value="(1 - pacijent.tip.popust).toFixed(2) * 100" disabled/> % </td>
+			</tr>
+			<tr>
 				<td> <h2>Adresa:</h2> </td>
 				<td> <input type="text" v-model="pacijent.korisnik.lokacija.ulica" disabled/> </td>
 			</tr>
 			<tr>
-				<td colspan="2" align=center> <input type="button" value="Posalji" v-on:click="update()" /> </td>
+				<td colspan="2" align=center> <input type="button" class="button1" value="Posalji" v-on:click="update()" /> </td>
 			</tr>
 		</table>
 		</div>
+		
+		<div id="map" class="map-right"></div>
 		
 		<div class="penali">
 		<h2>Broj penala: {{penali.length}} </h2>
@@ -78,8 +84,6 @@ Vue.component("profil-pacijenta", {
             </tbody>
      	</table>
      	</div>
-     	
-     	<div id="map" class="map-right"></div>
      	
      	<br/>
      	<br/>
@@ -102,7 +106,7 @@ Vue.component("profil-pacijenta", {
                     <td>{{a.naziv}}</td>
                     <td>{{a.proizvodjac}}</td>
                     <td>{{a.sastav}}</td>
-                    <td><input type="button" value="Ukloni" v-on:click="ukloniAlergiju(a)" /></td>
+                    <td><input type="button" class="button1" value="Ukloni" v-on:click="ukloniAlergiju(a)" /></td>
             	</tr>           
             </tbody>
      	</table>
