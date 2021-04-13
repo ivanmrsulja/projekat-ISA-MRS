@@ -2,7 +2,8 @@ Vue.component("profil-preparati", {
 	data: function () {
 		    return {
 				preparati : [],
-				selectedPreparat:{}
+				selectedPreparat:{},
+				searchParams: {naziv: "", filter: "SVI"}
 		    }
 	},
 	methods: {	
@@ -24,6 +25,27 @@ Vue.component("profil-preparati", {
 <div align = center style="width:50%">
 	
 	<h1>Pregled preparata</h1>
+	
+	<div id="mySidebar" class="sidebar">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <table>
+			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Unesite naziv leka" v-model="searchParams.naziv" /></td></tr>
+			  <tr><td style="color:white">Filtriraj po:</td> 
+			  		<td>
+				  		<select name="tip" id="kriterijum" v-model="searchParams.filter" >
+						  <option value="SVI">SVI</option>
+						  <option value="TIP">TIP</option>
+						  <option value="OCENA">OCENA</option>
+						</select>
+					</td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi" /></td></tr>
+		  </table>
+	</div>
+		
+	<div id="main">
+	  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
+	</div>
+	
 	<br/>
 	<table class="table table-hover">
 	 <thead>
