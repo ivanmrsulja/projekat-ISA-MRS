@@ -12,6 +12,15 @@ Vue.component("profil-preparati", {
     	},   
     	pregledajPreparat : function(r){
 			window.location.href = "#/preparati/" + r.id;
+		},
+		pretragaPreparata : function() {
+			
+			let usr = $("input[name=naziv]").val();
+			axios
+			.get("api/preparat/search/"+usr)
+			.then(response => {
+				this.preparati = response.data
+			});
 		}
     },
     filters: {
@@ -38,7 +47,7 @@ Vue.component("profil-preparati", {
 						  <option value="OCENA">OCENA</option>
 						</select>
 					</td></tr>
-			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi" /></td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" v-on:click="pretragaPreparata" name="search" value="Pretrazi" /></td></tr>
 		  </table>
 	</div>
 		

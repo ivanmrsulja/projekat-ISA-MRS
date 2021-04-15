@@ -47,6 +47,18 @@ public class PreparatController {
 	}
 	
 	
+	@GetMapping(value = "search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PreparatDTO> getSearchPreparat(@PathVariable("name") String name) {
+		Collection<Preparat> lekovi = preparatService.getAll();
+		ArrayList<PreparatDTO> preparati=new ArrayList<PreparatDTO>();
+		for(Preparat p : lekovi)
+			if(p.getNaziv().toLowerCase().startsWith(name.toLowerCase())) {
+				preparati.add(new PreparatDTO(p));
+			}
+			
+		return preparati;
+	}
+	
 	@GetMapping(value = "spec/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PreparatDTO getSpec(@PathVariable("id") int id){
 		return new PreparatDTO(preparatService.getOne(id));
