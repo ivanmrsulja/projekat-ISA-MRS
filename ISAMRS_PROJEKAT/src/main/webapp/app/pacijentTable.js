@@ -13,6 +13,9 @@ Vue.component("profil-pacijenti", {
     	pregledajPacijent : function(r){
     		this.$router.push({ path: "/pacijenti/"+r.korisnik.id });
 		},
+		zapocniPregled : function(r){
+    		this.$router.push({ path: "/pacijenti/zapocniPregled/"+r.korisnik.id });
+		},
 		searchSort: function(kriterijum){
 			axios
 			.get("api/users/currentUser")
@@ -82,6 +85,7 @@ Vue.component("profil-pacijenti", {
 			<th>Prezime</th>
 			<th>Username</th>
 			<th></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -90,7 +94,8 @@ Vue.component("profil-pacijenti", {
                 <td>{{pacijent.korisnik.ime}}</td>
                 <td>{{pacijent.korisnik.prezime}}</td> 
                 <td>{{pacijent.korisnik.username}}</td>
-                <td><input type="button" class="button1" value="Pregledaj" v-on:click="pregledajPacijent(pacijent)"/></td>                               
+                <td><input type="button" class="button1" value="Informacije" v-on:click="pregledajPacijent(pacijent)"/></td>   
+                <td><input type="button" class="button1" value="Zapocni pregled" v-on:click="zapocniPregled(pacijent)"/></td>                                  
 		</tr>
 	</tbody>
 	</table>

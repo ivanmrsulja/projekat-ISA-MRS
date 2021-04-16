@@ -2,7 +2,6 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

@@ -35,4 +35,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 
 	@Query("select p from Pregled p where p.pacijent.id = ?1 and p.status = 0")
 	Collection<Pregled> rezervacijeZaKorisnika(int id);
+	
+	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.status = 0")
+	Collection<Pregled> preglediZaDermatologa(int id);
 }

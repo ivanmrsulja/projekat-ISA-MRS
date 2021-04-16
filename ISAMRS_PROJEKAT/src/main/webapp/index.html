@@ -50,6 +50,7 @@
 
 <a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Moje ponude</a>
 <a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
+<a class="navigacija" href="#/pregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Lista Pregleda</a>
 <a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
 
 <a class="navigacija" href="#/pacijenti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Pacijenti</a>
@@ -107,6 +108,9 @@
 <script src="app/pacijentTable.js"></script>
 <script src="app/pregledPacijenta.js"></script>
 <script src="app/pisanjeZalbe.js"></script>
+<script src="app/zapocniPregled.js"></script>
+<script src="app/zakazivanjeTermina.js"></script>
+<script src="app/radniKalendar.js"></script>
 
 <script src="app/app.js"></script>
 </body>

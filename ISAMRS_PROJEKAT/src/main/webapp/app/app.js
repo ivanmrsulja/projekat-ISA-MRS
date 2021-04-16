@@ -21,6 +21,9 @@ const registracijaDermatologa = { template: '<register-dermatolog></register-der
 const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
+const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>'};
+const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>'};
+const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
 
 
 const router = new VueRouter({
@@ -29,6 +32,7 @@ const router = new VueRouter({
 	    { path: '/', component: LoginStrana},
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
+	    { path: '/pregledi', component: RadniKalendar },
 	    { path: '/preparati', component: preparatiTable},
 	    { path: '/preparati/:spec', component: PregledStavkiPreparata },
 	    { path: '/farmaceuti', component: farmaceutiTable},
@@ -48,7 +52,10 @@ const router = new VueRouter({
         { path: '/regDerm', component: registracijaDermatologa },
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
+	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
+	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },
 	    { path: '/zalbe', component: StranicaZalbe }
+	    
 	  ]
 	});
 

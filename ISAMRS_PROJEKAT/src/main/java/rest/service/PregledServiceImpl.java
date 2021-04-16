@@ -109,4 +109,11 @@ public class PregledServiceImpl implements PregledService {
 		
 	}
 	
+	public Collection<Pregled> dobaviZaDermatologa(int id){
+		return preglediRepo.preglediZaDermatologa(id);
+	}
+	
+	public Pregled dobaviPregledZa(Integer id){
+		return preglediRepo.findById(id).get();
+	}
 }
