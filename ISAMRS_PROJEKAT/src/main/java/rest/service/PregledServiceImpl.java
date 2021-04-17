@@ -83,7 +83,7 @@ public class PregledServiceImpl implements PregledService {
 		long timeMillis = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
 		long time = timeInMillis + timeMillis;
 		
-		if(time > System.currentTimeMillis() - 86400000) {
+		if(time <= System.currentTimeMillis() + 86400000) {
 			throw new Exception("Isteklo je vreme za otkazivanje.");
 		}
 		Pacijent pa = pacijentiRepo.findById(p.getPacijent().getId()).get();
