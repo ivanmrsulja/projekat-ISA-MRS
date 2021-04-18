@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.scheduling.annotation.Async;
 
+import rest.domain.Pregled;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 
@@ -14,4 +15,7 @@ public interface PregledService {
 	
 	@Async
 	void sendConfirmationEmail(KorisnikDTO user);
+	
+	@Async
+	void sendConfirmationEmailAdv(KorisnikDTO user, Pregled p);
 }

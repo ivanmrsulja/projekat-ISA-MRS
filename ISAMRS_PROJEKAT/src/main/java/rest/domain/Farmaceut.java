@@ -9,9 +9,9 @@ import javax.persistence.OneToOne;
 @Entity
 public class Farmaceut extends Korisnik implements Ocenjivo{
 	@Column(name = "brojOcena", nullable = true)
-	private int brojOcena;
+	private double brojOcena;
 	@Column(name = "sumaOcena", nullable = true)
-	private int sumaOcena;
+	private double sumaOcena;
 	@Column(name = "ocena", nullable = true)
 	private double ocena;
 	@OneToOne(cascade = CascadeType.ALL)
@@ -24,7 +24,7 @@ public class Farmaceut extends Korisnik implements Ocenjivo{
 	
 	public Farmaceut(String ime, String prezime, String username, String password, String email,
 			Boolean loggedBefore, String telefon, Lokacija lokacija,
-			ZaposlenjeKorisnika zaposlenjeKorisnika,int brojOcena,int sumaOcena,Zaposlenje zaposlenje) {
+			ZaposlenjeKorisnika zaposlenjeKorisnika,double brojOcena,double sumaOcena,Zaposlenje zaposlenje) {
 		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
@@ -40,19 +40,19 @@ public class Farmaceut extends Korisnik implements Ocenjivo{
 		return 0;
 	}
 
-	public int getBrojOcena() {
+	public double getBrojOcena() {
 		return brojOcena;
 	}
 
-	public void setBrojOcena(int brojOcena) {
+	public void setBrojOcena(double brojOcena) {
 		this.brojOcena = brojOcena;
 	}
 
-	public int getSumaOcena() {
+	public double getSumaOcena() {
 		return sumaOcena;
 	}
 
-	public void setSumaOcena(int sumaOcena) {
+	public void setSumaOcena(double sumaOcena) {
 		this.sumaOcena = sumaOcena;
 	}
 

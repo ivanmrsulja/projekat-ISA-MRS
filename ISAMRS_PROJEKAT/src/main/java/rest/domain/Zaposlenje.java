@@ -25,7 +25,7 @@ public class Zaposlenje {
 	private LocalTime krajRadnogVremena;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
-	@OneToOne(cascade = CascadeType.MERGE)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "korisnik_id", referencedColumnName = "id")
 	private Korisnik korisnik;
 	

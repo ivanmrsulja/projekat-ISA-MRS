@@ -90,6 +90,7 @@ public class DBInitialiser implements ApplicationRunner {
 		Lokacija l7 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
 		Lokacija l8 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
 		Lokacija l9 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
+		Lokacija l10 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
 		lokacijaRepo.save(l1);
 		lokacijaRepo.save(l2);
 		lokacijaRepo.save(l3);
@@ -99,11 +100,11 @@ public class DBInitialiser implements ApplicationRunner {
 		lokacijaRepo.save(l7);
 		lokacijaRepo.save(l8);
 		lokacijaRepo.save(l9);
+		lokacijaRepo.save(l10);
 		
-		
-		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l2);
-		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 0, l1);
-		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l3);
+		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l2, 3000);
+		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 0, l1, 2000);
+		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l3, 1000);
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
 		apotekaRepo.save(a3);
@@ -176,18 +177,24 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d2);
 
 		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","isamrstim06+f1@gmail.com",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
-		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,18,72, null);
+		Farmaceut f3=new Farmaceut("Imenko", "Prezimenic", "imenko", "imenko","isamrstim06+f3@gmail.com",true,"telefon",l10,ZaposlenjeKorisnika.FARMACEUT,2,3, null);	
 		korisnici.save(f1);
 		korisnici.save(f2);
+		korisnici.save(f3);
 		
 		Zaposlenje z4 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, f1);
 		Zaposlenje z5 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a2, f2);
+		Zaposlenje z6 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a2, f3);
 		zaposlenjeRepo.save(z4);
 		zaposlenjeRepo.save(z5);
+		zaposlenjeRepo.save(z6);
 		f1.setZaposlenje(z4);
 		f2.setZaposlenje(z5);
+		f3.setZaposlenje(z6);
 		korisnici.save(f1);
 		korisnici.save(f2);
+		korisnici.save(f3);
 		
 		Preparat pr1 = new Preparat("Alirex", TipLeka.ANTIHISTAMINIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 2, 200, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 0, 0);
 		Preparat pr2 = new Preparat("Andol", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 300, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 3, 15);

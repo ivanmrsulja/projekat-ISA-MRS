@@ -30,6 +30,8 @@ public class Apoteka implements Ocenjivo{
 	private int sumaOcena;
 	@Column(name = "ocena", nullable = true)
 	private double ocena;
+	@Column(name = "cenaSavetovanja", nullable = true)
+	private double cenaSavetovanja;
 	
 	@ManyToMany(mappedBy = "apoteke")
 	private Set<Pacijent> pacijenti;
@@ -53,7 +55,7 @@ public class Apoteka implements Ocenjivo{
 		this.adminiApoteke = new HashSet<AdminApoteke>();
 	}
 	
-	public Apoteka(String naziv, String opis, int brojOcena, int sumaOcena, Lokacija lokacija) {
+	public Apoteka(String naziv, String opis, int brojOcena, int sumaOcena, Lokacija lokacija, double cena) {
 		this();
 		this.naziv = naziv;
 		this.opis = opis;
@@ -61,6 +63,7 @@ public class Apoteka implements Ocenjivo{
 		this.sumaOcena = sumaOcena;
 		this.lokacija = lokacija;
 		this.ocena = this.izracunajOcenu();
+		this.cenaSavetovanja = cena;
 	}
 	
 	public void addZaposlenje(Zaposlenje z) {
@@ -215,6 +218,14 @@ public class Apoteka implements Ocenjivo{
 
 	public void setOcena(double ocena) {
 		this.ocena = ocena;
+	}
+
+	public double getCenaSavetovanja() {
+		return cenaSavetovanja;
+	}
+
+	public void setCenaSavetovanja(double cenaSavetovanja) {
+		this.cenaSavetovanja = cenaSavetovanja;
 	}
 	
 }

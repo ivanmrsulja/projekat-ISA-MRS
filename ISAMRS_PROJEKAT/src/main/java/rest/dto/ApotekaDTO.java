@@ -10,6 +10,7 @@ public class ApotekaDTO {
 	private double ocena;
 	private int id;
 	private Lokacija lokacija;
+	private double cena;
 
 	public ApotekaDTO() {}
 	
@@ -20,6 +21,7 @@ public class ApotekaDTO {
 		this.ocena = apoteka.getOcena();
 		this.id = apoteka.getId();
 		this.lokacija = apoteka.getLokacija();
+		this.cena = apoteka.getCenaSavetovanja();
 	}
 
 	public String getNaziv() {
@@ -62,4 +64,11 @@ public class ApotekaDTO {
 		this.lokacija = lokacija;
 	}
 
+	public double getCena() {
+		return cena;
+	}
+
+	public void setCena(double cena) {
+		this.cena = cena;
+	}
 }

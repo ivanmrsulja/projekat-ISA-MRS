@@ -39,7 +39,6 @@ public class PacijentController {
 		return pacijenti;
 	}
 	
-	
 	@GetMapping(value = "spec/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PacijentDTO getSpec(@PathVariable("id") int id){
 		return new PacijentDTO(pacijentService.getOne(id));

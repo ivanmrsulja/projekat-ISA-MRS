@@ -1,5 +1,7 @@
 package rest.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,12 +17,21 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
+import rest.domain.Farmaceut;
+import rest.domain.Pacijent;
 import rest.domain.Pregled;
+import rest.domain.StatusPregleda;
+import rest.domain.TipPregleda;
 import rest.dto.ApotekaDTO;
 import rest.dto.PregledDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.DermatologRepository;
+import rest.repository.FarmaceutRepository;
+import rest.repository.PacijentRepository;
+import rest.repository.PenalRepository;
+import rest.repository.PregledRepository;
+import rest.repository.ZaposlenjeRepository;
 import rest.util.ApotekaSearchParams;
 
 @Service
@@ -30,14 +41,24 @@ public class ApotekaServiceImpl implements ApotekaService {
 	private ApotekeRepository apoteke;
 	private AdminApotekeRepository admin;
 	private DermatologRepository dermatolozi;
+	private ZaposlenjeRepository zaposlenja;
+	private PregledRepository pregledi;
+	private FarmaceutRepository farmaceuti;
+	private PacijentRepository pacijenti;
+	private PenalRepository penali;
 	
 	private static final int pageSize = 10;
 
 	@Autowired
-	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr) {
+	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
 		apoteke = ar;
 		admin = are;
 		dermatolozi = dr;
+		this.zaposlenja = zaposlenja;
+		this.pregledi = pregledi;
+		this.farmaceuti = farmaceuti;
+		this.pacijenti = pacijenti;
+		this.penali = penali;
 	}
 	
 	@Override
@@ -104,6 +125,153 @@ public class ApotekaServiceImpl implements ApotekaService {
 		}
 		
 		return ret;
+	}
+
+	@Override
+	public Collection<Apoteka> apotekeZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, String criteria) throws Exception {
+		if(datum.isBefore(LocalDate.now())) {
+			throw new Exception("Savetovanje mora biti u buducnosti");
+		}
+		else if(datum.isEqual(LocalDate.now())) {
+			if(vrijeme.isBefore(LocalTime.now())) {
+				throw new Exception("Savetovanje mora biti u buducnosti");
+			}
+		}
+		Collection<Integer> kandidati = zaposlenja.slobodniFarmaceuti(vrijeme);
+		ArrayList<Apoteka> apoteke = new ArrayList<Apoteka>();
+		long trajanjeSavetovanja = 30 * 60000;
+		long mid = vrijeme.getHour() * 3600000 + vrijeme.getMinute() * 60000;
+		for(int id : kandidati) {
+			Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(datum, id);
+			if(zauzeca.size() == 0) {
+				Apoteka a = zaposlenja.apotekaZaFarmaceuta(id);
+				if(!apoteke.contains(a)) {
+					apoteke.add(a);
+				}
+			}
+			for(Pregled p: zauzeca) {
+				long start = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
+				long end = start + p.getTrajanje() * 60000;
+				if(mid > end || mid < start - trajanjeSavetovanja) {
+					Apoteka a = zaposlenja.apotekaZaFarmaceuta(id);
+					if(!apoteke.contains(a)) {
+						apoteke.add(a);
+					}
+				}
+			}
+		}
+		
+		switch (criteria) {
+		case "OCENA":
+			Collections.sort(apoteke, new Comparator<Apoteka>() {
+
+				@Override
+				public int compare(Apoteka a0, Apoteka a1) {
+					return Double.compare(a0.getOcena(), a1.getOcena());
+				}
+			});
+			break;
+
+		case "CENA":
+			Collections.sort(apoteke, new Comparator<Apoteka>() {
+
+				@Override
+				public int compare(Apoteka a0, Apoteka a1) {
+					return Double.compare(a0.getCenaSavetovanja(), a1.getCenaSavetovanja());
+				}
+			});
+			break;
+		}
+		
+		return apoteke;
+	}
+
+	@Override
+	public Collection<Farmaceut> farmaceutiZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, int id, String criteria) throws Exception {
+		if(datum.isBefore(LocalDate.now())) {
+			throw new Exception("Savetovanje mora biti u buducnosti");
+		}
+		else if(datum.isEqual(LocalDate.now())) {
+			if(vrijeme.isBefore(LocalTime.now())) {
+				throw new Exception("Savetovanje mora biti u buducnosti");
+			}
+		}
+		Collection<Integer> kandidati = zaposlenja.slobodniFarmaceutiApoteka(vrijeme, id);
+		ArrayList<Farmaceut> ret = new ArrayList<Farmaceut>();
+		long trajanjeSavetovanja = 30 * 60000;
+		long mid = vrijeme.getHour() * 3600000 + vrijeme.getMinute() * 60000;
+		for(int i : kandidati) {
+			Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(datum, i);
+			if(zauzeca.size() == 0) {
+				Farmaceut a = farmaceuti.findById(i).get();
+				if(!ret.contains(a)) {
+					ret.add(a);
+				}
+			}
+			for(Pregled p: zauzeca) {
+				long start = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
+				long end = start + p.getTrajanje() * 60000;
+				if(mid > end || mid < start - trajanjeSavetovanja) {
+					Farmaceut a = farmaceuti.findById(i).get();
+					if(!ret.contains(a)) {
+						ret.add(a);
+					}
+				}
+			}
+		}
+		switch (criteria) {
+		case "OCENA":
+			Collections.sort(ret, new Comparator<Farmaceut>() {
+
+				@Override
+				public int compare(Farmaceut a0, Farmaceut a1) {
+					return Double.compare(a0.getOcena(), a1.getOcena());
+				}
+			});
+			break;
+		}
+		return ret;
+	}
+
+	@Override
+	public Pregled zakaziSavetovanje(PregledDTO podaci, int idApoteke, int idFarmaceuta, int idPacijenta) throws Exception {
+		if(podaci.getDatum().isBefore(LocalDate.now())) {
+			throw new Exception("Savetovanje mora biti u buducnosti");
+		}
+		else if(podaci.getDatum().isEqual(LocalDate.now())) {
+			if(podaci.getVrijeme().isBefore(LocalTime.now())) {
+				throw new Exception("Savetovanje mora biti u buducnosti");
+			}
+		}
+		
+		Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(podaci.getDatum(), idFarmaceuta);
+		long trajanjeSavetovanja = 30 * 60000;
+		long mid = podaci.getVrijeme().getHour() * 3600000 + podaci.getVrijeme().getMinute() * 60000;
+		for(Pregled p: zauzeca) {
+			long start = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
+			long end = start + p.getTrajanje() * 60000;
+			if(mid <= end && mid >= start - trajanjeSavetovanja) {
+				throw new Exception("Farmaceut je zauzet u tom terminu.");
+			}
+		}
+		
+		Pacijent p = pacijenti.findById(idPacijenta).get();
+		int brojPenala = penali.penalForUser(p.getId()).size();
+		if(brojPenala >= 3) {
+			throw new Exception("Imate " + brojPenala + " penala, zakazivanja su vam onemogucena do 1. u sledecem mesecu.");
+		}
+		Farmaceut f = farmaceuti.findById(idFarmaceuta).get();
+		Apoteka a = apoteke.findById(idApoteke).get();
+		Pregled novi = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, podaci.getDatum(), podaci.getVrijeme(), 30, a.getCenaSavetovanja() * p.getTipKorisnika().getPopust(), f, p, a);
+		pregledi.save(novi);
+		a.addPregled(novi);
+		f.addPregled(novi);
+		p.addPregled(novi);
+		
+		apoteke.save(a);
+		farmaceuti.save(f);
+		pacijenti.save(p);
+		return novi;
 	}
 
 }
