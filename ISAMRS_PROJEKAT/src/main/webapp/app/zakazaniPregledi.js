@@ -65,7 +65,9 @@ Vue.component("zakazani-pregledi", {
 		},
 		isValid: function(p){
 			let d = new Date(p.datum);
-			return (d.getTime()) + parseInt(p.vrijeme.split(':')[0]) * 3600000 <= Date.now() + 86400000;
+			console.log((d.getTime()) + parseInt(p.vrijeme.split(':')[0] - 2) * 3600000);
+			console.log(Date.now() + 86400000);
+			return (d.getTime()) + parseInt(p.vrijeme.split(':')[0]) * 3600000 <= Date.now() + 8640000;
 		}
 	},
 	mounted: function() {

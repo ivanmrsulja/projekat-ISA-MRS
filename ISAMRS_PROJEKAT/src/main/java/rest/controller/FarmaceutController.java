@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,17 +19,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsAdminApoteke;
 import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
-import rest.domain.Ponuda;
-import rest.domain.Zaposlenje;
-import rest.domain.ZaposlenjeKorisnika;
-import rest.dto.ApotekaDTO;
-import rest.dto.KorisnikDTO;
+import rest.domain.Pregled;
 import rest.dto.FarmaceutDTO;
-import rest.service.AdminService;
+import rest.dto.KorisnikDTO;
+import rest.dto.PregledDTO;
 import rest.service.ApotekaService;
 import rest.service.FarmaceutService;
-import rest.service.KorisnikService;
+import rest.service.PregledService;
 
 
 @RestController
@@ -39,11 +34,13 @@ public class FarmaceutController {
 
 	private FarmaceutService farmaceutService;
 	private ApotekaService apotekaService;
+	private PregledService pregledService;
 	
 	@Autowired
-	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as) {
+	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService) {
 		this.farmaceutService = farmaceut;
 		this.apotekaService = as;
+		this.pregledService = pregledService;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -86,4 +83,17 @@ public class FarmaceutController {
 		return "OK";
 	}
 	
+	@PostMapping(value = "/zakaziSavetovanje/{id}/{ida}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String getFarmaceutiSavetovanje(@RequestBody PregledDTO novi, @PathVariable("id") int idFarmaceuta, @PathVariable("ida") int idApoteke) {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		try {
+			Pregled p = apotekaService.zakaziSavetovanje(novi, idApoteke, idFarmaceuta, currentUser.getId());
+			pregledService.sendConfirmationEmailAdv(currentUser, p);
+			return "Pregled uspesno zakazan.";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		
+	}
 }

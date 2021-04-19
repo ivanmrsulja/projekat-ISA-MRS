@@ -13,13 +13,16 @@ public class FarmaceutDTO extends KorisnikDTO{
 	private double ocena;
 	private LocalTime pocetakRadnogVremena;
 	private LocalTime krajRadnogVremena;
-
+	private int apoteka;
+	
 	public FarmaceutDTO() {
 		super();
 	}
 	
 	public FarmaceutDTO(Farmaceut farmaceut) {
 		super(farmaceut);
+		ocena = farmaceut.getOcena();
+		apoteka = farmaceut.getZaposlenje().getApoteka().getId();
 	}
 	
 	public int getBrojOcena() {
@@ -62,5 +65,12 @@ public class FarmaceutDTO extends KorisnikDTO{
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
 
-	
+	public int getApoteka() {
+		return apoteka;
+	}
+
+	public void setApoteka(int apoteka) {
+		this.apoteka = apoteka;
+	}
+
 }

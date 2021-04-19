@@ -83,7 +83,7 @@ public class PregledServiceImpl implements PregledService {
 		long timeMillis = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
 		long time = timeInMillis + timeMillis;
 		
-		if(time > System.currentTimeMillis() - 86400000) {
+		if(time <= System.currentTimeMillis() + 86400000) {
 			throw new Exception("Isteklo je vreme za otkazivanje.");
 		}
 		Pacijent pa = pacijentiRepo.findById(p.getPacijent().getId()).get();
@@ -105,6 +105,18 @@ public class PregledServiceImpl implements PregledService {
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Uspesno zakazan pregled.");
         mail.setText("Pozdrav " + user.getIme() + " " + user.getPrezime() + ",\n\nUspesno ste zakazali pregled.\n\nSrdacan pozdrav,\nTim 06 :)");
+        javaMailSender.send(mail);
+		
+	}
+	
+	@Override
+	@Async
+	public void sendConfirmationEmailAdv(KorisnikDTO user, Pregled p) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Uspesno zakazano savetovanje.");
+        mail.setText("Pozdrav " + user.getIme() + " " + user.getPrezime() + ",\n\nUspesno ste zakazali savetovanje za " + p.getDatum() + " u " + p.getVrijeme() + ". Broj savetovanja je: " + p.getId() + "\n\nSrdacan pozdrav,\nTim 06 :)");
         javaMailSender.send(mail);
 		
 	}

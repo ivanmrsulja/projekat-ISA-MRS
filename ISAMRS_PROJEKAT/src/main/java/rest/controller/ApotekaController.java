@@ -1,16 +1,18 @@
 package rest.controller;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +25,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsPacijent;
+import rest.domain.Apoteka;
+import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
 import rest.dto.ApotekaDTO;
+import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 import rest.service.ApotekaService;
@@ -121,6 +126,38 @@ public class ApotekaController {
 			return "OK";
 		} catch (Exception e) {
 			return e.getMessage();
+		}
+	}
+	
+	@AsPacijent
+	@GetMapping(value = "kandidati", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<ApotekaDTO> getKandidatiSavetovanje(@RequestParam("datum") String datum, @RequestParam("vreme") String vreme, @RequestParam("criteria") String criteria) {
+		Collection<Apoteka> apoteke;
+		try {
+			apoteke = apotekaService.apotekeZaTerminSavetovanja(LocalDate.parse(datum), LocalTime.parse(vreme), criteria);
+			ArrayList<ApotekaDTO> ret = new ArrayList<ApotekaDTO>();
+			for(Apoteka a : apoteke) {
+				ret.add(new ApotekaDTO(a));
+			}
+			return ret;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@AsPacijent
+	@GetMapping(value = "slobodniFarmaceuti/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<FarmaceutDTO> getFarmaceutiSavetovanje(@PathVariable("id") int id, @RequestParam("datum") String datum, @RequestParam("vreme") String vreme, @RequestParam("criteria") String criteria) {
+		Collection<Farmaceut> farmaceuti;
+		try {
+			farmaceuti = apotekaService.farmaceutiZaTerminSavetovanja(LocalDate.parse(datum), LocalTime.parse(vreme), id, criteria);
+			ArrayList<FarmaceutDTO> ret = new ArrayList<FarmaceutDTO>();
+			for(Farmaceut f : farmaceuti) {
+				ret.add(new FarmaceutDTO(f));
+			}
+			return ret;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 	
