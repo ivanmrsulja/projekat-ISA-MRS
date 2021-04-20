@@ -56,22 +56,17 @@ Vue.component("profil-preparati", {
 	</div>
 	
 	<br/>
-	<table class="table table-hover">
-	 <thead>
-		<tr bgcolor="#90a4ae">
-			<th>Id</th>
-			<th>Naziv</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr v-for="preparat in preparati""	>
-                <td>{{preparat.id}}</td>
-                <td>{{preparat.naziv}}</td> 
-                <td align = center><input type="button" value="Pregledaj" v-on:click="pregledajPreparat(preparat)"/></td>                               
-		</tr>
-	</tbody>
-	</table>
+	
+	
+	
+	<div class="card" style="width: 18rem; display: inline-block; margin-right: 10px;" v-for="preparat in preparati" >
+	  <img class="card-img-top" src="../css/drug.png" alt="Card image cap">
+	  <div class="card-body">
+	    <h5 class="card-title">{{preparat.naziv}}</h5>
+	    <p class="card-text">{{preparat.sastav}}</p>
+	    <input type="button" class="button1" value="Pregledaj" v-on:click="pregledajPreparat(preparat)"/>
+	  </div>
+	</div>
 	
 </div>		  
 `

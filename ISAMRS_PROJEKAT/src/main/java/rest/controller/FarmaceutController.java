@@ -18,6 +18,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsAdminApoteke;
+import rest.aspect.AsPacijent;
 import rest.domain.Farmaceut;
 import rest.domain.Pregled;
 import rest.dto.FarmaceutDTO;
@@ -83,6 +84,7 @@ public class FarmaceutController {
 		return "OK";
 	}
 	
+	@AsPacijent
 	@PostMapping(value = "/zakaziSavetovanje/{id}/{ida}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getFarmaceutiSavetovanje(@RequestBody PregledDTO novi, @PathVariable("id") int idFarmaceuta, @PathVariable("ida") int idApoteke) {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

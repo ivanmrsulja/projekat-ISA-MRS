@@ -61,7 +61,9 @@ Vue.component("zakazivanje-savetovanjaK2", {
 			.post("api/farmaceut/zakaziSavetovanje/" + farmaceut.id + "/" + farmaceut.apoteka, pregled)
 			.then(response => {
 				alert(response.data);
-				this.$router.push({ path: "/zakazaniPregledi/0" });
+				if(response.data.startsWith("Pregled uspesno zakazan.")){
+					this.$router.push({ path: "/zakazaniPregledi/0" });
+				}
 			});
 		}
 	},
