@@ -9,7 +9,7 @@ Vue.component("pregled-apoteka", {
 		    }
 	},
 	template: ` 
-<div align = center style="width:75%">
+<div align = center style="width: 75%;">
 		
 		<h1>Pregled apoteka</h1>
 		

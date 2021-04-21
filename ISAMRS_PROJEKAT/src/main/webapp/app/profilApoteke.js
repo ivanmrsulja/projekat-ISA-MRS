@@ -11,7 +11,7 @@ Vue.component("profil-apoteke", {
 		    }
 	},
 	template: ` 
-<div align = center style="width:75%">
+<div align = center style="width: 75% sm;">
 		
 		<h1>Profil apoteke</h1>
 		<br/>

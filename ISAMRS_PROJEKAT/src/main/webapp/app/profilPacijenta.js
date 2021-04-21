@@ -9,7 +9,7 @@ Vue.component("profil-pacijenta", {
 		    }
 	},
 	template: ` 
-<div align = center style="width:75%">
+<div align = center class="col">
 		
 		<h1>Moj profil</h1>
 		<br/>
