@@ -25,7 +25,7 @@ public interface ApotekaService {
 	
 	Collection<PregledDTO> getPregledi(int id, String criteria);
 	
-	Collection<Apoteka> apotekeZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, String criteria) throws Exception;
+	Page<ApotekaDTO> apotekeZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, String criteria, int pageNum) throws Exception;
 	
 	Collection<Farmaceut> farmaceutiZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, int id, String criteria) throws Exception;
 	

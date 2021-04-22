@@ -47,7 +47,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 	private PacijentRepository pacijenti;
 	private PenalRepository penali;
 	
-	private static final int pageSize = 10;
+	private static final int pageSize = 2;
 
 	@Autowired
 	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
@@ -128,7 +128,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 	}
 
 	@Override
-	public Collection<Apoteka> apotekeZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, String criteria) throws Exception {
+	public Page<ApotekaDTO> apotekeZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, String criteria, int pageNum) throws Exception {
 		if(datum.isBefore(LocalDate.now())) {
 			throw new Exception("Savetovanje mora biti u buducnosti");
 		}
@@ -138,15 +138,15 @@ public class ApotekaServiceImpl implements ApotekaService {
 			}
 		}
 		Collection<Integer> kandidati = zaposlenja.slobodniFarmaceuti(vrijeme);
-		ArrayList<Apoteka> apoteke = new ArrayList<Apoteka>();
+		ArrayList<Apoteka> apotekeRet = new ArrayList<Apoteka>();
 		long trajanjeSavetovanja = 30 * 60000;
 		long mid = vrijeme.getHour() * 3600000 + vrijeme.getMinute() * 60000;
 		for(int id : kandidati) {
 			Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(datum, id);
 			if(zauzeca.size() == 0) {
 				Apoteka a = zaposlenja.apotekaZaFarmaceuta(id);
-				if(!apoteke.contains(a)) {
-					apoteke.add(a);
+				if(!apotekeRet.contains(a)) {
+					apotekeRet.add(a);
 				}
 			}
 			for(Pregled p: zauzeca) {
@@ -154,8 +154,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 				long end = start + p.getTrajanje() * 60000;
 				if(mid > end || mid < start - trajanjeSavetovanja) {
 					Apoteka a = zaposlenja.apotekaZaFarmaceuta(id);
-					if(!apoteke.contains(a)) {
-						apoteke.add(a);
+					if(!apotekeRet.contains(a)) {
+						apotekeRet.add(a);
 					}
 				}
 			}
@@ -163,27 +163,15 @@ public class ApotekaServiceImpl implements ApotekaService {
 		
 		switch (criteria) {
 		case "OCENA":
-			Collections.sort(apoteke, new Comparator<Apoteka>() {
-
-				@Override
-				public int compare(Apoteka a0, Apoteka a1) {
-					return Double.compare(a0.getOcena(), a1.getOcena());
-				}
-			});
-			break;
+			Page<ApotekaDTO> ocenaSort = ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, 1, Direction.DESC, "ocena"), apotekeRet).map(a -> new ApotekaDTO(a));
+			return ocenaSort;
 
 		case "CENA":
-			Collections.sort(apoteke, new Comparator<Apoteka>() {
-
-				@Override
-				public int compare(Apoteka a0, Apoteka a1) {
-					return Double.compare(a0.getCenaSavetovanja(), a1.getCenaSavetovanja());
-				}
-			});
-			break;
+			Page<ApotekaDTO> cenaSort = ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, 1, Direction.ASC, "cenaSavetovanja"), apotekeRet).map(a -> new ApotekaDTO(a));
+			return cenaSort;
 		}
 		
-		return apoteke;
+		return ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, 1), apotekeRet).map(a -> new ApotekaDTO(a));
 	}
 
 	@Override

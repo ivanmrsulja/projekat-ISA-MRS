@@ -130,16 +130,10 @@ public class ApotekaController {
 	}
 	
 	@AsPacijent
-	@GetMapping(value = "kandidati", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<ApotekaDTO> getKandidatiSavetovanje(@RequestParam("datum") String datum, @RequestParam("vreme") String vreme, @RequestParam("criteria") String criteria) {
-		Collection<Apoteka> apoteke;
+	@GetMapping(value = "kandidati/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Page<ApotekaDTO> getKandidatiSavetovanje(@PathVariable("page") int page, @RequestParam("datum") String datum, @RequestParam("vreme") String vreme, @RequestParam("criteria") String criteria) {
 		try {
-			apoteke = apotekaService.apotekeZaTerminSavetovanja(LocalDate.parse(datum), LocalTime.parse(vreme), criteria);
-			ArrayList<ApotekaDTO> ret = new ArrayList<ApotekaDTO>();
-			for(Apoteka a : apoteke) {
-				ret.add(new ApotekaDTO(a));
-			}
-			return ret;
+			return apotekaService.apotekeZaTerminSavetovanja(LocalDate.parse(datum), LocalTime.parse(vreme), criteria, page);
 		} catch (Exception e) {
 			return null;
 		}

@@ -50,8 +50,8 @@ const router = new VueRouter({
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
 	    { path: '/zalbe', component: StranicaZalbe },
-	    { path: '/zakaziSavetovanje', component: ZakazivanjeSavetovanja },
-	    { path: '/zakaziSavetovanje/:apoteka', component: ZakazivanjeSavetovanjaKorak2 }
+	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
+	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 }
 	  ]
 	});
 

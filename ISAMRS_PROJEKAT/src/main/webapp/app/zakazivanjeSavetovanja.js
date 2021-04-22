@@ -4,6 +4,8 @@ Vue.component("zakazivanje-savetovanja", {
 				apoteke: [],
 				datum: undefined,
 				vreme: undefined,
+				numPages: 0,
+				criteria: "none"
 		    }
 	},
 	template: ` 
@@ -44,12 +46,17 @@ Vue.component("zakazivanje-savetovanja", {
                 <tr v-for="a in apoteke">
                     <td>{{a.naziv}}</td>
                     <td>{{a.lokacija.ulica}}</td>
-                    <td>{{a.ocena}}</td>
+                    <td v-if="a.ocena != 0">{{a.ocena}}</td>
+                    <td v-else ><h4 style="color: lightgray">NIJE OCENJENA</h4></td>
                     <td>{{a.cena}}</td>
 					<td><input class="button1" type="button" value="Zakazi" v-on:click="korak2(a)"/></td>
             	</tr>           
             </tbody>
 		</table>
+		
+		<div class="pagination" v-for="i in numPages+1" :key="i" v-bind:hidden="apoteke.length == 0" >
+		  <a :href="'#/zakaziSavetovanje/'+(i-1)" v-on:click="loadNext(i-1)">{{i}}</a>
+		</div>
 </div>		  
 `
 	,
@@ -59,21 +66,31 @@ Vue.component("zakazivanje-savetovanja", {
 				alert("Popunite sva polja.");
 				return;
 			}
+			sessionStorage.setItem('criteria', criteria);
 			axios
-				.get("api/apoteke/kandidati?datum=" + this.datum + "&vreme=" + this.vreme + "&criteria=" + criteria)
+				.get("api/apoteke/kandidati/" + this.$route.params.page + "?datum=" + this.datum + "&vreme=" + this.vreme + "&criteria=" + criteria)
 				.then(response => {
 					if(response.data){
-						this.apoteke = response.data;
+						this.apoteke = response.data.content;
+						this.numPages = response.data.totalPages - 1;
 					}
 					else{
 						alert("Savetovanje mora biti u buducnosti.");
 					}
 				});
 		},
+		loadNext: function(p){
+			axios
+			.get("api/apoteke/kandidati/" + p + "?datum=" + this.datum + "&vreme=" + this.vreme + "&criteria=" + sessionStorage.getItem('criteria'))
+			.then(response => {
+				this.apoteke = response.data.content;
+				this.numPages = response.data.totalPages - 1;
+			});
+		},
 		korak2: function(a){
 			sessionStorage.setItem('datum', this.datum);
 			sessionStorage.setItem('vreme', this.vreme);
-			this.$router.push({ path: "/zakaziSavetovanje/" + a.id });
+			this.$router.push({ path: "/zakaziSavetovanje/" + this.$route.params.page + "/" + a.id });
 		}
 	},
 	mounted: function() {
@@ -83,9 +100,10 @@ Vue.component("zakazivanje-savetovanja", {
 				this.vreme = sessionStorage.getItem('vreme');
 				if(this.datum){
 					axios
-					.get("api/apoteke/kandidati?datum=" + this.datum + "&vreme=" + this.vreme + "&criteria=none")
+					.get("api/apoteke/kandidati/" + this.$route.params.page + "?datum=" + this.datum + "&vreme=" + this.vreme + "&criteria=none")
 					.then(response => {
-						this.apoteke = response.data;
+						this.apoteke = response.data.content;
+						this.numPages = response.data.totalPages - 1;
 					});
 				}
             }else{

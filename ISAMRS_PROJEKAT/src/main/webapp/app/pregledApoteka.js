@@ -54,7 +54,7 @@ Vue.component("pregled-apoteka", {
 	      </div></div>
 	    </div>
 		
-		<div class="pagination" v-for="i in numPages+1" :key="i" >
+		<div class="pagination" v-for="i in numPages+1" :key="i">
 		  <a :href="'#/apoteke/'+(i-1)" v-on:click="loadNext(i-1)">{{i}}</a>
 		</div>
 </div>		  
@@ -66,6 +66,9 @@ Vue.component("pregled-apoteka", {
 			.get("api/apoteke/all/" + p + "/?naziv=" + this.searchParams.naziv + "&adresa=" + this.searchParams.lokacija + "&dOcena=" + this.searchParams.startOcena + "&gOcena=" + this.searchParams.endOcena + "&rastojanje=" + this.searchParams.rastojanje + "&kriterijum=" + this.searchParams.kriterijumSortiranja + "&smer=" + this.searchParams.opadajuce)
 			.then(response => {
 				this.apoteke = response.data.content;
+				for(a of this.apoteke){
+					this.imageMap[a.id] = this.randomItem();
+				}
 			});
 		},
 		pregledaj: function(a){
