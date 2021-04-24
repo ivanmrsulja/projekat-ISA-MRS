@@ -25,9 +25,9 @@ public class Apoteka implements Ocenjivo{
 	@Column(name = "opis", nullable = false)
 	private String opis;
 	@Column(name = "brojOcena", nullable = false)
-	private int brojOcena;
+	private double brojOcena;
 	@Column(name = "sumaOcena", nullable = false)
-	private int sumaOcena;
+	private double sumaOcena;
 	@Column(name = "ocena", nullable = true)
 	private double ocena;
 	@Column(name = "cenaSavetovanja", nullable = true)
@@ -55,7 +55,7 @@ public class Apoteka implements Ocenjivo{
 		this.adminiApoteke = new HashSet<AdminApoteke>();
 	}
 	
-	public Apoteka(String naziv, String opis, int brojOcena, int sumaOcena, Lokacija lokacija, double cena) {
+	public Apoteka(String naziv, String opis, double brojOcena, double sumaOcena, Lokacija lokacija, double cena) {
 		this();
 		this.naziv = naziv;
 		this.opis = opis;
@@ -88,10 +88,10 @@ public class Apoteka implements Ocenjivo{
 	
 	public double izracunajOcenu()
 	{
-		if(this.brojOcena!=0) {
+		if(this.brojOcena > 0.0) {
 			return this.sumaOcena/this.brojOcena;
 		}
-		return 0;
+		return 0.0;
 	}
 	
 	public void addPregled(Pregled p) {
@@ -148,19 +148,19 @@ public class Apoteka implements Ocenjivo{
 		this.opis = opis;
 	}
 
-	public int getBrojOcena() {
+	public double getBrojOcena() {
 		return brojOcena;
 	}
 
-	public void setBrojOcena(int brojOcena) {
+	public void setBrojOcena(double brojOcena) {
 		this.brojOcena = brojOcena;
 	}
 
-	public int getSumaOcena() {
+	public double getSumaOcena() {
 		return sumaOcena;
 	}
 
-	public void setSumaOcena(int sumaOcena) {
+	public void setSumaOcena(double sumaOcena) {
 		this.sumaOcena = sumaOcena;
 	}
 

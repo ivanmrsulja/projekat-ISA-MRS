@@ -45,7 +45,7 @@ Vue.component("pojedinacni-preparat", {
 		                <td>{{a.apoteka.naziv}}</td>
 		                <td>{{a.apoteka.lokacija.ulica}}</td> 
 		                <td>{{a.cena}}</td>
-		                <td>{{a.apoteka.ocena}}</td>                               
+		                <td>{{a.apoteka.ocena.toFixed(2)}}</td>                               
 				</tr>
 			</tbody>
 		</table>

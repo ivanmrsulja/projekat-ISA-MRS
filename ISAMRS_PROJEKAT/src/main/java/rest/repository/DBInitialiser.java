@@ -102,9 +102,9 @@ public class DBInitialiser implements ApplicationRunner {
 		lokacijaRepo.save(l9);
 		lokacijaRepo.save(l10);
 		
-		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3, 8, l2, 3000);
-		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 0, l1, 2000);
-		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1, 1, l3, 1000);
+		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3.0, 8.0, l2, 3000);
+		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0.0, 0.0, l1, 2000);
+		Apoteka a3 = new Apoteka("Moja apoteka", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 1.0, 1.0, l3, 1000);
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
 		apotekaRepo.save(a3);
@@ -229,12 +229,15 @@ public class DBInitialiser implements ApplicationRunner {
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
 		
-		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-04-19"), p1, pr1, a1, 1000);
+		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-05-29"), p1, pr1, a1, 1000);
 		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1, a1, 750);
+		Rezervacija rez3 = new Rezervacija(StatusRezervacije.PODIGNUTO, LocalDate.parse("2021-03-13"), p2, pr1, a1, 800);
 		rezervacijaRepo.save(rez1);
 		rezervacijaRepo.save(rez2);
+		rezervacijaRepo.save(rez3);
 		p1.addRezervacija(rez1);
 		p1.addRezervacija(rez2);
+		p1.addRezervacija(rez3);
 		korisnici.save(p1);
 		
 		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-04-27"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);

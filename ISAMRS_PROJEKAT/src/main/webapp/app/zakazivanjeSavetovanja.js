@@ -46,7 +46,7 @@ Vue.component("zakazivanje-savetovanja", {
                 <tr v-for="a in apoteke">
                     <td>{{a.naziv}}</td>
                     <td>{{a.lokacija.ulica}}</td>
-                    <td v-if="a.ocena != 0">{{a.ocena}}</td>
+                    <td v-if="a.ocena != 0">{{a.ocena.toFixed(2)}}</td>
                     <td v-else ><h4 style="color: lightgray">NIJE OCENJENA</h4></td>
                     <td>{{a.cena}}</td>
 					<td><input class="button1" type="button" value="Zakazi" v-on:click="korak2(a)"/></td>

@@ -4,13 +4,16 @@ Vue.component("pregled-apoteke", {
 				apoteka : {
 					naziv: "",
                     lokacija: {ulica: ""},
-                    opis: ""
+                    opis: "",
+                    ocena: 0.0
                 },
                 farmaceuti: [],
                 dermatolozi: [],
                 pregledi: [],
 				lekovi: [],
-                korisnik: null
+                korisnik: {zaposlenjeKorisnika: "GOST"},
+                ocena: 0,
+                ocenjivo: false
 		    }
 	},
 	template: ` 
@@ -22,9 +25,24 @@ Vue.component("pregled-apoteke", {
             <tr><td><h2>Naziv: </h2></td><td><h2>{{apoteka.naziv}}</h2></td></tr>
             <tr><td><h2>Opis: </h2></td><td><h2>{{apoteka.opis}}</h2></td></tr>
             <tr><td><h2>Adresa: </h2></td><td><h2>{{apoteka.lokacija.ulica}}</h2></td></tr>
-            <tr><td><h2>Ocena: </h2></td><td><h2 v-bind:hidden="apoteka.ocena == 0" >{{apoteka.ocena}}</h2><h2 v-bind:hidden="apoteka.ocena != 0">Nije ocenjivano</h2></td></tr>
+            <tr><td><h2>Ocena: </h2></td><td><h2 v-bind:hidden="apoteka.ocena == 0" >{{apoteka.ocena.toFixed(2)}}</h2><h2 v-bind:hidden="apoteka.ocena != 0">Nije ocenjivano</h2></td></tr>
+            <tr>
+            	<td> <h2 v-bind:hidden="ocenjivo == false" >Moja ocena: </h2></td>
+	            <td style="padding: 20px">
+	            	<div class="star-rating" v-on:click="clickStar()" v-bind:hidden="ocenjivo == false">
+				        <span class="fa fa-star-o" data-rating="1" ></span>
+				        <span class="fa fa-star-o" data-rating="2"></span>
+				        <span class="fa fa-star-o" data-rating="3"></span>
+				        <span class="fa fa-star-o" data-rating="4"></span>
+				        <span class="fa fa-star-o" data-rating="5"></span>
+				        <input type="hidden" name="whatever1" class="rating-value" v-model="ocena">
+				    </div>
+	            </td>
+            </tr>
         </table>
+        
         <br/>
+        
         <div id="map" class="map"></div>
 
         <br><br>
@@ -128,6 +146,29 @@ Vue.component("pregled-apoteke", {
 `
     ,
     methods: {
+    	SetRatingStar: function(){
+    		let self = this;
+    		var $star_rating = $('.star-rating .fa');
+    		return $star_rating.each(function() {
+    			$star_rating.siblings('input.rating-value').val(self.ocena);
+			    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+			      return $(this).removeClass('fa-star-o').addClass('fa-star');
+			    } else {
+			      return $(this).removeClass('fa-star').addClass('fa-star-o');
+			    }
+			});
+    	},
+    	clickStar: function() {
+    	  	axios
+		        .get("/api/ocene/oceniApoteku/" + this.$route.params.id + "/" + this.ocena)
+		        .then(response => {
+		        	axios
+			        .get("/api/apoteke/" + this.$route.params.id)
+			        .then(response => {
+			            this.apoteka = response.data;
+			        });
+		        });
+		},
         showMap: function(){
             let self = this;
             var map = new ol.Map({
@@ -187,6 +228,13 @@ Vue.component("pregled-apoteke", {
         }
     },
     mounted: function(){
+    	let self = this;
+    	var $star_rating = $('.star-rating .fa');
+    	$star_rating.on('click', function() {
+    	  self.ocena = $(this).data('rating');
+		  $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+		  return self.SetRatingStar();
+		});
         axios
         .get("/api/apoteke/" + this.$route.params.id)
         .then(response => {
@@ -213,6 +261,21 @@ Vue.component("pregled-apoteke", {
         .get("/api/users/currentUser")
         .then(response => {
             this.korisnik = response.data;
+            if(this.korisnik.zaposlenjeKorisnika == "PACIJENT"){
+            	axios
+		        .get("/api/ocene/apoteka/" + this.$route.params.id)
+		        .then(response => {
+		        	if(response.data != -1){
+		        		this.ocena = response.data;
+		        		this.ocenjivo = true;
+		        		this.SetRatingStar();
+		        	}else{
+		        		this.ocena = 0;
+		        		this.ocenjivo = false;
+		        		this.SetRatingStar();
+		        	}
+		        });
+            }
         });
 		axios
 		.get("/api/preparat/apoteka/" + this.$route.params.id)

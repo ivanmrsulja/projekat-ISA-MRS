@@ -13,6 +13,7 @@ public class RezervacijaDTO {
 	private String preparat;
 	private String apoteka;
 	private double cena;
+	private PreparatDTO detaljno;
 	
 	public RezervacijaDTO() {}
 	public RezervacijaDTO(Rezervacija r) {
@@ -22,6 +23,7 @@ public class RezervacijaDTO {
 		preparat = r.getPreparat().getNaziv();
 		apoteka = r.getApoteka().getNaziv() + " - " + r.getApoteka().getLokacija().getUlica();
 		cena = r.getCena();
+		detaljno = new PreparatDTO(r.getPreparat());
 	}
 	
 	public Integer getId() {
@@ -59,6 +61,12 @@ public class RezervacijaDTO {
 	}
 	public void setCena(double cena) {
 		this.cena = cena;
+	}
+	public PreparatDTO getDetaljno() {
+		return detaljno;
+	}
+	public void setDetaljno(PreparatDTO detaljno) {
+		this.detaljno = detaljno;
 	}
 	
 }

@@ -49,7 +49,7 @@ Vue.component("pregled-apoteka", {
 	      <p>{{a.opis}}</p>
 	      
 	      <table>
-	      	<tr><td><input type="button" class="button1" value="Vise informacija" v-on:click="pregledaj(a)" /></td><td style="padding = 0px; margin = 0px;" v-bind:hidden=" a.ocena == 0" ><strong>Ocena: {{a.ocena}}</strong></td></tr>
+	      	<tr><td><input type="button" class="button1" value="Vise informacija" v-on:click="pregledaj(a)" /></td><td style="padding = 0px; margin = 0px;" v-bind:hidden=" a.ocena == 0" ><strong>Ocena: {{a.ocena.toFixed(2)}}</strong></td></tr>
 	      </table>
 	      </div></div>
 	    </div>
