@@ -1,7 +1,8 @@
 Vue.component("lista-rezervacija", {
 	data: function () {
 		    return {
-				rezervacije : []
+				rezervacije : [],
+				selected: {}
 		    }
 	},
 	template: ` 
@@ -21,6 +22,7 @@ Vue.component("lista-rezervacija", {
                	<th scope="col">Preparat</th>
                	<th scope="col">Apoteka</th>
                	<th scope="col">Cena</th>
+				<th scope="col">Otkazivanje</th>
 				<th scope="col">Akcija</th>
                 </tr>
            	</thead>
@@ -32,11 +34,40 @@ Vue.component("lista-rezervacija", {
                                 <td>{{r.preparat}}</td>
                                 <td>{{r.apoteka}}</td>
                                 <td>{{r.cena}}</td>
-								<td><input type="button" class="button1" value="Otkazi" v-on:click="otkazi(r)" v-bind:hidden=" (new Date(r.datumPreuzimanja)).getTime() <= Date.now() + 86400000" /><h2 style="color: lightgray" v-bind:hidden="(new Date(r.datumPreuzimanja)).getTime() >= Date.now() + 86400000">ISTEKLO</h2></td>
+								<td><input type="button" class="button1" value="Otkazi" v-on:click="otkazi(r)" v-bind:hidden=" (new Date(r.datumPreuzimanja)).getTime() <= Date.now() + 86400000" /><h3 style="color: lightgray" v-bind:hidden="(new Date(r.datumPreuzimanja)).getTime() >= Date.now() + 86400000">ISTEKLO</h3></td>
+            					<td><input type="button" class="button1" value="Detaljnije" v-on:click="detaljnije(r)" data-toggle="modal" data-target="#exampleModalCenter" v-bind:hidden="r.status=='REZERVISANO'"/><h3 style="color: lightgray" v-bind:hidden="r.status=='PODIGNUTO'">NIJE PODIGNUTO</h3></td>
             	</tr>           
             </tbody>
      	</table>
-	
+		
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLongTitle">Rezervacija broj {{selected.id}}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <table>
+		        <tr>
+		        <td>Apoteka:</td>
+		        <td>{{selected.apoteka}}</td>
+		        </tr>
+		        <tr>
+		        <td>Preparat:</td>
+		        <td>{{selected.preparat}}</td>
+		        </tr>
+		        </table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nazad</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
 </div>		  
 `
 	,
@@ -56,6 +87,9 @@ Vue.component("lista-rezervacija", {
 					});
 		        });
 	        });
+		},
+		detaljnije: function(r){
+			this.selected = r;
 		}
 	},
 	mounted: function() {

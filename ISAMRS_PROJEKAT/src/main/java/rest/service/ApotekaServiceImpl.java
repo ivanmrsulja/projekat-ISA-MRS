@@ -47,7 +47,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 	private PacijentRepository pacijenti;
 	private PenalRepository penali;
 	
-	private static final int pageSize = 2;
+	private static final int pageSize = 10;
 
 	@Autowired
 	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
