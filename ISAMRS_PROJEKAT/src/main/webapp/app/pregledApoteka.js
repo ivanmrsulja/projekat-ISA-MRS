@@ -69,6 +69,7 @@ Vue.component("pregled-apoteka", {
 				for(a of this.apoteke){
 					this.imageMap[a.id] = this.randomItem();
 				}
+				this.numPages = response.data.totalPages - 1;
 			});
 		},
 		pregledaj: function(a){
