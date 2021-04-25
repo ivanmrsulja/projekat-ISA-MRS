@@ -24,6 +24,8 @@ const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacije
 const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>'};
 const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>'};
 const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
+const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
+
 
 
 const router = new VueRouter({
@@ -33,6 +35,7 @@ const router = new VueRouter({
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
 	    { path: '/pregledi', component: RadniKalendar },
+	    { path: '/savetovanja', component: RadniKalendarFarmaceut },
 	    { path: '/preparati', component: preparatiTable},
 	    { path: '/preparati/:spec', component: PregledStavkiPreparata },
 	    { path: '/farmaceuti', component: farmaceutiTable},

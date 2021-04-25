@@ -156,7 +156,7 @@ public class DBInitialiser implements ApplicationRunner {
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2020-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2020-04-06"), n, d));
 		
-		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dusan123", "dusan123","isamrstim06+d1@gmail.com",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
+		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dermatolog", "dermatolog","isamrstim06+d1@gmail.com",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
 		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","isamrstim06+d2@gmail.com",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7,10);		
 		korisnici.save(d1);
 		korisnici.save(d2);
@@ -230,7 +230,13 @@ public class DBInitialiser implements ApplicationRunner {
 		p1.addRezervacija(rez2);
 		korisnici.save(p1);
 		
-		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-04-07"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-07"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre11 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-08"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre12 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-09"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
+		Pregled pre13 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-09"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre14 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-09"), LocalTime.parse("11:00"), 45, 5000, d1, p1, a1);
+		Pregled pre15 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-10"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
+		Pregled pre16 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-07"), LocalTime.parse("08:00"), 45, 5000, d1, p1, a1);
 		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
 		Pregled pre3 = new Pregled("Lorem ipsum solor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
 		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
@@ -247,6 +253,14 @@ public class DBInitialiser implements ApplicationRunner {
 		pregledRepo.save(pre6);
 		pregledRepo.save(pre7);
 		pregledRepo.save(pre8);
+		pregledRepo.save(pre11);
+		pregledRepo.save(pre12);
+		pregledRepo.save(pre13);
+		pregledRepo.save(pre14);
+		pregledRepo.save(pre15);
+		pregledRepo.save(pre16);
+
+		
 		
 		AkcijaPromocija ap1 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma1);
 		AkcijaPromocija ap2 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma2);

@@ -3,6 +3,8 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,15 +24,18 @@ import rest.aspect.AsAdminApoteke;
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
 import rest.domain.Ponuda;
+import rest.domain.Pregled;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.PregledDTO;
 import rest.dto.FarmaceutDTO;
 import rest.service.AdminService;
 import rest.service.ApotekaService;
 import rest.service.FarmaceutService;
 import rest.service.KorisnikService;
+import rest.service.PregledService;
 
 
 @RestController
@@ -39,11 +44,13 @@ public class FarmaceutController {
 
 	private FarmaceutService farmaceutService;
 	private ApotekaService apotekaService;
+	private PregledService pregledService;
 	
 	@Autowired
-	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as) {
+	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as,PregledService p) {
 		this.farmaceutService = farmaceut;
 		this.apotekaService = as;
+		this.pregledService=p;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -86,4 +93,18 @@ public class FarmaceutController {
 		return "OK";
 	}
 	
+	@GetMapping(value ="/savetovanja", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PregledDTO> getPregledi(HttpSession s) {
+		KorisnikDTO korisnik = (KorisnikDTO)s.getAttribute("user");
+		Collection<Pregled> pregledi= pregledService.dobaviZaDermatologa(korisnik.getId());
+		ArrayList<PregledDTO> preglediDTO = new ArrayList<PregledDTO>();
+		for(Pregled d : pregledi)
+			preglediDTO.add(new PregledDTO(d,0));
+		return preglediDTO;
+	}
+	
+	@GetMapping(value ="/savetovanja/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PregledDTO getPregled(@PathVariable Integer id) {
+		return new PregledDTO(pregledService.dobaviPregledZa(id),0);
+	}
 }

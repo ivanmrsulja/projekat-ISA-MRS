@@ -9,33 +9,53 @@ Vue.component("radni-kalendar", {
 	template: ` 
 <div align = center style="width:75%">
 		
-		<h1>Radni kalendar</h1>
-		<br/>
-		<h2 v-bind:hidden="pregledi.length > 0" >Nemate ni jedan zakazan pregled.</h2>
-		<table class="table table-hover" v-bind:hidden="pregledi.length == 0">
-            <thead>
-            	<tr>
-                <th scope="col">Status</th>
-                <th scope="col">Tip</th>
-                <th scope="col">Datum</th>
-               	<th scope="col">Vrijeme</th>
-             	<th scope="col">Trajanje</th>
-           		<th scope="col">Cijena</th>
-				<th scope="col">Akcija</th>
-                </tr>
-           	</thead>
-            <tbody>
-                <tr v-for="p in pregledi">
-                    <td>{{p.status}}</td>
-                    <td>{{p.tip}}</td>
-                    <td>{{p.datum}}</td>
-                    <td>{{p.vrijeme}}</td>
-                    <td>{{p.trajanje}}</td>
-					<td>{{p.cijena}}</td>
-					<td><input type="button" value="Zapocni" v-on:click="zapocniPregled(p)" /></td>
-            	</tr>           
-            </tbody>
-     	</table>
+		
+		<div class="container">
+		
+		
+
+<h2>Radni kalendar</h2>
+    <p class="lead">
+        Pregled radnog kalendara za predstojeci period
+    </p>
+   <br/>
+
+    <div class="agenda">
+        <div class="table-responsive">
+            <table class="table table-condensed table-bordered">
+               <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Vreme</th>
+                        <th>Pacijent</th>
+                        <th>Akcija</th>
+                    </tr>
+                </thead>
+                
+                                
+                    <!-- Multiple events in a single day (note the rowspan) -->
+                    <tbody v-for="d in pregledi">
+                    <br/>
+                    <tr>
+                        <td class="agenda-date active"  :rowspan="d.length+1">
+                            <div class="dayofmonth">{{d[0].datum.split("-")[2]}}</div>
+                            <div class="shortdate text-muted">{{d[0].datum.split("-")[1]}}, {{d[0].datum.split("-")[0]}}</div>
+                        </td>
+                        
+                    </tr>
+                    	<tr v-for="p in d">
+                        	<td class="agenda-time">{{p.vrijeme + " [trajanje: " +p.trajanje+"]" }}</td>
+                        	<td class="agenda-events">{{p.pacijent.ime + " " + p.pacijent.prezime}} </td>
+                        	<td align=center><input type="button" class="button1" v-on:click="zapocniPregled(p)" value="Zapocni Pregled" /></td>
+                        </tr>
+                    </tbody>
+                    
+                    
+                
+            </table>
+        </div>
+    </div>
+</div>
 
 
 	

@@ -8,17 +8,17 @@ Vue.component("zakazivanje-termina", {
 	zavrsiZakazivanje : function(){
 		let datum = $("input[name=datum]").val();
 		let vrijeme = $("input[name=vrijeme]").val();
-		let noviPregled = {izvjestaj: "", StatusPregleda:  StatusPregleda.ZAKAZAN, TipPregleda: TipPregleda.PREGLED, LocalDate : datum, LocalTime: vrijeme, trajanje: 45, cijena: 5000, zaposleni:d1 ,spec , a1};
+		let noviPregled = {izvjestaj: "", datum : datum, vrijeme: vrijeme, trajanje: 45, cijena: 5000 };
 		
 		axios.post("/api/", noviPregled).then(data => {
 			if(data.data == "OK") {
 				alert("Uspesno ste se zakazali pregled!");
 			}
-		});	this.$router.push({ path: "/pacijenti" });
+		});	this.$router.push({ path: "/pregledi" });
 	},
 	
 	otkaziZakazivanje : function(){
-		this.$router.push({ path: "/pacijenti" });
+		this.$router.push({ path: "/pregledi" });
 	},
 	
 	},

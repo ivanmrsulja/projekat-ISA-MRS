@@ -19,4 +19,6 @@ public interface PregledService {
 	Collection<Pregled> dobaviZaDermatologa(int id);
 	
 	Pregled dobaviPregledZa(Integer id);
+	
+	void makeNewExam (PregledDTO p,int apotekaId,int korisnikId,int pacijentId) throws Exception;
 }

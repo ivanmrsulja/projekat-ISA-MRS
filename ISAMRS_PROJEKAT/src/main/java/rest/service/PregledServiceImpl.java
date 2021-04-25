@@ -13,12 +13,16 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import rest.domain.Apoteka;
+import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
 import rest.domain.TipPregleda;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
+import rest.repository.ApotekeRepository;
+import rest.repository.KorisnikRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PregledRepository;
 
@@ -29,17 +33,21 @@ public class PregledServiceImpl implements PregledService {
 	private ApotekaService apotekeServ;
 	private PregledRepository preglediRepo;
 	private PacijentRepository pacijentiRepo;
+	private KorisnikRepository korisnikRepo;
+	private ApotekeRepository apotekaRepo;
 	
 	private Environment env;
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	public PregledServiceImpl(ApotekaService apotekeServ, PregledRepository preglediRepo, PacijentRepository pacijentiRepo, Environment env, JavaMailSender jms) {
+	public PregledServiceImpl(ApotekaService apotekeServ, PregledRepository preglediRepo, PacijentRepository pacijentiRepo, Environment env, JavaMailSender jms , KorisnikRepository kr,ApotekeRepository ar) {
 		this.apotekeServ = apotekeServ;
 		this.preglediRepo = preglediRepo;
 		this.pacijentiRepo = pacijentiRepo;
 		this.env = env;
 		this.javaMailSender = jms;
+		this.korisnikRepo=kr;
+		this.apotekaRepo=ar;
 	}
 
 	@Override
@@ -115,5 +123,19 @@ public class PregledServiceImpl implements PregledService {
 	
 	public Pregled dobaviPregledZa(Integer id){
 		return preglediRepo.findById(id).get();
+	}
+	
+	public void makeNewExam (PregledDTO p,int apotekaId,int korisnikId,int pacijentId) throws Exception{
+		Pregled pre=new Pregled(p.getIzvjestaj(), StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, p.getDatum(), p.getVrijeme(), 45,
+				p.getCijena(),korisnikRepo.findById(korisnikId).get(), pacijentiRepo.findById(pacijentId).get(),apotekaRepo.findById(apotekaId).get());
+		
+		
+		Pacijent pacijent=pacijentiRepo.findById(pacijentId).get();
+		pacijent.addPregled(pre);
+		Apoteka apoteka=apotekaRepo.findById(apotekaId).get();
+		apoteka.addPregled(pre);
+		pacijentiRepo.save(pacijent);
+		preglediRepo.save(pre);
+		apotekaRepo.save(apoteka);
 	}
 }
