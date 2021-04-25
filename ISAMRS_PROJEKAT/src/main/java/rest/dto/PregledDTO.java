@@ -19,6 +19,7 @@ public class PregledDTO {
 	private KorisnikDTO zaposleni;
 	private double ocena;
 	private KorisnikDTO pacijent;
+	private ApotekaDTO apoteka;
 	
 	public PregledDTO() {}
 	public PregledDTO(Pregled p, double ocena) {
@@ -36,8 +37,15 @@ public class PregledDTO {
 			this.pacijent=null;
 		else
 			this.pacijent=new KorisnikDTO(p.getPacijent());
+		apoteka=new ApotekaDTO(p.getApoteka());
 	}
 	
+	public ApotekaDTO getApoteka() {
+		return apoteka;
+	}
+	public void setApoteka(ApotekaDTO apoteka) {
+		this.apoteka = apoteka;
+	}
 	public KorisnikDTO getPacijent() {
 		return pacijent;
 	}

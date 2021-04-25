@@ -29,9 +29,9 @@ methods: {
 			let vrijeme = $("input[name=vrijeme]").val();
 			let noviPregled = {izvjestaj:"", datum : datum, vrijeme: vrijeme, trajanje: 45, cijena: 5000 };
 			
-			axios.post("/api/zakaziNovi/"+this.pregled.apoteka.id+"/"+this.pregled.zaposleni.id+"/"+this.pacijent.korisnik.id, noviPregled).then(data => {
+			axios.post("/api/dermatolog/zakaziNovi/"+this.pregled.apoteka.id+"/"+this.pregled.zaposleni.id+"/"+this.pacijent.korisnik.id, noviPregled).then(data => {
 				alert(data.data);
-			});	this.$router.push({ path: "/pregledi" });
+			});	
 		},
 	
 	otkaziPregled : function(r){
@@ -125,6 +125,7 @@ methods: {
 			.get("api/dermatolog/pregledi/" + this.$route.params.spec)
 			.then(response => {
 				this.pregled = response.data;
+				console.log(response.data);
 				axios
 				.get("api/pacijenti/spec/" + this.pregled.pacijent.id)
 				.then(response => {
