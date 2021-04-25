@@ -196,9 +196,9 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(f2);
 		korisnici.save(f3);
 		
-		Preparat pr1 = new Preparat("Alirex", TipLeka.ANTIHISTAMINIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 2, 200, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 0, 0);
-		Preparat pr2 = new Preparat("Andol", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 300, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 3, 15);
-		Preparat pr3 = new Preparat("Block Max", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 400, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 2, 4);
+		Preparat pr1 = new Preparat("Alirex", TipLeka.ANTIHISTAMINIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 2, 200, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 0.0, 0.0);
+		Preparat pr2 = new Preparat("Andol", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 300, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 3.0, 14.0);
+		Preparat pr3 = new Preparat("Block Max", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 400, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 2.0, 4.0);
 		preparatRepo.save(pr1);
 		preparatRepo.save(pr2);
 		pr3.addZamenskiPreparat(pr2);
@@ -211,8 +211,8 @@ public class DBInitialiser implements ApplicationRunner {
 		p2.getAlergije().add(pr3);
 		korisnici.save(p2);
 		
-		ERecept er1 = new ERecept(LocalDate.parse("2021-03-07"), p1, StatusERecepta.NOV);
-		ERecept er2 = new ERecept(LocalDate.parse("2021-03-03"), p1, StatusERecepta.OBRADJEN);
+		ERecept er1 = new ERecept(LocalDate.parse("2021-05-07"), p1, StatusERecepta.NOV, a1);
+		ERecept er2 = new ERecept(LocalDate.parse("2021-03-03"), p1, StatusERecepta.OBRADJEN, a2);
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
 		

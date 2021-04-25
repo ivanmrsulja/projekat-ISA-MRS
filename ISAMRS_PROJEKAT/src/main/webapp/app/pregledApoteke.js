@@ -100,7 +100,7 @@ Vue.component("pregled-apoteke", {
 		<tr v-for="l in lekovi">
 			<td>{{l.naziv}}</td>
 			<td>{{l.proizvodjac}}</td>
-			<td>{{l.ocena}}</td>
+			<td>{{l.ocena.toFixed(2)}}</td>
 		</tr>
 		</tbody>
 	</table>
@@ -136,7 +136,7 @@ Vue.component("pregled-apoteke", {
 			<td>{{p.vrijeme}}</td>
 			<td>{{p.cijena}}</td>
 			<td>{{p.ocena}} </td>
-			<td><input type="button" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik" /></td>
+			<td><input type="button" class="button1" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik" /></td>
 		</tr>
 		</tbody>
 	</table>

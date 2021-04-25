@@ -39,9 +39,9 @@ public class Preparat implements Ocenjivo{
 	@Column(name = "izdavanje", nullable = false)
 	private RezimIzdavanja izdavanje;
 	@Column(name = "brojOcena", nullable = false)
-	private int brojOcena;
+	private double brojOcena;
 	@Column(name = "sumaOcena", nullable = false)
-	private int sumaOcena;
+	private double sumaOcena;
 	@Column(name = "ocena", nullable = false)
 	private double ocena;
 	
@@ -54,7 +54,7 @@ public class Preparat implements Ocenjivo{
 	}
 
 	public Preparat(String naziv, TipLeka tip, String kontraindikacije, String sastav, int preporuceniUnos,
-			int poeni, String oblik, String proizvodjac, RezimIzdavanja izdavanje, int brojOcena, int sumaOcena) {
+			int poeni, String oblik, String proizvodjac, RezimIzdavanja izdavanje, double brojOcena, double sumaOcena) {
 		this();
 		this.naziv = naziv;
 		this.tip = tip;
@@ -75,7 +75,7 @@ public class Preparat implements Ocenjivo{
 		if(this.brojOcena!=0) {
 			return this.sumaOcena/this.brojOcena;
 		}
-		return 0;
+		return 0.0;
 	}
 	
 	public void addZamenskiPreparat(Preparat p) {
@@ -168,19 +168,19 @@ public class Preparat implements Ocenjivo{
 		this.izdavanje = izdavanje;
 	}
 
-	public int getBrojOcena() {
+	public double getBrojOcena() {
 		return brojOcena;
 	}
 
-	public void setBrojOcena(int brojOcena) {
+	public void setBrojOcena(double brojOcena) {
 		this.brojOcena = brojOcena;
 	}
 
-	public int getSumaOcena() {
+	public double getSumaOcena() {
 		return sumaOcena;
 	}
 
-	public void setSumaOcena(int sumaOcena) {
+	public void setSumaOcena(double sumaOcena) {
 		this.sumaOcena = sumaOcena;
 	}
 

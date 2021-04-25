@@ -63,6 +63,12 @@ public class PreparatController {
 	public PreparatDTO getSpec(@PathVariable("id") int id){
 		return new PreparatDTO(preparatService.getOne(id));
 	}
+	
+	@AsPacijent
+	@GetMapping(value = "specifikacija/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PreparatDTO getSpecPacijent(@PathVariable("id") int id){
+		return new PreparatDTO(preparatService.getOne(id));
+	}
 
 	@GetMapping(value = "apoteka/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getPreparatiForApoteka(@PathVariable("id") int id)
