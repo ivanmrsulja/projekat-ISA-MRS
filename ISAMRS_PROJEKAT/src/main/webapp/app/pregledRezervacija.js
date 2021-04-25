@@ -2,7 +2,9 @@ Vue.component("lista-rezervacija", {
 	data: function () {
 		    return {
 				rezervacije : [],
-				selected: {}
+				selected: {detaljno: {ocena: 0}},
+				ocena: 0,
+                ocenjivo: false
 		    }
 	},
 	template: ` 
@@ -35,7 +37,7 @@ Vue.component("lista-rezervacija", {
                                 <td>{{r.apoteka}}</td>
                                 <td>{{r.cena}}</td>
 								<td><input type="button" class="button1" value="Otkazi" v-on:click="otkazi(r)" v-bind:hidden=" (new Date(r.datumPreuzimanja)).getTime() <= Date.now() + 86400000" /><h3 style="color: lightgray" v-bind:hidden="(new Date(r.datumPreuzimanja)).getTime() >= Date.now() + 86400000">ISTEKLO</h3></td>
-            					<td><input type="button" class="button1" value="Detaljnije" v-on:click="detaljnije(r)" data-toggle="modal" data-target="#exampleModalCenter" v-bind:hidden="r.status=='REZERVISANO'"/><h3 style="color: lightgray" v-bind:hidden="r.status=='PODIGNUTO'">NIJE PODIGNUTO</h3></td>
+            					<td><input type="button" class="button1" value="Detaljnije" v-on:click="detaljnije(r)" data-toggle="modal" data-target="#exampleModalCenter"/></td>
             	</tr>           
             </tbody>
      	</table>
@@ -51,14 +53,61 @@ Vue.component("lista-rezervacija", {
 		      </div>
 		      <div class="modal-body">
 		        <table>
+		        
 		        <tr>
-		        <td>Apoteka:</td>
+		        <td><h6>Apoteka:</h6></td>
 		        <td>{{selected.apoteka}}</td>
 		        </tr>
+		        
 		        <tr>
-		        <td>Preparat:</td>
+		        <td><h6>Preparat:</h6></td>
 		        <td>{{selected.preparat}}</td>
 		        </tr>
+		        
+		        <tr>
+		        <td><h6>Kontraindikacije:</h6></td>
+		        <td>{{selected.detaljno.kontraindikacije}}</td>
+		        </tr>
+		        
+		        <tr>
+		        <td><h6>Sastav:</h6></td>
+		        <td>{{selected.detaljno.sastav}}</td>
+		        </tr>
+		        
+		        <tr>
+		        <td><h6>Preporuceni unos:</h6></td>
+		        <td>{{selected.detaljno.preporuceniUnos}} dnevno</td>
+		        </tr>
+		        
+		        <tr>
+		        <td><h6>Oblik:</h6></td>
+		        <td>{{selected.detaljno.oblik}}</td>
+		        </tr>
+		        
+		        <tr>
+		        <td><h6>Proizvodjac:</h6></td>
+		        <td>{{selected.detaljno.proizvodjac}}</td>
+		        </tr>
+		        
+		        <tr>
+		        <td><h6>Ocena preparata:</h6></td>
+		        <td>{{selected.detaljno.ocena.toFixed(2)}}</td>
+		        </tr>
+		        
+		        <tr>
+		        <td><h6 v-bind:hidden="ocenjivo == false">Moja ocena:</h6></td>
+		        <td>
+		        	<div class="star-rating" v-on:click="clickStar()" v-bind:hidden="ocenjivo == false">
+				        <span class="fa fa-star-o" data-rating="1" ></span>
+				        <span class="fa fa-star-o" data-rating="2"></span>
+				        <span class="fa fa-star-o" data-rating="3"></span>
+				        <span class="fa fa-star-o" data-rating="4"></span>
+				        <span class="fa fa-star-o" data-rating="5"></span>
+				        <input type="hidden" name="whatever1" class="rating-value" v-model="ocena">
+				    </div>
+		        </td>
+		        </tr>
+		        
 		        </table>
 		      </div>
 		      <div class="modal-footer">
@@ -72,6 +121,37 @@ Vue.component("lista-rezervacija", {
 `
 	,
 	methods:{
+		SetRatingStar: function(){
+    		let self = this;
+    		var $star_rating = $('.star-rating .fa');
+    		return $star_rating.each(function() {
+    			$star_rating.siblings('input.rating-value').val(self.ocena);
+			    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+			      return $(this).removeClass('fa-star-o').addClass('fa-star');
+			    } else {
+			      return $(this).removeClass('fa-star').addClass('fa-star-o');
+			    }
+			});
+    	},
+    	clickStar: function() {
+    		axios
+	        .get("/api/ocene/oceniPreparat/" + this.selected.detaljno.id + "/" + this.ocena)
+	        .then(response => {
+	        	axios
+		        .get("/api/preparat/specifikacija/" + this.selected.detaljno.id)
+		        .then(response => {
+		            this.selected.detaljno = response.data;
+		        });
+		        axios
+		        .get("/api/users/currentUser").then(data =>{
+		            axios
+					.get("api/users/rezervacije/" + data.data.id)
+					.then(response => {
+						this.rezervacije = response.data;
+					});
+	        	});
+	        });
+    	},
 		otkazi: function(r){
 			axios
 	        .patch("/api/preparat/otkazi/" + r.id)
@@ -90,9 +170,30 @@ Vue.component("lista-rezervacija", {
 		},
 		detaljnije: function(r){
 			this.selected = r;
+			axios
+		        .get("/api/ocene/preparat/" + r.detaljno.id)
+		        .then(response => {
+		        	if(response.data != -1){
+		        		this.ocena = response.data;
+		        		this.ocenjivo = true;
+		        	}else{
+		        		this.ocena = 0;
+		        		this.ocenjivo = false;
+		        	}
+		        	this.SetRatingStar();
+		        });
 		}
 	},
 	mounted: function() {
+		let self = this;
+    	
+    	var $star_rating = $('.star-rating .fa');
+    	$star_rating.on('click', function() {
+    	  self.ocena = $(this).data('rating');
+		  $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+		  return self.SetRatingStar();
+		});
+		
 		axios.get("/api/users/currentUser").then(data =>{
             if(data.data){
             	axios

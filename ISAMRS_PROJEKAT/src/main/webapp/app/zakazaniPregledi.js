@@ -31,7 +31,7 @@ Vue.component("zakazani-pregledi", {
                     <td>{{p.vrijeme}}</td>
                     <td>{{p.trajanje}}</td>
 					<td>{{p.cijena}}</td>
-					<td v-if="!isValid(p)"><input type="button" value="Otkazi" v-on:click="otkazi(p)" /></td>
+					<td v-if="!isValid(p)"><input type="button" class="button1" value="Otkazi" v-on:click="otkazi(p)" /></td>
 					<td v-else ><h4 style="color: lightgray" >ISTEKLO</h4></td>
             	</tr>           
             </tbody>

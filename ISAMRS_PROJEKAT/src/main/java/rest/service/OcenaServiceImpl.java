@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
+import rest.domain.ERecept;
 import rest.domain.OcenaApoteke;
 import rest.domain.OcenaPreparata;
 import rest.domain.Pacijent;
@@ -15,6 +16,7 @@ import rest.domain.Pregled;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
 import rest.repository.ApotekeRepository;
+import rest.repository.EReceptRepository;
 import rest.repository.OcenaApotekeRepository;
 import rest.repository.OcenaPreparataRepository;
 import rest.repository.PacijentRepository;
@@ -33,9 +35,10 @@ public class OcenaServiceImpl implements OcenaService {
 	private PacijentRepository pacijentiRepo;
 	private ApotekeRepository apotekeRepo;
 	private PreparatRepository preparatiRepo;
+	private EReceptRepository eReceptRepo;
 	
 	@Autowired
-	public OcenaServiceImpl(PregledRepository pr, RezervacijaRepository rr, OcenaApotekeRepository oar, OcenaPreparataRepository opr, PacijentRepository pacijentiRepo, ApotekeRepository apotekeRepo, PreparatRepository pre) {
+	public OcenaServiceImpl(PregledRepository pr, RezervacijaRepository rr, OcenaApotekeRepository oar, OcenaPreparataRepository opr, PacijentRepository pacijentiRepo, ApotekeRepository apotekeRepo, PreparatRepository pre, EReceptRepository eReceptRepo) {
 		preglediRepo = pr;
 		rezervacijeRepo = rr;
 		oceneApotekeRepo = oar;
@@ -43,13 +46,15 @@ public class OcenaServiceImpl implements OcenaService {
 		this.pacijentiRepo = pacijentiRepo;
 		this.apotekeRepo = apotekeRepo;
 		preparatiRepo = pre;
+		this.eReceptRepo = eReceptRepo;
 	}
 	
 	@Override
 	public int ocenjivaApoteka(int idApoteke, int idPacijenta) {
 		Collection<Pregled> pregledi = preglediRepo.preglediUApoteci(idApoteke, idPacijenta);
 		Collection<Rezervacija> rezervacije = rezervacijeRepo.rezervacijaUApoteci(idApoteke, idPacijenta);
-		if (pregledi.size() == 0 && rezervacije.size() == 0) {
+		Collection<ERecept> eRecepti = eReceptRepo.zaApotekuIKorisnika(idPacijenta, idApoteke);
+		if (pregledi.size() == 0 && rezervacije.size() == 0 && eRecepti.size() == 0) {
 			return -1;
 		}
 		OcenaApoteke ocena = oceneApotekeRepo.zaKorisnika(idPacijenta, idApoteke);
@@ -74,7 +79,8 @@ public class OcenaServiceImpl implements OcenaService {
 	@Override
 	public int ocenjivPreparat(int idPreparata, int idPacijenta) {
 		Collection<Rezervacija> rezervacije = rezervacijeRepo.rezervacijaLijeka(idPreparata, idPacijenta);
-		if(rezervacije.size() == 0) {
+		Collection<ERecept> eRecepti = eReceptRepo.zaPreparatIKorisnika(idPacijenta, idPreparata);
+		if(rezervacije.size() == 0 && eRecepti.size() == 0) {
 			return -1;
 		}
 		OcenaPreparata ocena = ocenePreparataRepo.zaKorisnika(idPacijenta, idPreparata);
@@ -88,7 +94,8 @@ public class OcenaServiceImpl implements OcenaService {
 	public void oceniApoteku(int idApoteke, int ocena, int idPacijenta) throws Exception {
 		Collection<Pregled> pregledi = preglediRepo.preglediUApoteci(idApoteke, idPacijenta);
 		Collection<Rezervacija> rezervacije = rezervacijeRepo.rezervacijaUApoteci(idApoteke, idPacijenta);
-		if (pregledi.size() == 0 && rezervacije.size() == 0) {
+		Collection<ERecept> eRecepti = eReceptRepo.zaApotekuIKorisnika(idPacijenta, idApoteke);
+		if (pregledi.size() == 0 && rezervacije.size() == 0 && eRecepti.size() == 0) {
 			throw new Exception("Nemate mogucnost ocenjivanja ove apoteke");
 		}
 		OcenaApoteke staraocena = oceneApotekeRepo.zaKorisnika(idPacijenta, idApoteke);
@@ -124,7 +131,8 @@ public class OcenaServiceImpl implements OcenaService {
 	@Override
 	public void oceniPreparat(int idPreparata, int idPacijenta, int ocena) throws Exception {
 		Collection<Rezervacija> rezervacije = rezervacijeRepo.rezervacijaLijeka(idPreparata, idPacijenta);
-		if(rezervacije.size() == 0) {
+		Collection<ERecept> eRecepti = eReceptRepo.zaPreparatIKorisnika(idPacijenta, idPreparata);
+		if(rezervacije.size() == 0 && eRecepti.size() == 0) {
 			throw new Exception("Nemate mogucnost ocenjivanja ovog preparata");
 		}
 		OcenaPreparata staraOcena = ocenePreparataRepo.zaKorisnika(idPacijenta, idPreparata);
