@@ -148,8 +148,8 @@ public class PregledServiceImpl implements PregledService {
 		pacijent.addPregled(pre);
 		Apoteka apoteka=apotekaRepo.findById(apotekaId).get();
 		apoteka.addPregled(pre);
-		pacijentiRepo.save(pacijent);
 		preglediRepo.save(pre);
+		pacijentiRepo.save(pacijent);
 		apotekaRepo.save(apoteka);
 	}
 
