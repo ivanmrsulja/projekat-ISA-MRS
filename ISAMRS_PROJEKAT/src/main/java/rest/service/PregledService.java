@@ -16,6 +16,14 @@ public interface PregledService {
 	@Async
 	void sendConfirmationEmail(KorisnikDTO user);
 	
+
 	@Async
 	void sendConfirmationEmailAdv(KorisnikDTO user, Pregled p);
+
+	Collection<Pregled> dobaviZaDermatologa(int id);
+	
+	Pregled dobaviPregledZa(Integer id);
+	
+	void makeNewExam (PregledDTO p,int apotekaId,int korisnikId,int pacijentId) throws Exception;
+
 }

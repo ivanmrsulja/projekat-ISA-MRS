@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import rest.domain.Korisnik;
 import rest.domain.Pregled;
 
 @Repository
@@ -41,4 +40,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	
 	@Query("select p from Pregled p where p.pacijent.id = ?2 and p.apoteka.id = ?1 and p.status = 2")
 	Collection<Pregled> preglediUApoteci(int idApoteke, int idPacijenta);
+
+	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.status = 0")
+	Collection<Pregled> preglediZaDermatologa(int id);
+
 }

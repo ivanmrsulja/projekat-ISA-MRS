@@ -21,8 +21,17 @@ const registracijaDermatologa = { template: '<register-dermatolog></register-der
 const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
+
 const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
 const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
+
+const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>'};
+const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>'};
+const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
+const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
+
+
+
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -30,6 +39,8 @@ const router = new VueRouter({
 	    { path: '/', component: LoginStrana},
 	    { path: '/tab', component: TabelaPonuda},
 	    { path: '/dermatolozi', component: dermatoloziTable},
+	    { path: '/pregledi', component: RadniKalendar },
+	    { path: '/savetovanja', component: RadniKalendarFarmaceut },
 	    { path: '/preparati', component: preparatiTable},
 	    { path: '/preparati/:spec', component: PregledStavkiPreparata },
 	    { path: '/farmaceuti', component: farmaceutiTable},
@@ -49,9 +60,15 @@ const router = new VueRouter({
         { path: '/regDerm', component: registracijaDermatologa },
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
+
 	    { path: '/zalbe', component: StranicaZalbe },
 	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
-	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 }
+	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
+
+	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
+	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },
+
+	    
 	  ]
 	});
 

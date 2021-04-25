@@ -9,14 +9,19 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.Dermatolog;
 import rest.domain.Korisnik;
+import rest.domain.Pregled;
+import rest.domain.StatusPregleda;
 import rest.dto.KorisnikDTO;
+import rest.dto.PregledDTO;
 import rest.repository.DermatologRepository;
+import rest.repository.PregledRepository;
 
 @Service
 @Transactional
 public class DermatologServiceImpl implements DermatologService {
 
 	private DermatologRepository dermatologRepository;
+	private PregledRepository pregledRepository;
 	
 	@Autowired
 	public DermatologServiceImpl(DermatologRepository imdr) {
@@ -72,5 +77,11 @@ public class DermatologServiceImpl implements DermatologService {
 	public Collection<Dermatolog> findAllForPharmacy(int id) {
 		return dermatologRepository.getWithEmployments(id);
 	}
-
+	@Override
+	public void zavrsi(PregledDTO pregled, int id){
+		Pregled p=pregledRepository.findById(id).get();
+		p.setIzvjestaj(pregled.getIzvjestaj());
+		p.setStatus(StatusPregleda.ZAVRSEN);
+		pregledRepository.save(p);
+	}
 }

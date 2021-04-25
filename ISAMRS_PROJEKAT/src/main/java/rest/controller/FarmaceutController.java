@@ -3,6 +3,8 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -84,6 +86,7 @@ public class FarmaceutController {
 		return "OK";
 	}
 	
+
 	@AsPacijent
 	@PostMapping(value = "/zakaziSavetovanje/{id}/{ida}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getFarmaceutiSavetovanje(@RequestBody PregledDTO novi, @PathVariable("id") int idFarmaceuta, @PathVariable("ida") int idApoteke) {
@@ -96,6 +99,21 @@ public class FarmaceutController {
 		} catch (Exception e) {
 			return e.getMessage();
 		}
-		
+	}	
+
+	@GetMapping(value ="/savetovanja", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PregledDTO> getPregledi(HttpSession s) {
+		KorisnikDTO korisnik = (KorisnikDTO)s.getAttribute("user");
+		Collection<Pregled> pregledi= pregledService.dobaviZaDermatologa(korisnik.getId());
+		ArrayList<PregledDTO> preglediDTO = new ArrayList<PregledDTO>();
+		for(Pregled d : pregledi)
+			preglediDTO.add(new PregledDTO(d,0));
+		return preglediDTO;
+	}
+	
+	@GetMapping(value ="/savetovanja/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PregledDTO getPregled(@PathVariable Integer id) {
+		return new PregledDTO(pregledService.dobaviPregledZa(id),0);
+
 	}
 }

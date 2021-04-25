@@ -90,7 +90,8 @@ Vue.component("profil-pacijenti", {
                 <td>{{pacijent.korisnik.ime}}</td>
                 <td>{{pacijent.korisnik.prezime}}</td> 
                 <td>{{pacijent.korisnik.username}}</td>
-                <td><input type="button" class="button1" value="Pregledaj" v-on:click="pregledajPacijent(pacijent)"/></td>                               
+                <td><input type="button" class="button1" value="Informacije" v-on:click="pregledajPacijent(pacijent)"/></td>   
+                                 
 		</tr>
 	</tbody>
 	</table>
