@@ -80,6 +80,24 @@ public class KorisnikServiceImpl implements KorisnikService {
 	}
 
 	@Override
+	public Korisnik changePass(KorisnikDTO user) throws Exception {
+		Korisnik userToUpdate = findOne(user.getId());
+		if (userToUpdate == null) {
+			throw new Exception("Trazeni entitet nije pronadjen.");
+		}
+		userToUpdate.setLoggedBefore(true);
+		userToUpdate.setPassword(user.getNoviPassw());
+		userToUpdate.setIme(user.getIme());
+		userToUpdate.setPrezime(user.getPrezime());
+		userToUpdate.setUsername(user.getUsername());
+		userToUpdate.setTelefon(user.getTelefon());
+		lokacijaRepository.save(user.getLokacija());
+		userToUpdate.setLokacija(user.getLokacija());
+		
+		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
+		return updatedUSer;
+	}
+	
 	public Korisnik update(KorisnikDTO user) throws Exception {
 		Korisnik userToUpdate = findOne(user.getId());
 		if (userToUpdate == null) {
@@ -97,6 +115,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 			userToUpdate.setPassword(user.getNoviPassw());
 		}
 		
+		userToUpdate.setLoggedBefore(true);
 		userToUpdate.setIme(user.getIme());
 		userToUpdate.setPrezime(user.getPrezime());
 		userToUpdate.setUsername(user.getUsername());
