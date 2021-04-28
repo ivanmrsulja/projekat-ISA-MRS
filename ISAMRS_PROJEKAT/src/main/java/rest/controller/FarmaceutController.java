@@ -54,11 +54,11 @@ public class FarmaceutController {
 	}
 	
 	@GetMapping(value="/apoteka/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<KorisnikDTO> getUsersForPharmacy(@PathVariable("id") int id) {
+	public ArrayList<FarmaceutDTO> getUsersForPharmacy(@PathVariable("id") int id) {
 		Collection<Farmaceut> users = farmaceutService.findAllForPharmacy(id);
-		ArrayList<KorisnikDTO> farmaceuti = new ArrayList<KorisnikDTO>();
+		ArrayList<FarmaceutDTO> farmaceuti = new ArrayList<FarmaceutDTO>();
 		for(Farmaceut f : users)
-			farmaceuti.add(new KorisnikDTO(f));
+			farmaceuti.add(new FarmaceutDTO(f));
 		return farmaceuti;
 	}
 	

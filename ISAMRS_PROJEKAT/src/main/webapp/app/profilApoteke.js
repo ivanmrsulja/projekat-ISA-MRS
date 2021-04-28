@@ -9,12 +9,33 @@ Vue.component("profil-apoteke", {
                 },
 				farmaceuti: [],
 				dermatolozi: [],
+				searchParams: {ime : "", prezime: "", startOcena: 0, endOcena: 1000000, rastojanje: 50000, kriterijumSortiranja: "IME", opadajuce: false},
 		    }
 	},
 	template: ` 
 <div align = center style="width: 75% sm;">
 		
 		<h1>Profil apoteke</h1>
+		<div id="mySidebar" class="sidebar">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <table>
+			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Ime farmaceuta" v-model="searchParams.ime" /></td></tr>
+			  <tr><td colspan=2 ><input type="text" name="lokacija" placeholder="Prezime farmaceuta" v-model="searchParams.prezime" /></td></tr>
+			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" min="1" max="5" name="startOcena" v-model="searchParams.startOcena" ></td></tr>
+			  <tr><td style="color:white">Ocena do:</td> <td><input type="number" min="1" max="5" name="endOcena" v-model="searchParams.endOcena" ></td></tr>
+			  <tr><td style="color:white">Sortiraj po:</td> 
+			  		<td>
+				  		<select name="tip" id="kriterijum" v-model="searchParams.kriterijumSortiranja" >
+						  <option value="IME">IME</option>
+						  <option value="PREZIME">PREZIME</option>
+						  <option value="OCENA">OCENA</option>
+						</select>
+					</td></tr>
+			  <tr><td style="color:white">Sortiraj opadajuce:</td> <td><input type="checkbox" name="opadajuce" v-model="searchParams.opadajuce" ></td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi" v-on:click="loadNext($route.params.page)" /></td></tr>
+		  </table>
+		</div>
+		
 		<br/>
         <div style="display: inline-block; margin-right: 50px">
 	        <table>
@@ -32,17 +53,23 @@ Vue.component("profil-apoteke", {
 
 		<br><br>
 		<h2>Zaposleni farmaceuti</h2>
+		
+		<div id="main">
+		  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
+		</div>
 	<table class="table table-hover" style="width: 50%" >
 	 <thead>
 		<tr bgcolor="lightgrey">
 			<th>Ime</th>
 			<th>Prezime</th>
+			<th>Ocena</th>
 		</tr>
 	</thead>
 	<tbody>
 	<tr v-for="s in farmaceuti">
 		<td>{{s.ime}}</td>
 		<td>{{s.prezime}}</td>
+		<td>{{s.ocena}}</td>
 	</tr>
 	</tbody>
 	</table>
