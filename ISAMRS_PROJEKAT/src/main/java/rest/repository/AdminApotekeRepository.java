@@ -10,5 +10,5 @@ public interface AdminApotekeRepository extends JpaRepository<AdminApoteke, Inte
 	
 	@Query("select a.apoteka from AdminApoteke a where a.apoteka.id = ?1")
 	Apoteka getApoteka(int id);
-	
+
 }

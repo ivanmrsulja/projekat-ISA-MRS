@@ -29,10 +29,12 @@ import rest.domain.Dobavljac;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
+import rest.aspect.AsAdminApoteke;
 import rest.aspect.AsPacijent;
 import rest.domain.StatusNaloga;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
+import rest.dto.AdminApotekeDTO;
 import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
@@ -202,6 +204,34 @@ public class KorisnikController {
 		return "Azuriranje uspesno";
 	}
 
+	@AsAdminApoteke
+	@PutMapping(value = "updateAdmin/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateAdmin(@RequestBody KorisnikDTO user, @PathVariable("id") int id)
+			throws Exception {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		if (currentUser.getId() != id) {
+			return null;
+		}
+		
+		if(user.getUsername().trim().equals("") || user.getPrezime().trim().equals("") || user.getIme().trim().equals("") || user.getLokacija() == null || user.getTelefon().trim().equals("")) {
+			return "Unesite sve podatke.";
+		}
+		
+		Korisnik updatedUser = null;
+		try {
+			updatedUser = userService.update(user);
+		}catch(Exception e){
+			return e.getMessage();
+		}
+
+		if (updatedUser == null) {
+			return "Neuspelo azuriranje, pokusajte ponovo.";
+		}
+		
+		return "Azuriranje uspesno";
+	}
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
 		userService.delete(id);
@@ -255,6 +285,11 @@ public class KorisnikController {
 	@GetMapping(value = "/pacijent/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PacijentDTO getPacijent(@PathVariable("id") int id){
 		return userService.findPacijentById(id);
+	}
+
+	@GetMapping(value = "/admin_apoteke/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public AdminApotekeDTO getAdminApoteke(@PathVariable("id") int id){
+		return userService.findAdminApotekeById(id);
 	}
 	
 	@AsPacijent

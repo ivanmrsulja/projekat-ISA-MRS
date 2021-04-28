@@ -23,6 +23,7 @@ const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
 const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
 const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
+const ProfilAdminaApoteke = { template: '<profil-admina-apoteke></profil-admina-apoteke>'};
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -51,7 +52,8 @@ const router = new VueRouter({
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
 	    { path: '/zalbe', component: StranicaZalbe },
 	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
-	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 }
+	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
+        { path: '/profilAdminaApoteke', component: ProfilAdminaApoteke },
 	  ]
 	});
 

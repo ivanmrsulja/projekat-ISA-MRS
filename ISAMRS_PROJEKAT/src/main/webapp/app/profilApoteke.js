@@ -4,7 +4,8 @@ Vue.component("profil-apoteke", {
 				apoteka : {
 					naziv: "",
                     lokacija: {ulica: ""},
-                    opis: ""
+                    opis: "",
+					ocena: 0
                 },
 				farmaceuti: [],
 				dermatolozi: [],
@@ -20,6 +21,7 @@ Vue.component("profil-apoteke", {
 	            <tr><td><h2>Naziv: </h2></td><td><input type="text" v-model="apoteka.naziv"/></td></tr>
 	            <tr><td><h2>Opis: </h2></td><td><textarea rows="6" name="opis">{{apoteka.opis}}</textarea></td></tr>
 	            <tr><td><h2>Adresa: </h2></td><td><textarea rows="3" disabled>{{apoteka.lokacija.ulica}}</textarea></td></tr>
+				<tr><td><h2>Ocena: </h2></td><td><input type="text" v-model="apoteka.ocena.toFixed(2)" disabled/></td></tr>
 	        </table>
 	        <br/>
 			<input type="button" value="Sacuvaj" v-on:click="saveData()"/>
