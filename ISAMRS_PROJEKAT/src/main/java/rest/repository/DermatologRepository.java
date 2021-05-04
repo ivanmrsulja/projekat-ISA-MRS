@@ -13,5 +13,8 @@ public interface DermatologRepository extends JpaRepository<Dermatolog, Integer>
 	
 	@Query("select d from Dermatolog d inner join fetch d.zaposlenja z where z.apoteka.id = ?1")
 	Collection<Dermatolog> getWithEmployments(int idApoteke);
+
+	@Query("select distinct d from Dermatolog d inner join fetch d.zaposlenja z")
+	Collection<Dermatolog> getAllDermatologists();
 	
 }

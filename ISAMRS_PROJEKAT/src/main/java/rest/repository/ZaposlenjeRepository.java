@@ -4,8 +4,10 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import rest.domain.Apoteka;
 import rest.domain.Zaposlenje;
@@ -21,4 +23,9 @@ public interface ZaposlenjeRepository extends JpaRepository<Zaposlenje, Integer>
 	
 	@Query("select z.apoteka from Zaposlenje z where z.korisnik.id = ?1")
 	Apoteka apotekaZaFarmaceuta(int id);
+
+	@Transactional
+	@Modifying
+	@Query("delete from Zaposlenje z where z.korisnik.id = ?1")
+	void deleteForPharmacist(int id);
 }

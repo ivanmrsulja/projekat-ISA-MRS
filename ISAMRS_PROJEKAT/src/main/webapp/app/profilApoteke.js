@@ -9,7 +9,7 @@ Vue.component("profil-apoteke", {
                 },
 				farmaceuti: [],
 				dermatolozi: [],
-				searchParams: {ime : "", prezime: "", startOcena: 0, endOcena: 1000000, rastojanje: 50000, kriterijumSortiranja: "IME", opadajuce: false},
+				searchParams: {idApoteke: 0, ime : "", prezime: "", startOcena: 1, endOcena: 5, kriterijumSortiranja: "IME", opadajuce: false},
 		    }
 	},
 	template: ` 
@@ -21,7 +21,7 @@ Vue.component("profil-apoteke", {
 		  <table>
 			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Ime farmaceuta" v-model="searchParams.ime" /></td></tr>
 			  <tr><td colspan=2 ><input type="text" name="lokacija" placeholder="Prezime farmaceuta" v-model="searchParams.prezime" /></td></tr>
-			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" min="1" max="5" name="startOcena" v-model="searchParams.startOcena" ></td></tr>
+			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" min="0" max="5" name="startOcena" v-model="searchParams.startOcena" ></td></tr>
 			  <tr><td style="color:white">Ocena do:</td> <td><input type="number" min="1" max="5" name="endOcena" v-model="searchParams.endOcena" ></td></tr>
 			  <tr><td style="color:white">Sortiraj po:</td> 
 			  		<td>
@@ -32,7 +32,7 @@ Vue.component("profil-apoteke", {
 						</select>
 					</td></tr>
 			  <tr><td style="color:white">Sortiraj opadajuce:</td> <td><input type="checkbox" name="opadajuce" v-model="searchParams.opadajuce" ></td></tr>
-			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi" v-on:click="loadNext($route.params.page)" /></td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi" v-on:click="searchPharmacists()" /></td></tr>
 		  </table>
 		</div>
 		
@@ -57,12 +57,14 @@ Vue.component("profil-apoteke", {
 		<div id="main">
 		  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
 		</div>
-	<table class="table table-hover" style="width: 50%" >
+
+	<table class="table table-hover" style="width: 50%" v-bind:hidden="farmaceuti.length == 0">
 	 <thead>
 		<tr bgcolor="lightgrey">
 			<th>Ime</th>
 			<th>Prezime</th>
 			<th>Ocena</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -70,6 +72,7 @@ Vue.component("profil-apoteke", {
 		<td>{{s.ime}}</td>
 		<td>{{s.prezime}}</td>
 		<td>{{s.ocena}}</td>
+		<td><input type="button" class="button1" value="Ukloni" v-on:click="removePharmacist(s)"/></td>
 	</tr>
 	</tbody>
 	</table>
@@ -80,12 +83,14 @@ Vue.component("profil-apoteke", {
 		<tr bgcolor="lightgrey">
 			<th>Ime</th>
 			<th>Prezime</th>
+			<th>Ocena</th>
 		</tr>
 	</thead>
 	<tbody>
 	<tr v-for="s in dermatolozi">
-		<td>{{s.ime}}</td>
-		<td>{{s.prezime}}</td>
+		<td>{{s.korisnik.ime}}</td>
+		<td>{{s.korisnik.prezime}}</td>
+		<td>{{s.ocena}}</td>
 	</tr>
 	</tbody>
 	</table>
@@ -148,7 +153,6 @@ Vue.component("profil-apoteke", {
 				setMarker(position);
 				self.reverseGeolocation(position);
 			});
-			
 		},
         saveData : function(){
             let opis = $("textarea[name=opis]").val();
@@ -161,7 +165,23 @@ Vue.component("profil-apoteke", {
             }).catch(err => {
             	alert("Azuriranje nije uspelo.");
             });
-        } 
+        },
+		searchPharmacists : function(){
+			axios
+				.get("api/farmaceut/searchAdmin/" + this.searchParams.idApoteke + "/?ime=" + this.searchParams.ime + "&prezime=" + this.searchParams.prezime 
+				+ "&startOcena=" + this.searchParams.startOcena + "&endOcena=" + this.searchParams.endOcena + "&kriterijumSortiranja=" + this.searchParams.kriterijumSortiranja +
+				 "&opadajuce=" + this.searchParams.opadajuce)
+				.then(response => {
+					this.farmaceuti = response.data;
+				});
+		},
+		removePharmacist : function(f){
+			axios
+				.delete("api/farmaceut/brisanjeFarmaceuta/" + f.id + "/" + this.apoteka.id)
+				.then(response => {
+					this.farmaceuti = response.data;
+				});
+		}
 	},
 	mounted: function() {
 		axios
@@ -171,6 +191,7 @@ Vue.component("profil-apoteke", {
 			.get("api/apoteke/admin/" + response.data.id)
 			.then(response => {
 				this.apoteka = response.data;
+				this.searchParams.idApoteke = this.apoteka.id;
 				this.showMap();
 		  });
 		  axios
@@ -179,7 +200,7 @@ Vue.component("profil-apoteke", {
 			  this.farmaceuti = response.data;
 		  });
 		  axios
-		  .get("api/dermatolog/apoteka/" + response.data.id)
+		  .get("api/dermatolog/apoteka/admin/" + response.data.id)
 		  .then(response => {
 			  this.dermatolozi = response.data;
 		  });

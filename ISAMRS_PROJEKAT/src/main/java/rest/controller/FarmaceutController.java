@@ -2,17 +2,20 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,6 +27,8 @@ import rest.domain.Pregled;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
+import rest.repository.FarmaceutRepository;
+import rest.repository.ZaposlenjeRepository;
 import rest.service.ApotekaService;
 import rest.service.FarmaceutService;
 import rest.service.PregledService;
@@ -36,20 +41,24 @@ public class FarmaceutController {
 	private FarmaceutService farmaceutService;
 	private ApotekaService apotekaService;
 	private PregledService pregledService;
+	private ZaposlenjeRepository zaposlenjeRepository;
+	private FarmaceutRepository farmaceutRepository;
 	
 	@Autowired
-	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService) {
+	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService, ZaposlenjeRepository zr, FarmaceutRepository fr) {
 		this.farmaceutService = farmaceut;
 		this.apotekaService = as;
 		this.pregledService = pregledService;
+		this.zaposlenjeRepository = zr;
+		this.farmaceutRepository = fr;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<KorisnikDTO> getUsers() {
+	public ArrayList<FarmaceutDTO> getUsers() {
 		Collection<Farmaceut> users = farmaceutService.findAll();
-		ArrayList<KorisnikDTO> farmaceuti=new ArrayList<KorisnikDTO>();
+		ArrayList<FarmaceutDTO> farmaceuti = new ArrayList<FarmaceutDTO>();
 		for(Farmaceut d : users)
-			farmaceuti.add(new KorisnikDTO(d));
+			farmaceuti.add(new FarmaceutDTO(d));
 		return farmaceuti;
 	}
 	
@@ -59,6 +68,38 @@ public class FarmaceutController {
 		ArrayList<FarmaceutDTO> farmaceuti = new ArrayList<FarmaceutDTO>();
 		for(Farmaceut f : users)
 			farmaceuti.add(new FarmaceutDTO(f));
+		return farmaceuti;
+	}
+
+	@GetMapping(value="/searchAdmin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<FarmaceutDTO> adminSearchPharmacists(@PathVariable("id") int idApoteke, @RequestParam String ime, @RequestParam String prezime, @RequestParam int startOcena, @RequestParam int endOcena, @RequestParam String kriterijumSortiranja, @RequestParam boolean opadajuce){
+		Collection<Farmaceut> users = farmaceutService.findAllForPharmacy(idApoteke);
+		ArrayList<FarmaceutDTO> farmaceuti = new ArrayList<FarmaceutDTO>();
+		for (Farmaceut f : users) {
+			if (f.getIme().contains(ime) && f.getPrezime().contains(prezime) && (f.getOcena() <= endOcena && f.getOcena() >= startOcena)) {
+				farmaceuti.add(new FarmaceutDTO(f, kriterijumSortiranja));
+			}
+		}
+		Collections.sort(farmaceuti);
+		if (opadajuce)
+			Collections.reverse(farmaceuti);
+
+		return farmaceuti;
+	}
+
+	@GetMapping(value="/searchUser", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<FarmaceutDTO> userSearchPharmacists(@RequestParam String ime, @RequestParam String prezime, @RequestParam int startOcena, @RequestParam int endOcena, @RequestParam String kriterijumSortiranja, @RequestParam boolean opadajuce){
+		Collection<Farmaceut> users = farmaceutService.findAll();
+		ArrayList<FarmaceutDTO> farmaceuti = new ArrayList<FarmaceutDTO>();
+		for (Farmaceut f : users) {
+			if (f.getIme().contains(ime) && f.getPrezime().contains(prezime) && (f.getOcena() <= endOcena && f.getOcena() >= startOcena)) {
+				farmaceuti.add(new FarmaceutDTO(f, kriterijumSortiranja));
+			}
+		}
+		Collections.sort(farmaceuti);
+		if (opadajuce)
+			Collections.reverse(farmaceuti);
+
 		return farmaceuti;
 	}
 	
@@ -97,5 +138,12 @@ public class FarmaceutController {
 			return e.getMessage();
 		}
 		
+	}
+
+	@DeleteMapping(value = "/brisanjeFarmaceuta/{idFarmaceuta}/{idApoteke}")
+	public ArrayList<FarmaceutDTO> deletePharmacist(@PathVariable("idFarmaceuta") int idFarmaceuta, @PathVariable("idApoteke") int idApoteke) {
+		farmaceutRepository.deleteById(idFarmaceuta);
+		zaposlenjeRepository.deleteForPharmacist(idFarmaceuta);
+		return this.getUsersForPharmacy(idApoteke);
 	}
 }

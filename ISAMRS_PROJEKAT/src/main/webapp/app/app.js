@@ -24,6 +24,7 @@ const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacije
 const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
 const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
 const ProfilAdminaApoteke = { template: '<profil-admina-apoteke></profil-admina-apoteke>'};
+const PretragaStrucnjaka = { template: '<pretraga-strucnjaka></pretraga-strucnjaka>'};
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -54,6 +55,7 @@ const router = new VueRouter({
 	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
 	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
         { path: '/profilAdminaApoteke', component: ProfilAdminaApoteke },
+        { path: '/pretragaStrucnjaka', component: PretragaStrucnjaka },
 	  ]
 	});
 
