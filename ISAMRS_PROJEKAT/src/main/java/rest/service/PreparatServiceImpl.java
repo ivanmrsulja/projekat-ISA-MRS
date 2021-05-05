@@ -114,7 +114,7 @@ public class PreparatServiceImpl implements PreparatService{
 		
 		r.setStatus(StatusRezervacije.OTKAZANO);
 		Apoteka a = r.getApoteka();
-		DostupanProizvod dp = cenaRepository.getCount(r.getPreparat().getId(), a.getId());
+		DostupanProizvod dp = cenaRepository.getProduct(r.getPreparat().getId(), a.getId());
 		dp.setKolicina(dp.getKolicina() + 1);
 		dostupanRepo.save(dp);
 		rezervacijaRepository.save(r);
@@ -122,7 +122,7 @@ public class PreparatServiceImpl implements PreparatService{
 
 	@Override
 	public Rezervacija rezervisi(int idp, int idpa, int ida, LocalDate datum) throws Exception {
-		DostupanProizvod dp = cenaRepository.getCount(idp, ida);
+		DostupanProizvod dp = cenaRepository.getProduct(idp, ida);
 		
 		int brojPenala = pacijentRepository.getNumOfPenalities(idpa);
 		if(brojPenala >= 3) {
