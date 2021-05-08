@@ -92,7 +92,7 @@ Vue.component("pojedinacni-preparat", {
     	},
     	clickStar: function() {
     	  	axios
-		        .get("/api/ocene/oceniPreparat/" + this.$route.params.spec + "/" + this.ocena)
+		        .put("/api/ocene/oceniPreparat/" + this.$route.params.spec + "/" + this.ocena)
 		        .then(response => {
 		        	axios
 			        .get("api/preparat/spec/" + this.$route.params.spec)

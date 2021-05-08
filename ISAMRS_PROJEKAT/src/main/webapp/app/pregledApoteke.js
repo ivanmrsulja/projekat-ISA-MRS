@@ -135,7 +135,7 @@ Vue.component("pregled-apoteke", {
 			<td>{{p.datum}}</td>
 			<td>{{p.vrijeme}}</td>
 			<td>{{p.cijena}}</td>
-			<td>{{p.ocena}} </td>
+			<td>{{p.ocena.toFixed(2)}} </td>
 			<td><input type="button" class="button1" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik" /></td>
 		</tr>
 		</tbody>
@@ -160,7 +160,7 @@ Vue.component("pregled-apoteke", {
     	},
     	clickStar: function() {
     	  	axios
-		        .get("/api/ocene/oceniApoteku/" + this.$route.params.id + "/" + this.ocena)
+		        .put("/api/ocene/oceniApoteku/" + this.$route.params.id + "/" + this.ocena)
 		        .then(response => {
 		        	axios
 			        .get("/api/apoteke/" + this.$route.params.id)

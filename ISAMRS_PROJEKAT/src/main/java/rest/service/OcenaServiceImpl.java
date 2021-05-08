@@ -7,18 +7,25 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import rest.domain.Apoteka;
+import rest.domain.Dermatolog;
 import rest.domain.ERecept;
+import rest.domain.Farmaceut;
 import rest.domain.OcenaApoteke;
 import rest.domain.OcenaPreparata;
+import rest.domain.OcenaZaposlenog;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
 import rest.repository.ApotekeRepository;
+import rest.repository.DermatologRepository;
 import rest.repository.EReceptRepository;
+import rest.repository.FarmaceutRepository;
 import rest.repository.OcenaApotekeRepository;
 import rest.repository.OcenaPreparataRepository;
+import rest.repository.OcenaZaposlenogRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
@@ -36,17 +43,23 @@ public class OcenaServiceImpl implements OcenaService {
 	private ApotekeRepository apotekeRepo;
 	private PreparatRepository preparatiRepo;
 	private EReceptRepository eReceptRepo;
+	private DermatologRepository dermatologRepo;
+	private FarmaceutRepository farmaceutRepo;
+	private OcenaZaposlenogRepository ocenaZaposlenogRepo;
 	
 	@Autowired
-	public OcenaServiceImpl(PregledRepository pr, RezervacijaRepository rr, OcenaApotekeRepository oar, OcenaPreparataRepository opr, PacijentRepository pacijentiRepo, ApotekeRepository apotekeRepo, PreparatRepository pre, EReceptRepository eReceptRepo) {
-		preglediRepo = pr;
-		rezervacijeRepo = rr;
-		oceneApotekeRepo = oar;
-		ocenePreparataRepo = opr;
+	public OcenaServiceImpl(PregledRepository pr, RezervacijaRepository rr, OcenaApotekeRepository oar, OcenaPreparataRepository opr, PacijentRepository pacijentiRepo, ApotekeRepository apotekeRepo, PreparatRepository pre, EReceptRepository eReceptRepo, DermatologRepository dermatologRepo, FarmaceutRepository farmaceutRepo, OcenaZaposlenogRepository oz) {
+		this.preglediRepo = pr;
+		this.rezervacijeRepo = rr;
+		this.oceneApotekeRepo = oar;
+		this.ocenePreparataRepo = opr;
 		this.pacijentiRepo = pacijentiRepo;
 		this.apotekeRepo = apotekeRepo;
-		preparatiRepo = pre;
+		this.preparatiRepo = pre;
 		this.eReceptRepo = eReceptRepo;
+		this.dermatologRepo = dermatologRepo;
+		this.farmaceutRepo = farmaceutRepo;
+		this.ocenaZaposlenogRepo = oz;
 	}
 	
 	@Override
@@ -66,13 +79,28 @@ public class OcenaServiceImpl implements OcenaService {
 
 	@Override
 	public int ocenjivDermatolog(int idDermatologa, int idPacijenta) {
-		// TODO Auto-generated method stub
+		Collection<Pregled> pregledi = dermatologRepo.getExaminationsForPatientAndDermatologist(idDermatologa, idPacijenta);
+		System.out.println("AAAAAAAAAA" + pregledi.size());
+		if (pregledi.size() == 0) {
+			return -1;
+		}
+		OcenaZaposlenog ocena = ocenaZaposlenogRepo.ocenaZaKorisnika(idPacijenta, idDermatologa);
+		if (ocena != null) {
+			return ocena.getOcena();
+		}
 		return 0;
 	}
 
 	@Override
 	public int ocenjivFarmaceut(int idFarmaceuta, int idPacijenta) {
-		// TODO Auto-generated method stub
+		Collection<Pregled> pregledi = farmaceutRepo.getConsultmentsForPatientAndPharmacist(idFarmaceuta, idPacijenta);
+		if (pregledi.size() == 0) {
+			return -1;
+		}
+		OcenaZaposlenog ocena = ocenaZaposlenogRepo.ocenaZaKorisnika(idPacijenta, idFarmaceuta);
+		if (ocena != null) {
+			return ocena.getOcena();
+		}
 		return 0;
 	}
 
@@ -118,13 +146,53 @@ public class OcenaServiceImpl implements OcenaService {
 
 	@Override
 	public void oceniDermatologa(int idDermatologa, int idPacijenta, int ocena) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Collection<Pregled> pregledi = dermatologRepo.getExaminationsForPatientAndDermatologist(idDermatologa, idPacijenta);
+		System.out.println(pregledi.size());
+		if (pregledi.size() == 0) {
+			throw new Exception("Nemate mogucnost ocenjivanja ovog dermatologa.");
+		}
+		OcenaZaposlenog staraOcena = ocenaZaposlenogRepo.ocenaZaKorisnika(idPacijenta, idDermatologa);
+		Dermatolog d = dermatologRepo.findById(idDermatologa).get();
+		if (staraOcena != null) {
+			d.setSumaOcena(d.getSumaOcena() - staraOcena.getOcena() + ocena);
+			d.setOcena(d.izracunajOcenu());
+			staraOcena.setOcena(ocena);
+			ocenaZaposlenogRepo.save(staraOcena);
+			dermatologRepo.save(d);
+		}else {
+			Pacijent p = pacijentiRepo.findById(idPacijenta).get();
+			OcenaZaposlenog ocenaNova = new OcenaZaposlenog(ocena, p, d);
+			d.setBrojOcena(d.getBrojOcena() + 1);
+			d.setSumaOcena(d.getSumaOcena() + ocena);
+			d.setOcena(d.izracunajOcenu());
+			ocenaZaposlenogRepo.save(ocenaNova);
+			dermatologRepo.save(d);
+		}
 	}
 
 	@Override
 	public void oceniFarmaceuta(int idFarmaceuta, int idPacijenta, int ocena) throws Exception {
-		// TODO Auto-generated method stub
+		Collection<Pregled> pregledi = farmaceutRepo.getConsultmentsForPatientAndPharmacist(idFarmaceuta, idPacijenta);
+		if (pregledi.size() == 0) {
+			throw new Exception("Nemate mogucnost ocenjivanja ovog dermatologa.");
+		}
+		OcenaZaposlenog staraOcena = ocenaZaposlenogRepo.ocenaZaKorisnika(idPacijenta, idFarmaceuta);
+		Farmaceut f = farmaceutRepo.findById(idFarmaceuta).get();
+		if (staraOcena != null) {
+			f.setSumaOcena(f.getSumaOcena() - staraOcena.getOcena() + ocena);
+			f.setOcena(f.izracunajOcenu());
+			staraOcena.setOcena(ocena);
+			ocenaZaposlenogRepo.save(staraOcena);
+			farmaceutRepo.save(f);
+		}else {
+			Pacijent p = pacijentiRepo.findById(idPacijenta).get();
+			OcenaZaposlenog ocenaNova = new OcenaZaposlenog(ocena, p, f);
+			f.setBrojOcena(f.getBrojOcena() + 1);
+			f.setSumaOcena(f.getSumaOcena() + ocena);
+			f.setOcena(f.izracunajOcenu());
+			ocenaZaposlenogRepo.save(ocenaNova);
+			farmaceutRepo.save(f);
+		}
 		
 	}
 

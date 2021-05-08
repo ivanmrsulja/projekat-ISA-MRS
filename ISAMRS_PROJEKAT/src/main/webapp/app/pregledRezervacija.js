@@ -135,7 +135,7 @@ Vue.component("lista-rezervacija", {
     	},
     	clickStar: function() {
     		axios
-	        .get("/api/ocene/oceniPreparat/" + this.selected.detaljno.id + "/" + this.ocena)
+	        .put("/api/ocene/oceniPreparat/" + this.selected.detaljno.id + "/" + this.ocena)
 	        .then(response => {
 	        	axios
 		        .get("/api/preparat/specifikacija/" + this.selected.detaljno.id)

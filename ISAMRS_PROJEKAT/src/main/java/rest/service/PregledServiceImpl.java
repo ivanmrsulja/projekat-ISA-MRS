@@ -52,8 +52,8 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public Collection<PregledDTO> zakaziPregled(int idp, int idpa) throws Exception {
-		Pregled p = preglediRepo.findById(idp).get();
-
+		Pregled p = preglediRepo.findOneById(idp);
+		
 		if(p.getStatus().equals(StatusPregleda.ZAKAZAN)) {
 			throw new Exception("Termin je vec rezervisan.");
 		}

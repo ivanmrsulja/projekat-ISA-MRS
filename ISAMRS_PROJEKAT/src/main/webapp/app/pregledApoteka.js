@@ -9,7 +9,7 @@ Vue.component("pregled-apoteka", {
 		    }
 	},
 	template: ` 
-<div align = center style="width: 75%;">
+<div align = center style="width: 75%">
 		
 		<h1>Pregled apoteka</h1>
 		
@@ -39,7 +39,8 @@ Vue.component("pregled-apoteka", {
 		</div>
 		
 		<br/>
-		<div class="card" v-for="a in this.apoteke">
+		
+		<div class="card row-md-2" v-for="a in this.apoteke">
 		  <div class="post-container">
 	      <div class="post-thumb"><img :src="imageMap[a.id]" style="height:200px;"></img></div>
 		  <div class="post-content">
@@ -57,6 +58,7 @@ Vue.component("pregled-apoteka", {
 		<div class="pagination" v-for="i in numPages+1" :key="i">
 		  <a :href="'#/apoteke/'+(i-1)" v-on:click="loadNext(i-1)">{{i}}</a>
 		</div>
+		
 </div>		  
 `
 	,

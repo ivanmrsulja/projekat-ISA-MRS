@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -96,6 +97,8 @@ public class FarmaceutController {
 			Pregled p = apotekaService.zakaziSavetovanje(novi, idApoteke, idFarmaceuta, currentUser.getId());
 			pregledService.sendConfirmationEmailAdv(currentUser, p);
 			return "Pregled uspesno zakazan.";
+		} catch (PessimisticLockingFailureException p) {
+			return "Doslo je do greske prilikom zakazivanja. Osvezite stranicu i pokusajte ponovo.";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -114,6 +117,11 @@ public class FarmaceutController {
 	@GetMapping(value ="/savetovanja/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PregledDTO getPregled(@PathVariable Integer id) {
 		return new PregledDTO(pregledService.dobaviPregledZa(id),0);
-
+	}
+	
+	@AsPacijent
+	@GetMapping(value ="/ocenjivanje/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public FarmaceutDTO zaOcenjivanje(@PathVariable int id) {
+		return new FarmaceutDTO(farmaceutService.findOne(id));
 	}
 }

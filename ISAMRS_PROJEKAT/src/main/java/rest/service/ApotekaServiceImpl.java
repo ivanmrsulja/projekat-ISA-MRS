@@ -163,15 +163,15 @@ public class ApotekaServiceImpl implements ApotekaService {
 		
 		switch (criteria) {
 		case "OCENA":
-			Page<ApotekaDTO> ocenaSort = ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, 1, Direction.DESC, "ocena"), apotekeRet).map(a -> new ApotekaDTO(a));
+			Page<ApotekaDTO> ocenaSort = ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, pageSize, Direction.DESC, "ocena"), apotekeRet).map(a -> new ApotekaDTO(a));
 			return ocenaSort;
 
 		case "CENA":
-			Page<ApotekaDTO> cenaSort = ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, 1, Direction.ASC, "cenaSavetovanja"), apotekeRet).map(a -> new ApotekaDTO(a));
+			Page<ApotekaDTO> cenaSort = ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, pageSize, Direction.ASC, "cenaSavetovanja"), apotekeRet).map(a -> new ApotekaDTO(a));
 			return cenaSort;
 		}
 		
-		return ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, 1), apotekeRet).map(a -> new ApotekaDTO(a));
+		return ((ApotekeRepository) apoteke).slobodneApoteke(new PageRequest(pageNum, pageSize), apotekeRet).map(a -> new ApotekaDTO(a));
 	}
 
 	@Override
@@ -231,6 +231,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 				throw new Exception("Savetovanje mora biti u buducnosti");
 			}
 		}
+		Farmaceut f = farmaceuti.findOneById(idFarmaceuta);
 		
 		Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(podaci.getDatum(), idFarmaceuta);
 		long trajanjeSavetovanja = 30 * 60000;
@@ -248,7 +249,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		if(brojPenala >= 3) {
 			throw new Exception("Imate " + brojPenala + " penala, zakazivanja su vam onemogucena do 1. u sledecem mesecu.");
 		}
-		Farmaceut f = farmaceuti.findById(idFarmaceuta).get();
+		
 		Apoteka a = apoteke.findById(idApoteke).get();
 		Pregled novi = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, podaci.getDatum(), podaci.getVrijeme(), 30, a.getCenaSavetovanja() * p.getTipKorisnika().getPopust(), f, p, a);
 		pregledi.save(novi);
