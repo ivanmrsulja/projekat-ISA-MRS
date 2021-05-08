@@ -36,10 +36,13 @@ import rest.domain.StatusNaloga;
 import rest.domain.StatusPonude;
 import rest.domain.StatusPregleda;
 import rest.domain.StatusRezervacije;
+import rest.domain.StatusZahtjeva;
 import rest.domain.StavkaRecepta;
 import rest.domain.TipKorisnika;
 import rest.domain.TipLeka;
 import rest.domain.TipPregleda;
+import rest.domain.TipZahtjeva;
+import rest.domain.Zahtjev;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 
@@ -74,6 +77,8 @@ public class DBInitialiser implements ApplicationRunner {
 	private PregledRepository pregledRepo;
 	@Autowired
 	private AkcijaPromocijaRepository akcijaRepo;
+	@Autowired
+	private ZahtevRepository zahtevRepo;
 	
 	@Override
 	@Transactional
@@ -182,6 +187,13 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(f1);
 		korisnici.save(f2);
 		korisnici.save(f3);
+
+		Zahtjev zahtev1 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f1);
+		Zahtjev zahtev2 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f2);
+		Zahtjev zahtev3 = new Zahtjev(TipZahtjeva.ODSUSTVO, StatusZahtjeva.CEKANJE, f3);
+		zahtevRepo.save(zahtev1);
+		zahtevRepo.save(zahtev2);
+		zahtevRepo.save(zahtev3);
 		
 		Zaposlenje z4 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, f1);
 		Zaposlenje z5 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a2, f2);

@@ -101,7 +101,7 @@ public class DermatologController {
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KorisnikDTO> updateUser(@RequestBody KorisnikDTO user, @PathVariable("id") int id)
 			throws Exception {
-		System.out.println(user);
+		//System.out.println(user);
 		Dermatolog updatedDermatolog = dermatologService.update(user);
 
 		if (updatedDermatolog == null) {
