@@ -23,6 +23,8 @@ public interface KorisnikService {
 	Korisnik create(Korisnik user) throws Exception;
 
 	Korisnik update(KorisnikDTO user) throws Exception;
+	
+	Korisnik changePass(KorisnikDTO user) throws Exception;
 
 	void delete(int id);
 	

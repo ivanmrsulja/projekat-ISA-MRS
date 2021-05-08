@@ -45,13 +45,21 @@ Vue.component("pocetna-strana", {
 						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
 							temp.$router.push({ path: "/farmaceuti" });
 						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
-							temp.$router.push({ path: "/tab" });
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
 						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
 							temp.$router.push({ path: "/dermatolozi" });
 						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
 							temp.$router.push({ path: "/apoteke/0" });
 						}else {
-							temp.$router.push({ path: "/regDerm" });
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
 						}
 						
 					});

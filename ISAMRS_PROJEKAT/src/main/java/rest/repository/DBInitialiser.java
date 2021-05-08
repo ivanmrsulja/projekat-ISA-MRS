@@ -124,7 +124,7 @@ public class DBInitialiser implements ApplicationRunner {
 		a3.addAdmin(adma3);
 		apotekaRepo.save(a3);
 
-		AdminSistema as1 = new AdminSistema("Petar", "Markovic", "peki2", "peki2", "isamrstim06+admsys@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_SISTEMA);
+		AdminSistema as1 = new AdminSistema("Petar", "Markovic", "peki2", "peki2", "isamrstim06+admsys@gmail.com", false, "123123123", l1, ZaposlenjeKorisnika.ADMIN_SISTEMA);
 		korisnici.save(as1);
 
 		Pacijent p1 =  new Pacijent("Ivan", "Mrsulja", "ivan", "ivan","isamrstim06+im@gmail.com",true,"069069069",ZaposlenjeKorisnika.PACIJENT, l4, StatusNaloga.AKTIVAN, 200, tk1);

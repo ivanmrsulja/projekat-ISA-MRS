@@ -84,7 +84,7 @@ Vue.component("register-supplier", {
 
             let lok = { sirina: sir, duzina: duz, ulica: adr };
 
-            let newUser = { username: usr, noviPassw: pas, ime: ime, prezime: prz, email: email, telefon: tel, lokacija: lok };
+            let newUser = { username: usr, noviPassw: pas, ime: ime, prezime: prz, email: email, telefon: tel, lokacija: lok, loggedBefore: false };
 
             console.log(newUser);
             axios.post("/api/users/registerSupp", newUser).then(data => {
