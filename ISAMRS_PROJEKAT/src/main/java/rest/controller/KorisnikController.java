@@ -110,6 +110,14 @@ public class KorisnikController {
 		
 		return new ResponseEntity<Korisnik>(user, HttpStatus.OK);
 	}
+	
+	@PostMapping(value = "/changePass", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String changePass(HttpServletRequest request, @RequestBody KorisnikDTO user) throws Exception {
+		Korisnik k = userService.changePass(user);
+		KorisnikDTO updateUser = new KorisnikDTO(k);
+		request.getSession().setAttribute("user", updateUser);
+		return "OK";
+	}
 
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody KorisnikDTO user) throws Exception {

@@ -21,6 +21,7 @@ const registracijaDermatologa = { template: '<register-dermatolog></register-der
 const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
+const promenaSifre = { template: '<promena-sifre></promena-sifre>'};
 
 const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
 const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
@@ -60,7 +61,7 @@ const router = new VueRouter({
         { path: '/regDerm', component: registracijaDermatologa },
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
-
+		{ path: '/promeniSifru', component: promenaSifre},
 	    { path: '/zalbe', component: StranicaZalbe },
 	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
 	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
