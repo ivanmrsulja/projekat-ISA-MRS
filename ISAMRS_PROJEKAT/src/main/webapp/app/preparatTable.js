@@ -42,9 +42,9 @@ Vue.component("profil-preparati", {
 			  <tr><td style="color:white">Filtriraj po:</td> 
 			  		<td>
 				  		<select name="tip" id="kriterijum" v-model="searchParams.filter" >
-						  <option value="SVI">SVI</option>
-						  <option value="TIP">TIP</option>
-						  <option value="OCENA">OCENA</option>
+						  <option value="PRIHVACENA">PRIHVACENA</option>
+						  <option value="ODBIJENA">ODBIJENA</option>
+						  <option value="CEKA_NA_ODGOVOR">CEKA_NA_ODGOVOR</option>
 						</select>
 					</td></tr>
 			  <tr><td colspan=2 align=center ><input type="button" v-on:click="pretragaPreparata" name="search" value="Pretrazi" /></td></tr>
