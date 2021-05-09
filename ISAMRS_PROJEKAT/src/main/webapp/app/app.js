@@ -26,6 +26,7 @@ const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></z
 const ProfilAdminaApoteke = { template: '<profil-admina-apoteke></profil-admina-apoteke>'};
 const PretragaStrucnjaka = { template: '<pretraga-strucnjaka></pretraga-strucnjaka>'};
 const PregledZahtevaFarmaceuta = { template: '<pregled-zahteva-farmaceuta></pregled-zahteva-farmaceuta>'};
+const DefinicijaAkcijePromocije = { template: '<definicija-akcije-promocije></definicija-akcije-promocije>'};
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -58,6 +59,7 @@ const router = new VueRouter({
         { path: '/profilAdminaApoteke', component: ProfilAdminaApoteke },
         { path: '/pretragaStrucnjaka', component: PretragaStrucnjaka },
         { path: '/pregledZahtevaFarmaceuta', component: PregledZahtevaFarmaceuta },
+        { path: '/definicijaAkcijePromocije', component: DefinicijaAkcijePromocije },
 	  ]
 	});
 

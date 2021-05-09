@@ -10,12 +10,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.AdminApoteke;
+import rest.domain.AkcijaPromocija;
 import rest.domain.Ponuda;
+import rest.domain.TeloAkcijePromocije;
 import rest.dto.PonudaDTO;
+import rest.repository.AdminApotekeRepository;
+import rest.repository.AkcijaPromocijaRepository;
 import rest.service.AdminService;
+import rest.service.AkcijaPromocijaService;
 
 
 @RestController
@@ -23,10 +33,16 @@ import rest.service.AdminService;
 public class AdminController {
 
 	private AdminService adminService;
+	private AdminApotekeRepository adminApotekeRepository;
+	private AkcijaPromocijaRepository akcijaPromocijaRepository;
+	private AkcijaPromocijaService akcijaPromocijaService;
 	
 	@Autowired
-	public AdminController(AdminService as) {
+	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps) {
 		this.adminService = as;
+		this.adminApotekeRepository = aar;
+		this.akcijaPromocijaRepository = apr;
+		this.akcijaPromocijaService = aps;
 	}
 	
 	
@@ -38,5 +54,13 @@ public class AdminController {
 			ponude.add(new PonudaDTO(p));
 		}
 		return new ResponseEntity<Collection<PonudaDTO>>(ponude, HttpStatus.OK);
+	}
+
+	@PostMapping(value="/registerPromo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerPromotion(@RequestBody TeloAkcijePromocije telo) throws Exception{
+		AdminApoteke admin = adminApotekeRepository.findById(telo.getIdAdmina()).get();
+		AkcijaPromocija ap = new AkcijaPromocija(telo.getTekst(), admin);
+		akcijaPromocijaService.create(ap);
+		return "OK";
 	}
 }
