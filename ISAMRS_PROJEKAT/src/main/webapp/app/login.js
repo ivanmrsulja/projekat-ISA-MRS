@@ -7,6 +7,7 @@ Vue.component("pocetna-strana", {
 	template: ` 
 <div align = center>
 		<h1>Login korisnika: </h1>
+		<br/>
 		<table>
 			<tr>
 				<td> <h2>Username:</h2> </td> <td> <input type="text" name="username" /> </td>
@@ -16,7 +17,7 @@ Vue.component("pocetna-strana", {
 			</tr>
 			<tr>
 				<td align=center colspan=2>
-					<input type="button" value="Posalji" v-on:click="logUserIn()"/>
+					<input type="button" class="button1" value="Posalji" v-on:click="logUserIn()"/>
 				</td>
 			</tr>
 		</table>

@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
-import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
@@ -52,8 +51,8 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public Collection<PregledDTO> zakaziPregled(int idp, int idpa) throws Exception {
-		Pregled p = preglediRepo.findById(idp).get();
-
+		Pregled p = preglediRepo.findOneById(idp);
+		
 		if(p.getStatus().equals(StatusPregleda.ZAKAZAN)) {
 			throw new Exception("Termin je vec rezervisan.");
 		}

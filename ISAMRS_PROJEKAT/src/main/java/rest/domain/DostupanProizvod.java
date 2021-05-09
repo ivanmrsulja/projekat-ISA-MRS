@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 @Entity
 public class DostupanProizvod {
@@ -21,6 +22,9 @@ public class DostupanProizvod {
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
 	private Preparat preparat;
+	
+	@Version
+	private Long version;
 	
 	public DostupanProizvod() {}
 	
@@ -62,6 +66,13 @@ public class DostupanProizvod {
 	public void setCena(double cena) {
 		this.cena = cena;
 	}
-	
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	
 }

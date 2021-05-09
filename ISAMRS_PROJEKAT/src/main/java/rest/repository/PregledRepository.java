@@ -3,9 +3,12 @@ package rest.repository;
 import java.time.LocalDate;
 import java.util.Collection;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +46,9 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 
 	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.status = 0")
 	Collection<Pregled> preglediZaDermatologa(int id);
+	
+	@Lock(LockModeType.OPTIMISTIC)
+	@Query("select p from Pregled p where p.id = ?1")
+	Pregled findOneById(int id);
 
 }

@@ -12,6 +12,8 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.aspect.AsPacijent;
 import rest.domain.Dermatolog;
 import rest.domain.Pregled;
+import rest.dto.DermatologDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 import rest.service.DermatologService;
@@ -155,9 +159,16 @@ public class DermatologController {
 		try {
 			pregledService.makeNewExam(pregled,aid,kid,pid);
 			return ("Uspesno zakazano");
-		} catch (Exception e) {
-			
+		}catch(OptimisticLockingFailureException p) {
+			return "Doslo je do greske prilikom zakazivanja. Osvezite stranicu i pokusajte ponovo.";
+		}catch (Exception e) {
 			return e.getMessage();
 		}
+	}
+	
+	@AsPacijent
+	@GetMapping(value ="/ocenjivanje/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public DermatologDTO zaOcenjivanje(@PathVariable int id) {
+		return new DermatologDTO(dermatologService.findOne(id));
 	}
 }

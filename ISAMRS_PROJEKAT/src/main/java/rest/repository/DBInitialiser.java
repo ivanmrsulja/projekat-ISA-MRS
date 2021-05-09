@@ -157,8 +157,8 @@ public class DBInitialiser implements ApplicationRunner {
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2021-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2021-04-06"), n, d));
 		
-		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dermatolog", "dermatolog","isamrstim06+d1@gmail.com",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5,24);		
-		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","isamrstim06+d2@gmail.com",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7,10);		
+		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dermatolog", "dermatolog","isamrstim06+d1@gmail.com",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5.0,24.0);		
+		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","isamrstim06+d2@gmail.com",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7.0,10.0);		
 		korisnici.save(d1);
 		korisnici.save(d2);
 		
@@ -176,9 +176,9 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d1);
 		korisnici.save(d2);
 
-		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","isamrstim06+f1@gmail.com",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0,0, null);		
-		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,18,72, null);
-		Farmaceut f3=new Farmaceut("Imenko", "Prezimenic", "imenko", "imenko","isamrstim06+f3@gmail.com",true,"telefon",l10,ZaposlenjeKorisnika.FARMACEUT,2,3, null);	
+		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","isamrstim06+f1@gmail.com",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0.0,0.0, null);		
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,18.0,72.0, null);
+		Farmaceut f3=new Farmaceut("Imenko", "Prezimenic", "imenko", "imenko","isamrstim06+f3@gmail.com",true,"telefon",l10,ZaposlenjeKorisnika.FARMACEUT,2.0,3.0, null);	
 		korisnici.save(f1);
 		korisnici.save(f2);
 		korisnici.save(f3);
@@ -250,7 +250,7 @@ public class DBInitialiser implements ApplicationRunner {
 		Pregled pre16 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-07"), LocalTime.parse("08:00"), 45, 5000, d1, p1, a1);
 		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
 
-		Pregled pre3 = new Pregled("Lorem ipsum solor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
+		Pregled pre3 = new Pregled("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
 		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
 		Pregled pre5 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.now(), LocalTime.parse("09:00"), 45, 5000, d1, null, a1);
 		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-04-23"), LocalTime.parse("13:00"), 45, 4000, d2, null, a2);

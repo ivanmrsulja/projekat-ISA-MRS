@@ -29,4 +29,5 @@ public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
 	
 	@Query("select a from Apoteka a where a in ?1")
 	public Page<Apoteka> slobodneApoteke(Pageable pageable, ArrayList<Apoteka> apoteke);
+	
 }
