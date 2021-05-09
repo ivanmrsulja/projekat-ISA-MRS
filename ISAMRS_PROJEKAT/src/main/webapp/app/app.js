@@ -31,7 +31,7 @@ const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termi
 const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
 const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
 const dodajLek = { template: '<add-cure></add-cure>'};
-
+const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>'};
 
 
 
@@ -68,6 +68,7 @@ const router = new VueRouter({
 	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
 		{ path: '/noviLek', component: dodajLek },
 	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
+	    { path: '/registracijaAdminaSistema', component: registracijaAdminaSistema },
 	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },
 
 	    

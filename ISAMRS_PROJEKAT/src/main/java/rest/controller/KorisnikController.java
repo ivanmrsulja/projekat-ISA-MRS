@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rest.domain.AdminSistema;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
 import rest.domain.Korisnik;
@@ -171,7 +172,23 @@ public class KorisnikController {
 		k.setLoggedBefore(false);
 		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DERMATOLOG);
 		Set<Zaposlenje> p = new HashSet<Zaposlenje>();
-		k.setZaposlenja(p);;
+		k.setZaposlenja(p);
+		userService.create(k);
+		return "OK";
+	}
+	
+	@PostMapping(value = "/registerAdminSys", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerAdminSys(@RequestBody KorisnikDTO user) throws Exception {
+		AdminSistema k = new AdminSistema();
+		k.setIme(user.getIme());
+		k.setPrezime(user.getPrezime());
+		k.setUsername(user.getUsername());
+		k.setEmail(user.getEmail());
+		k.setTelefon(user.getTelefon());
+		k.setLokacija(user.getLokacija());
+		k.setPassword(user.getNoviPassw());
+		k.setLoggedBefore(false);
+		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_SISTEMA);
 		userService.create(k);
 		return "OK";
 	}
