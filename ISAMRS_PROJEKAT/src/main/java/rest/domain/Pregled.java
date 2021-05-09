@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class Pregled {
@@ -44,6 +45,9 @@ public class Pregled {
 	private Apoteka apoteka;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Preparat> terapija;
+	
+	@Version
+	private Long version;
 	
 	public Pregled() {
 		this.terapija = new HashSet<Preparat>();
@@ -159,6 +163,13 @@ public class Pregled {
 	public void setTerapija(Set<Preparat> terapija) {
 		this.terapija = terapija;
 	}
-	
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	
 }

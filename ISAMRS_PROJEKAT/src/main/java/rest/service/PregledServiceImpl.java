@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
-import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;

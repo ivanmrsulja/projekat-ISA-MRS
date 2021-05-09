@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -158,7 +159,7 @@ public class DermatologController {
 		try {
 			pregledService.makeNewExam(pregled,aid,kid,pid);
 			return ("Uspesno zakazano");
-		}catch(PessimisticLockingFailureException p) {
+		}catch(OptimisticLockingFailureException p) {
 			return "Doslo je do greske prilikom zakazivanja. Osvezite stranicu i pokusajte ponovo.";
 		}catch (Exception e) {
 			return e.getMessage();

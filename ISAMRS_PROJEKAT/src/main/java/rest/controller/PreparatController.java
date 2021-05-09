@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -98,6 +99,8 @@ public class PreparatController {
 			Rezervacija rez = preparatService.rezervisi(idPreparat, currentUser.getId(), idApoteka, d);
 			preparatService.sendConfirmationEmail(currentUser, rez);
 			return "Uspesno rezervisano.";
+		}catch(OptimisticLockingFailureException o) {
+			return "Doslo je do greske prilikom rezervacije, refreshujte stranicu i pokusajte ponovo.";
 		}catch(Exception e) {
 			return e.getMessage();
 		}
@@ -112,7 +115,9 @@ public class PreparatController {
 		try {
 			preparatService.otkazi(idPreparat, currentUser.getId());
 			return "OK";
-		} catch (Exception e) {
+		}catch(OptimisticLockingFailureException o) {
+			return "Doslo je do greske prilikom otkazivanja rezervacije, refreshujte stranicu i pokusajte ponovo.";
+		}catch (Exception e) {
 			return e.getMessage();
 		}
 	}

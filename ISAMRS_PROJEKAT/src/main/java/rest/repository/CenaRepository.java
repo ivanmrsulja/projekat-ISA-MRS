@@ -2,7 +2,10 @@ package rest.repository;
 
 import java.util.Collection;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +23,7 @@ public interface CenaRepository extends JpaRepository<Cena, Integer> {
 	@Query("select c.apoteka from Cena c join c.dostupniProizvodi dp where dp.preparat.id = ?1")
 	Collection<Apoteka> getPharmaciesForDrug(int id);
 	
+	@Lock(LockModeType.OPTIMISTIC)
 	@Query("select dp from Cena c join c.dostupniProizvodi dp where dp.preparat.id = ?1 and c.apoteka.id = ?2")
 	DostupanProizvod getProduct(int idp, int ida);
 	
