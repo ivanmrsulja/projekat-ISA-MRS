@@ -119,6 +119,16 @@ public class KorisnikController {
 		request.getSession().setAttribute("user", updateUser);
 		return "OK";
 	}
+	
+	@PostMapping(value = "/updateSupp", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateSupp(HttpServletRequest request, @RequestBody KorisnikDTO user) throws Exception {
+		KorisnikDTO u = null;
+		u = (KorisnikDTO) request.getSession().getAttribute("user");
+		Korisnik k = userService.updateSupp(u, user);
+		KorisnikDTO updateUser = new KorisnikDTO(k);
+		request.getSession().setAttribute("user", updateUser);
+		return "OK";
+	}
 
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody KorisnikDTO user) throws Exception {

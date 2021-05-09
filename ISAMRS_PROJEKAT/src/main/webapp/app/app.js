@@ -17,6 +17,7 @@ const preparatiTable = {template: '<profil-preparati></profil-preparati>'};
 const PregledStavkiPreparata = { template: '<pojedinacni-preparat></pojedinacni-preparat>'};
 const RegistracijaFarmaceuta = { template: '<register-pharmacist></register-pharmacist>'};
 const registracijaDobavljaca = { template: '<register-supplier></register-supplier>' };
+const updateDobavljaca = { template: '<update-supplier></update-supplier>' };
 const registracijaDermatologa = { template: '<register-dermatolog></register-dermatolog>' };
 const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
@@ -60,6 +61,7 @@ const router = new VueRouter({
 		{ path: '/registracijaFarmaceuta', component: RegistracijaFarmaceuta },
 		{ path: '/regSupp', component: registracijaDobavljaca },
         { path: '/regDerm', component: registracijaDermatologa },
+        { path: '/updateSupp', component: updateDobavljaca},
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
 		{ path: '/promeniSifru', component: promenaSifre},

@@ -34,7 +34,7 @@ public class KorisnikDTO {
 		this.zaposlenjeKorisnika=korisnik.getZaposlenjeKorisnika();
 		this.loggedBefore = korisnik.getLoggedBefore();
 		this.stariPassw = null;
-		this.noviPassw = null;
+		this.noviPassw = korisnik.getPassword();
 	}	
 
 	@Override
