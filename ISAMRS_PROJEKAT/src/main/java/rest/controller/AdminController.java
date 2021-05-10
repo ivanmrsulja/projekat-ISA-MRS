@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdminApoteke;
 import rest.domain.AkcijaPromocija;
+import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.TeloAkcijePromocije;
+import rest.dto.ApotekaDTO;
 import rest.dto.PonudaDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.AkcijaPromocijaRepository;
+import rest.repository.PacijentRepository;
 import rest.service.AdminService;
 import rest.service.AkcijaPromocijaService;
 
@@ -36,13 +39,17 @@ public class AdminController {
 	private AdminApotekeRepository adminApotekeRepository;
 	private AkcijaPromocijaRepository akcijaPromocijaRepository;
 	private AkcijaPromocijaService akcijaPromocijaService;
+	private PacijentRepository pacijentRepository;
+	private ApotekaController apotekaController;
 	
 	@Autowired
-	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps) {
+	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr, ApotekaController ac) {
 		this.adminService = as;
 		this.adminApotekeRepository = aar;
 		this.akcijaPromocijaRepository = apr;
 		this.akcijaPromocijaService = aps;
+		this.pacijentRepository = pr;
+		this.apotekaController = ac;
 	}
 	
 	
@@ -61,6 +68,13 @@ public class AdminController {
 		AdminApoteke admin = adminApotekeRepository.findById(telo.getIdAdmina()).get();
 		AkcijaPromocija ap = new AkcijaPromocija(telo.getTekst(), admin);
 		akcijaPromocijaService.create(ap);
+
+		ApotekaDTO apoteka = apotekaController.getOneForAdmin(admin.getId());
+		Collection<Pacijent> pretplaceniPacijenti = pacijentRepository.getPatientsSubscribedToPharmacy(apoteka.getId());
+		for (Pacijent p : pretplaceniPacijenti) {
+			adminService.notifyPatientViaEmail(apoteka, p, telo);
+		}
+
 		return "OK";
 	}
 }
