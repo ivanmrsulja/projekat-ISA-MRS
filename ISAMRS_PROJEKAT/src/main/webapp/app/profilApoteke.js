@@ -138,6 +138,7 @@ Vue.component("profil-apoteke", {
 		axios
 		.get("api/users/currentUser")
 		.then(response => {
+		  console.log(response.data);
 		  axios
 			.get("api/apoteke/admin/" + response.data.id)
 			.then(response => {

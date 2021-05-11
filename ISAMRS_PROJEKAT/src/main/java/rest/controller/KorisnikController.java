@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rest.domain.AdminApoteke;
 import rest.domain.AdminSistema;
+import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
 import rest.domain.Korisnik;
@@ -38,10 +40,12 @@ import rest.dto.ApotekaDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PenalDTO;
+import rest.dto.PharmacyAdminDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.dto.RezervacijaDTO;
 import rest.service.AkcijaPromocijaService;
+import rest.service.ApotekaService;
 import rest.service.KorisnikService;
 import rest.service.PacijentService;
 
@@ -52,12 +56,14 @@ public class KorisnikController {
 	private KorisnikService userService;
 	private AkcijaPromocijaService akcijaService;
 	private PacijentService pacijentService;
+	private ApotekaService apotekaService;
 	
 	@Autowired
-	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps, PacijentService pacijentService) {
+	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps, PacijentService pacijentService, ApotekaService as) {
 		this.userService = us;
 		this.akcijaService = aps;
 		this.pacijentService = pacijentService;
+		this.apotekaService = as;
 	}
 	
 	@Scheduled(cron = "${penali.cron}")
@@ -200,6 +206,17 @@ public class KorisnikController {
 		k.setLoggedBefore(false);
 		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_SISTEMA);
 		userService.create(k);
+		return "OK";
+	}
+	
+	@PostMapping(value = "/registerAdminPharm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerAdminPharm(@RequestBody PharmacyAdminDTO user) throws Exception {
+		Apoteka a = apotekaService.getByID(Integer.parseInt(user.getApoteka()));
+		System.out.println("PRONASLI SMO APOTEKUUUUUUUUUUUUUUUUUUUU " + a.getNaziv());
+		AdminApoteke k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
+		a.addAdmin(k);
+		k.setApoteka(a);
+		userService.createAdminPharm(k);
 		return "OK";
 	}
 	

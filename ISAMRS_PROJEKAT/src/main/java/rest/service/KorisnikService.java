@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Async;
 
+import rest.domain.AdminApoteke;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
@@ -37,6 +38,7 @@ public interface KorisnikService {
 	Collection<RezervacijaDTO> rezervacijeZaKorisnika(int id);
 	PacijentDTO findPacijentById(int id);
 	TipKorisnika pocetniTip();
+	AdminApoteke createAdminPharm(AdminApoteke user) throws Exception;
 	
 	@Async
 	void sendRegistrationMail(Pacijent p);

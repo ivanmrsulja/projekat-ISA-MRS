@@ -23,7 +23,7 @@ const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
 const promenaSifre = { template: '<promena-sifre></promena-sifre>'};
-
+const registracijaApoteke = { template: '<register-apoteka></register-apoteka>'};
 const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
 const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
 
@@ -33,6 +33,7 @@ const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
 const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
 const dodajLek = { template: '<add-cure></add-cure>'};
 const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>'};
+const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>'};
 
 
 
@@ -60,6 +61,7 @@ const router = new VueRouter({
 		{ path: '/akcijePromocije', component: AkcijePromocije },
 		{ path: '/registracijaFarmaceuta', component: RegistracijaFarmaceuta },
 		{ path: '/regSupp', component: registracijaDobavljaca },
+		{ path: '/regAdminPharm', component: registracijaAdminaApoteke },
         { path: '/regDerm', component: registracijaDermatologa },
         { path: '/updateSupp', component: updateDobavljaca},
 	    { path: '/pacijenti', component: pacijentTable},
@@ -69,6 +71,7 @@ const router = new VueRouter({
 	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
 	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
 		{ path: '/noviLek', component: dodajLek },
+		{ path: '/regApoteka', component: registracijaApoteke},
 	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
 	    { path: '/registracijaAdminaSistema', component: registracijaAdminaSistema },
 	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },

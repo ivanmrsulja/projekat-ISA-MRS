@@ -14,15 +14,20 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import rest.domain.AdminApoteke;
+import rest.domain.Apoteka;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Rezervacija;
 import rest.domain.TipKorisnika;
+import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
+import rest.repository.AdminApotekeRepository;
+import rest.repository.ApotekeRepository;
 import rest.repository.KorisnikRepository;
 import rest.repository.LokacijaRepository;
 import rest.repository.PacijentRepository;
@@ -41,15 +46,18 @@ public class KorisnikServiceImpl implements KorisnikService {
 	private PenalRepository penalRepository;
 	private PregledRepository pregledRepository;
 	private RezervacijaRepository rezervacijeRepository;
+	private AdminApotekeRepository adminApotekeRepository;
 	private LokacijaRepository lokacijaRepository;
 	private TipKorisnikaRepository tipRepo;
 	private Environment env;
 	private JavaMailSender javaMailSender;
-	
+	private ApotekeRepository apotekeRepository;
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
+	public KorisnikServiceImpl(ApotekeRepository phr,AdminApotekeRepository aar,KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
 		this.korisnikRepository = imkr;
+		this.apotekeRepository = phr;
+		this.adminApotekeRepository = aar;
 		this.penalRepository = pr;
 		this.rezervacijeRepository = rr;
 		this.pregledRepository = prer;
@@ -76,6 +84,16 @@ public class KorisnikServiceImpl implements KorisnikService {
 	public Korisnik create(Korisnik user) throws Exception {
 		lokacijaRepository.save(user.getLokacija());
 		Korisnik savedUser = korisnikRepository.save(user);
+		return savedUser;
+	}
+	
+	@Override
+	public AdminApoteke createAdminPharm(AdminApoteke user) throws Exception {
+		lokacijaRepository.save(user.getLokacija());
+		AdminApoteke savedUser = korisnikRepository.save(user);
+		Apoteka a = apotekeRepository.getOne(user.getApoteka().getId());
+		a.addAdmin(savedUser);
+		apotekeRepository.save(a);
 		return savedUser;
 	}
 

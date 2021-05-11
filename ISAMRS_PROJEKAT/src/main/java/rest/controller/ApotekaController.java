@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,9 @@ import rest.aspect.AsPacijent;
 import rest.domain.Apoteka;
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
+import rest.domain.Pacijent;
+import rest.domain.StatusNaloga;
+import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
@@ -70,6 +74,23 @@ public class ApotekaController {
 			retVals.add(a);
 		}
 		return apoteke;
+	}
+	
+	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String register(@RequestBody ApotekaDTO user) throws Exception {
+		Apoteka k = new Apoteka();
+		k.setNaziv(user.getNaziv());
+		k.setOpis(user.getOpis());
+		k.setOcena(user.getOcena());
+		k.setLokacija(user.getLokacija());
+		k.setCenaSavetovanja(user.getCena());
+		apotekaService.create(k);
+		return "OK";
+	}
+	
+	@GetMapping(value="/every", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<ApotekaDTO> getAll() {
+		return apotekaService.getAllPharmacies();
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
