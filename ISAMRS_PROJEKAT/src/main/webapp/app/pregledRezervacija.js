@@ -91,7 +91,8 @@ Vue.component("lista-rezervacija", {
 		        
 		        <tr>
 		        <td><h6>Ocena preparata:</h6></td>
-		        <td>{{selected.detaljno.ocena.toFixed(2)}}</td>
+		        <td v-bind:hidden="selected.detaljno.ocena == 0">{{selected.detaljno.ocena.toFixed(2)}}</td>
+		        <td v-bind:hidden="selected.detaljno.ocena > 0" style="color: gray">NIJE OCENJENO</td>
 		        </tr>
 		        
 		        <tr>
