@@ -39,6 +39,7 @@
 <a class="navigacija" href="#/pregledZahtevaFarmaceuta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Zahtevi</a>
 <a class="navigacija" href="#/registracijaFarmaceuta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Registracija farmaceuta</a>
 <a class="navigacija" href="#/definicijaAkcijePromocije" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Akcije/Promocije</a>
+<a class="navigacija" href="#/definicijaCenovnika" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Cenovnik</a>
 <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
@@ -119,6 +120,7 @@
 <script src="app/pretragaStrucnjaka.js"></script>
 <script src="app/pregledZahtevaFarmaceuta.js"></script>
 <script src="app/definicijaAkcijePromocije.js"></script>
+<script src="app/definicijaCenovnika.js"></script>
 
 <script src="app/app.js"></script>
 </body>

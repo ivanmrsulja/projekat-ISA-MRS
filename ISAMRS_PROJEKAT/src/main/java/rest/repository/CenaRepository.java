@@ -25,4 +25,10 @@ public interface CenaRepository extends JpaRepository<Cena, Integer> {
 	
 	@Query("select dp.cena from Cena c join c.dostupniProizvodi dp where dp.preparat.id = ?1 and c.apoteka.id = ?2")
 	double getPrice(int idp, int ida);
+
+	@Query("select c from Cena c join fetch c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce)")
+	public Cena getLatestPricelistForPharmacy(int idApoteke);
+
+	@Query("select dp from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce)")
+	public Collection<DostupanProizvod> getDostupniProizvodiZaApoteku(int idApoteke);
 }

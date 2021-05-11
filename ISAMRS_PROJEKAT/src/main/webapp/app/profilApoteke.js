@@ -13,7 +13,7 @@ Vue.component("profil-apoteke", {
 		    }
 	},
 	template: ` 
-<div align = center style="width: 75% sm;">
+	<div align = center style="width: 75% sm;">
 		
 		<h1>Profil apoteke</h1>
 		<div id="mySidebar" class="sidebar">
@@ -96,8 +96,8 @@ Vue.component("profil-apoteke", {
 	</table>
 
 	
-</div>		  
-`
+	</div>		  
+	`
 	,
     methods : {
         reverseGeolocation: function(coords){

@@ -278,7 +278,7 @@ public class DBInitialiser implements ApplicationRunner {
 		p1.addApoteka(a1);
 		p2.addApoteka(a2);
 		
-		LocalDate ld = LocalDate.now();
+		LocalDate ld = LocalDate.parse("2018-12-27");
 		Cena cena = new Cena(a1, ld);
 		Set<DostupanProizvod> dostupni_proizvodi = new HashSet<DostupanProizvod>();
 		DostupanProizvod dp1 = new DostupanProizvod(4, 1000, pr1);
