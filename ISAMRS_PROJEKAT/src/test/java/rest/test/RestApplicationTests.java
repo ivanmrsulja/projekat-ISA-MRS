@@ -2,8 +2,6 @@ package rest.test;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
