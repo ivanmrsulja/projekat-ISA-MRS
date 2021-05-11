@@ -190,6 +190,25 @@ public class KorisnikServiceImpl implements KorisnikService {
         mail.setText("Pozdrav " + p.getIme() + " " + p.getPrezime() + ",\n\nhvala što koristite nasu aplikaciju, kliknite na link ispod kako biste verifikovali nalog\nLorem ipsum dolor sit amet.");
         javaMailSender.send(mail);
 	}
+
+	@Override
+	public Korisnik updateSupp(KorisnikDTO user, KorisnikDTO updateInfo) throws Exception {
+		Korisnik userToUpdate = findOne(user.getId());
+		if (userToUpdate == null) {
+			throw new Exception("Trazeni entitet nije pronadjen.");
+		}
+		userToUpdate.setLoggedBefore(true);
+		userToUpdate.setPassword(updateInfo.getNoviPassw());
+		userToUpdate.setIme(updateInfo.getIme());
+		userToUpdate.setPrezime(updateInfo.getPrezime());
+		userToUpdate.setUsername(updateInfo.getUsername());
+		userToUpdate.setTelefon(updateInfo.getTelefon());
+		lokacijaRepository.save(updateInfo.getLokacija());
+		userToUpdate.setLokacija(updateInfo.getLokacija());
+		
+		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
+		return updatedUSer;
+	}
 	
 	
 }

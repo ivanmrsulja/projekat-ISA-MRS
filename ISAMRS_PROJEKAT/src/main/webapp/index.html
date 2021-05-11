@@ -40,6 +40,8 @@
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
 <a class="navigacija" href="#/regDerm" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje dermatologa</a>
+<a class="navigacija" href="#/registracijaAdminaSistema" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje admina sistema</a>
+<a class="navigacija" href="#/noviLek" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Dodavanje leka</a>
 <a class="navigacija" href="#/regSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje dobavljaca</a>
 <a class="navigacija" href="#/istorijaPregleda/0/PLAIN" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Istorija pregleda</a>
 <a class="navigacija" href="#/zakazaniPregledi/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Zakazani pregledi</a>
@@ -54,7 +56,7 @@
 <a class="navigacija" href="#/pregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Lista Pregleda</a>
 <a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
 <a class="navigacija" href="#/savetovanja" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Lista Savetovanja</a>
-
+<a class="navigacija" href="#/updateSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Azuriranje podataka</a>
 <a class="navigacija" href="#/pacijenti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Pacijenti</a>
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>
@@ -119,6 +121,8 @@
 <script src="app/radniKalendar.js"></script>
 <script src="app/radniKalendarFarmaceut.js"></script>
 <script src="app/dodajLek.js"></script>
+<script src="app/registracijaAdminaSistema.js"></script>
+<script src="app/updateSupp.js"></script>
 <script src="app/app.js"></script>
 </body>
 </html>
