@@ -77,13 +77,28 @@ public class PreparatController {
 		Collection<Preparat> lekovi = preparatService.getAll();
 		ArrayList<PreparatDTO> preparati=new ArrayList<PreparatDTO>();
 		for(Preparat p : lekovi)
-			if(p.getNaziv().toLowerCase().startsWith(name.toLowerCase())) {
+			if(p.getNaziv().toLowerCase().startsWith(name.toLowerCase()) || name.equals("SVI")) {
 				preparati.add(new PreparatDTO(p));
 			}
-			
+		System.out.println(name + "OVO JE IME");
 		return preparati;
 	}
 	
+	@GetMapping(value = "search/{name}/{type}/{lowerBound}/{higherBound}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PreparatDTO> getFilterPreparat(@PathVariable("name") String name, @PathVariable("type") String type, @PathVariable("lowerBound") int lowerBound, @PathVariable("higherBound") int higherBound) {
+		Collection<Preparat> lekovi = preparatService.getAll();
+		ArrayList<PreparatDTO> preparati=new ArrayList<PreparatDTO>();
+		for(Preparat p : lekovi)
+			if(p.getNaziv().toLowerCase().startsWith(name.toLowerCase()) || name.equals("SVI")) {
+				if(p.getTip().toString().equals(type) || type.equals("SVI")) {
+					if(p.getOcena() >= lowerBound && p.getBrojOcena() <= higherBound) {
+						preparati.add(new PreparatDTO(p));
+					}
+				}
+			}
+		System.out.println(name+type+lowerBound+higherBound);
+		return preparati;
+	}
 	@GetMapping(value = "spec/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PreparatDTO getSpec(@PathVariable("id") int id){
 		return new PreparatDTO(preparatService.getOne(id));
