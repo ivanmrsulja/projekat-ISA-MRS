@@ -17,6 +17,7 @@ const preparatiTable = {template: '<profil-preparati></profil-preparati>'};
 const PregledStavkiPreparata = { template: '<pojedinacni-preparat></pojedinacni-preparat>'};
 const RegistracijaFarmaceuta = { template: '<register-pharmacist></register-pharmacist>'};
 const registracijaDobavljaca = { template: '<register-supplier></register-supplier>' };
+const updateDobavljaca = { template: '<update-supplier></update-supplier>' };
 const registracijaDermatologa = { template: '<register-dermatolog></register-dermatolog>' };
 const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
@@ -30,7 +31,8 @@ const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>'};
 const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>'};
 const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
 const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
-
+const dodajLek = { template: '<add-cure></add-cure>'};
+const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>'};
 
 
 
@@ -59,14 +61,16 @@ const router = new VueRouter({
 		{ path: '/registracijaFarmaceuta', component: RegistracijaFarmaceuta },
 		{ path: '/regSupp', component: registracijaDobavljaca },
         { path: '/regDerm', component: registracijaDermatologa },
+        { path: '/updateSupp', component: updateDobavljaca},
 	    { path: '/pacijenti', component: pacijentTable},
 	    { path: '/pacijenti/:spec', component: PregledPacijenta },
 		{ path: '/promeniSifru', component: promenaSifre},
 	    { path: '/zalbe', component: StranicaZalbe },
 	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
 	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
-
+		{ path: '/noviLek', component: dodajLek },
 	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
+	    { path: '/registracijaAdminaSistema', component: registracijaAdminaSistema },
 	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },
 
 	    

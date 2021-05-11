@@ -2,6 +2,7 @@ Vue.component("pocetna-stranas", {
 	data: function () {
 		    return {
 				offers : []
+				//let tip = $("#kriterijum").children("option:selected").val();
 		    }
 	},
 	template: ` 
@@ -9,6 +10,26 @@ Vue.component("pocetna-stranas", {
 		
 		<h1>Moje ponude</h1>
 		<br/>
+		<div id="mySidebar" class="sidebar">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <table>
+			  <tr><td style="color:white">Filtriraj po statusu:</td> 
+			  		<td>
+				  		<select name="tip" id="kriterijum">
+				  		  <option value="SVI">SVE PONUDE</option>
+						  <option value="PRIHVACENA">PRIHVACENA</option>
+						  <option value="ODBIJENA">ODBIJENA</option>
+						  <option value="CEKA_NA_ODGOVOR">CEKA NA ODGOVOR</option>
+						</select>
+					</td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Filter" v-on:click="pregledajBtn" /></td></tr>
+		  </table>
+	</div>
+		
+	<div id="main">
+	  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
+	</div>
+	</br>
 		<table class="table table-hover">
             <thead>
             	<tr>
@@ -38,11 +59,22 @@ Vue.component("pocetna-stranas", {
 </div>		  
 `
 	,
+	methods: {	
+    	pregledajBtn : function() {
+    		let tip = $("#kriterijum").children("option:selected").val();
+    		alert(tip);
+    		axios
+			.get("api/admin/cures/"+tip)
+			.then(response => {
+				this.offers = response.data;
+			});
+    	}
+    },
 	mounted: function() {
 		axios
 			.get("api/admin")
 			.then(response => {
-				this.offers = response.data
+				this.offers = response.data;
 				
 			});
     }

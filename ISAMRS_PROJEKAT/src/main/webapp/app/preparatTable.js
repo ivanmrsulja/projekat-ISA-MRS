@@ -16,11 +16,33 @@ Vue.component("profil-preparati", {
 		pretragaPreparata : function() {
 			
 			let usr = $("input[name=naziv]").val();
+			if(usr.trim() == "") {
+				usr = "SVI";
+			}
 			axios
 			.get("api/preparat/search/"+usr)
 			.then(response => {
 				this.preparati = response.data
 			});
+		},
+		filterPreparata : function() {
+			let name = $("input[name=naziv]").val();
+			let tip = $("#tipleka").children("option:selected").val();
+			let lowerBound = parseInt($("#donjaoc").children("option:selected").val());
+			let higherBound = parseInt($("#gornjaoc").children("option:selected").val());
+			if(lowerBound > higherBound) {
+				alert("Donja granica ne sme biti veca od gornje");
+				return
+			}
+			if(name.trim() == "") {
+				name = "SVI";
+			}
+			axios
+			.get("api/preparat/search/"+name+"/"+tip+"/"+"/"+lowerBound+"/"+higherBound)
+			.then(response => {
+				this.preparati = response.data
+			});
+		
 		}
     },
     filters: {
@@ -39,15 +61,38 @@ Vue.component("profil-preparati", {
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		  <table>
 			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Unesite naziv leka" v-model="searchParams.naziv" /></td></tr>
-			  <tr><td style="color:white">Filtriraj po:</td> 
+			  <tr><td style="color:white">Filtriraj po tipu:</td> 
 			  		<td>
-				  		<select name="tip" id="kriterijum" v-model="searchParams.filter" >
+				  		<select name="tip" id="tipleka">
 						  <option value="SVI">SVI</option>
-						  <option value="TIP">TIP</option>
-						  <option value="OCENA">OCENA</option>
+						  <option value="ANTIBIOTIK">Antibiotik</option>
+						  <option value="ANESTETIK">Anestetik</option>
+						  <option value="ANTIHISTAMINIK">Antihistaminik</option>
+						</select>
+					</td></tr>
+			  <tr><td style="color:white">Filtriraj po Oceni:</td> 
+			  		<td>
+				  		<select name="donjaocena" id="donjaoc">
+						  <option value="0">0</option>
+						  <option value="1">1</option>
+						  <option value="2">2</option>
+						  <option value="3">3</option>
+						  <option value="4">4</option>
+						  <option value="5">5</option>
+						</select>
+					</td>
+					<td>
+				  		<select name="gornjaocena" id="gornjaoc">
+						  <option value="0">0</option>
+						  <option value="1">1</option>
+						  <option value="2">2</option>
+						  <option value="3">3</option>
+						  <option value="4">4</option>
+						  <option value="5">5</option>
 						</select>
 					</td></tr>
 			  <tr><td colspan=2 align=center ><input type="button" v-on:click="pretragaPreparata" name="search" value="Pretrazi" /></td></tr>
+			  <tr><td colspan=2 align=center ><input type="button" v-on:click="filterPreparata" name="search" value="Filtriraj" /></td></tr>
 		  </table>
 	</div>
 		

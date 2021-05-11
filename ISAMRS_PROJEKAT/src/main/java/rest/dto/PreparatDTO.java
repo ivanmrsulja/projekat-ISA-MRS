@@ -2,6 +2,7 @@ package rest.dto;
 
 import rest.domain.Preparat;
 import rest.domain.RezimIzdavanja;
+import rest.domain.TipLeka;
 
 public class PreparatDTO {
 
@@ -14,6 +15,7 @@ public class PreparatDTO {
 	private String oblik;
 	private String proizvodjac;
 	private RezimIzdavanja rezim;
+	private TipLeka tip;
 	private double ocena;
 	
 	public PreparatDTO()
@@ -30,6 +32,7 @@ public class PreparatDTO {
 		this.proizvodjac=preparat.getProizvodjac();
 		this.rezim=preparat.getIzdavanje();
 		this.ocena=preparat.getOcena();
+		this.tip = preparat.getTip();
 	}
 	public Integer getId() {
 		return id;
@@ -85,5 +88,13 @@ public class PreparatDTO {
 	public void setOcena(double ocena) {
 		this.ocena = ocena;
 	}
+	public TipLeka getTip() {
+		return tip;
+	}
+	public void setTip(TipLeka tip) {
+		this.tip = tip;
+	}
+	
+	
 	
 }
