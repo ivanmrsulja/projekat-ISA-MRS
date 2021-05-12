@@ -22,6 +22,8 @@ public class Narudzbenica {
 	private Integer id;
 	@Column(name = "rok", nullable = false)
 	private LocalDate rok;
+	@Column(name = "status", nullable = false)
+	private StatusNarudzbenice status;
 	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<NaruceniProizvod> naruceniProizvodi;
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -34,13 +36,22 @@ public class Narudzbenica {
 		this.ponude = new HashSet<Ponuda>();
 	}
 	
-	public Narudzbenica(LocalDate rok, AdminApoteke adminApoteke) {
+	public Narudzbenica(LocalDate rok, AdminApoteke adminApoteke, StatusNarudzbenice status) {
 		this();
 		this.rok = rok;
 		this.adminApoteke = adminApoteke;
+		this.status = status;
 	}
 
 	
+	public StatusNarudzbenice getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusNarudzbenice status) {
+		this.status = status;
+	}
+
 	public Integer getId() {
 		return id;
 	}

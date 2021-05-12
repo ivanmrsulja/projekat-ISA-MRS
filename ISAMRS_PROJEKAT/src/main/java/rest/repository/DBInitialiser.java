@@ -23,6 +23,7 @@ import rest.domain.DostupanProizvod;
 import rest.domain.ERecept;
 import rest.domain.Farmaceut;
 import rest.domain.Lokacija;
+import rest.domain.NaruceniProizvod;
 import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
@@ -33,6 +34,7 @@ import rest.domain.Rezervacija;
 import rest.domain.RezimIzdavanja;
 import rest.domain.StatusERecepta;
 import rest.domain.StatusNaloga;
+import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
 import rest.domain.StatusPregleda;
 import rest.domain.StatusRezervacije;
@@ -79,6 +81,8 @@ public class DBInitialiser implements ApplicationRunner {
 	private AkcijaPromocijaRepository akcijaRepo;
 	@Autowired
 	private ZahtevRepository zahtevRepo;
+	@Autowired
+	private NaruceniProizvodRepository naruceniProizvodRepo;
 	
 	@Override
 	@Transactional
@@ -153,11 +157,38 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(p1);
 		korisnici.save(p2);
 		
+
+		Preparat pr1 = new Preparat("Alirex", TipLeka.ANTIHISTAMINIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 2, 200, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 0.0, 0.0);
+		Preparat pr2 = new Preparat("Andol", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 300, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 3.0, 14.0);
+		Preparat pr3 = new Preparat("Block Max", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 400, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 2.0, 4.0);
+		preparatRepo.save(pr1);
+		preparatRepo.save(pr2);
+		pr3.addZamenskiPreparat(pr2);
+		preparatRepo.save(pr3);
+		
 		
 		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
-		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-07"), null);
+		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-08-08"), adma2, StatusNarudzbenice.CEKA_PONUDE);
+		Set<NaruceniProizvod> naruceniProizvodi1 = new HashSet<NaruceniProizvod>();
+		NaruceniProizvod np1 = new NaruceniProizvod(8, pr1, n);
+		NaruceniProizvod np2 = new NaruceniProizvod(10, pr2, n);
+		naruceniProizvodi1.add(np1);
+		naruceniProizvodi1.add(np2);
+		n.setNaruceniProizvodi(naruceniProizvodi1);
+		Narudzbenica n2 = new Narudzbenica(LocalDate.parse("2020-10-10"), adma2, StatusNarudzbenice.OBRADJENA);
+		Set<NaruceniProizvod> naruceniProizvodi2 = new HashSet<NaruceniProizvod>();
+		NaruceniProizvod np3 = new NaruceniProizvod(4, pr1, n2);
+		NaruceniProizvod np4 = new NaruceniProizvod(14, pr3, n2);
+		naruceniProizvodi1.add(np3);
+		naruceniProizvodi1.add(np4);
+		n2.setNaruceniProizvodi(naruceniProizvodi2);
+		naruceniProizvodRepo.save(np1);
+		naruceniProizvodRepo.save(np2);
+		naruceniProizvodRepo.save(np3);
+		naruceniProizvodRepo.save(np4);
 		korisnici.save(d);
 		narudzbenicaRepo.save(n);
+		narudzbenicaRepo.save(n2);
 		adminRepo.save(new Ponuda(StatusPonude.CEKA_NA_ODGOVOR, 400.23, LocalDate.parse("2021-04-24"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2021-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2021-04-06"), n, d));
@@ -207,14 +238,6 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(f1);
 		korisnici.save(f2);
 		korisnici.save(f3);
-		
-		Preparat pr1 = new Preparat("Alirex", TipLeka.ANTIHISTAMINIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 2, 200, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 0.0, 0.0);
-		Preparat pr2 = new Preparat("Andol", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 300, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 3.0, 14.0);
-		Preparat pr3 = new Preparat("Block Max", TipLeka.ANESTETIK, "Kontraindikacije.", "Lorem ipsum dolor sit amet.", 3, 400, "okrugao", "Galenika", RezimIzdavanja.BEZ_RECEPTA, 2.0, 4.0);
-		preparatRepo.save(pr1);
-		preparatRepo.save(pr2);
-		pr3.addZamenskiPreparat(pr2);
-		preparatRepo.save(pr3);
 		
 		p1.getAlergije().add(pr1);
 		korisnici.save(p1);

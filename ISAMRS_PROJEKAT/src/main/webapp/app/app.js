@@ -28,6 +28,7 @@ const PretragaStrucnjaka = { template: '<pretraga-strucnjaka></pretraga-strucnja
 const PregledZahtevaFarmaceuta = { template: '<pregled-zahteva-farmaceuta></pregled-zahteva-farmaceuta>'};
 const DefinicijaAkcijePromocije = { template: '<definicija-akcije-promocije></definicija-akcije-promocije>'};
 const DefinicijaCenovnika = { template: '<definicija-cenovnika></definicija-cenovnika>'};
+const PregledNarudzbenica = { template: '<pregled-narudzbenica></pregled-narudzbenica>'};
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -62,6 +63,7 @@ const router = new VueRouter({
         { path: '/pregledZahtevaFarmaceuta', component: PregledZahtevaFarmaceuta },
         { path: '/definicijaAkcijePromocije', component: DefinicijaAkcijePromocije },
         { path: '/definicijaCenovnika', component: DefinicijaCenovnika },
+        { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
 	  ]
 	});
 

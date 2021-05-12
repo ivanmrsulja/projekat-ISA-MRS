@@ -13,4 +13,7 @@ public interface NarudzbenicaRepozitory extends JpaRepository<Narudzbenica, Inte
 	
 	@Query("select n from Narudzbenica n join fetch n.naruceniProizvodi")
 	public Collection<Narudzbenica> getAllWithProizvodi();
+
+	@Query("select distinct n from Narudzbenica n join fetch n.naruceniProizvodi where n.adminApoteke.id = ?1")
+	public Collection<Narudzbenica> getAllForPharmacy(int idAdmina);
 }

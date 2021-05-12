@@ -31,6 +31,7 @@ import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.AkcijaPromocijaRepository;
@@ -100,6 +101,13 @@ public class AdminController {
 		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(idApoteke);
 		CenovnikDTO cenovnikDTO = new CenovnikDTO(cenovnik);
 		return cenovnikDTO;
+	}
+
+	@GetMapping(value="/narudzbenice/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<NarudzbenicaDTO> getOrdersForPharmacy(@PathVariable("id") int idAdmina){
+		ArrayList<NarudzbenicaDTO> narudzbenice = adminService.findOrdersForPharmacy(idAdmina);
+		
+		return narudzbenice;
 	}
 
 	@PostMapping(value="/registerCenovnik/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
