@@ -134,16 +134,16 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		Penal pe1 = new Penal(LocalDate.now(), p1);
 		Penal pe2 = new Penal(LocalDate.now(), p1);
-		Penal pe3 = new Penal(LocalDate.now(), p1);
+		//Penal pe3 = new Penal(LocalDate.now(), p1);
 		Penal pe4 = new Penal(LocalDate.now(), p2);
 		penaliRepo.save(pe1);
 		penaliRepo.save(pe2);
-		penaliRepo.save(pe3);
+		//penaliRepo.save(pe3);
 		penaliRepo.save(pe4);
 		
 		p1.addPenal(pe1);
 		p1.addPenal(pe2);
-		p1.addPenal(pe3);
+		//p1.addPenal(pe3);
 		p2.addPenal(pe4);
 		korisnici.save(p1);
 		korisnici.save(p2);

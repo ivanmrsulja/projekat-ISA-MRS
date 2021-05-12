@@ -104,7 +104,7 @@ public class PreparatServiceImpl implements PreparatService{
 
 	@Override
 	public void otkazi(int idr, int id) throws Exception {
-		Rezervacija r = rezervacijaRepository.findById(idr).get();
+		Rezervacija r = rezervacijaRepository.findOneById(idr);
 		
 		if(r.getPacijent().getId() != id) {
 			throw new Exception("Ne mozeee :)");
