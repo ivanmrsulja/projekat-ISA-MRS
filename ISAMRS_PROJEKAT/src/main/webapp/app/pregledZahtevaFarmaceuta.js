@@ -22,7 +22,7 @@ Vue.component("pregled-zahteva-farmaceuta", {
 
     <table class="table table-hover" style="width: 50%" v-bind:hidden="zahtevi.length == 0 || odbijen">
 	<thead>
-		<tr bgcolor="lightgrey">
+		<tr bgcolor="#90a4ae">
 			<th>Farmaceut</th>
 			<th>Tip</th>
 			<th>Status</th>

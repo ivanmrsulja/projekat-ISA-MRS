@@ -27,13 +27,17 @@ import rest.domain.AkcijaPromocija;
 import rest.domain.Apoteka;
 import rest.domain.Cena;
 import rest.domain.DostupanProizvod;
+import rest.domain.NaruceniProizvod;
+import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Preparat;
+import rest.domain.StatusNarudzbenice;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.NaruceniProizvodDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
@@ -42,6 +46,7 @@ import rest.repository.AkcijaPromocijaRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
 import rest.repository.DostupanProizvodRepository;
+import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PacijentRepository;
 import rest.repository.PreparatRepository;
 import rest.service.AdminService;
@@ -62,10 +67,11 @@ public class AdminController {
 	private ApotekeRepository apotekeRepository;
 	private DostupanProizvodRepository dostupanProizvodRepository;
 	private PreparatRepository preparatRepository;
+	private NarudzbenicaRepozitory narudzbenicaRepository;
 	
 	@Autowired
 	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
-			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep) {
+			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep, NarudzbenicaRepozitory nr) {
 		this.adminService = as;
 		this.adminApotekeRepository = aar;
 		this.akcijaPromocijaRepository = apr;
@@ -76,6 +82,7 @@ public class AdminController {
 		this.apotekeRepository = ar;
 		this.dostupanProizvodRepository = dpr;
 		this.preparatRepository = prepRep;
+		this.narudzbenicaRepository = nr;
 	}
 
 
@@ -115,12 +122,37 @@ public class AdminController {
 		return preparatiDTO;
 	}
 
+	@PostMapping(value = "/registerOrder/{adminId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerOrder(@RequestBody NarudzbenicaDTO narudzbenicaDTO, @PathVariable("adminId") int adminId) {
+		Narudzbenica narudzbenica = new Narudzbenica();
+		AdminApoteke adminApoteke = adminApotekeRepository.findById(adminId).get();
+		narudzbenica.setAdminApoteke(adminApoteke);
+		narudzbenica.setStatus(StatusNarudzbenice.CEKA_PONUDE);
+		narudzbenica.setRok(narudzbenicaDTO.getRok());
+		Preparat p = null;
+		for (NaruceniProizvodDTO npDTO : narudzbenicaDTO.getNaruceniProizvodi()) {
+			p = preparatRepository.getPreparatByName(npDTO.getPreparat());
+			narudzbenica.getNaruceniProizvodi().add(new NaruceniProizvod(npDTO.getKolicina(), p, narudzbenica));
+		}
+
+		narudzbenicaRepository.save(narudzbenica);
+
+		return "OK";
+	}
+
 	@PutMapping(value = "/addProductToPharmacy/{pharmacyId}/{price}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerProductForPharmacy(@RequestBody PreparatDTO preparat, @PathVariable("pharmacyId") int pharmacyId, @PathVariable("price") double price) {
 		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
+		if (cenovnik == null) {
+			Apoteka apoteka = apotekeRepository.findById(pharmacyId).get();
+			cenovnik = new Cena();
+			cenovnik.setApoteka(apoteka);
+			cenovnik.setPocetakVazenja(LocalDate.now());
+		}
 		Preparat p = preparatRepository.findById(preparat.getId()).get();
 		DostupanProizvod dp = new DostupanProizvod(0, price, p);
 		cenovnik.getDostupniProizvodi().add(dp);
+		dostupanProizvodRepository.save(dp);
 		cenaRepository.save(cenovnik);
 
 		return "OK";

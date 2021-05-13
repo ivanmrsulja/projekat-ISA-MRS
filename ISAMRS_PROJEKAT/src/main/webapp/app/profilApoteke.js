@@ -60,7 +60,7 @@ Vue.component("profil-apoteke", {
 
 	<table class="table table-hover" style="width: 50%" v-bind:hidden="farmaceuti.length == 0">
 	 <thead>
-		<tr bgcolor="lightgrey">
+		<tr bgcolor="#90a4ae">
 			<th>Ime</th>
 			<th>Prezime</th>
 			<th>Ocena</th>
@@ -80,7 +80,7 @@ Vue.component("profil-apoteke", {
 	<h2>Zaposleni dermatolozi</h2>
 	<table class="table table-hover" style="width: 50%" >
 	 <thead>
-		<tr bgcolor="lightgrey">
+		<tr bgcolor="#90a4ae">
 			<th>Ime</th>
 			<th>Prezime</th>
 			<th>Ocena</th>

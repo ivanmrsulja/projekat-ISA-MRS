@@ -1,42 +1,22 @@
-Vue.component("preparati-apoteke", {
+Vue.component("pisanje-narudzbenice", {
 	data: function () {
 		    return {
+                admin: {},
                 apoteka: {id: 0, naziv: ""},
 				preparati: [],
                 preparatiVanApoteke: [],
-				searchParams: {naziv: "", startCena: 0, endCena: 2000, kriterijumSortiranja: "NAZIV", opadajuce: false},
+                preparatiNarudzbenice: [],
                 dodato: false,
                 cena: 0,
                 aktuelniPreparat: "",
+                rok: "",
+                narudzbenica: {},
 		    }
 	},
 	template: ` 
     <div align = center style="width: 75% sm;">
 
-        <div id="mySidebar" class="sidebar">
-		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		  <table>
-			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Naziv" v-model="searchParams.naziv" /></td></tr>
-			  <tr><td style="color:white">Cena od:</td> <td><input type="number" name="startCena" v-model="searchParams.startCena" ></td></tr>
-			  <tr><td style="color:white">Cena do:</td> <td><input type="number" name="endCena" v-model="searchParams.endCena" ></td></tr>
-			  <tr><td style="color:white">Sortiraj po:</td> 
-			  		<td>
-				  		<select name="tip" id="kriterijum" v-model="searchParams.kriterijumSortiranja" >
-						  <option value="NAZIV">NAZIV</option>
-						  <option value="CENA">CENA</option>
-						  <option value="KOLICINA">KOLICINA</option>
-						</select>
-					</td></tr>
-			  <tr><td style="color:white">Sortiraj opadajuce:</td> <td><input type="checkbox" name="opadajuce" v-model="searchParams.opadajuce" ></td></tr>
-			  <tr><td colspan=2 align=center ><input type="button" name="search" value="Pretrazi preparate" v-on:click="searchProducts()" /></td></tr>
-		  </table>
-		</div>
-
     <h2 v-bind:hidden="preparati.length == 0">Preparati apoteke</h2>
-
-        <div id="main">
-		  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
-		</div>
 
     <table class="table table-hover" style="width: 50%" v-bind:hidden="preparati.length == 0" >
 	<thead>
@@ -52,7 +32,7 @@ Vue.component("preparati-apoteke", {
 		<td>{{p.preparat}}</td>
 		<td>{{p.cena}}</td>
 		<td>{{p.kolicina}}</td>
-		<td><input type="button" class="button1" value="Ukloni" v-on:click="removeProduct(p)"/></td>
+		<td><input type="button" class="button1" value="Odaberi" v-on:click="addExistingToOrder(p)"/></td>
 	</tr>
 	</tbody>
 	</table>
@@ -89,48 +69,70 @@ Vue.component("preparati-apoteke", {
 		<input type="button" class="button1" value="Posalji" v-bind:hidden="cena <= 0" v-on:click="registerProductForPharmacy(aktuelniPreparat)"/>
 	</div>
 
+    <br>
+    <br>
+
+    <h2 v-bind:hidden="preparatiNarudzbenice.length == 0">Preparati narudzbenice</h2>
+
+    <table class="table table-hover" style="width: 50%" v-bind:hidden="preparatiNarudzbenice.length == 0" >
+	<thead>
+		<tr bgcolor="#90a4ae">
+			<th>Naziv</th>
+			<th>Kolicina</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="p in preparatiNarudzbenice">
+		<td>{{p.preparat}}</td>
+		<td><input type="number" v-model="p.kolicina"/></td>
+	</tr>
+    <tr><td>Rok: </td><td><input type="date" v-model="rok" required /></td></tr>
+	</tbody>
+	</table>
+
+    <br>
+    <br>
+
+    <input type="button" class="button1" value="Posalji" v-bind:hidden="preparatiNarudzbenice.some((preparat) => preparat.kolicina <= 0) || preparatiNarudzbenice.length == 0" v-on:click="confirmOrder()"/>
+
     </div>
 
     `
     ,
     methods: {
-        searchProducts: function() {
-			axios
-				.get("api/admin/searchPharmacy/" + this.apoteka.id + "/" + this.searchParams.naziv)
-				.then(response => {
-					this.preparati = response.data;
+        confirmOrder: function() {
+            now_date = new Date();
+            comparison_date = new Date(this.rok);
+            if (comparison_date < now_date) {
+                alert("Pogresna vrednost za datum roka.");
+                return;
+            }
 
-                    var startCena = this.searchParams.startCena;
-                    var endCena = this.searchParams.endCena;
-                    this.preparati = this.preparati.filter(function(preparat){
-                        return preparat.cena >= startCena && preparat.cena <= endCena;
-                    });
+            this.narudzbenica.rok = this.rok;
+            this.narudzbenica.naruceniProizvodi = this.preparatiNarudzbenice;
+            this.narudzbenica.idAdmina = this.admin.id;
+            this.narudzbenica.status = 'CEKA_PONUDE';
 
-                    if (this.searchParams.kriterijumSortiranja == "NAZIV"){
-                        this.preparati.sort((a, b) => (a.preparat > b.preparat) ? 1 : -1);
-                    }
-                    else if (this.searchParams.kriterijumSortiranja == "CENA"){
-                        this.preparati.sort((a, b) => (a.cena > b.cena) ? 1 : -1);
-                    } 
-                    else if (this.searchParams.kriterijumSortiranja == "KOLICINA"){
-                        this.preparati.sort((a, b) => (a.kolicina > b.kolicina) ? 1 : -1);
-                    }
-
-                    if (this.searchParams.opadajuce)
-                        this.preparati = this.preparati.reverse();
-				});
-		},
-        removeProduct: function(preparat) {
             axios
-            .delete("api/admin/deleteProduct/" + preparat.id + "/" + this.apoteka.id)
+            .post("api/admin/registerOrder/" + this.admin.id, this.narudzbenica)
             .then(response => {
-                this.preparati = response.data;
+                if (response.data == "OK") {
+                    alert("Uspesna registracija narudzbenice.");
+                }
             });
+        },
+        addExistingToOrder: function(dostupanProizvod) {
+            this.preparatiNarudzbenice.push({preparat: dostupanProizvod.preparat, kolicina: 0});
+            for (var i = 0; i < this.preparati.length; i++) {
+                if (this.preparati[i].id == dostupanProizvod.id) {
+                    this.preparati.splice(i, 1);
+                    i--;
+                }
+            }
         },
         addProduct: function(preparat) {
             this.dodato = true;
             this.aktuelniPreparat = preparat;
-            alert("Unesite cenu ispod tabele.");
         },
         registerProductForPharmacy: function(product) {
             axios
@@ -159,7 +161,8 @@ Vue.component("preparati-apoteke", {
         axios
 		.get("api/users/currentUser")
 		.then(response => {
-		  axios
+            this.admin = response.data;
+		    axios
 			.get("api/apoteke/admin/" + response.data.id)
 			.then(response => {
 				this.apoteka = response.data;

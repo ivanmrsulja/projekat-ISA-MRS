@@ -14,7 +14,7 @@ Vue.component("definicija-cenovnika", {
 
     <table class="table table-hover" style="width: 50%">
     <thead>
-    <tr bgcolor="lightgrey">
+    <tr bgcolor="#90a4ae">
     <th>Preparat</th>
     <th>Cena</th>
     </tr>
