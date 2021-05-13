@@ -24,8 +24,9 @@ Vue.component("pregled-narudzbenica", {
     <br>
     <br>
 
-    <table class="table table-hover" style="width: 50%" v-bind:hidden="narudzbenice.length == 0" v-for="narudzbenica in narudzbenice" 
+    <div style="width: 50%" v-bind:hidden="narudzbenice.length == 0" v-for="narudzbenica in narudzbenice" 
     v-bind:hidden="(filtriranje == 'Obradjene' && narudzbenica.status != 'OBRADJENA') || (filtriranje == 'Cekanje' && narudzbenica.status != 'CEKA_PONUDE')">
+    <table class="table table-hover" >
     <thead>
     <tr bgcolor="#90a4ae">
     <th>Preparat</th>
@@ -42,6 +43,8 @@ Vue.component("pregled-narudzbenica", {
     <tr><td>Rok</td><td>{{narudzbenica.rok}}</td></tr>
     </tbody>
     </table>
+    <br><br><br>
+    </div>
 
     </div>
 
