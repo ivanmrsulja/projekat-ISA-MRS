@@ -7,7 +7,7 @@ Vue.component("pretraga-strucnjaka", {
 		    }
 	},
 	template: ` 
-<div align = center style="width: 75% sm;">
+	<div align = center style="width: 75% sm;">
 
         <div id="mySidebar" class="sidebar">
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

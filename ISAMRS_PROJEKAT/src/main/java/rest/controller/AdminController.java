@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,18 +29,21 @@ import rest.domain.Cena;
 import rest.domain.DostupanProizvod;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
+import rest.domain.Preparat;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.PreparatDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.AkcijaPromocijaRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
 import rest.repository.DostupanProizvodRepository;
 import rest.repository.PacijentRepository;
+import rest.repository.PreparatRepository;
 import rest.service.AdminService;
 import rest.service.AkcijaPromocijaService;
 
@@ -56,9 +61,11 @@ public class AdminController {
 	private CenaRepository cenaRepository;
 	private ApotekeRepository apotekeRepository;
 	private DostupanProizvodRepository dostupanProizvodRepository;
+	private PreparatRepository preparatRepository;
 	
 	@Autowired
-	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr, ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr) {
+	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
+			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep) {
 		this.adminService = as;
 		this.adminApotekeRepository = aar;
 		this.akcijaPromocijaRepository = apr;
@@ -68,6 +75,71 @@ public class AdminController {
 		this.cenaRepository = cr7;
 		this.apotekeRepository = ar;
 		this.dostupanProizvodRepository = dpr;
+		this.preparatRepository = prepRep;
+	}
+
+
+	@GetMapping(value = "/searchPharmacy/{id}/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<DostupanProizvodDTO> searchPharmacyProducts(@PathVariable("id") int pharmacyId, @PathVariable("name") String name){
+		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId);
+		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = new ArrayList<DostupanProizvodDTO>();
+		
+		for (DostupanProizvod dp : availablePharmacyProducts) {
+			if (dp.getPreparat().getNaziv().contains(name))
+				availablePharmacyProductsDTO.add(new DostupanProizvodDTO(dp));
+		}
+
+		return availablePharmacyProductsDTO;
+	}
+
+	@GetMapping(value = "/searchPharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<DostupanProizvodDTO> getAllProductsOfPharmacy(@PathVariable("id") int pharmacyId){
+		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId);
+		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = new ArrayList<DostupanProizvodDTO>();
+		
+		for (DostupanProizvod dp : availablePharmacyProducts) {
+			availablePharmacyProductsDTO.add(new DostupanProizvodDTO(dp));
+		}
+
+		return availablePharmacyProductsDTO;
+	}
+	
+	@GetMapping(value = "/productsOutsidePharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(@PathVariable("id") int pharmacyId){
+		Collection<Preparat> preparati = dostupanProizvodRepository.getProductsOutsidePharmacy(pharmacyId);
+		ArrayList<PreparatDTO> preparatiDTO = new ArrayList<>();
+		for (Preparat p : preparati) {
+			preparatiDTO.add(new PreparatDTO(p));
+		}
+
+		return preparatiDTO;
+	}
+
+	@PutMapping(value = "/addProductToPharmacy/{pharmacyId}/{price}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerProductForPharmacy(@RequestBody PreparatDTO preparat, @PathVariable("pharmacyId") int pharmacyId, @PathVariable("price") double price) {
+		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
+		Preparat p = preparatRepository.findById(preparat.getId()).get();
+		DostupanProizvod dp = new DostupanProizvod(0, price, p);
+		cenovnik.getDostupniProizvodi().add(dp);
+		cenaRepository.save(cenovnik);
+
+		return "OK";
+	}
+
+	@DeleteMapping(value = "/deleteProduct/{productId}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<DostupanProizvodDTO> deleteProductFromPharmacy(@PathVariable("productId") int productId, @PathVariable("pharmacyId") int pharmacyId){
+		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
+		DostupanProizvod dpToDelete = null;
+		for (DostupanProizvod dp : cenovnik.getDostupniProizvodi()) {
+			if (dp.getId().equals(productId)) {
+				dpToDelete = dp;
+			}
+		}
+		cenovnik.getDostupniProizvodi().remove(dpToDelete);
+		cenaRepository.save(cenovnik);
+		dostupanProizvodRepository.deleteById(productId);
+		
+		return getAllProductsOfPharmacy(pharmacyId);
 	}
 	
 	
@@ -96,21 +168,21 @@ public class AdminController {
 		return "OK";
 	}
 
-	@GetMapping(value="/cenovnik/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/cenovnik/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CenovnikDTO getPricelistForPharmacy(@PathVariable("id") int idApoteke) {
 		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(idApoteke);
 		CenovnikDTO cenovnikDTO = new CenovnikDTO(cenovnik);
 		return cenovnikDTO;
 	}
 
-	@GetMapping(value="/narudzbenice/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/narudzbenice/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<NarudzbenicaDTO> getOrdersForPharmacy(@PathVariable("id") int idAdmina){
 		ArrayList<NarudzbenicaDTO> narudzbenice = adminService.findOrdersForPharmacy(idAdmina);
 		
 		return narudzbenice;
 	}
 
-	@PostMapping(value="/registerCenovnik/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/registerCenovnik/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerCenovnik(@RequestBody CenovnikDTO cenovnikDTO, @PathVariable("id") int idApoteke) throws Exception{
 		Apoteka apoteka = apotekeRepository.findById(idApoteke).get();
 		Cena cenovnik = new Cena();

@@ -19,6 +19,7 @@ import rest.aspect.AsPacijent;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
 import rest.dto.CenaDTO;
+import rest.dto.DostupanProizvodDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PreparatDTO;
 import rest.service.KorisnikService;
@@ -46,7 +47,6 @@ public class PreparatController {
 		return preparati;
 	}
 	
-	
 	@GetMapping(value = "search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getSearchPreparat(@PathVariable("name") String name) {
 		Collection<Preparat> lekovi = preparatService.getAll();
@@ -58,7 +58,7 @@ public class PreparatController {
 			
 		return preparati;
 	}
-	
+
 	@GetMapping(value = "spec/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PreparatDTO getSpec(@PathVariable("id") int id){
 		return new PreparatDTO(preparatService.getOne(id));
