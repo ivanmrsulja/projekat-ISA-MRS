@@ -17,7 +17,6 @@ public class PreparatDTO {
 	private RezimIzdavanja rezim;
 	private TipLeka tip;
 	private double ocena;
-	private TipLeka tip;
 	private int poeni;
 	private double brojOcena;
 	private double sumaOcena;
@@ -60,12 +59,6 @@ public class PreparatDTO {
 		this.poeni = poeni;
 	}
 
-	public TipLeka getTip() {
-		return tip;
-	}
-	public void setTip(TipLeka tip) {
-		this.tip = tip;
-	}
 	public double getBrojOcena() {
 		return brojOcena;
 	}

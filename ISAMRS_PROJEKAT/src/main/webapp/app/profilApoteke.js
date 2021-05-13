@@ -88,9 +88,9 @@ Vue.component("profil-apoteke", {
 	</thead>
 	<tbody>
 	<tr v-for="s in dermatolozi">
-		<td>{{s.korisnik.ime}}</td>
-		<td>{{s.korisnik.prezime}}</td>
-		<td>{{s.ocena}}</td>
+		<td>{{s.ime}}</td>
+		<td>{{s.prezime}}</td>
+		<td>{{s.ocjena.toFixed(2)}}</td>
 	</tr>
 	</tbody>
 	</table>
