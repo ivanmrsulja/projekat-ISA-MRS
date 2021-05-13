@@ -23,7 +23,6 @@ public class AdminApoteke extends Korisnik {
 		super();
 		this.akcijeIPromocije = new HashSet<AkcijaPromocija>();
 		this.narudzbenice = new HashSet<Narudzbenica>();
-		this.apoteka = new Apoteka();
 	}
 	
 	public AdminApoteke(String ime, String prezime, String username, String password, String email,

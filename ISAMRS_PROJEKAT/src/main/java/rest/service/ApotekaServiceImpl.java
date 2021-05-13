@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
@@ -29,7 +28,6 @@ import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.DermatologRepository;
 import rest.repository.FarmaceutRepository;
-import rest.repository.LokacijaRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
@@ -48,14 +46,12 @@ public class ApotekaServiceImpl implements ApotekaService {
 	private FarmaceutRepository farmaceuti;
 	private PacijentRepository pacijenti;
 	private PenalRepository penali;
-	private LokacijaRepository lokacije;
 	
 	private static final int pageSize = 10;
 
 	@Autowired
-	public ApotekaServiceImpl(LokacijaRepository lr,ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
+	public ApotekaServiceImpl(ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
 		apoteke = ar;
-		lokacije = lr;
 		admin = are;
 		dermatolozi = dr;
 		this.zaposlenja = zaposlenja;
@@ -265,41 +261,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 		farmaceuti.save(f);
 		pacijenti.save(p);
 		return novi;
-	}
-
-	@Override
-	public Collection<ApotekaDTO> getAllPharmacies() {
-		// TODO Auto-generated method stub
-		Collection<Apoteka> pharms = apoteke.getAll();
-		Collection<ApotekaDTO> apos = new ArrayList<ApotekaDTO>();
-		for (Apoteka a : pharms) {
-			ApotekaDTO p = new ApotekaDTO(a);
-			apos.add(p);
-		}
-		return apos;
-	}
-
-	@Override
-	public Apoteka getByName(String name) {
-		// TODO Auto-generated method stub
-		Collection<Apoteka> pharms = apoteke.getAll();
-		for (Apoteka apoteka : pharms) {
-			System.out.println("APOTEKU " + apoteka.getNaziv() + " POREDIMO SA APOTEKOM " + name);
-			if(apoteka.getNaziv().equals(name)) {
-				System.out.println("PRONASLI SMO IDENTICNE APOTEKE");
-				return apoteka;
-			}
-		}
-		System.out.println("NISAM PRONASAODKJSAL:DJKASL:DASKLJDASKLD");
-		return null;
-	}
-
-	@Override
-	public Apoteka create(Apoteka user) throws Exception {
-		// TODO Auto-generated method stub
-		lokacije.save(user.getLokacija());
-		Apoteka savedUser = apoteke.save(user);
-		return savedUser;
 	}
 
 }
