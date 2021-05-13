@@ -24,6 +24,7 @@ import rest.domain.TipKorisnika;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
+import rest.dto.PharmacyAdminDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
 import rest.repository.AdminApotekeRepository;
@@ -88,13 +89,15 @@ public class KorisnikServiceImpl implements KorisnikService {
 	}
 	
 	@Override
-	public AdminApoteke createAdminPharm(AdminApoteke user) throws Exception {
+	public AdminApoteke createAdminPharm(PharmacyAdminDTO user) throws Exception {
 		lokacijaRepository.save(user.getLokacija());
-		AdminApoteke savedUser = korisnikRepository.save(user);
-		Apoteka a = apotekeRepository.getOne(user.getApoteka().getId());
-		a.addAdmin(savedUser);
+		Apoteka a = apotekeRepository.findById(Integer.parseInt(user.getApoteka())).get();
+		AdminApoteke k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
+		//k.setApoteka(a);
+		//korisnikRepository.save(k);
+		a.addAdmin(k);
 		apotekeRepository.save(a);
-		return savedUser;
+		return k;
 	}
 
 	@Override

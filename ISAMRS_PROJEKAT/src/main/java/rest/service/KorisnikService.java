@@ -12,6 +12,7 @@ import rest.domain.Penal;
 import rest.domain.TipKorisnika;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
+import rest.dto.PharmacyAdminDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
 
@@ -38,7 +39,7 @@ public interface KorisnikService {
 	Collection<RezervacijaDTO> rezervacijeZaKorisnika(int id);
 	PacijentDTO findPacijentById(int id);
 	TipKorisnika pocetniTip();
-	AdminApoteke createAdminPharm(AdminApoteke user) throws Exception;
+	AdminApoteke createAdminPharm(PharmacyAdminDTO user) throws Exception;
 	
 	@Async
 	void sendRegistrationMail(Pacijent p);

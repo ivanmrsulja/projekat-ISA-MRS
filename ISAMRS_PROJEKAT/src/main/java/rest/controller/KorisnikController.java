@@ -211,12 +211,12 @@ public class KorisnikController {
 	
 	@PostMapping(value = "/registerAdminPharm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerAdminPharm(@RequestBody PharmacyAdminDTO user) throws Exception {
-		Apoteka a = apotekaService.getByID(Integer.parseInt(user.getApoteka()));
-		System.out.println("PRONASLI SMO APOTEKUUUUUUUUUUUUUUUUUUUU " + a.getNaziv());
-		AdminApoteke k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
-		a.addAdmin(k);
-		k.setApoteka(a);
-		userService.createAdminPharm(k);
+//		Apoteka a = apotekaService.getByID(Integer.parseInt(user.getApoteka()));
+//		System.out.println("PRONASLI SMO APOTEKUUUUUUUUUUUUUUUUUUUU " + a.getNaziv());
+//		AdminApoteke k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
+//		a.addAdmin(k);
+//		k.setApoteka(a);
+		userService.createAdminPharm(user);
 		return "OK";
 	}
 	

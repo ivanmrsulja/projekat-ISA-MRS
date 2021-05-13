@@ -26,6 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsPacijent;
+import rest.domain.AdminApoteke;
 import rest.domain.Apoteka;
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
@@ -100,7 +101,10 @@ public class ApotekaController {
 	
 	@GetMapping(value="admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOneForAdmin(@PathVariable int id) {
-		return new ApotekaDTO(this.apotekaService.getForAdmin(id));
+		System.out.println(id + " DDASDSAJIODSAHJDJSAKLDHSJADJKSADHASJKDHASDHSAKJHDSAKJHDSJKHDJKASHDSAKJDHSJKDSHDASKJDJASHDASKJDHS");
+		AdminApoteke a = (AdminApoteke) userService.findOne(id);
+		System.out.println(a.getUsername() + " DDASDSAJIODSAHJDJSAKLDHSJADJKSADHASJKDHASDHSAKJHDSAKJHDSJKHDJKASHDSAKJDHSJKDSHDASKJDJASHDASKJDHS");
+		return new ApotekaDTO(this.apotekaService.getForAdmin(a.getApoteka().getId()));
 	}
 	
 	@AsPacijent
