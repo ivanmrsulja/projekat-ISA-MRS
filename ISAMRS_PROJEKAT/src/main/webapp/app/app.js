@@ -23,10 +23,16 @@ const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
 const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
 const promenaSifre = { template: '<promena-sifre></promena-sifre>'};
-
 const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
 const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
-
+const ProfilAdminaApoteke = { template: '<profil-admina-apoteke></profil-admina-apoteke>'};
+const PretragaStrucnjaka = { template: '<pretraga-strucnjaka></pretraga-strucnjaka>'};
+const PregledZahtevaFarmaceuta = { template: '<pregled-zahteva-farmaceuta></pregled-zahteva-farmaceuta>'};
+const DefinicijaAkcijePromocije = { template: '<definicija-akcije-promocije></definicija-akcije-promocije>'};
+const DefinicijaCenovnika = { template: '<definicija-cenovnika></definicija-cenovnika>'};
+const PregledNarudzbenica = { template: '<pregled-narudzbenica></pregled-narudzbenica>'};
+const PreparatiApoteke = { template: '<preparati-apoteke></preparati-apoteke>'};
+const PisanjeNarudzbenice = { template: '<pisanje-narudzbenice></pisanje-narudzbenice>'};
 const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>'};
 const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>'};
 const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
@@ -72,8 +78,14 @@ const router = new VueRouter({
 	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
 	    { path: '/registracijaAdminaSistema', component: registracijaAdminaSistema },
 	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },
-
-	    
+        { path: '/profilAdminaApoteke', component: ProfilAdminaApoteke },
+        { path: '/pretragaStrucnjaka', component: PretragaStrucnjaka },
+        { path: '/pregledZahtevaFarmaceuta', component: PregledZahtevaFarmaceuta },
+        { path: '/definicijaAkcijePromocije', component: DefinicijaAkcijePromocije },
+        { path: '/definicijaCenovnika', component: DefinicijaCenovnika },
+        { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
+        { path: '/preparatiApoteke', component: PreparatiApoteke},
+        { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice},
 	  ]
 	});
 

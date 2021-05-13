@@ -2,17 +2,23 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.Apoteka;
 import rest.domain.Pacijent;
 import rest.dto.PacijentDTO;
+import rest.repository.ApotekeRepository;
+import rest.repository.PacijentRepository;
 import rest.service.KorisnikService;
 import rest.service.PacijentService;
 
@@ -22,11 +28,15 @@ public class PacijentController {
 	
 	private KorisnikService korisnikService;
 	private PacijentService pacijentService;
+	private PacijentRepository pacijentRepository;
+	private ApotekeRepository apotekeRepository;
 	
 	@Autowired
-	public PacijentController(KorisnikService ks, PacijentService er) {
+	public PacijentController(KorisnikService ks, PacijentService er, PacijentRepository pr, ApotekeRepository ar) {
 		this.korisnikService = ks;
 		this.pacijentService = er;
+		this.pacijentRepository = pr;
+		this.apotekeRepository = ar;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,5 +69,16 @@ public class PacijentController {
 		}
 		
 		return ret;
+	}
+
+	@PutMapping(value="updateApoteke/{idPacijent}/{idApoteka}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updatePacijentApoteke(@PathVariable("idPacijent") int idPacijenta, @PathVariable("idApoteka") int idApoteke) {
+		Pacijent pacijent = pacijentRepository.getPatientWithPharmacies(idPacijenta);
+		Apoteka apoteka = apotekeRepository.findById(idApoteke).get();
+		Set<Apoteka> apoteke = pacijent.getApoteke();
+		apoteke.add(apoteka);
+		pacijent.setApoteke(apoteke);
+		pacijentRepository.save(pacijent);
+		return "OK";
 	}
 }

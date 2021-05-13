@@ -6,7 +6,7 @@ import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
 import rest.dto.KorisnikDTO;
 
-public class FarmaceutDTO extends KorisnikDTO{
+public class FarmaceutDTO extends KorisnikDTO implements Comparable<FarmaceutDTO>{
 
 	private int brojOcena;
 	private int sumaOcena;
@@ -14,15 +14,28 @@ public class FarmaceutDTO extends KorisnikDTO{
 	private LocalTime pocetakRadnogVremena;
 	private LocalTime krajRadnogVremena;
 	private int apoteka;
+	private String nazivApoteke;
+	private String kriterijum;
 	
 	public FarmaceutDTO() {
 		super();
+		kriterijum = "IME";
 	}
 	
 	public FarmaceutDTO(Farmaceut farmaceut) {
 		super(farmaceut);
 		ocena = farmaceut.getOcena();
 		apoteka = farmaceut.getZaposlenje().getApoteka().getId();
+		nazivApoteke = farmaceut.getZaposlenje().getApoteka().getNaziv();
+		kriterijum = "IME";
+	}
+
+	public FarmaceutDTO(Farmaceut farmaceut, String kriterijum) {
+		super(farmaceut);
+		ocena = farmaceut.getOcena();
+		apoteka = farmaceut.getZaposlenje().getApoteka().getId();
+		nazivApoteke = farmaceut.getZaposlenje().getApoteka().getNaziv();
+		this.kriterijum = kriterijum;
 	}
 	
 	public int getBrojOcena() {
@@ -49,6 +62,14 @@ public class FarmaceutDTO extends KorisnikDTO{
 		this.ocena = ocena;
 	}
 
+	public String getNazivApoteke() {
+		return nazivApoteke;
+	}
+
+	public void setNazivApoteke(String nazivApoteke) {
+		this.nazivApoteke = nazivApoteke;
+	}
+
 	public LocalTime getPocetakRadnogVremena() {
 		return pocetakRadnogVremena;
 	}
@@ -68,9 +89,27 @@ public class FarmaceutDTO extends KorisnikDTO{
 	public int getApoteka() {
 		return apoteka;
 	}
-
+	
 	public void setApoteka(int apoteka) {
 		this.apoteka = apoteka;
+	}
+
+	public String getKriterijum() {
+		return kriterijum;
+	}
+
+	public void setKriterijum(String kriterijum) {
+		this.kriterijum = kriterijum;
+	}
+
+	@Override
+	public int compareTo(FarmaceutDTO f) {
+		if (this.kriterijum.equals("IME"))
+			return this.getIme().compareTo(f.getIme());
+		else if (this.kriterijum.equals("PREZIME"))
+			return this.getPrezime().compareTo(f.getPrezime());
+		else
+			return Double.toString(this.getOcena()).compareTo(Double.toString(f.getOcena()));
 	}
 
 }

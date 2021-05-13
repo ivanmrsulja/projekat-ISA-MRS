@@ -23,4 +23,10 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 	
 	@Query("select size(pen) from Pacijent p join p.penali pen where p.id = ?1")
 	int getNumOfPenalities(int id);
+
+	@Query("select p from Pacijent p join fetch p.apoteke where p.id = ?1")
+	Pacijent getPatientWithPharmacies(int idPacijenta);
+
+	@Query("select p from Pacijent p join p.apoteke ap where ?1 in ap.id")
+	Collection<Pacijent> getPatientsSubscribedToPharmacy(int idApoteke);
 }

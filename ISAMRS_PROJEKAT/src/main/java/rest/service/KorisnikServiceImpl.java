@@ -14,15 +14,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import rest.domain.AdminApoteke;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Rezervacija;
 import rest.domain.TipKorisnika;
+import rest.dto.AdminApotekeDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
+import rest.repository.AdminApotekeRepository;
 import rest.repository.KorisnikRepository;
 import rest.repository.LokacijaRepository;
 import rest.repository.PacijentRepository;
@@ -37,6 +40,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	private static final int defaultPageSize = 10;
 	private KorisnikRepository korisnikRepository;
+	private AdminApotekeRepository adminApotekeRepository;
 	private PacijentRepository pacijentRepository;
 	private PenalRepository penalRepository;
 	private PregledRepository pregledRepository;
@@ -48,8 +52,9 @@ public class KorisnikServiceImpl implements KorisnikService {
 	
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
+	public KorisnikServiceImpl(KorisnikRepository imkr, AdminApotekeRepository aar,PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
 		this.korisnikRepository = imkr;
+		this.adminApotekeRepository = aar;
 		this.penalRepository = pr;
 		this.rezervacijeRepository = rr;
 		this.pregledRepository = prer;
@@ -173,6 +178,12 @@ public class KorisnikServiceImpl implements KorisnikService {
 	public PacijentDTO findPacijentById(int id) {
 		Pacijent p = pacijentRepository.findById(id).get();
 		return new PacijentDTO(p);
+	}
+
+	@Override
+	public AdminApotekeDTO findAdminApotekeById(int id) {
+		AdminApoteke a = adminApotekeRepository.findById(id).get();
+		return new AdminApotekeDTO(a);
 	}
 
 	@Override

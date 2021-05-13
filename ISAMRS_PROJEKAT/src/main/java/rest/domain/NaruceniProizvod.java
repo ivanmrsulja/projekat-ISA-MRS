@@ -18,7 +18,7 @@ public class NaruceniProizvod {
 	private Integer id;
 	@Column(name = "kolicina", nullable = false)
 	private int kolicina;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
 	private Preparat preparat;
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -2,6 +2,7 @@ Vue.component("pregled-apoteke", {
 	data: function () {
 		    return {
 				apoteka : {
+					id: 0,
 					naziv: "",
                     lokacija: {ulica: ""},
                     opis: "",
@@ -20,6 +21,7 @@ Vue.component("pregled-apoteke", {
 <div align = center style="width:75% sm">
 		
 		<h1>Pregled apoteke</h1>
+		<input type="button" class="button1" value="Pretplati se" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'" v-on:click="pretplatiSe()">
 		<br/>
         <table>
             <tr><td><h2>Naziv: </h2></td><td><h2>{{apoteka.naziv}}</h2></td></tr>
@@ -146,6 +148,15 @@ Vue.component("pregled-apoteke", {
 `
     ,
     methods: {
+		pretplatiSe : function() {
+			axios
+			.put("api/pacijenti/updateApoteke/" + this.korisnik.id + "/" + this.apoteka.id)
+			.then(response => {
+				if (response.data == "OK"){
+					alert("Uspesno ste se pretplatili na akcije i promocije apoteke.");
+				}
+			})
+		},
     	SetRatingStar: function(){
     		let self = this;
     		var $star_rating = $('.star-rating .fa');

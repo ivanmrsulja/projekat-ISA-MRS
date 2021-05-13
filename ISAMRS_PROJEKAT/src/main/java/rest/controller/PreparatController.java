@@ -27,6 +27,7 @@ import rest.domain.StatusNaloga;
 import rest.domain.TipLeka;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.CenaDTO;
+import rest.dto.DostupanProizvodDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PreparatDTO;
 import rest.service.KorisnikService;
@@ -99,6 +100,7 @@ public class PreparatController {
 		System.out.println(name+type+lowerBound+higherBound);
 		return preparati;
 	}
+
 	@GetMapping(value = "spec/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PreparatDTO getSpec(@PathVariable("id") int id){
 		return new PreparatDTO(preparatService.getOne(id));

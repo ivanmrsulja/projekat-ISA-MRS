@@ -31,7 +31,7 @@ public class Cena {
 		this.dostupniProizvodi = new HashSet<DostupanProizvod>();
 	}
 
-	public Cena( Apoteka apoteka, LocalDate pocetakVazenja) {
+	public Cena(Apoteka apoteka, LocalDate pocetakVazenja) {
 		this();
 		this.apoteka = apoteka;
 		this.pocetakVazenja = pocetakVazenja;
