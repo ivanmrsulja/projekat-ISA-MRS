@@ -9,11 +9,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.stereotype.Repository;
 
 import rest.domain.Farmaceut;
 import rest.domain.Pregled;
 
 
+@Repository
 public interface FarmaceutRepository extends JpaRepository<Farmaceut, Integer>{
 	
 	@Query("select f from Farmaceut f where f.zaposlenje.apoteka.id = ?1")

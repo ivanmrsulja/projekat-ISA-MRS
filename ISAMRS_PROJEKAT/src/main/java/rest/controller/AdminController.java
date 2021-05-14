@@ -38,6 +38,7 @@ import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
 import rest.domain.StatusNarudzbenice;
+import rest.domain.StatusPonude;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
@@ -53,6 +54,7 @@ import rest.repository.CenaRepository;
 import rest.repository.DostupanProizvodRepository;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PacijentRepository;
+import rest.repository.PonudaRepository;
 import rest.repository.PreparatRepository;
 import rest.service.AdminService;
 import rest.service.AkcijaPromocijaService;
@@ -73,10 +75,12 @@ public class AdminController {
 	private DostupanProizvodRepository dostupanProizvodRepository;
 	private PreparatRepository preparatRepository;
 	private NarudzbenicaRepozitory narudzbenicaRepository;
+	private PonudaRepository ponudaRepository;
 	
 	@Autowired
 	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
-			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep, NarudzbenicaRepozitory nr) {
+			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep, NarudzbenicaRepozitory nr,
+			PonudaRepository pRepo) {
 		this.adminService = as;
 		this.adminApotekeRepository = aar;
 		this.akcijaPromocijaRepository = apr;
@@ -88,6 +92,7 @@ public class AdminController {
 		this.dostupanProizvodRepository = dpr;
 		this.preparatRepository = prepRep;
 		this.narudzbenicaRepository = nr;
+		this.ponudaRepository = pRepo;
 	}
 
 
@@ -163,6 +168,27 @@ public class AdminController {
 		return "OK";
 	}
 
+	@PutMapping(value = "/updateOrderStatus/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateOrderStatus(@PathVariable("orderId") int orderId) {
+		Narudzbenica n = narudzbenicaRepository.findById(orderId).get();
+		n.setStatus(StatusNarudzbenice.OBRADJENA);
+		narudzbenicaRepository.save(n);
+
+		return "OK";
+	}
+
+	@PutMapping(value = "/updateOffersStatus/{orderId}/{offerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateOffersStatus(@RequestBody Collection<PonudaDTO> offers, @PathVariable("orderId") int orderId, @PathVariable("offerId") int offerId) {
+		ponudaRepository.updateOffersStatus(orderId);
+		Ponuda p = ponudaRepository.findById(offerId).get();
+		p.setStatus(StatusPonude.PRIHVACENA);
+		ponudaRepository.save(p);
+
+		adminService.notifySuppliersViaEmail(offers);
+
+		return "OK";
+	}
+
 	@DeleteMapping(value = "/deleteProduct/{productId}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<DostupanProizvodDTO> deleteProductFromPharmacy(@PathVariable("productId") int productId, @PathVariable("pharmacyId") int pharmacyId){
 		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
@@ -177,6 +203,18 @@ public class AdminController {
 		dostupanProizvodRepository.deleteById(productId);
 		
 		return getAllProductsOfPharmacy(pharmacyId);
+	}
+	
+	@DeleteMapping(value = "/deleteOrder/{orderId}/{adminId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteOrder(@PathVariable("orderId") int orderId, @PathVariable("adminId") int adminId) {
+		int numberOfOffers = ponudaRepository.getNumberOfOffersForOrder(orderId);
+		if (numberOfOffers != 0) {
+			return "ERR";
+		}
+
+		narudzbenicaRepository.deleteById(orderId);
+		
+		return "OK";
 	}
 	
 	@GetMapping(value = "cures/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -194,7 +232,25 @@ public class AdminController {
 		}
 		return new ResponseEntity<Collection<PonudaDTO>>(ponude, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/getOrder/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public NarudzbenicaDTO getOrderById(@PathVariable("orderId") int orderId) {
+		Narudzbenica narudzbenica = narudzbenicaRepository.getOrderById(orderId);
+		NarudzbenicaDTO narudzbenicaDTO = new NarudzbenicaDTO(narudzbenica);
+
+		return narudzbenicaDTO;
+	}
 	
+	@GetMapping(value = "/orderOffers/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PonudaDTO> getOffersForPharmacy(@PathVariable("orderId") int orderId) {
+		Collection<Ponuda> offers = ponudaRepository.getOffersForOrder(orderId);
+		ArrayList<PonudaDTO> offersDTO = new ArrayList<PonudaDTO>();
+		for (Ponuda p : offers) {
+			offersDTO.add(new PonudaDTO(p));
+		}
+
+		return offersDTO;
+	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PonudaDTO>> getOffers(HttpServletRequest request) {
@@ -227,8 +283,22 @@ public class AdminController {
 	@GetMapping(value = "/cenovnik/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CenovnikDTO getPricelistForPharmacy(@PathVariable("id") int idApoteke) {
 		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(idApoteke);
+		if (cenovnik == null) {
+			cenovnik = new Cena();
+			Apoteka apoteka = apotekeRepository.findById(idApoteke).get();
+			cenovnik.setApoteka(apoteka);
+			cenovnik.setPocetakVazenja(LocalDate.now());
+			cenaRepository.save(cenovnik);
+		}
 		CenovnikDTO cenovnikDTO = new CenovnikDTO(cenovnik);
 		return cenovnikDTO;
+	}
+
+	@PutMapping(value = "/updateStocks/{orderId}/{adminId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateStocksForOrder(@PathVariable("orderId") int orderId, @PathVariable("adminId") int adminId) {
+		adminService.updateStocks(orderId, adminId);
+
+		return "OK";
 	}
 
 	@GetMapping(value = "/narudzbenice/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
@@ -240,27 +310,7 @@ public class AdminController {
 
 	@PostMapping(value = "/registerCenovnik/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerCenovnik(@RequestBody CenovnikDTO cenovnikDTO, @PathVariable("id") int idApoteke) throws Exception{
-		Apoteka apoteka = apotekeRepository.findById(idApoteke).get();
-		Cena cenovnik = new Cena();
-		cenovnik.setApoteka(apoteka);
-		Collection<DostupanProizvod> dostupniProizvodi = cenaRepository.getDostupniProizvodiZaApoteku(idApoteke);
-		for (DostupanProizvod dp : dostupniProizvodi) {
-			for (DostupanProizvodDTO dpDTO : cenovnikDTO.getDostupniProizvodi()) {
-				if (dp.getId().equals(dpDTO.getId())) {
-					dp.setCena(dpDTO.getCena());
-					dp.setId(null);
-					this.dostupanProizvodRepository.save(dp);
-					break;
-				}
-			}
-		}
-		Set<DostupanProizvod> proizvodi = new HashSet<DostupanProizvod>();
-		for (DostupanProizvod dp : dostupniProizvodi) {
-			proizvodi.add(dp);
-		}
-		cenovnik.setDostupniProizvodi(proizvodi);
-		cenovnik.setPocetakVazenja(cenovnikDTO.getPocetakVazenja());
-		cenaRepository.save(cenovnik);
+		adminService.registerPricelist(cenovnikDTO, idApoteke);
 
 		return "OK";
 	}

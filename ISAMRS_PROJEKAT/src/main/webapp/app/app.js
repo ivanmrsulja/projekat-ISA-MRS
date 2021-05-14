@@ -39,6 +39,7 @@ const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
 const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
 const dodajLek = { template: '<add-cure></add-cure>'};
 const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>'};
+const OdabirPonude = { template: '<odabir-ponude></odabir-ponude>'};
 
 
 
@@ -83,9 +84,10 @@ const router = new VueRouter({
         { path: '/pregledZahtevaFarmaceuta', component: PregledZahtevaFarmaceuta },
         { path: '/definicijaAkcijePromocije', component: DefinicijaAkcijePromocije },
         { path: '/definicijaCenovnika', component: DefinicijaCenovnika },
-        { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
+        { path: '/pregledNarudzbenica', component: PregledNarudzbenica, name: "PregledNarudzbenica" },
         { path: '/preparatiApoteke', component: PreparatiApoteke},
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice},
+        { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
 	  ]
 	});
 

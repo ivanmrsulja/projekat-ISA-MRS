@@ -168,7 +168,7 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		
 		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
-		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-08-08"), adma2, StatusNarudzbenice.CEKA_PONUDE);
+		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-04"), adma2, StatusNarudzbenice.CEKA_PONUDE);
 		Set<NaruceniProizvod> naruceniProizvodi1 = new HashSet<NaruceniProizvod>();
 		NaruceniProizvod np1 = new NaruceniProizvod(8, pr1, n);
 		NaruceniProizvod np2 = new NaruceniProizvod(10, pr2, n);
