@@ -3,6 +3,7 @@ package rest.service;
 import java.util.Collection;
 
 import rest.domain.Pacijent;
+import rest.domain.Penal;
 import rest.dto.PreparatDTO;
 
 public interface PacijentService {
@@ -20,5 +21,7 @@ public interface PacijentService {
 	void removeAllPenalities();
 
 	Pacijent getOne(int id);
+	
+	void addPenal(int id, Penal p);
 
 }

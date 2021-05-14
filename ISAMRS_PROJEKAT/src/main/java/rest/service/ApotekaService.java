@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 
 import rest.domain.Apoteka;
 import rest.domain.Farmaceut;
+import rest.domain.Korisnik;
 import rest.domain.Pregled;
 import rest.dto.ApotekaDTO;
 import rest.dto.PregledDTO;
@@ -16,8 +17,14 @@ import rest.util.ApotekaSearchParams;
 public interface ApotekaService {
 
 	Page<ApotekaDTO> getAllDrugStores(int stranica, ApotekaSearchParams params, double lat, double lon);
+	
+	Collection<ApotekaDTO> getAllPharmacies();
+	
+	Apoteka create(Apoteka user) throws Exception;
 
 	Apoteka getByID(int id);
+	
+	Apoteka getByName(String name);
 
 	void update(ApotekaDTO apoteka) throws Exception;
 	

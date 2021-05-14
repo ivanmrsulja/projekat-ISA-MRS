@@ -61,11 +61,12 @@
 
 <a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Moje ponude</a>
 <a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
-<a class="navigacija" href="#/pregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Lista Pregleda</a>
+<a class="navigacija" href="#/pregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Radni Kalendar</a>
 <a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
 <a class="navigacija" href="#/savetovanja" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Lista Savetovanja</a>
 <a class="navigacija" href="#/updateSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Azuriranje podataka</a>
 <a class="navigacija" href="#/pacijenti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Pacijenti</a>
+<a class="navigacija" href="#/godisnji" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Odmor/Odsustvo</a>
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>
 <br/>
@@ -117,6 +118,7 @@
 <script src="app/pregledPojedinacnogPreparata.js"></script>
 <script src="app/akcijePromocijePregled.js"></script>
 <script src="app/registracijaFarmaceuta.js"></script>
+<script src="app/registracijaApoteka.js"></script>
 <script src="app/registracijaDobavljaca.js"></script>
 <script src="app/registracijaDermatologa.js"></script>
 <script src="app/pacijentTable.js"></script>
@@ -130,6 +132,7 @@
 <script src="app/radniKalendarFarmaceut.js"></script>
 <script src="app/dodajLek.js"></script>
 <script src="app/registracijaAdminaSistema.js"></script>
+<script src="app/registracijaAdminaApoteke.js"></script>
 <script src="app/updateSupp.js"></script>
 <script src="app/profilAdminaApoteke.js"></script>
 <script src="app/pretragaStrucnjaka.js"></script>
@@ -140,6 +143,7 @@
 <script src="app/preparatiApoteke.js"></script>
 <script src="app/pisanjeNarudzbenice.js"></script>
 <script src="app/odabirPonude.js"></script>
+<script src="app/godisnjiOdmor.js"></script>
 
 <script src="app/app.js"></script>
 </body>

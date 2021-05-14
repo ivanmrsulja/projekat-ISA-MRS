@@ -16,7 +16,7 @@ methods: {
 	zavrsiPregled : function(){
 		
 		let text = $("input[name=textArea]").val();
-		let noviPregled = {izvjestaj: text, StatusPregleda:  StatusPregleda.ZAVRSEN, TipPregleda: TipPregleda.PREGLED, LocalDate : LocalDate.parse("2020-04-07"), LocalTime: LocalTime.parse("09:00"), trajanje: 45, cijena: 5000, zaposleni:d1 ,spec , a1};
+		let noviPregled = {izvjestaj: text, StatusPregleda: "ZAVRSEN", TipPregleda: "PREGLED", LocalDate : "2020-04-07", LocalTime:"09:00", trajanje: 45, cijena: 5000, zaposleni:"" ,pacijent:this.pacijent ,apoteka:""};
 		
 		axios.post("/api/dermatolog/zavrsi/"+this.pregled.id).then(data => {
 			if(data.data == "OK") {
@@ -36,6 +36,14 @@ methods: {
 	
 	otkaziPregled : function(r){
 		this.$router.push({ path: "/pacijenti" });
+	},
+	
+	nijeDosao : function(){
+		var p={datum:this.pregled.datum,pacijent:this.pacijent};
+		axios
+		.put("api/pacijenti/penal/"+this.pacijent.korisnik.id, p)
+		.then(response => alert('Pacijentu ' + this.pacijent.korisnik.ime + " " + this.pacijent.korisnik.prezime + " uspešno dodan penal."));
+		
 	},
 },
 	template: ` 
@@ -80,6 +88,7 @@ methods: {
 		</th>
 	</thead>
 	</table>
+	<input type="button" class="button1" v-on:click="nijeDosao()" value="Nije Dosao" />
 	<input type="button" class="button1" v-on:click="otkaziPregled(this.spec)" value="Otkazi" />
 	<input type="button" class="button1" v-on:click="zavrsiPregled" value="Zavrsi" />
 	
