@@ -10,12 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Apoteka;
 import rest.domain.Pacijent;
+import rest.domain.Penal;
 import rest.dto.PacijentDTO;
 import rest.repository.ApotekeRepository;
 import rest.repository.PacijentRepository;
@@ -70,7 +73,6 @@ public class PacijentController {
 		
 		return ret;
 	}
-
 	@PutMapping(value="updateApoteke/{idPacijent}/{idApoteka}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updatePacijentApoteke(@PathVariable("idPacijent") int idPacijenta, @PathVariable("idApoteka") int idApoteke) {
 		Pacijent pacijent = pacijentRepository.getPatientWithPharmacies(idPacijenta);
@@ -80,5 +82,10 @@ public class PacijentController {
 		pacijent.setApoteke(apoteke);
 		pacijentRepository.save(pacijent);
 		return "OK";
+	}
+	
+	@PutMapping(value = "penal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void addPenal(@PathVariable("id") int id,@RequestBody Penal p){
+		pacijentService.addPenal(id, p);
 	}
 }

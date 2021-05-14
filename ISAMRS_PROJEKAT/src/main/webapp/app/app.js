@@ -19,6 +19,7 @@ const RegistracijaFarmaceuta = { template: '<register-pharmacist></register-phar
 const registracijaDobavljaca = { template: '<register-supplier></register-supplier>' };
 const updateDobavljaca = { template: '<update-supplier></update-supplier>' };
 const registracijaDermatologa = { template: '<register-dermatolog></register-dermatolog>' };
+
 const StranicaZalbe = { template: '<pisanje-zalbe></pisanje-zalbe>' };
 const pacijentTable = { template: '<profil-pacijenti></profil-pacijenti>' };
 const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>' };
@@ -41,6 +42,7 @@ const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-ka
 const dodajLek = { template: '<add-cure></add-cure>' };
 const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>' };
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
+const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
 
 
 
@@ -70,6 +72,7 @@ const router = new VueRouter({
         { path: '/regSupp', component: registracijaDobavljaca },
         { path: '/regAdminPharm', component: registracijaAdminaApoteke },
         { path: '/regDerm', component: registracijaDermatologa },
+
         { path: '/updateSupp', component: updateDobavljaca },
         { path: '/pacijenti', component: pacijentTable },
         { path: '/pacijenti/:spec', component: PregledPacijenta },
@@ -90,8 +93,21 @@ const router = new VueRouter({
         { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
         { path: '/preparatiApoteke', component: PreparatiApoteke },
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
-    ]
-});
+        
+	    { path: '/pacijenti', component: pacijentTable},
+	    { path: '/pacijenti/:spec', component: PregledPacijenta },
+
+	    { path: '/zalbe', component: StranicaZalbe },
+	    { path: '/zakaziSavetovanje/:page/', component: ZakazivanjeSavetovanja },
+	    { path: '/zakaziSavetovanje/:page/:apoteka', component: ZakazivanjeSavetovanjaKorak2 },
+
+	    { path: '/pacijenti/zapocniPregled/:spec', component: ZapocniPregled },
+	    { path: '/pacijenti/zapocniNoviPregled/:spec', component: ZapocniNoviPregled },
+	    { path: '/godisnji', component: GodisnjiOdmor},
+
+	    
+	  ]
+	});
 
 
 

@@ -10,11 +10,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rest.domain.Korisnik;
 import rest.domain.StatusZahtjeva;
 import rest.domain.Zahtjev;
-import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.ZahtevDTO;
+import rest.repository.KorisnikRepository;
 import rest.repository.ZahtevRepository;
 
 @Service
@@ -24,12 +25,14 @@ public class ZahtevServiceImpl implements ZahtevService {
 	private ZahtevRepository zahtevRepository;
 	private Environment env;
 	private JavaMailSender javaMailSender;
+	private KorisnikRepository korisnikRepo;
 	
 	@Autowired
-	public ZahtevServiceImpl (ZahtevRepository zr, Environment env, JavaMailSender jms) {
+	public ZahtevServiceImpl (ZahtevRepository zr, Environment env, JavaMailSender jms,KorisnikRepository kr) {
 		this.zahtevRepository = zr;
 		this.env = env;
 		this.javaMailSender = jms;
+		this.korisnikRepo=kr;
 	}
 
 	@Override
@@ -74,4 +77,10 @@ public class ZahtevServiceImpl implements ZahtevService {
         javaMailSender.send(mail);
 	}
 
+	@Override
+	public void addZahtjev(Zahtjev p,int id) {
+		Korisnik k=korisnikRepo.getOne(id);
+		Zahtjev pp= new Zahtjev(p.getTip(),StatusZahtjeva.CEKANJE,k);		
+		zahtevRepository.save(pp);
+	}
 }

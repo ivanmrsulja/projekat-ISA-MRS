@@ -144,4 +144,14 @@ public class PacijentServiceImpl implements PacijentService {
 		}
 	}
 	
+	
+	@Override
+	public void addPenal(int id, Penal p) {
+		Penal pp= new Penal(p.getDatum(),p.getPacijent());
+		Pacijent pacijent = pacijentRepository.findById(id).get();
+		pacijent.addPenal(pp);
+		penaliRepository.save(pp);
+		pacijentRepository.save(pacijent);
+	}
+	
 }
