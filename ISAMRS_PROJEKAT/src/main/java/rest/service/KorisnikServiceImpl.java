@@ -49,7 +49,6 @@ public class KorisnikServiceImpl implements KorisnikService {
 	private PenalRepository penalRepository;
 	private PregledRepository pregledRepository;
 	private RezervacijaRepository rezervacijeRepository;
-	private AdminApotekeRepository adminApotekeRepository;
 	private LokacijaRepository lokacijaRepository;
 	private TipKorisnikaRepository tipRepo;
 	private Environment env;
