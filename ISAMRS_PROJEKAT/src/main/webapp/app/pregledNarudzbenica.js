@@ -65,7 +65,7 @@ Vue.component("pregled-narudzbenica", {
                 if (response.data == "OK") {
                     alert("Uspesno brisanje narudzbine.");
                 } else {
-                    alert("Nemoguce obrisati narudzbenicu jer vec postoje ponude za istu.");
+                    alert("Nemoguce obrisati narudzbenicu jer vec postoje ponude ili niste kreirali istu.");
                 }
                 axios
                 .get("api/admin/narudzbenice/" + this.admin.id)
