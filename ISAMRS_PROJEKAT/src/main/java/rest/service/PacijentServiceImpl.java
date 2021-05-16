@@ -14,7 +14,9 @@ import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Pregled;
 import rest.domain.Preparat;
+import rest.domain.Zalba;
 import rest.dto.PreparatDTO;
+import rest.dto.ZalbaDTO;
 import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
@@ -152,6 +154,34 @@ public class PacijentServiceImpl implements PacijentService {
 		pacijent.addPenal(pp);
 		penaliRepository.save(pp);
 		pacijentRepository.save(pacijent);
+	}
+
+
+	@Override
+	public Collection<ZalbaDTO> getZalbeForPatient(int id) {
+		// TODO Auto-generated method stub
+		Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
+		Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+		for (Zalba z : zalbe) {
+			ZalbaDTO zt = new ZalbaDTO(z);
+			zdto.add(zt);
+		}
+		return zdto;
+	}
+
+
+	@Override
+	public ZalbaDTO getZalbaForPatient(int id, int zalId) {
+		// TODO Auto-generated method stub
+		Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
+		Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+		for (Zalba z : zalbe) {
+			if(z.getId().equals(zalId)) {
+				ZalbaDTO zald = new ZalbaDTO(z);
+				return zald;
+			}
+		}
+		return null;
 	}
 	
 }
