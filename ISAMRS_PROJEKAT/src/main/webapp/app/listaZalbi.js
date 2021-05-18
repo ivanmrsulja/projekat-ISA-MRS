@@ -26,7 +26,7 @@ Vue.component("lista-zalbi", {
             <tbody>
                 <tr v-for="z in zalbe" v-bind:key="z.id">
                                 <td>{{z.nazivKorisnika}}</td>
-                                <td>{{z.tekst.substring(0,6)}}...</td>
+                                <td>{{z.tekst.substring(0,35)}}...</td>
                                 <td>{{z.nazivAdmina}}</td>
                                 <td><a :href="'#/jednaZalba/'+z.id" class="btn btn-primary">Detaljnije</a></td>
             	</tr>           

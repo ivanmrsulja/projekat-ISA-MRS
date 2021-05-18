@@ -85,7 +85,14 @@ public class KorisnikController {
 	@GetMapping(value= "/getZalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<ZalbaDTO>> getZalbe(@PathVariable("id") int id) {
 		Collection<ZalbaDTO> users = pacijentService.getZalbeForPatient(id);
+		pacijentService.getAllAppealable(id);
 		return new ResponseEntity<Collection<ZalbaDTO>>(users, HttpStatus.OK);
+	}
+	
+	@GetMapping(value= "/getZaljivo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<String>> getZaljivo(@PathVariable("id") int id) {
+		Collection<String> users = pacijentService.getAllAppealable(id);
+		return new ResponseEntity<Collection<String>>(users, HttpStatus.OK);
 	}
 	
 	@GetMapping(value= "/getZalbe/{id}/{zalId}", produces = MediaType.APPLICATION_JSON_VALUE)

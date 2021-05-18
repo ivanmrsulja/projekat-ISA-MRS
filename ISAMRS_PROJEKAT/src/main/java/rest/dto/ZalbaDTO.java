@@ -7,6 +7,7 @@ public class ZalbaDTO {
 	private String tekst;
 	private String nazivKorisnika;
 	private String nazivAdmina;
+	private boolean answered;
 	public int getId() {
 		return id;
 	}
@@ -32,6 +33,14 @@ public class ZalbaDTO {
 	public void setTekst(String tekst) {
 		this.tekst = tekst;
 	}
+	
+	
+	public boolean isAnswered() {
+		return answered;
+	}
+	public void setAnswered(boolean answered) {
+		this.answered = answered;
+	}
 	public ZalbaDTO() {
 	}
 	
@@ -44,6 +53,7 @@ public class ZalbaDTO {
 		}
 		this.nazivKorisnika = z.getPacijent().getUsername();
 		this.tekst = z.getText();
+		this.answered = z.isAnswered();
 	}
 	
 	

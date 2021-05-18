@@ -12,6 +12,7 @@ Vue.component("jedna-zalba", {
 
 		<h1> Pacijent: {{zalbe.nazivKorisnika}}</h1>
 		<h1> Admin (Ukoliko je odgovor na zalbu): {{zalbe.nazivAdmina}}</h1>
+		<h1 v-if="zalbe.answered">Admin je odgovorio na ovu zalbu</h1>
 		<br>
 		<br>
 		<h1>Tekst zalbe</h1>
