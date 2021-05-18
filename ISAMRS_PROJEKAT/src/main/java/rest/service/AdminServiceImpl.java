@@ -24,6 +24,7 @@ import rest.domain.Ponuda;
 import rest.domain.Preparat;
 import rest.domain.StatusPonude;
 import rest.domain.TeloAkcijePromocije;
+import rest.domain.Zalba;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
@@ -37,6 +38,7 @@ import rest.repository.DostupanProizvodRepository;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
 import rest.repository.PreparatRepository;
+import rest.repository.ZalbaRepository;
 
 @Service
 @Transactional
@@ -50,14 +52,16 @@ public class AdminServiceImpl implements AdminService {
 	private DostupanProizvodRepository dostupanProizvodRepository;
 	private PreparatRepository preparatRepository;
 	private AdminApotekeRepository adminApotekeRepository;
+	private ZalbaRepository zalbaRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	public AdminServiceImpl(PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
+	public AdminServiceImpl(ZalbaRepository zalre,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar) {
 		this.ponudaRepository = imar;
+		this.zalbaRepository = zalre;
 		this.env = env;
 		this.javaMailSender = jms;
 		this.narudzbenicaRepository = nr;
@@ -145,6 +149,14 @@ public class AdminServiceImpl implements AdminService {
 		}
 
 		cenaRepository.save(cenovnik);
+	}
+
+	@Override
+	public void updateZalba(int id) {
+		Zalba z = zalbaRepository.findById(id).get();
+		z.setAnswered(true);
+		zalbaRepository.save(z);
+		
 	}
 
 		

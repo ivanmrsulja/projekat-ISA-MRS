@@ -45,8 +45,8 @@ const registracijaAdminaApoteke = { template: '<register-adminphar></register-ad
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
 const listaZalbi = { template: '<lista-zalbi></lista-zalbi>'};
 const jednaZalba = { template: '<jedna-zalba></jedna-zalba>'};
-
-
+const listaZalbiAdmin = { template: '<lista-zalbiadmin></lista-zalbiadmin>'};
+const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>'};
 
 const router = new VueRouter({
     mode: 'hash',
@@ -97,6 +97,8 @@ const router = new VueRouter({
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
         { path: '/listaZalbi', component: listaZalbi},
         { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba"},
+        { path: '/listaZalbiAdmin', component: listaZalbiAdmin},
+        { path: '/jednaZalbaAdmin/:zalId', component: jednaZalbaAdmin, name: "jednaZalbaAdmin"},
 	    { path: '/godisnji', component: GodisnjiOdmor},
 	  ]
 	});

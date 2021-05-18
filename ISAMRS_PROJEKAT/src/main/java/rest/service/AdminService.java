@@ -28,4 +28,6 @@ public interface AdminService {
 	public void registerPricelist(CenovnikDTO cenovnikDTO, int idApoteke) throws Exception;
 
 	public void updateStocks(int orderId, int adminId);
+	
+	public void updateZalba(int id);
 }

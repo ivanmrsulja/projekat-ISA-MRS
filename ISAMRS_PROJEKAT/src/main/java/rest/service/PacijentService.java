@@ -27,8 +27,10 @@ public interface PacijentService {
 	void addPenal(int id, Penal p);
 	
 	Collection<ZalbaDTO> getZalbeForPatient(int id);
+	ZalbaDTO getOneZalba(int id);
 	ZalbaDTO getZalbaForPatient(int id, int zalId);
 	Collection<String> getAllAppealable(int id);
 	void sendZalba(ZalbaDTO zdto);
+	Collection<ZalbaDTO> getZalbeForAdmin(int id);
 
 }

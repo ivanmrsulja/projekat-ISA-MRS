@@ -23,11 +23,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.domain.AdminApoteke;
 import rest.domain.AkcijaPromocija;
 import rest.domain.Apoteka;
 import rest.domain.Cena;
+import rest.domain.Dermatolog;
 import rest.domain.DostupanProizvod;
 import rest.domain.NaruceniProizvod;
 import rest.domain.Narudzbenica;
@@ -37,6 +40,7 @@ import rest.domain.Preparat;
 import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
+import rest.dto.ZalbaDTO;
 import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
 import rest.domain.TeloAkcijePromocije;
@@ -58,6 +62,7 @@ import rest.repository.PonudaRepository;
 import rest.repository.PreparatRepository;
 import rest.service.AdminService;
 import rest.service.AkcijaPromocijaService;
+import rest.service.PacijentService;
 
 
 @RestController
@@ -76,12 +81,14 @@ public class AdminController {
 	private PreparatRepository preparatRepository;
 	private NarudzbenicaRepozitory narudzbenicaRepository;
 	private PonudaRepository ponudaRepository;
+	private PacijentService pacijentService;
 	
 	@Autowired
-	public AdminController(AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
+	public AdminController(PacijentService pacser,AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
 			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep, NarudzbenicaRepozitory nr,
 			PonudaRepository pRepo) {
 		this.adminService = as;
+		this.pacijentService = pacser;
 		this.adminApotekeRepository = aar;
 		this.akcijaPromocijaRepository = apr;
 		this.akcijaPromocijaService = aps;
@@ -120,6 +127,28 @@ public class AdminController {
 
 		return availablePharmacyProductsDTO;
 	}
+	
+	@GetMapping(value= "/getZalba/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ZalbaDTO getZalba(@PathVariable("id") int id) {
+		ZalbaDTO users = pacijentService.getOneZalba(id);
+		
+		return users;
+	}
+	
+	@PutMapping(value = "/ZalbeUpdate/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateZalba(@PathVariable("id") int id) {
+		adminService.updateZalba(id);
+		return "OK";
+	}
+	
+	@GetMapping(value = "/Zalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<ZalbaDTO> getZalbeForAdmin(@PathVariable("id") int id){
+		Collection<ZalbaDTO> zdtos = pacijentService.getZalbeForAdmin(id);
+
+		return (ArrayList<ZalbaDTO>) zdtos;
+	}
+	
+
 	
 	@GetMapping(value = "/productsOutsidePharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(@PathVariable("id") int pharmacyId){

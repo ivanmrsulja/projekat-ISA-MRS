@@ -31,6 +31,7 @@ Vue.component("pisanje-zalbe", {
 	,
 	methods: {	
     	sendZalba : function() {
+    		let self = this;
     		let tekst = $("#tekst").val();
     		let zalUpucen = $("#pharmas").children("option:selected").val();
     		console.log(tekst + zalUpucen);
@@ -44,6 +45,7 @@ Vue.component("pisanje-zalbe", {
             axios.post("/api/pacijenti/sendZalba", newUser).then(data => {
                 if (data.data == "OK") {
                     alert("Uspesno ste poslali zalbu");
+                    self.$router.push({ path: "/listaZalbi" });
                 }
             });
     	}

@@ -68,6 +68,8 @@
 <a class="navigacija" href="#/pacijenti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Pacijenti</a>
 <a class="navigacija" href="#/godisnji" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Odmor/Odsustvo</a>
 <a class="navigacija" href="#/listaZalbi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Istorija zalbi</a>
+<a class="navigacija" href="#/listaZalbiAdmin" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Istorija zalbi i odgovora</a>
+
 
 <a class="navigacija" href="#/" v-on:click="logout()"  v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>
 <br/>
@@ -147,6 +149,9 @@
 <script src="app/godisnjiOdmor.js"></script>
 <script src="app/listaZalbi.js"></script>
 <script src="app/jednaZalba.js"></script>
+<script src="app/listaZalbiAdmin.js"></script>
+<script src="app/jednaZalbaAdmin.js"></script>
+
 
 
 <script src="app/app.js"></script>

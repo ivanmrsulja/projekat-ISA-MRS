@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import rest.domain.AdminSistema;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.ERecept;
@@ -27,6 +28,7 @@ import rest.domain.Rezervacija;
 import rest.domain.Zalba;
 import rest.dto.PreparatDTO;
 import rest.dto.ZalbaDTO;
+import rest.repository.AdminSistemaRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.DermatologRepository;
 import rest.repository.EReceptRepository;
@@ -53,10 +55,12 @@ public class PacijentServiceImpl implements PacijentService {
 	private RezervacijaRepository rezervacijaRepository;
 	private EReceptRepository eReceptRepository;
 	private ZalbaRepository zalbaRepository;
+	private AdminSistemaRepository adminSistemaRepository;
 	
 	@Autowired
-	public PacijentServiceImpl(ZalbaRepository zalre,EReceptRepository erepo,RezervacijaRepository rezeRepo,ApotekeRepository apore,FarmaceutRepository farrep,DermatologRepository dermrep,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
+	public PacijentServiceImpl(AdminSistemaRepository admisisre,ZalbaRepository zalre,EReceptRepository erepo,RezervacijaRepository rezeRepo,ApotekeRepository apore,FarmaceutRepository farrep,DermatologRepository dermrep,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
 		this.pacijentRepository = pacijentRepository;
+		this.adminSistemaRepository = admisisre;
 		this.zalbaRepository = zalre;
 		this.eReceptRepository = erepo;
 		this.rezervacijaRepository = rezeRepo;
@@ -255,13 +259,61 @@ public class PacijentServiceImpl implements PacijentService {
 	@Override
 	public void sendZalba(ZalbaDTO zdto) {
 		Pacijent p = pacijentRepository.getPatientByUser(zdto.getNazivKorisnika());
-		Zalba z = new Zalba(zdto.getTekst(), null, p);
-		zalbaRepository.save(z);
-		p.addZalba(z);
-		pacijentRepository.save(p);
+		Zalba z = new Zalba();
+		if(zdto.getNazivAdmina() == "") {
+			z = new Zalba(zdto.getTekst(), null, p);
+			zalbaRepository.save(z);
+			p.addZalba(z);
+			pacijentRepository.save(p);
+		} else {
+			AdminSistema as = adminSistemaRepository.getPatientByUser(zdto.getNazivAdmina());
+			z = new Zalba(zdto.getTekst(), as, p);
+			z.setAnswered(true);
+			zalbaRepository.save(z);
+			p.addZalba(z);
+			pacijentRepository.save(p);
+			as.addZalba(z);
+			adminSistemaRepository.save(as);
+		}
 		
 		
 		
+	}
+
+
+	@Override
+	public Collection<ZalbaDTO> getZalbeForAdmin(int id) {
+		Collection<Zalba> zalbe = zalbaRepository.getAll();
+		Collection<ZalbaDTO> zdtos = new ArrayList<ZalbaDTO>();
+		for (Zalba z : zalbe) {
+//			if((z.getAdminSistema() == null && z.isAnswered() == false)  || z.getAdminSistema().getId() == id) {
+//				ZalbaDTO zal = new ZalbaDTO(z);
+//				zdtos.add(zal);
+//			}
+			if(z.getAdminSistema() == null) {
+				if(!z.isAnswered()) {
+					ZalbaDTO zal = new ZalbaDTO(z);
+					zdtos.add(zal);
+				}
+			} else {
+				if(z.getAdminSistema().getId() == id) {
+					ZalbaDTO zal = new ZalbaDTO(z);
+					zdtos.add(zal);
+				}
+				
+			}
+		}
+		return zdtos;
+		
+	}
+
+
+	@Override
+	public ZalbaDTO getOneZalba(int id) {
+		// TODO Auto-generated method stub
+		Zalba z = zalbaRepository.findById(id).get();
+		ZalbaDTO zal = new ZalbaDTO(z);
+		return zal;
 	}
 	
 }
