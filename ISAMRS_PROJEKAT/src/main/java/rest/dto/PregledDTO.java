@@ -22,6 +22,7 @@ public class PregledDTO {
 	private ApotekaDTO apoteka;
 	
 	public PregledDTO() {}
+
 	public PregledDTO(Pregled p, double ocena) {
 		id = p.getId();
 		izvjestaj = p.getIzvjestaj();

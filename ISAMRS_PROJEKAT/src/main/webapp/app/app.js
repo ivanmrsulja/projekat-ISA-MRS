@@ -43,6 +43,7 @@ const OdabirPonude = { template: '<odabir-ponude></odabir-ponude>'};
 const registracijaApoteke = { template: '<register-apoteka></register-apoteka>' };
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
+const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>'};
 
 
 
@@ -94,6 +95,7 @@ const router = new VueRouter({
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
 	    { path: '/godisnji', component: GodisnjiOdmor},
+        { path: '/izvestajiPregledi', component: IzvestajiPregledi},
 	  ]
 	});
 

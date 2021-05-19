@@ -2,6 +2,7 @@ package rest.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.data.domain.Page;
@@ -37,4 +38,5 @@ public interface ApotekaService {
 	Collection<Farmaceut> farmaceutiZaTerminSavetovanja(LocalDate datum, LocalTime vrijeme, int id, String criteria) throws Exception;
 	
 	Pregled zakaziSavetovanje(PregledDTO podaci, int idApoteke, int idFarmaceuta, int idPacijenta) throws Exception;
+
 }

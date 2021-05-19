@@ -3,8 +3,7 @@ package rest.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.DateFormatSymbols;
 
 import javax.transaction.Transactional;
 
@@ -31,6 +30,7 @@ import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.IzvestajValueDTO;
 import rest.dto.NaruceniProizvodDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
@@ -43,7 +43,9 @@ import rest.repository.DostupanProizvodRepository;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PacijentRepository;
 import rest.repository.PonudaRepository;
+import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
+import rest.repository.RezervacijaRepository;
 
 @Service
 @Transactional
@@ -59,13 +61,16 @@ public class AdminServiceImpl implements AdminService {
 	private AdminApotekeRepository adminApotekeRepository;
 	private AkcijaPromocijaService akcijaPromocijaService;
 	private PacijentRepository pacijentRepository;
+	private PregledRepository pregledRepository;
+	private RezervacijaRepository rezervacijaRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
 	public AdminServiceImpl(PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
-			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo) {
+			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
+			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo) {
 		this.ponudaRepository = imar;
 		this.env = env;
 		this.javaMailSender = jms;
@@ -78,6 +83,12 @@ public class AdminServiceImpl implements AdminService {
 		this.adminApotekeRepository = aar;
 		this.akcijaPromocijaService = aps;
 		this.pacijentRepository = pacRepo;
+		this.pregledRepository = pregledRepo;
+		this.rezervacijaRepository = rezervacijaRepo;
+	}
+	
+	public String getMonthName(int month) {
+		return new DateFormatSymbols().getMonths()[month - 1];
 	}
 
 	@Override
@@ -296,5 +307,308 @@ public class AdminServiceImpl implements AdminService {
 		}
 
 		return availablePharmacyProductsDTO;
+	}
+
+	@Override
+	public ArrayList<IzvestajValueDTO> getYearlyExaminations(int year, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> yearlyExaminations = new ArrayList<>();
+		LocalDate ld_low = LocalDate.ofYearDay(year, 1);
+		LocalDate ld_high = LocalDate.ofYearDay(year, 365);
+		ArrayList<Object[]> examinations = pregledRepository.getExaminationsPerMonth(ld_low, ld_high, pharmacyId);
+
+		for (int currentMonth = 1; currentMonth <= 12; ++currentMonth) {
+			boolean match = false;
+			for (Object[] obj : examinations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					match = true;
+					yearlyExaminations.add(new IzvestajValueDTO(getMonthName(currentMonth), Integer.parseInt(obj[1].toString())));
+					break;
+				}
+			}
+			if (!match) {
+				yearlyExaminations.add(new IzvestajValueDTO(getMonthName(currentMonth), 0));
+			}
+		}
+
+		return yearlyExaminations;
+	}
+
+	@Override
+	public ArrayList<IzvestajValueDTO> getQuarterlyExaminations(int year, int quarter, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> quarterlyExaminations = new ArrayList<>();
+		LocalDate ld_low = null;
+		LocalDate ld_high = null;
+
+		switch (quarter) {
+		case 1:
+			ld_low = LocalDate.of(year, 1, 1);
+			ld_high = LocalDate.of(year, 3, 31);
+			break;
+		case 2:
+			ld_low = LocalDate.of(year, 4, 1);
+			ld_high = LocalDate.of(year, 6, 30);
+			break;
+		case 3:
+			ld_low = LocalDate.of(year, 7, 1);
+			ld_high = LocalDate.of(year, 9, 30);
+			break;
+		case 4:
+			ld_low = LocalDate.of(year, 10, 1);
+			ld_high = LocalDate.of(year, 12, 31);
+		}
+
+		ArrayList<Object[]> examinations = pregledRepository.getExaminationsPerMonth(ld_low, ld_high, pharmacyId);
+
+		int currentMonth = (quarter - 1) * 3 + 1;
+		int lastMonth = quarter * 3;
+		for (; currentMonth <= lastMonth; ++currentMonth) {
+			boolean match = false;
+			for (Object[] obj : examinations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					match = true;
+					quarterlyExaminations.add(new IzvestajValueDTO(getMonthName(currentMonth), Integer.parseInt(obj[1].toString())));
+					break;
+				}
+			}
+			if (!match) {
+				quarterlyExaminations.add(new IzvestajValueDTO(getMonthName(currentMonth), 0));
+			}
+		}
+
+		return quarterlyExaminations;
+	}
+
+	@Override
+	public ArrayList<IzvestajValueDTO> getMonthlyExaminations(int year, int month, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> monthlyExaminations = new ArrayList<>();
+
+		int days = 0;
+		switch (month) {
+		case 1:
+			days = 31;
+			break;
+		case 2:
+			days = 28;
+			break;
+		case 3:
+			days = 31;
+			break;
+		case 4:
+			days = 30;
+			break;
+		case 5:
+			days = 31;
+			break;
+		case 6:
+			days = 30;
+			break;
+		case 7:
+			days = 31;
+			break;
+		case 8:
+			days = 31;
+			break;
+		case 9:
+			days = 30;
+			break;
+		case 10:
+			days = 31;
+			break;
+		case 11:
+			days = 30;
+			break;
+		case 12:
+			days = 31;
+			break;
+		}
+
+		LocalDate ld_low = LocalDate.of(year, month, 1);
+		LocalDate ld_high = LocalDate.of(year, month, days);
+
+		ArrayList<Object[]> examinations = pregledRepository.getExaminationsForMonth(ld_low, ld_high, pharmacyId);
+
+		for (int i = 1; i <= days; ++i) {
+			boolean match = false;
+			for (Object[] obj : examinations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				LocalDate temp_ld = LocalDate.of(year, month, i);
+				if (date.equals(temp_ld)) {
+					match = true;
+					monthlyExaminations.add(new IzvestajValueDTO(Integer.toString(i), Integer.parseInt(obj[1].toString())));
+					break;
+				}
+			}
+			if (!match) {
+				monthlyExaminations.add(new IzvestajValueDTO(Integer.toString(i), 0));
+			}
+		}
+
+		return monthlyExaminations;
+	}
+
+	@Override
+	public ArrayList<IzvestajValueDTO> getYearlyIncome(int year, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> yearlyIncomes = new ArrayList<>();
+		LocalDate ld_low = LocalDate.ofYearDay(year, 1);
+		LocalDate ld_high = LocalDate.ofYearDay(year, 365);
+		ArrayList<Object[]> examinations = pregledRepository.getIncomeFromExaminationsPerMonth(ld_low, ld_high, pharmacyId);
+		ArrayList<Object[]> reservations = rezervacijaRepository.getIncomeFromReservationsPerMonth(ld_low, ld_high, pharmacyId);
+
+		for (int currentMonth = 1; currentMonth <= 12; ++currentMonth) {
+			int cena = 0;
+			for (Object[] obj : examinations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					cena = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			int cena2 = 0;
+			for (Object[] obj : reservations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					cena2 = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			yearlyIncomes.add(new IzvestajValueDTO(getMonthName(currentMonth), cena + cena2));
+		}
+
+		return yearlyIncomes;
+	}
+
+	@Override
+	public ArrayList<IzvestajValueDTO> getQuarterlyIncome(int year, int quarter, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> quarterlyIncome = new ArrayList<>();
+		LocalDate ld_low = null;
+		LocalDate ld_high = null;
+
+		switch (quarter) {
+		case 1:
+			ld_low = LocalDate.of(year, 1, 1);
+			ld_high = LocalDate.of(year, 3, 31);
+			break;
+		case 2:
+			ld_low = LocalDate.of(year, 4, 1);
+			ld_high = LocalDate.of(year, 6, 30);
+			break;
+		case 3:
+			ld_low = LocalDate.of(year, 7, 1);
+			ld_high = LocalDate.of(year, 9, 30);
+			break;
+		case 4:
+			ld_low = LocalDate.of(year, 10, 1);
+			ld_high = LocalDate.of(year, 12, 31);
+		}
+
+		ArrayList<Object[]> examinations = pregledRepository.getIncomeFromExaminationsPerMonth(ld_low, ld_high, pharmacyId);
+		ArrayList<Object[]> reservations = rezervacijaRepository.getIncomeFromReservationsPerMonth(ld_low, ld_high, pharmacyId);
+
+		int currentMonth = (quarter - 1) * 3 + 1;
+		int lastMonth = quarter * 3;
+		for (; currentMonth <= lastMonth; ++currentMonth) {
+			int cena = 0;
+			for (Object[] obj : examinations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					cena = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			int cena2 = 0;
+			for (Object[] obj : reservations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					cena2 = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			quarterlyIncome.add(new IzvestajValueDTO(getMonthName(currentMonth), cena + cena2));
+		}
+
+		return quarterlyIncome;
+	}
+
+	@Override
+	public ArrayList<IzvestajValueDTO> getMonthlyIncome(int year, int month, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> monthlyIncomes = new ArrayList<>();
+
+		int days = 0;
+		switch (month) {
+		case 1:
+			days = 31;
+			break;
+		case 2:
+			days = 28;
+			break;
+		case 3:
+			days = 31;
+			break;
+		case 4:
+			days = 30;
+			break;
+		case 5:
+			days = 31;
+			break;
+		case 6:
+			days = 30;
+			break;
+		case 7:
+			days = 31;
+			break;
+		case 8:
+			days = 31;
+			break;
+		case 9:
+			days = 30;
+			break;
+		case 10:
+			days = 31;
+			break;
+		case 11:
+			days = 30;
+			break;
+		case 12:
+			days = 31;
+			break;
+		}
+
+		LocalDate ld_low = LocalDate.of(year, month, 1);
+		LocalDate ld_high = LocalDate.of(year, month, days);
+
+		ArrayList<Object[]> examinations = pregledRepository.getIncomeFromExaminationsForMonth(ld_low, ld_high, pharmacyId);
+		ArrayList<Object[]> reservations = rezervacijaRepository.getIncomeFromReservationsForMonth(ld_low, ld_high, pharmacyId);
+
+		for (int i = 1; i <= days; ++i) {
+			int cena = 0;
+			for (Object[] obj : examinations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				LocalDate temp_ld = LocalDate.of(year, month, i);
+				if (date.equals(temp_ld)) {
+					cena = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			int cena2 = 0;
+			for (Object[] obj : reservations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				LocalDate temp_ld = LocalDate.of(year, month, i);
+				if (date.equals(temp_ld)) {
+					cena = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			monthlyIncomes.add(new IzvestajValueDTO(Integer.toString(i), cena + cena2));
+		}
+
+		return monthlyIncomes;
 	}
 }

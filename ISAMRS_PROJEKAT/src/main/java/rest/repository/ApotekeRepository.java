@@ -24,9 +24,9 @@ public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
 	@Query("select count(a) from Apoteka a")
 	public int getNumOf();
 	
-	@Query("select p from Apoteka a join a.pregledi p where p.status = 1 and a.id = ?1")
+	@Query("select p from Apoteka a join a.pregledi p where p.status = 1 and p.tip = 1 and a.id = ?1")
 	public Collection<Pregled> getPreCreated(int id);
-	
+
 	@Query("select a from Apoteka a where a in ?1")
 	public Page<Apoteka> slobodneApoteke(Pageable pageable, ArrayList<Apoteka> apoteke);
 	

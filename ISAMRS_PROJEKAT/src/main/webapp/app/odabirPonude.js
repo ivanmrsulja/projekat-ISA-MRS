@@ -70,9 +70,9 @@ Vue.component("odabir-ponude", {
             .then(response => {
                 if (response.data == "OK") {
                     alert("Uspesno azuriranje.");
+                    this.$router.push({name: "PregledNarudzbenica"});
                 }
             });
-            this.$router.push({name: "PregledNarudzbenica"});
         },
     }, mounted: function() {
         axios

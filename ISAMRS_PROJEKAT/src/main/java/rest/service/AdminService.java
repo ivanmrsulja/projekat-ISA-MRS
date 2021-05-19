@@ -11,6 +11,7 @@ import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
@@ -52,4 +53,16 @@ public interface AdminService {
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(int pharmacyId);
 	
 	public ArrayList<DostupanProizvodDTO> searhProductsOfPharmacy(int pharmacyId, String name);
+
+	public ArrayList<IzvestajValueDTO> getYearlyExaminations(int year, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getQuarterlyExaminations(int year, int quarter, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getMonthlyExaminations(int year, int month, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getYearlyIncome(int year, int pharmacyId);
+	
+	public ArrayList<IzvestajValueDTO> getQuarterlyIncome(int year, int quarter, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getMonthlyIncome(int year, int month, int pharmacyId);
 }

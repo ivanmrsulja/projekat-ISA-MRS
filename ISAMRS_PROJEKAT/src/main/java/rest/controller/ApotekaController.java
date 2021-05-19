@@ -101,13 +101,10 @@ public class ApotekaController {
 	
 	@GetMapping(value="admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOneForAdmin(@PathVariable int id) {
-		System.out.println(id + " DDASDSAJIODSAHJDJSAKLDHSJADJKSADHASJKDHASDHSAKJHDSAKJHDSJKHDJKASHDSAKJDHSJKDSHDASKJDJASHDASKJDHS");
 		AdminApoteke a = (AdminApoteke) userService.findOne(id);
-		System.out.println(a.getUsername() + " DDASDSAJIODSAHJDJSAKLDHSJADJKSADHASJKDHASDHSAKJHDSAKJHDSJKHDJKASHDSAKJDHSJKDSHDASKJDJASHDASKJDHS");
 		return new ApotekaDTO(this.apotekaService.getForAdmin(a.getApoteka().getId()));
 	}
 	
-	@AsPacijent
 	@GetMapping(value="pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PregledDTO> getPreCreatedExaminations(@PathVariable int id, @RequestParam String criteria) {
 		return apotekaService.getPregledi(id, criteria);

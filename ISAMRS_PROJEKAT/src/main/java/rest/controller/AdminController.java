@@ -29,6 +29,7 @@ import rest.dto.PreparatDTO;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
@@ -73,6 +74,55 @@ public class AdminController {
 		ArrayList<PreparatDTO> preparatiDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
 
 		return preparatiDTO;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/yearlyExaminations/{year}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getExaminationsForYear(@PathVariable("year") int year, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> examinations = adminService.getYearlyExaminations(year, pharmacyId);
+
+		return examinations;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/yearlyIncome/{year}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getIncomeForYear(@PathVariable("year") int year, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> incomes = adminService.getYearlyIncome(year, pharmacyId);
+
+		return incomes;
+	}
+	
+
+	@AsAdminApoteke
+	@GetMapping(value = "/quarterlyExaminations/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getExaminationsForQuarter(@PathVariable("year") int year, @PathVariable("quarter") int quarter, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> examinations = adminService.getQuarterlyExaminations(year, quarter, pharmacyId);
+
+		return examinations;
+	}
+	
+	@AsAdminApoteke
+	@GetMapping(value = "/quarterlyIncome/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getIncomeForQuarter(@PathVariable("year") int year, @PathVariable("quarter") int quarter, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> incomes = adminService.getQuarterlyIncome(year, quarter, pharmacyId);
+
+		return incomes;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/monthlyExaminations/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getExaminationsForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> examinations = adminService.getMonthlyExaminations(year, month, pharmacyId);
+
+		return examinations;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/monthlyIncome/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getIncomeForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> incomes = adminService.getMonthlyIncome(year, month, pharmacyId);
+
+		return incomes;
 	}
 
 	@AsAdminApoteke
