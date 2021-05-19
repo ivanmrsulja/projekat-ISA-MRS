@@ -1,5 +1,7 @@
 package rest.dto;
 
+import java.time.LocalDate;
+
 import rest.domain.Korisnik;
 import rest.domain.StatusZahtjeva;
 import rest.domain.TipZahtjeva;
@@ -10,6 +12,8 @@ public class ZahtevDTO {
 	private int id;
 	private StatusZahtjeva status;
 	private TipZahtjeva tip;
+	private LocalDate pocetak;
+	private LocalDate kraj;
 	private KorisnikDTO korisnik;
 
 	public ZahtevDTO(int id, StatusZahtjeva status, TipZahtjeva tip, Korisnik korisnik) {
@@ -25,6 +29,8 @@ public class ZahtevDTO {
 		this.status = zahtev.getStatus();
 		this.tip = zahtev.getTip();
 		this.korisnik = new KorisnikDTO(zahtev.getKorisnik());
+		this.pocetak = zahtev.getPocetak();
+		this.kraj = zahtev.getKraj();
 	}
 
 	public int getId() {
@@ -45,6 +51,22 @@ public class ZahtevDTO {
 	public void setTip(TipZahtjeva tip) {
 		this.tip = tip;
 	}
+	public LocalDate getPocetak() {
+		return pocetak;
+	}
+
+	public void setPocetak(LocalDate pocetak) {
+		this.pocetak = pocetak;
+	}
+
+	public LocalDate getKraj() {
+		return kraj;
+	}
+
+	public void setKraj(LocalDate kraj) {
+		this.kraj = kraj;
+	}
+
 	public KorisnikDTO getKorisnik() {
 		return korisnik;
 	}

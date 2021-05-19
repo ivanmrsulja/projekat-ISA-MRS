@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
@@ -92,6 +91,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		apotekaToUpdate.setNaziv(apoteka.getNaziv());
 		apotekaToUpdate.setOpis(apoteka.getOpis());
 		apotekaToUpdate.setLokacija(apoteka.getLokacija());
+		apotekaToUpdate.setCenaSavetovanja(apoteka.getCena());
 		apoteke.save(apotekaToUpdate);
 	}
 

@@ -25,11 +25,14 @@ import rest.domain.Narudzbenica;
 import rest.domain.Ponuda;
 import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
+import rest.dto.NotifikacijaDTO;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
 import rest.service.AdminService;
@@ -70,9 +73,82 @@ public class AdminController {
 	@AsAdminApoteke
 	@GetMapping(value = "/productsOutsidePharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(@PathVariable("id") int pharmacyId) {
-		ArrayList<PreparatDTO> preparatiDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
+		ArrayList<PreparatDTO> productsDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
 
-		return preparatiDTO;
+		return productsDTO;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/openExaminations/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PregledDTO> getOpenExaminations(@PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<PregledDTO> openExaminations = adminService.getOpenExaminationsForPharmacy(pharmacyId);
+
+		return openExaminations;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/notifications/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(@PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<NotifikacijaDTO> notifications = adminService.getNotificationsForPharmacy(pharmacyId);
+
+		return notifications;
+	}
+
+	@AsAdminApoteke
+	@PutMapping(value = "/updateNotifications/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateNotifications(@PathVariable("pharmacyId") int pharmacyId) {
+		adminService.updatePharmacyNotifications(pharmacyId);
+		
+		return "OK";
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/yearlyExaminations/{year}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getExaminationsForYear(@PathVariable("year") int year, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> examinations = adminService.getYearlyExaminations(year, pharmacyId);
+
+		return examinations;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/yearlyIncome/{year}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getIncomeForYear(@PathVariable("year") int year, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> incomes = adminService.getYearlyIncome(year, pharmacyId);
+
+		return incomes;
+	}
+	
+
+	@AsAdminApoteke
+	@GetMapping(value = "/quarterlyExaminations/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getExaminationsForQuarter(@PathVariable("year") int year, @PathVariable("quarter") int quarter, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> examinations = adminService.getQuarterlyExaminations(year, quarter, pharmacyId);
+
+		return examinations;
+	}
+	
+	@AsAdminApoteke
+	@GetMapping(value = "/quarterlyIncome/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getIncomeForQuarter(@PathVariable("year") int year, @PathVariable("quarter") int quarter, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> incomes = adminService.getQuarterlyIncome(year, quarter, pharmacyId);
+
+		return incomes;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/monthlyExaminations/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getExaminationsForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> examinations = adminService.getMonthlyExaminations(year, month, pharmacyId);
+
+		return examinations;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/monthlyIncome/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getIncomeForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> incomes = adminService.getMonthlyIncome(year, month, pharmacyId);
+
+		return incomes;
 	}
 
 	@AsAdminApoteke
@@ -96,6 +172,14 @@ public class AdminController {
 	public String updateOrderStatus(@PathVariable("orderId") int orderId) {
 		adminService.updateStatusOfOrder(orderId);
 
+		return "OK";
+	}
+
+	@AsAdminApoteke
+	@PutMapping(value = "/updateExaminationPrice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateExaminationprice(@RequestBody PregledDTO examinationDTO) {
+		adminService.updateExaminationPrice(examinationDTO);
+		
 		return "OK";
 	}
 
@@ -125,6 +209,24 @@ public class AdminController {
 			return "ERR";
 		}
 		narudzbenicaRepository.deleteById(orderId);
+		
+		return "OK";
+	}
+
+	@AsAdminApoteke
+	@DeleteMapping(value = "/deleteExamination/{examinationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteExamination(@PathVariable("examinationId") int examinationId) {
+		adminService.deleteExamination(examinationId);
+		
+		return "OK";
+	}
+
+	@AsAdminApoteke
+	@PostMapping(value = "/registerExamination/{dermatologistId}/{pharmacyId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerExamination(@RequestBody PregledDTO examinationDTO, @PathVariable("dermatologistId") int dermatologistId, @PathVariable("pharmacyId") int pharmacyId) {
+		if (adminService.registerExamination(dermatologistId, pharmacyId, examinationDTO) == null) {
+			return "ERR";
+		}
 		
 		return "OK";
 	}

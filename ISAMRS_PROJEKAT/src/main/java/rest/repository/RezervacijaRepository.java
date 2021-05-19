@@ -1,5 +1,7 @@
 package rest.repository;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.LockModeType;
@@ -26,4 +28,12 @@ public interface RezervacijaRepository extends JpaRepository<Rezervacija, Intege
 	@Lock(LockModeType.OPTIMISTIC)
 	@Query("select r from Rezervacija r where r.id = ?1")
 	Rezervacija findOneById(int id);
+
+	
+	@Query("select date_trunc('month', r.datumPreuzimanja) as datum, sum(r.cena) as cena from Rezervacija r where r.datumPreuzimanja >= ?1 and r.datumPreuzimanja <= ?2 and r.status = 1 and r.apoteka.id = ?3 group by date_trunc('month', r.datumPreuzimanja)")
+	public ArrayList<Object[]> getIncomeFromReservationsPerMonth(LocalDate date_low, LocalDate date_high, int pharmacyId);
+
+	@Query("select date_trunc('day', r.datumPreuzimanja) as datum, sum(r.cena) as cena from Rezervacija r where r.datumPreuzimanja >= ?1 and r.datumPreuzimanja <= ?2 and r.status = 1 and r.apoteka.id = ?3 group by date_trunc('day', r.datumPreuzimanja)")
+	public ArrayList<Object[]> getIncomeFromReservationsForMonth(LocalDate date_low, LocalDate date_high, int pharmacyId);
+	
 }

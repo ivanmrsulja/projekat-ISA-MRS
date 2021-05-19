@@ -80,7 +80,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 	@Override
 	public void addZahtjev(Zahtjev p,int id) {
 		Korisnik k=korisnikRepo.getOne(id);
-		Zahtjev pp= new Zahtjev(p.getTip(),StatusZahtjeva.CEKANJE,k);		
+		Zahtjev pp= new Zahtjev(p.getTip(),StatusZahtjeva.CEKANJE,k,p.getPocetak(), p.getKraj());		
 		zahtevRepository.save(pp);
 	}
 }

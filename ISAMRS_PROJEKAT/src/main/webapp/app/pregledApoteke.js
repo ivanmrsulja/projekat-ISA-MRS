@@ -120,15 +120,15 @@ Vue.component("pregled-apoteke", {
 		  </div>
 	</div>
 	<br/>
-     <table class="table table-hover" style="width: 60%" v-bind:hidden=" pregledi.length == 0" >
+     <table class="table table-hover" style="width: 60%" v-bind:hidden="pregledi.length == 0">
 		 <thead>
-			<tr  bgcolor="#90a4ae">
+			<tr bgcolor="#90a4ae">
 				<th>Dermatolog</th>
 				<th>Datum termina</th>
 				<th>Vreme</th>
 				<th>Cena</th>
 				<th>Ocena dermatologa</th>
-				<th>Akcija</th>
+				<th v-bind:hidden="!korisnik">Akcija</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -138,7 +138,7 @@ Vue.component("pregled-apoteke", {
 			<td>{{p.vrijeme}}</td>
 			<td>{{p.cijena}}</td>
 			<td>{{p.ocena.toFixed(2)}} </td>
-			<td><input type="button" class="button1" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik" /></td>
+			<td v-bind:hidden="!korisnik"><input type="button" class="button1" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik"/></td>
 		</tr>
 		</tbody>
 	</table>

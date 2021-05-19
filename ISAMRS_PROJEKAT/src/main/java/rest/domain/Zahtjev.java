@@ -1,5 +1,7 @@
 package rest.domain;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,16 +20,22 @@ public class Zahtjev {
 	private TipZahtjeva tip;
 	@Column(name = "status", nullable = false)
 	private StatusZahtjeva status;
+	@Column(name = "pocetak", nullable = false)
+	private LocalDate pocetak;
+	@Column(name = "kraj", nullable = false)
+	private LocalDate kraj;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Korisnik korisnik;
 	
 	public Zahtjev() {}
 	
-	public Zahtjev(TipZahtjeva tip, StatusZahtjeva status, Korisnik k) {
+	public Zahtjev(TipZahtjeva tip, StatusZahtjeva status, Korisnik k, LocalDate pocetak, LocalDate kraj) {
 		super();
 		this.tip = tip;
 		this.status = status;
 		this.korisnik = k;
+		this.pocetak = pocetak;
+		this.kraj = kraj;
 	}
 
 	public Integer getId() {
@@ -60,6 +68,22 @@ public class Zahtjev {
 
 	public void setKorisnik(Korisnik korisnik) {
 		this.korisnik = korisnik;
+	}
+
+	public LocalDate getPocetak() {
+		return pocetak;
+	}
+
+	public void setPocetak(LocalDate pocetak) {
+		this.pocetak = pocetak;
+	}
+
+	public LocalDate getKraj() {
+		return kraj;
+	}
+
+	public void setKraj(LocalDate kraj) {
+		this.kraj = kraj;
 	}
 	
 }

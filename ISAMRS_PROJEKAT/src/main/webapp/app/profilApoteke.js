@@ -10,6 +10,7 @@ Vue.component("profil-apoteke", {
 				farmaceuti: [],
 				dermatolozi: [],
 				searchParams: {idApoteke: 0, ime : "", prezime: "", startOcena: 1, endOcena: 5, kriterijumSortiranja: "IME", opadajuce: false},
+				pregledi: [],
 		    }
 	},
 	template: ` 
@@ -42,6 +43,7 @@ Vue.component("profil-apoteke", {
 	            <tr><td><h2>Naziv: </h2></td><td><input type="text" v-model="apoteka.naziv"/></td></tr>
 	            <tr><td><h2>Opis: </h2></td><td><textarea rows="6" name="opis">{{apoteka.opis}}</textarea></td></tr>
 	            <tr><td><h2>Adresa: </h2></td><td><textarea rows="3" disabled>{{apoteka.lokacija.ulica}}</textarea></td></tr>
+				<tr><td><h2>Cena savetovanja: </h2></td><td><input type="number" v-model="apoteka.cena"/></td></tr>
 				<tr><td><h2>Ocena: </h2></td><td><input type="text" v-model="apoteka.ocena.toFixed(2)" disabled/></td></tr>
 	        </table>
 	        <br/>
@@ -57,6 +59,9 @@ Vue.component("profil-apoteke", {
 		<div id="main">
 		  <button class="openbtn" onclick="openNav()">&#9776; Pretraga</button>
 		</div>
+
+		<br>
+		<br>
 
 	<table class="table table-hover" style="width: 50%" v-bind:hidden="farmaceuti.length == 0">
 	 <thead>
@@ -77,6 +82,9 @@ Vue.component("profil-apoteke", {
 	</tbody>
 	</table>
 
+	<br>
+	<br>
+
 	<h2>Zaposleni dermatolozi</h2>
 	<table class="table table-hover" style="width: 50%" >
 	 <thead>
@@ -95,11 +103,63 @@ Vue.component("profil-apoteke", {
 	</tbody>
 	</table>
 
+	<br>
+	<br>
+
+	<div align = center style="width: 75% sm;" v-bind:hidden="pregledi.length == 0">
+	<h2>Slobodni termini pregleda</h2>
+	<table class="table table-hover" style="width: 60%">
+		 <thead>
+			<tr bgcolor="#90a4ae">
+				<th>Dermatolog</th>
+				<th>Datum termina</th>
+				<th>Vreme</th>
+				<th>Cena</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr v-for="p in pregledi">
+			<td>{{p.zaposleni.ime}} {{p.zaposleni.prezime}}</td>
+			<td>{{p.datum}}</td>
+			<td>{{p.vrijeme}}</td>
+			<td><input type="number" v-model="p.cijena"/></td>
+			<td><input type="button" class="button1" value="Azuriraj" v-on:click="saveExamination(p)"/></td>
+			<td><input type="button" class="button1" value="Ukloni" v-on:click="removeExamination(p)"/></td>
+		</tr>
+		</tbody>
+	</table>
+	</div>
+
 	
 	</div>		  
 	`
 	,
     methods : {
+		saveExamination: function(e) {
+			axios
+			.put("api/admin/updateExaminationPrice", e)
+			.then(response => {
+				if (response.data == "OK") {
+					alert("Uspesno azuriranje cene pregleda.");
+				}
+			});
+		},
+		removeExamination: function(e) {
+			axios
+			.delete("api/admin/deleteExamination/" + e.id)
+			.then(response => {
+				if (response.data == "OK") {
+					alert("Uspesno brisanje termina.");
+				}
+				axios
+				.get("api/admin/openExaminations/" + this.apoteka.id)
+				.then(response => {
+					this.pregledi = response.data;
+				});
+			});
+		},
         reverseGeolocation: function(coords){
 			let self = this;
 		   	fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + coords[0] + '&lat=' + coords[1])
@@ -187,24 +247,29 @@ Vue.component("profil-apoteke", {
 		axios
 		.get("api/users/currentUser")
 		.then(response => {
-		  console.log(response.data);
-		  axios
+		  	console.log(response.data);
+		  	axios
 			.get("api/apoteke/admin/" + response.data.id)
 			.then(response => {
 				this.apoteka = response.data;
 				this.searchParams.idApoteke = this.apoteka.id;
 				this.showMap();
-		  });
-		  axios
-		  .get("api/farmaceut/apoteka/" + response.data.id)
-		  .then(response => {
-			  this.farmaceuti = response.data;
-		  });
-		  axios
-		  .get("api/dermatolog/apoteka/admin/" + response.data.id)
-		  .then(response => {
-			  this.dermatolozi = response.data;
-		  });
+				axios
+				.get("api/admin/openExaminations/" + this.apoteka.id)
+				.then(response => {
+					this.pregledi = response.data;
+				});
+		  	});
+		  	axios
+		  	.get("api/farmaceut/apoteka/" + response.data.id)
+		  	.then(response => {
+			  	this.farmaceuti = response.data;
+		  	});
+		  	axios
+		  	.get("api/dermatolog/apoteka/admin/" + response.data.id)
+		  	.then(response => {
+			  	this.dermatolozi = response.data;
+		  	});
 		});
     }
 });

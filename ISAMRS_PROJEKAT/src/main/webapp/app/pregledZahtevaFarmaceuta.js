@@ -26,6 +26,8 @@ Vue.component("pregled-zahteva-farmaceuta", {
 			<th>Farmaceut</th>
 			<th>Tip</th>
 			<th>Status</th>
+			<th>Pocetak</th>
+			<th>Kraj</th>
 			<th></th>
             <th></th>
 		</tr>
@@ -35,6 +37,8 @@ Vue.component("pregled-zahteva-farmaceuta", {
 		<td>{{z.korisnik.ime + ' ' + z.korisnik.prezime}}</td>
 		<td>{{z.tip}}</td>
 		<td>{{z.status}}</td>
+		<td>{{z.pocetak}}</td>
+		<td>{{z.kraj}}</td>
 		<td v-bind:hidden="z.status != 'CEKANJE'"><input type="button" class="button1" value="Odobri" v-on:click="approveRequest(z)"/></td>
 		<td v-bind:hidden="z.status != 'CEKANJE'"><input type="button" class="button1" value="Odbij" v-on:click="rejectRequest(z)"/></td>
 	</tr>

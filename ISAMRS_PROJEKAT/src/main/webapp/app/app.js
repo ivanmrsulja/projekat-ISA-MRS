@@ -43,6 +43,9 @@ const OdabirPonude = { template: '<odabir-ponude></odabir-ponude>'};
 const registracijaApoteke = { template: '<register-apoteka></register-apoteka>' };
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
+const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>'};
+const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifikacija>'};
+const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></kreiranje-termina-pregleda>'};
 
 
 
@@ -59,7 +62,7 @@ const router = new VueRouter({
         { path: '/farmaceuti', component: farmaceutiTable },
         { path: '/register', component: RegistracijaKorisnika },
         { path: '/apoteke/:page', component: PregledApoteka },
-        { path: '/profileApoteke', component: ProfilApoteke },
+        { path: '/profileApoteke', component: ProfilApoteke, name: "ProfilApoteke" },
         { path: '/istorijaPregleda/:page/:criteria', component: IstorijaPregleda },
         { path: '/zakazaniPregledi/:page', component: ZakazaniPregledi },
         { path: '/profilPacijenta', component: ProfilPacijenta },
@@ -94,6 +97,9 @@ const router = new VueRouter({
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
 	    { path: '/godisnji', component: GodisnjiOdmor},
+        { path: '/izvestajiPregledi', component: IzvestajiPregledi},
+        { path: '/pregledNotifikacija', component: PregledNotifikacija},
+        { path: '/kreiranjeTerminaPregleda', component: KreiranjeTerminaPregleda},
 	  ]
 	});
 

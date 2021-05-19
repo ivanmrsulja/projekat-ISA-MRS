@@ -7,12 +7,16 @@ import org.springframework.scheduling.annotation.Async;
 
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
+import rest.domain.Pregled;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
+import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
+import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 
 
@@ -52,4 +56,28 @@ public interface AdminService {
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(int pharmacyId);
 	
 	public ArrayList<DostupanProizvodDTO> searhProductsOfPharmacy(int pharmacyId, String name);
+
+	public ArrayList<IzvestajValueDTO> getYearlyExaminations(int year, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getQuarterlyExaminations(int year, int quarter, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getMonthlyExaminations(int year, int month, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getYearlyIncome(int year, int pharmacyId);
+	
+	public ArrayList<IzvestajValueDTO> getQuarterlyIncome(int year, int quarter, int pharmacyId);
+
+	public ArrayList<IzvestajValueDTO> getMonthlyIncome(int year, int month, int pharmacyId);
+
+	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(int pharmacyId);
+
+	public void updatePharmacyNotifications(int pharmacyId);
+
+	public ArrayList<PregledDTO> getOpenExaminationsForPharmacy(int pharmacyId);
+	
+	public void updateExaminationPrice(PregledDTO examinationDTO);
+
+	public void deleteExamination(int examinationId);
+	
+	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO);
 }
