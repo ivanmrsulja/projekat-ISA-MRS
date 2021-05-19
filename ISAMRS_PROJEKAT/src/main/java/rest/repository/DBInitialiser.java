@@ -25,6 +25,7 @@ import rest.domain.Farmaceut;
 import rest.domain.Lokacija;
 import rest.domain.NaruceniProizvod;
 import rest.domain.Narudzbenica;
+import rest.domain.Notifikacija;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Ponuda;
@@ -83,6 +84,8 @@ public class DBInitialiser implements ApplicationRunner {
 	private ZahtevRepository zahtevRepo;
 	@Autowired
 	private NaruceniProizvodRepository naruceniProizvodRepo;
+	@Autowired
+	private NotifikacijaRepository notifikacijaRepo;
 	
 	@Override
 	@Transactional
@@ -309,7 +312,10 @@ public class DBInitialiser implements ApplicationRunner {
 		pregledRepo.save(pre15);
 		pregledRepo.save(pre16);
 
-		
+		Notifikacija not1 = new Notifikacija("Polivinil hlorid silikon elastik", LocalDate.now(), a1, f1);
+		Notifikacija not2 = new Notifikacija("Hidrogen", LocalDate.now(), a1, f2);
+		notifikacijaRepo.save(not1);
+		notifikacijaRepo.save(not2);
 		
 		AkcijaPromocija ap1 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma1);
 		AkcijaPromocija ap2 = new AkcijaPromocija("Lorem ipsum dolor sit amet.", adma2);

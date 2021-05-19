@@ -21,6 +21,7 @@ import rest.domain.Dobavljac;
 import rest.domain.DostupanProizvod;
 import rest.domain.NaruceniProizvod;
 import rest.domain.Narudzbenica;
+import rest.domain.Notifikacija;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Preparat;
@@ -33,6 +34,7 @@ import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NaruceniProizvodDTO;
 import rest.dto.NarudzbenicaDTO;
+import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
 import rest.repository.AdminApotekeRepository;
@@ -41,6 +43,7 @@ import rest.repository.CenaRepository;
 import rest.repository.DobavljacRepository;
 import rest.repository.DostupanProizvodRepository;
 import rest.repository.NarudzbenicaRepozitory;
+import rest.repository.NotifikacijaRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PonudaRepository;
 import rest.repository.PregledRepository;
@@ -63,6 +66,7 @@ public class AdminServiceImpl implements AdminService {
 	private PacijentRepository pacijentRepository;
 	private PregledRepository pregledRepository;
 	private RezervacijaRepository rezervacijaRepository;
+	private NotifikacijaRepository notifikacijaRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
@@ -70,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	public AdminServiceImpl(PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
-			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo) {
+			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo) {
 		this.ponudaRepository = imar;
 		this.env = env;
 		this.javaMailSender = jms;
@@ -85,6 +89,7 @@ public class AdminServiceImpl implements AdminService {
 		this.pacijentRepository = pacRepo;
 		this.pregledRepository = pregledRepo;
 		this.rezervacijaRepository = rezervacijaRepo;
+		this.notifikacijaRepository = notifikacijaRepo;
 	}
 	
 	public String getMonthName(int month) {
@@ -610,5 +615,22 @@ public class AdminServiceImpl implements AdminService {
 		}
 
 		return monthlyIncomes;
+	}
+
+	@Override
+	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(int pharmacyId) {
+		ArrayList<Notifikacija> notifications = notifikacijaRepository.getAllForPharmacy(pharmacyId);
+		ArrayList<NotifikacijaDTO> notificationsDTO = new ArrayList<>();
+
+		for (Notifikacija n : notifications) {
+			notificationsDTO.add(new NotifikacijaDTO(n));
+		}
+
+		return notificationsDTO;
+	}
+
+	@Override
+	public void updatePharmacyNotifications(int pharmacyId) {
+		notifikacijaRepository.updateNotificationsStatusesForPharmacy(pharmacyId);
 	}
 }

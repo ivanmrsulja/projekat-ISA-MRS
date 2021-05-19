@@ -31,6 +31,7 @@ import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
+import rest.dto.NotifikacijaDTO;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
 import rest.service.AdminService;
@@ -74,6 +75,22 @@ public class AdminController {
 		ArrayList<PreparatDTO> preparatiDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
 
 		return preparatiDTO;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/notifications/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(@PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<NotifikacijaDTO> notifications = adminService.getNotificationsForPharmacy(pharmacyId);
+
+		return notifications;
+	}
+
+	@AsAdminApoteke
+	@PutMapping(value = "/updateNotifications/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateNotifications(@PathVariable("pharmacyId") int pharmacyId) {
+		adminService.updatePharmacyNotifications(pharmacyId);
+		
+		return "OK";
 	}
 
 	@AsAdminApoteke

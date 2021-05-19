@@ -44,6 +44,7 @@
 <a class="navigacija" href="#/pregledNarudzbenica" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Pregled narudzbenica</a>
 <a class="navigacija" href="#/preparatiApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Preparati</a>
 <a class="navigacija" href="#/izvestajiPregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Izvestaji</a>
+<a class="navigacija" href="#/pregledNotifikacija" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Notifikacije</a>
 <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
 <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
 <a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
@@ -147,6 +148,7 @@
 <script src="app/odabirPonude.js"></script>
 <script src="app/godisnjiOdmor.js"></script>
 <script src="app/izvestajiPregledi.js"></script>
+<script src="app/pregledNotifikacija.js"></script>
 
 <script src="app/app.js"></script>
 </body>

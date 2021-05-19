@@ -13,6 +13,7 @@ import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
+import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
 
@@ -65,4 +66,8 @@ public interface AdminService {
 	public ArrayList<IzvestajValueDTO> getQuarterlyIncome(int year, int quarter, int pharmacyId);
 
 	public ArrayList<IzvestajValueDTO> getMonthlyIncome(int year, int month, int pharmacyId);
+
+	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(int pharmacyId);
+
+	public void updatePharmacyNotifications(int pharmacyId);
 }

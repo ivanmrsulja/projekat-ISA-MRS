@@ -44,6 +44,7 @@ const registracijaApoteke = { template: '<register-apoteka></register-apoteka>' 
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
 const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>'};
+const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifikacija>'};
 
 
 
@@ -96,6 +97,7 @@ const router = new VueRouter({
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
 	    { path: '/godisnji', component: GodisnjiOdmor},
         { path: '/izvestajiPregledi', component: IzvestajiPregledi},
+        { path: '/pregledNotifikacija', component: PregledNotifikacija},
 	  ]
 	});
 
