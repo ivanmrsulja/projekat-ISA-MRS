@@ -54,6 +54,10 @@ Vue.component("pregled-notifikacija", {
                 .get("api/admin/notifications/" + response.data.id)
                 .then(response => {
                     this.notifikacije = response.data;
+                    if (this.notifikacije.length == 0) {
+                        alert("Nemate notifikacije.");
+                        this.$router.push({name: "ProfilApoteke"});
+                    }
                 });
                 axios
                 .put("api/admin/updateNotifications/" + response.data.id)

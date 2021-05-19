@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
+import rest.domain.Pregled;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
@@ -77,4 +78,6 @@ public interface AdminService {
 	public void updateExaminationPrice(PregledDTO examinationDTO);
 
 	public void deleteExamination(int examinationId);
+	
+	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO);
 }

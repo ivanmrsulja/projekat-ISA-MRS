@@ -24,6 +24,9 @@ public interface ZaposlenjeRepository extends JpaRepository<Zaposlenje, Integer>
 	@Query("select z.apoteka from Zaposlenje z where z.korisnik.id = ?1")
 	Apoteka apotekaZaFarmaceuta(int id);
 
+	@Query("select z from Zaposlenje z where z.korisnik.id = ?1 and z.apoteka.id = ?2")
+	Zaposlenje zaposlenjeZaStrucnjaka(int idDermatologa, int idApoteke);
+
 	@Transactional
 	@Modifying
 	@Query("delete from Zaposlenje z where z.korisnik.id = ?1")

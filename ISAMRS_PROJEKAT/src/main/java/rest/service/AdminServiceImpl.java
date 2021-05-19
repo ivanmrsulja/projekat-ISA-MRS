@@ -1,6 +1,7 @@
 package rest.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.text.DateFormatSymbols;
@@ -28,7 +29,11 @@ import rest.domain.Pregled;
 import rest.domain.Preparat;
 import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
+import rest.domain.StatusPregleda;
 import rest.domain.TeloAkcijePromocije;
+import rest.domain.TipPregleda;
+import rest.domain.Zahtjev;
+import rest.domain.Zaposlenje;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
@@ -44,6 +49,7 @@ import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
 import rest.repository.DobavljacRepository;
 import rest.repository.DostupanProizvodRepository;
+import rest.repository.KorisnikRepository;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.NotifikacijaRepository;
 import rest.repository.PacijentRepository;
@@ -51,6 +57,8 @@ import rest.repository.PonudaRepository;
 import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
 import rest.repository.RezervacijaRepository;
+import rest.repository.ZahtevRepository;
+import rest.repository.ZaposlenjeRepository;
 
 @Service
 @Transactional
@@ -69,6 +77,9 @@ public class AdminServiceImpl implements AdminService {
 	private PregledRepository pregledRepository;
 	private RezervacijaRepository rezervacijaRepository;
 	private NotifikacijaRepository notifikacijaRepository;
+	private KorisnikRepository korisnikRepository;
+	private ZaposlenjeRepository zaposlenjeRepository;
+	private ZahtevRepository zahtevRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
@@ -76,7 +87,8 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	public AdminServiceImpl(PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
-			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo) {
+			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo, KorisnikRepository korisnikRepo,
+			ZaposlenjeRepository zaposlenjeRepo, ZahtevRepository zahtevRepo) {
 		this.ponudaRepository = imar;
 		this.env = env;
 		this.javaMailSender = jms;
@@ -92,6 +104,9 @@ public class AdminServiceImpl implements AdminService {
 		this.pregledRepository = pregledRepo;
 		this.rezervacijaRepository = rezervacijaRepo;
 		this.notifikacijaRepository = notifikacijaRepo;
+		this.korisnikRepository = korisnikRepo;
+		this.zaposlenjeRepository = zaposlenjeRepo;
+		this.zahtevRepository = zahtevRepo;
 	}
 	
 	public String getMonthName(int month) {
@@ -656,5 +671,89 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void deleteExamination(int examinationId) {
 		pregledRepository.deleteById(examinationId);
+	}
+
+	@Override
+	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO) {
+
+		// provera poklapanja sa trenutnim datumom/vremenom
+		{
+		int dateDifference = LocalDate.now().compareTo(examinationDTO.getDatum());
+		if (dateDifference > 0) {
+			return null;
+		} else if (dateDifference == 0) {
+			int timeDifference = LocalTime.now().compareTo(examinationDTO.getVrijeme());
+			if (timeDifference > 0) {
+				return null;
+			}
+		}
+		}
+
+		// provera poklapanja vremena termina sa radnim vremenom
+		{
+		Zaposlenje zaposlenje = zaposlenjeRepository.zaposlenjeZaStrucnjaka(dermatologistId, pharmacyId);
+
+		int startTimeDifference = zaposlenje.getPocetakRadnogVremena().compareTo(examinationDTO.getVrijeme());
+		int endTimeDifference = zaposlenje.getKrajRadnogVremena().compareTo(examinationDTO.getVrijeme().plusMinutes(examinationDTO.getTrajanje()));
+
+		if (startTimeDifference > 0 || endTimeDifference < 0) {
+			return null;
+		}
+		}
+
+		// provera poklapanja sa drugim zakazanim/slobodnim terminima
+		{
+		Collection<Pregled> pregledi = pregledRepository.getScheduledAndOpenExaminations(dermatologistId, pharmacyId);
+		if (pregledi.size() != 0) {
+			for (Pregled p : pregledi) {
+				int dateDifference = p.getDatum().compareTo(examinationDTO.getDatum());
+				if (dateDifference == 0) {
+					// > 0 ako je pocetak naseg termina pre pocetka trenutnog
+					int startStartDifference = p.getVrijeme().compareTo(examinationDTO.getVrijeme());
+					// > 0 ako je kraj naseg termina pre kraja trenutnog
+					int endEndDifference = p.getVrijeme().plusMinutes(p.getTrajanje()).compareTo(examinationDTO.getVrijeme().plusMinutes(examinationDTO.getTrajanje()));
+					// > 0 ako je kraj naseg termina pre pocetka trenutnog
+					int startEndDifference = p.getVrijeme().compareTo(examinationDTO.getVrijeme().plusMinutes(examinationDTO.getTrajanje()));
+					// > 0 ako je pocetak naseg termina pre kraja trenutnog
+					int endStartDifference = p.getVrijeme().plusMinutes(p.getTrajanje()).compareTo(examinationDTO.getVrijeme());
+					boolean startInBetween = startStartDifference < 0 && endStartDifference > 0;
+					boolean endInBetween = startEndDifference < 0 && endEndDifference > 0;
+					boolean wrapping = startStartDifference > 0 && endEndDifference < 0;
+					if (startInBetween || endInBetween || wrapping) {
+						return null;
+					}
+				}
+			}
+		}
+		}
+		
+		// provera da dermatolog nije na godisnjem/odsustvu
+		{
+		Collection<Zahtjev> zahtevi = zahtevRepository.getAcceptedAndPendingForUser(dermatologistId);
+		if (zahtevi.size() != 0) {
+			for (Zahtjev z : zahtevi) {
+				int startDateDifference = z.getPocetak().compareTo(examinationDTO.getDatum());
+				int endDateDifference = z.getKraj().compareTo(examinationDTO.getDatum());
+				if (startDateDifference < 0 && endDateDifference > 0) {
+					return null;
+				}
+			}
+		}
+		}
+
+		Pregled examination = new Pregled();
+		examination.setIzvjestaj("");
+		examination.setTip(TipPregleda.PREGLED);
+		examination.setStatus(StatusPregleda.SLOBODAN);
+		examination.setApoteka(apotekeRepository.findById(pharmacyId).get());
+		examination.setZaposleni(korisnikRepository.findById(dermatologistId).get());
+		examination.setDatum(examinationDTO.getDatum());
+		examination.setVrijeme(examinationDTO.getVrijeme());
+		examination.setTrajanje(examinationDTO.getTrajanje());
+		examination.setCijena(examinationDTO.getCijena());
+
+		pregledRepository.save(examination);
+
+		return examination;
 	}
 }

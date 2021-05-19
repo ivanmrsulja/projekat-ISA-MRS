@@ -235,9 +235,9 @@ public class TestDBInitialiser implements ApplicationRunner {
 		korisnici.save(f2);
 		korisnici.save(f3);
 
-		Zahtjev zahtev1 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f1);
-		Zahtjev zahtev2 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f2);
-		Zahtjev zahtev3 = new Zahtjev(TipZahtjeva.ODSUSTVO, StatusZahtjeva.CEKANJE, f3);
+		Zahtjev zahtev1 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f1, LocalDate.parse("2021-04-07"), LocalDate.parse("2021-06-12"));
+		Zahtjev zahtev2 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f2, LocalDate.parse("2021-08-08"), LocalDate.parse("2021-08-12"));
+		Zahtjev zahtev3 = new Zahtjev(TipZahtjeva.ODSUSTVO, StatusZahtjeva.CEKANJE, f3, LocalDate.parse("2021-09-09"), LocalDate.parse("2021-10-05"));
 		zahtevRepo.save(zahtev1);
 		zahtevRepo.save(zahtev2);
 		zahtevRepo.save(zahtev3);

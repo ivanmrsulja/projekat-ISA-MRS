@@ -222,12 +222,14 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(f2);
 		korisnici.save(f3);
 
-		Zahtjev zahtev1 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f1);
-		Zahtjev zahtev2 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f2);
-		Zahtjev zahtev3 = new Zahtjev(TipZahtjeva.ODSUSTVO, StatusZahtjeva.CEKANJE, f3);
+		Zahtjev zahtev1 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f1, LocalDate.parse("2021-04-07"), LocalDate.parse("2021-06-12"));
+		Zahtjev zahtev2 = new Zahtjev(TipZahtjeva.GODISNJI_ODMOR, StatusZahtjeva.CEKANJE, f2, LocalDate.parse("2021-08-08"), LocalDate.parse("2021-08-12"));
+		Zahtjev zahtev3 = new Zahtjev(TipZahtjeva.ODSUSTVO, StatusZahtjeva.CEKANJE, f3, LocalDate.parse("2021-09-09"), LocalDate.parse("2021-10-05"));
+		Zahtjev zahtev4 = new Zahtjev(TipZahtjeva.ODSUSTVO, StatusZahtjeva.CEKANJE, d1, LocalDate.parse("2021-09-09"), LocalDate.parse("2021-10-05"));
 		zahtevRepo.save(zahtev1);
 		zahtevRepo.save(zahtev2);
 		zahtevRepo.save(zahtev3);
+		zahtevRepo.save(zahtev4);
 		
 		Zaposlenje z4 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, f1);
 		Zaposlenje z5 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a2, f2);
@@ -279,7 +281,7 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(p1);
 		
 
-		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-07"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre1 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-07"), LocalTime.parse("10:00"), 45, 5000, d1, null, a1);
 		Pregled pre11 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-08"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
 		Pregled pre12 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-09"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
 		Pregled pre13 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-09"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);

@@ -77,4 +77,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Query("update Pregled p set p.cijena = ?2 where p.id = ?1")
 	public void updateExaminationPrice(int examinationId, double price);
 
+	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.apoteka.id = ?2 and p.status != 2")
+	public Collection<Pregled> getScheduledAndOpenExaminations(int dermatologistId, int pharmacyId);
+
 }
