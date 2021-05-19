@@ -24,6 +24,7 @@ import rest.domain.Narudzbenica;
 import rest.domain.Notifikacija;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
+import rest.domain.Pregled;
 import rest.domain.Preparat;
 import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
@@ -36,6 +37,7 @@ import rest.dto.NaruceniProizvodDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
@@ -632,5 +634,27 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void updatePharmacyNotifications(int pharmacyId) {
 		notifikacijaRepository.updateNotificationsStatusesForPharmacy(pharmacyId);
+	}
+
+	@Override
+	public ArrayList<PregledDTO> getOpenExaminationsForPharmacy(int pharmacyId) {
+		Collection<Pregled> examinations = pregledRepository.getOpenExaminationsForPharmacy(pharmacyId);
+		ArrayList<PregledDTO> examinationsDTO = new ArrayList<>();
+
+		for (Pregled p : examinations) {
+			examinationsDTO.add(new PregledDTO(p, 0));
+		}
+
+		return examinationsDTO;
+	}
+
+	@Override
+	public void updateExaminationPrice(PregledDTO examinationDTO) {
+		pregledRepository.updateExaminationPrice(examinationDTO.getId(), examinationDTO.getCijena());
+	}
+
+	@Override
+	public void deleteExamination(int examinationId) {
+		pregledRepository.deleteById(examinationId);
 	}
 }

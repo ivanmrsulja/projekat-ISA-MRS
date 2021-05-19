@@ -25,6 +25,7 @@ import rest.domain.Narudzbenica;
 import rest.domain.Ponuda;
 import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.domain.TeloAkcijePromocije;
 import rest.dto.CenovnikDTO;
@@ -72,9 +73,17 @@ public class AdminController {
 	@AsAdminApoteke
 	@GetMapping(value = "/productsOutsidePharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(@PathVariable("id") int pharmacyId) {
-		ArrayList<PreparatDTO> preparatiDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
+		ArrayList<PreparatDTO> productsDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
 
-		return preparatiDTO;
+		return productsDTO;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/openExaminations/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<PregledDTO> getOpenExaminations(@PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<PregledDTO> openExaminations = adminService.getOpenExaminationsForPharmacy(pharmacyId);
+
+		return openExaminations;
 	}
 
 	@AsAdminApoteke
@@ -167,6 +176,14 @@ public class AdminController {
 	}
 
 	@AsAdminApoteke
+	@PutMapping(value = "/updateExaminationPrice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateExaminationprice(@RequestBody PregledDTO examinationDTO) {
+		adminService.updateExaminationPrice(examinationDTO);
+		
+		return "OK";
+	}
+
+	@AsAdminApoteke
 	@PutMapping(value = "/updateOffersStatus/{orderId}/{offerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updateOffersStatus(@RequestBody Collection<PonudaDTO> offers, @PathVariable("orderId") int orderId, @PathVariable("offerId") int offerId) {
 		adminService.updateStatusOfOffers(offers, orderId, offerId);
@@ -192,6 +209,14 @@ public class AdminController {
 			return "ERR";
 		}
 		narudzbenicaRepository.deleteById(orderId);
+		
+		return "OK";
+	}
+
+	@AsAdminApoteke
+	@DeleteMapping(value = "/deleteExamination/{examinationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteExamination(@PathVariable("examinationId") int examinationId) {
+		adminService.deleteExamination(examinationId);
 		
 		return "OK";
 	}

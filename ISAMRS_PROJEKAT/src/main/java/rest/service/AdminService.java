@@ -15,6 +15,7 @@ import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 
 
@@ -70,4 +71,10 @@ public interface AdminService {
 	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(int pharmacyId);
 
 	public void updatePharmacyNotifications(int pharmacyId);
+
+	public ArrayList<PregledDTO> getOpenExaminationsForPharmacy(int pharmacyId);
+	
+	public void updateExaminationPrice(PregledDTO examinationDTO);
+
+	public void deleteExamination(int examinationId);
 }
