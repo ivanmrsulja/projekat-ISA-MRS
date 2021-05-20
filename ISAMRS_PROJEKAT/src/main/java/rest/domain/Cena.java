@@ -1,7 +1,6 @@
 package rest.domain;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,15 +25,19 @@ public class Cena {
 	private Apoteka apoteka;
 	@Column(name = "pocetakVazenja", nullable = false)
 	private LocalDate pocetakVazenja;
+	@Column(name = "krajVazenja")
+	private LocalDate krajVazenja;
 	
 	public Cena() {
 		this.dostupniProizvodi = new HashSet<DostupanProizvod>();
+		this.krajVazenja = null;
 	}
 
 	public Cena(Apoteka apoteka, LocalDate pocetakVazenja) {
 		this();
 		this.apoteka = apoteka;
 		this.pocetakVazenja = pocetakVazenja;
+		this.krajVazenja = null;
 	}
 
 	public Integer getId() {
@@ -67,6 +70,14 @@ public class Cena {
 
 	public void setPocetakVazenja(LocalDate pocetakVazenja) {
 		this.pocetakVazenja = pocetakVazenja;
+	}
+
+	public LocalDate getKrajVazenja() {
+		return krajVazenja;
+	}
+
+	public void setKrajVazenja(LocalDate krajVazenja) {
+		this.krajVazenja = krajVazenja;
 	}
 	
 }

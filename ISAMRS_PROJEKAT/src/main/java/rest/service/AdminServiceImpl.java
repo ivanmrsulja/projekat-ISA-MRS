@@ -30,7 +30,6 @@ import rest.domain.Preparat;
 import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
 import rest.domain.StatusPregleda;
-import rest.domain.TeloAkcijePromocije;
 import rest.domain.TipPregleda;
 import rest.domain.Zahtjev;
 import rest.domain.Zaposlenje;
@@ -120,12 +119,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void notifyPatientViaEmail(ApotekaDTO apoteka, Pacijent pacijent, TeloAkcijePromocije telo) {
+	public void notifyPatientViaEmail(ApotekaDTO apoteka, Pacijent pacijent, String text) {
 		SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(pacijent.getEmail());
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Nove akcije i promocije apoteke " + apoteka.getNaziv());
-        String teloString = telo.getTekst();
+        String teloString = text;
         mail.setText(teloString);
         javaMailSender.send(mail);
 	}
@@ -169,13 +168,14 @@ public class AdminServiceImpl implements AdminService {
 		}
 
 		cenovnik.setPocetakVazenja(cenovnikDTO.getPocetakVazenja());
+		cenovnik.setKrajVazenja(cenovnikDTO.getKrajVazenja());
 		cenaRepository.save(cenovnik);
 	}
 
 	@Override
 	public void updateStocks(int orderId, int adminId) {
 		Apoteka apoteka  = adminApotekeRepository.getApoteka(adminId);
-		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(apoteka.getId());
+		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(apoteka.getId(), LocalDate.now());
 		Collection<NaruceniProizvod> naruceniProizvodi = narudzbenicaRepository.getItemsOfOrder(orderId);
 		System.out.println("velicina: " + naruceniProizvodi.size());
 		for (DostupanProizvod dp : cenovnik.getDostupniProizvodi()) {
@@ -193,7 +193,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public CenovnikDTO findPricelistForPharmacy(int pharmacyId) {
-		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
+		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId, LocalDate.now());
 		if (cenovnik == null) {
 			cenovnik = new Cena();
 			Apoteka apoteka = apotekeRepository.findById(pharmacyId).get();
@@ -207,17 +207,24 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void registerPromotion(TeloAkcijePromocije telo) throws Exception {
-		AdminApoteke admin = adminApotekeRepository.findById(telo.getIdAdmina()).get();
-		AkcijaPromocija ap = new AkcijaPromocija(telo.getTekst(), admin);
+	public void registerPromotion(CenovnikDTO pricelistDTO, int adminId, String text) throws Exception {
+		AdminApoteke admin = adminApotekeRepository.findById(adminId).get();
+		AkcijaPromocija ap = new AkcijaPromocija(text, admin);
 		akcijaPromocijaService.create(ap);
 
 		Apoteka apoteka = adminApotekeRepository.getApoteka(admin.getId());
 		ApotekaDTO apotekaDTO = new ApotekaDTO(apoteka);
 
+		pricelistDTO.setPocetakVazenja(LocalDate.now());
+		if (pricelistDTO.getKrajVazenja().compareTo(pricelistDTO.getPocetakVazenja()) <= 0) {
+			throw new Exception("Pogresna vrednost datuma isteka promocije.");
+		}
+		
+		registerPricelist(pricelistDTO, apoteka.getId());
+
 		Collection<Pacijent> pretplaceniPacijenti = pacijentRepository.getPatientsSubscribedToPharmacy(apotekaDTO.getId());
 		for (Pacijent p : pretplaceniPacijenti) {
-			notifyPatientViaEmail(apotekaDTO, p, telo);
+			notifyPatientViaEmail(apotekaDTO, p, text);
 		}
 	}
 
@@ -234,7 +241,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void deleteProductFromPharmacy(int productId, int pharmacyId) {
-		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
+		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId, LocalDate.now());
 		DostupanProizvod dpToDelete = null;
 		for (DostupanProizvod dp : cenovnik.getDostupniProizvodi()) {
 			if (dp.getId().equals(productId)) {
@@ -277,7 +284,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void addProductToPharmacy(PreparatDTO preparat, int pharmacyId, double price) {
-		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId);
+		Cena cenovnik = cenaRepository.getLatestPricelistForPharmacy(pharmacyId, LocalDate.now());
 		if (cenovnik == null) {
 			Apoteka apoteka = apotekeRepository.findById(pharmacyId).get();
 			cenovnik = new Cena();
@@ -635,6 +642,29 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public ArrayList<IzvestajValueDTO> getYearlyUsage(int year, int pharmacyId) {
+		ArrayList<IzvestajValueDTO> yearlyUsage = new ArrayList<>();
+		LocalDate ld_low = LocalDate.ofYearDay(year, 1);
+		LocalDate ld_high = LocalDate.ofYearDay(year, 365);
+		ArrayList<Object[]> reservations = rezervacijaRepository.getDrugsUsagePerMonth(ld_low, ld_high, pharmacyId);
+
+		for (int currentMonth = 1; currentMonth <= 12; ++currentMonth) {
+			int kolicina = 0;
+			for (Object[] obj : reservations) {
+				LocalDate date = LocalDate.parse(obj[0].toString().substring(0, 10));
+				int month = date.getMonthValue();
+				if (currentMonth == month) {
+					kolicina = (int) Double.parseDouble(obj[1].toString());
+					break;
+				}
+			}
+			yearlyUsage.add(new IzvestajValueDTO(getMonthName(currentMonth), kolicina));
+		}
+
+		return yearlyUsage;
+	}
+
+	@Override
 	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(int pharmacyId) {
 		ArrayList<Notifikacija> notifications = notifikacijaRepository.getAllForPharmacy(pharmacyId);
 		ArrayList<NotifikacijaDTO> notificationsDTO = new ArrayList<>();
@@ -756,4 +786,10 @@ public class AdminServiceImpl implements AdminService {
 
 		return examination;
 	}
+
+	@Override
+	public void deleteOutdatedPromotion() {
+		cenaRepository.deleteOutdatedPromotion(LocalDate.now());
+	}
+
 }

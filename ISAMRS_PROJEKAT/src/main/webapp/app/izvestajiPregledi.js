@@ -13,6 +13,11 @@ Vue.component("izvestaji-pregledi", {
 				yearPrihodi: 2021,
 				quarterPrihodi: 1,
 				monthPrihodi: 1,
+				periodPotrosnja: "godisnji",
+				usage_data: [],
+				yearPotrosnja: 2021,
+				quarterPotrosnja: 1,
+				monthPotrosnja: 1,
 		    }
 	},
 	template: ` 
@@ -95,6 +100,46 @@ Vue.component("izvestaji-pregledi", {
 
 	<input type="button" class="button1" value="Ucitaj" v-on:click="deleteAndLoadData()"/>
 
+    <br>
+	<br>
+	<br>
+	<br>
+
+	<h2>Izvestaji o potrosnji lekova</h2>
+
+	<br>
+
+	<label for="izvestajni_period_potrosnja">Izvestajni period: </label>
+
+	<select name="izvestajni_period_potrosnja" v-model="periodPotrosnja">
+	<option value="godisnji">Godisnji nivo</option>
+	<option value="kvartalni">Kvartalni nivo</option>
+	<option value="mesecni">Mesecni nivo</option>
+	</select>
+
+	<div v-bind:hidden="periodPotrosnja == ''">
+	<label>Godina: </label>
+	<input type="number" placeholder="2021" v-model="yearPotrosnja">
+	</div>
+
+	<div v-bind:hidden="periodPotrosnja != 'kvartalni'">
+	<label>Kvartal: </label>
+	<input type="number" min="1" max="4" v-model="quarterPotrosnja"/>
+	</div>
+
+	<div v-bind:hidden="periodPotrosnja != 'mesecni'">
+	<label>Mesec: </label>
+	<input type="number" min="1" max="12" v-model="monthPotrosnja"/>
+	</div>
+
+	<br>
+
+	<div id="graph3">
+    <div id="my_dataviz3" v-bind:hidden="usage_data.length == 0"></div>
+	</div>
+
+	<input type="button" class="button1" value="Ucitaj" v-on:click="deleteAndLoadData()"/>
+
 	</div>
 	`
 	,
@@ -116,6 +161,8 @@ Vue.component("izvestaji-pregledi", {
 			to_append.setAttributeNode(attribute2);
 			parent.appendChild(to_append);}
 
+			// ==========================================================
+
 			{var to_remove = document.getElementById("my_dataviz2");
 			to_remove.remove();
 
@@ -131,6 +178,25 @@ Vue.component("izvestaji-pregledi", {
 			to_append.setAttributeNode(attribute1);
 			to_append.setAttributeNode(attribute2);
 			parent.appendChild(to_append);}
+
+			// ===========================================================
+
+			{var to_remove = document.getElementById("my_dataviz3");
+			to_remove.remove();
+
+			var parent = document.getElementById("graph3");
+
+			var to_append = document.createElement("div");
+			var attribute1 = document.createAttribute("id");
+			attribute1.value = "my_dataviz3";
+
+			var attribute2 = document.createAttribute("v-bind:hidden");
+			attribute2.value = "usage_data.length == 0";
+
+			to_append.setAttributeNode(attribute1);
+			to_append.setAttributeNode(attribute2);
+			parent.appendChild(to_append);}
+
 			this.loadData();
 		},
         loadData: function() {
