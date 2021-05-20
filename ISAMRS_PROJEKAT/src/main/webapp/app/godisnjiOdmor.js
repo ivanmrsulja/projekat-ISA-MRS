@@ -7,10 +7,12 @@ Vue.component("zakazivanje-godisnjegOdmora", {
 	methods: {	
 		
 	zavrsiZakazivanje : function(){
-		var zahtjev = {tip:"GODISNJI_ODMOR"};
+		var zahtjev = {tip:"GODISNJI_ODMOR",pocetak:$("input[name=odDatuma]").val(),kraj:$("input[name=doDatuma]").val()};
 		if($("input[name=odsustvo]").val()) {
-			zahtjev = {tip:"ODSUSTVO"};			
+			zahtjev={};
+			zahtjev = {tip:"ODSUSTVO",pocetak:$("input[name=odDatuma]").val(),kraj:$("input[name=doDatuma]").val()};			
 		}
+		else
 				
 		axios.post("/api/zahtev/zahtjev", zahtjev).then(data => {
 			if(data.data == "OK") {
@@ -30,9 +32,13 @@ Vue.component("zakazivanje-godisnjegOdmora", {
 			<table class="table table-hover">
 			 <thead>
 				<th>
-					 <input name="godisnji" type="radio" name="gender"> Godisnji Odmor<br>
-					 <input name="odusustvo" type="radio" name="gender"> Odusustvo<br>
+					 <input name="godisnji" type="radio" > Godisnji Odmor<br>
+					 <input name="odusustvo" type="radio"> Odusustvo<br>
 					
+					<br>
+					<tr>Datum: <input type="date" name="odDatuma"/></tr>
+					<br>
+					<tr>Datum: <input type="date" name="doDatuma"/></tr>
 				</th>
 			</thead>
 			</table>
