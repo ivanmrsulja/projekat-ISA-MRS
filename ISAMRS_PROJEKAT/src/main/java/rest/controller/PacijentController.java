@@ -73,6 +73,7 @@ public class PacijentController {
 		
 		return ret;
 	}
+	
 	@PutMapping(value="updateApoteke/{idPacijent}/{idApoteka}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updatePacijentApoteke(@PathVariable("idPacijent") int idPacijenta, @PathVariable("idApoteka") int idApoteke) {
 		Pacijent pacijent = pacijentRepository.getPatientWithPharmacies(idPacijenta);

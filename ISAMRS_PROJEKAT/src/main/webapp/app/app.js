@@ -42,10 +42,10 @@ const registracijaAdminaSistema = { template: '<register-adminsys></register-adm
 const OdabirPonude = { template: '<odabir-ponude></odabir-ponude>'};
 const registracijaApoteke = { template: '<register-apoteka></register-apoteka>' };
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
-const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
 const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>'};
 const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifikacija>'};
 const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></kreiranje-termina-pregleda>'};
+const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
 
 
 
