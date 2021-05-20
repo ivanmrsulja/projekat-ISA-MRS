@@ -42,7 +42,11 @@ Vue.component("pocetna-strana", {
 					.then(function(resp){
 						temp.$root.$emit('sendingUser', resp.data);
 						if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
-							temp.$router.push({ path: "/profileApoteke" });
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
 						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
 							temp.$router.push({ path: "/farmaceuti" });
 						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){

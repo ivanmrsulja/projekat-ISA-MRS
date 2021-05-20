@@ -80,4 +80,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.apoteka.id = ?2 and p.status != 2")
 	public Collection<Pregled> getScheduledAndOpenExaminations(int dermatologistId, int pharmacyId);
 
+	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.apoteka.id = ?2 and p.status = 0")
+	public Collection<Pregled> getScheduledAppointments(int pharmacistId, int pharmacyId);
+
 }

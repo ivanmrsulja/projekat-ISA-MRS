@@ -30,8 +30,6 @@ import rest.domain.Pregled;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
-import rest.repository.FarmaceutRepository;
-import rest.repository.ZaposlenjeRepository;
 import rest.service.ApotekaService;
 import rest.service.FarmaceutService;
 import rest.service.PregledService;
@@ -44,16 +42,12 @@ public class FarmaceutController {
 	private FarmaceutService farmaceutService;
 	private ApotekaService apotekaService;
 	private PregledService pregledService;
-	private ZaposlenjeRepository zaposlenjeRepository;
-	private FarmaceutRepository farmaceutRepository;
 	
 	@Autowired
-	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService, ZaposlenjeRepository zr, FarmaceutRepository fr) {
+	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService) {
 		this.farmaceutService = farmaceut;
 		this.apotekaService = as;
 		this.pregledService = pregledService;
-		this.zaposlenjeRepository = zr;
-		this.farmaceutRepository = fr;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -167,9 +161,12 @@ public class FarmaceutController {
 	}
 
 	@DeleteMapping(value = "/brisanjeFarmaceuta/{idFarmaceuta}/{idApoteke}")
-	public ArrayList<FarmaceutDTO> deletePharmacist(@PathVariable("idFarmaceuta") int idFarmaceuta, @PathVariable("idApoteke") int idApoteke) {
-		farmaceutRepository.deleteById(idFarmaceuta);
-		zaposlenjeRepository.deleteForPharmacist(idFarmaceuta);
-		return this.getUsersForPharmacy(idApoteke);
+	public String deletePharmacist(@PathVariable("idFarmaceuta") int idFarmaceuta, @PathVariable("idApoteke") int idApoteke) {
+		if (farmaceutService.checkIfPharmacistHasAppointments(idFarmaceuta, idApoteke)) {
+			return "ERR";
+		}
+		farmaceutService.deletePharmacist(idFarmaceuta);
+
+		return "OK";
 	}
 }

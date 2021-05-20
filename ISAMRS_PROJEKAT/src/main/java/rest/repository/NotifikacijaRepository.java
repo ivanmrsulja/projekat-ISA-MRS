@@ -22,4 +22,9 @@ public interface NotifikacijaRepository extends JpaRepository<Notifikacija, Inte
 	@Query("update Notifikacija n set n.pregledana = true where n.apoteka.id = ?1")
 	public void updateNotificationsStatusesForPharmacy(int pharmacyId);
 
+	@Transactional
+	@Modifying
+	@Query("delete from Notifikacija n where n.korisnik.id = ?1")
+	public void deleteNotificationsOfUser(int pharmacistId);
+
 }

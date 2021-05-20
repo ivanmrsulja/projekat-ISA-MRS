@@ -1,6 +1,7 @@
 Vue.component("profil-apoteke", {
 	data: function () {
 		    return {
+				korisnik: {},
 				apoteka : {
 					naziv: "",
                     lokacija: {ulica: ""},
@@ -239,7 +240,16 @@ Vue.component("profil-apoteke", {
 			axios
 				.delete("api/farmaceut/brisanjeFarmaceuta/" + f.id + "/" + this.apoteka.id)
 				.then(response => {
-					this.farmaceuti = response.data;
+					if (response.data == "ERR") {
+						alert("Nije moguce obrisati farmaceuta jer ima zakazana savetovanja.");
+					} else {
+						alert("Uspesno brisanje farmaceuta.");
+						axios
+		  				.get("api/farmaceut/apoteka/" + this.apoteka.id)
+		  				.then(response => {
+			  				this.farmaceuti = response.data;
+		  				});
+					}
 				});
 		}
 	},
@@ -247,7 +257,7 @@ Vue.component("profil-apoteke", {
 		axios
 		.get("api/users/currentUser")
 		.then(response => {
-		  	console.log(response.data);
+			this.korisnik = response.data;
 		  	axios
 			.get("api/apoteke/admin/" + response.data.id)
 			.then(response => {

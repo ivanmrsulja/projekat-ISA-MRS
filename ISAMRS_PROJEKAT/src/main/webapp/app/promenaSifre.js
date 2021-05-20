@@ -50,6 +50,8 @@ Vue.component("promena-sifre", {
 								}
 								else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
 									temp.$router.push({ path: "/regDerm" });
+								} else if (resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE") {
+									temp.$router.push({ path: "/profileApoteke" });
 								}
 							}
 						});

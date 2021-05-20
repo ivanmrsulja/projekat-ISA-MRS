@@ -126,7 +126,7 @@ public class DBInitialiser implements ApplicationRunner {
 		a1.addAdmin(adma1);
 		apotekaRepo.save(a1);
 		
-		AdminApoteke adma2 = new AdminApoteke("Marko", "Cupic", "marko", "marko", "isamrstim06+adm2@gmail.com", true, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a2);
+		AdminApoteke adma2 = new AdminApoteke("Marko", "Cupic", "marko", "marko", "isamrstim06+adm2@gmail.com", false, "123123123", l1, ZaposlenjeKorisnika.ADMIN_APOTEKE, a2);
 		korisnici.save(adma2);
 		a2.addAdmin(adma2);
 		apotekaRepo.save(a2);
@@ -216,7 +216,7 @@ public class DBInitialiser implements ApplicationRunner {
 		korisnici.save(d2);
 
 		Farmaceut f1=new Farmaceut("Marko", "Markovic", "farmaceut", "farmaceut","isamrstim06+f1@gmail.com",true,"telefon",l8,ZaposlenjeKorisnika.FARMACEUT,0.0,0.0, null);		
-		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "pera123", "pera123","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,18.0,72.0, null);
+		Farmaceut f2=new Farmaceut("Pera", "Petrovic", "peraZdera", "peraZdera","isamrstim06+f2@gmail.com",true,"telefon",l9,ZaposlenjeKorisnika.FARMACEUT,18.0,72.0, null);
 		Farmaceut f3=new Farmaceut("Imenko", "Prezimenic", "imenko", "imenko","isamrstim06+f3@gmail.com",true,"telefon",l10,ZaposlenjeKorisnika.FARMACEUT,2.0,3.0, null);	
 		korisnici.save(f1);
 		korisnici.save(f2);
@@ -288,8 +288,8 @@ public class DBInitialiser implements ApplicationRunner {
 		Pregled pre14 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-09"), LocalTime.parse("11:00"), 45, 5000, d1, p1, a1);
 		Pregled pre15 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-10"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
 		Pregled pre16 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2020-05-07"), LocalTime.parse("08:00"), 45, 5000, d1, p1, a1);
-		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
-		Pregled pre10 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-07-09"), LocalTime.parse("13:00"), 45, 4000, f1, null, a1);
+		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2021-07-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
+		Pregled pre10 = new Pregled("", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-07-09"), LocalTime.parse("13:00"), 45, 4000, f1, null, a1);
 
 		Pregled pre3 = new Pregled("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
 		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
