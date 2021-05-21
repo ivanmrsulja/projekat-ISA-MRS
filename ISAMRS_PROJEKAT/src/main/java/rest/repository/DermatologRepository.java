@@ -1,5 +1,6 @@
 package rest.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,11 @@ public interface DermatologRepository extends JpaRepository<Dermatolog, Integer>
 	
 	@Query("select p from Pregled p where p.zaposleni.id = ?1 and p.pacijent.id = ?2 and p.tip = 1 and p.status = 2")
 	Collection<Pregled> getExaminationsForPatientAndDermatologist(int idDermatologa, int idPacijenta);
+
+	@Query("select d from Dermatolog d where d.id not in (select zap.korisnik.id from Apoteka a join a.zaposlenja zap where a.id = ?1)")
+	public ArrayList<Dermatolog> getDermatologistsOutsidePharmacy(int pharmacyId);
+
+	@Query("select d from Dermatolog d inner join fetch d.zaposlenja where d.id = ?1")
+	public Dermatolog getDermatologistWithEmployments(int dermatologistId);
 	
 }

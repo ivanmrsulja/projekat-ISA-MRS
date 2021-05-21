@@ -8,8 +8,10 @@ import org.springframework.scheduling.annotation.Async;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Pregled;
+import rest.domain.Zaposlenje;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
+import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
@@ -87,4 +89,12 @@ public interface AdminService {
 	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO);
 
 	public void deleteOutdatedPromotion();
+
+	public Zaposlenje employDermatologist(int pharmacyId, DermatologDTO dermatologistDTO);
+
+	public ArrayList<DermatologDTO> getDermatologistsOutsidePharmacy(int pharmacyId);
+
+	public Collection<Pregled> scheduledAppointmentsForDermatologist(int pharmacyId, int dermatologistId);
+
+	public void removeDermatologist(int pharmacyId, int dermatologistId);
 }

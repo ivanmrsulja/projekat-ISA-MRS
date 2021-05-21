@@ -29,6 +29,7 @@ import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.dto.CenovnikDTO;
+import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
@@ -313,11 +314,38 @@ public class AdminController {
 	}
 
 	@AsAdminApoteke
+	@PostMapping(value = "/employDermatologist/{pharmacyId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String employDermatologist(@RequestBody DermatologDTO dermatologistDTO, @PathVariable("pharmacyId") int pharmacyId) {
+		if (adminService.employDermatologist(pharmacyId, dermatologistDTO) == null) {
+			return "ERR";
+		}
+
+		return "OK";
+	}
+
+	@AsAdminApoteke
 	@GetMapping(value = "/cenovnik/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CenovnikDTO getPricelistForPharmacy(@PathVariable("id") int pharmacyId) {
 		CenovnikDTO cenovnikDTO = adminService.findPricelistForPharmacy(pharmacyId);
 
 		return cenovnikDTO;
+	}
+	
+	@AsAdminApoteke
+	@GetMapping(value = "/dermatologistsOutsidePharmacy/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<DermatologDTO> getDermatologistsOutsidePharmacy(@PathVariable("pharmacyId") int pharmacyId) {
+		return adminService.getDermatologistsOutsidePharmacy(pharmacyId);
+	}
+
+	@AsAdminApoteke
+	@DeleteMapping(value = "/removeDermatologist/{pharmacyId}/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String removeDermatologist(@PathVariable("pharmacyId") int pharmacyId, @PathVariable("dermatologistId") int dermatologistId) {
+		if (adminService.scheduledAppointmentsForDermatologist(pharmacyId, dermatologistId).size() != 0) {
+			return "ERR";
+		}
+		adminService.removeDermatologist(pharmacyId, dermatologistId);
+
+		return "OK";
 	}
 
 	@PutMapping(value = "/updateStocks/{orderId}/{adminId}", produces = MediaType.APPLICATION_JSON_VALUE)

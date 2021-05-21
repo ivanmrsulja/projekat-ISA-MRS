@@ -18,6 +18,7 @@ import rest.domain.AdminApoteke;
 import rest.domain.AkcijaPromocija;
 import rest.domain.Apoteka;
 import rest.domain.Cena;
+import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
 import rest.domain.DostupanProizvod;
 import rest.domain.NaruceniProizvod;
@@ -35,6 +36,7 @@ import rest.domain.Zahtjev;
 import rest.domain.Zaposlenje;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
+import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NaruceniProizvodDTO;
@@ -46,6 +48,7 @@ import rest.dto.PreparatDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
+import rest.repository.DermatologRepository;
 import rest.repository.DobavljacRepository;
 import rest.repository.DostupanProizvodRepository;
 import rest.repository.EReceptRepository;
@@ -81,6 +84,7 @@ public class AdminServiceImpl implements AdminService {
 	private ZaposlenjeRepository zaposlenjeRepository;
 	private ZahtevRepository zahtevRepository;
 	private EReceptRepository ereceptRepository;
+	private DermatologRepository dermatologRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
@@ -89,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
 	public AdminServiceImpl(PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
 			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo, KorisnikRepository korisnikRepo,
-			ZaposlenjeRepository zaposlenjeRepo, ZahtevRepository zahtevRepo, EReceptRepository erecepRepo) {
+			ZaposlenjeRepository zaposlenjeRepo, ZahtevRepository zahtevRepo, EReceptRepository erecepRepo, DermatologRepository dermatologRepo) {
 		this.ponudaRepository = imar;
 		this.env = env;
 		this.javaMailSender = jms;
@@ -109,6 +113,7 @@ public class AdminServiceImpl implements AdminService {
 		this.zaposlenjeRepository = zaposlenjeRepo;
 		this.zahtevRepository = zahtevRepo;
 		this.ereceptRepository = erecepRepo;
+		this.dermatologRepository = dermatologRepo;
 	}
 	
 	public String getMonthName(int month) {
@@ -963,6 +968,69 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void deleteOutdatedPromotion() {
 		cenaRepository.deleteOutdatedPromotion(LocalDate.now());
+	}
+
+	@Override
+	public Zaposlenje employDermatologist(int pharmacyId, DermatologDTO dermatologistDTO) {
+		Collection<Zaposlenje> employments = zaposlenjeRepository.getEmploymentsForDermatologist(dermatologistDTO.getId());
+
+		for (Zaposlenje z : employments) {
+			// > 0 ako je pocetak naseg termina pre pocetka trenutnog
+			int startStartDifference = z.getPocetakRadnogVremena().compareTo(dermatologistDTO.getPocetakRadnogVremena());
+			// > 0 ako je kraj naseg termina pre kraja trenutnog
+			int endEndDifference = z.getKrajRadnogVremena().compareTo(dermatologistDTO.getKrajRadnogVremena());
+			// > 0 ako je kraj naseg termina pre pocetka trenutnog
+			int startEndDifference = z.getPocetakRadnogVremena().compareTo(dermatologistDTO.getKrajRadnogVremena());
+			// > 0 ako je pocetak naseg termina pre kraja trenutnog
+			int endStartDifference = z.getKrajRadnogVremena().compareTo(dermatologistDTO.getPocetakRadnogVremena());
+			boolean startInBetween = startStartDifference < 0 && endStartDifference > 0;
+			boolean endInBetween = startEndDifference < 0 && endEndDifference > 0;
+			boolean wrapping = startStartDifference > 0 && endEndDifference < 0;
+			if (startInBetween || endInBetween || wrapping) {
+				return null;
+			}
+		}
+
+		Apoteka a = apotekeRepository.findById(pharmacyId).get();
+		Dermatolog d = dermatologRepository.findById(dermatologistDTO.getId()).get();
+		Zaposlenje z = new Zaposlenje(dermatologistDTO.getPocetakRadnogVremena(), dermatologistDTO.getKrajRadnogVremena(), a, d);
+		d.addZaposlenje(z);
+		zaposlenjeRepository.save(z);
+		dermatologRepository.save(d);
+
+		return z;
+	}
+
+	@Override
+	public ArrayList<DermatologDTO> getDermatologistsOutsidePharmacy(int pharmacyId) {
+		ArrayList<Dermatolog> dermatologists = dermatologRepository.getDermatologistsOutsidePharmacy(pharmacyId);
+		ArrayList<DermatologDTO> dermatologistsDTO = new ArrayList<>();
+
+		for (Dermatolog d : dermatologists) {
+			dermatologistsDTO.add(new DermatologDTO(d));
+		}
+
+		return dermatologistsDTO;
+	}
+
+	@Override
+	public Collection<Pregled> scheduledAppointmentsForDermatologist(int pharmacyId, int dermatologistId) {
+		Collection<Pregled> pregledi = pregledRepository.getScheduledAppointments(dermatologistId, pharmacyId, LocalDate.now());
+
+		return pregledi;
+	}
+
+	@Override
+	public void removeDermatologist(int pharmacyId, int dermatologistId) {
+		notifikacijaRepository.deleteNotificationsOfUser(dermatologistId);
+		Dermatolog d = dermatologRepository.getDermatologistWithEmployments(dermatologistId);
+		Zaposlenje z = zaposlenjeRepository.getEmploymentForDermatologist(pharmacyId, dermatologistId);
+		int zaposlenjeId = z.getId();
+		d.removeZaposlenje(z);
+		dermatologRepository.save(d);
+		zaposlenjeRepository.save(z);
+		zaposlenjeRepository.deleteForDermatologist(zaposlenjeId);
+		pregledRepository.deleteOpenAppointmentsForDermatologistForPharmacy(pharmacyId, dermatologistId);
 	}
 
 }

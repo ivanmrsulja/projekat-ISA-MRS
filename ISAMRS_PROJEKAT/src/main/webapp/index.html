@@ -34,10 +34,11 @@
 
 <a class="navigacija" href="#/apoteke/0" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG' || korisnik.zaposlenjeKorisnika=='FARMACEUT' || korisnik.zaposlenjeKorisnika=='DOBAVLJAC' || korisnik.zaposlenjeKorisnika=='ADMIN_APOTEKE'">Pocetna</a>
 <a class="navigacija" href="#/preparati" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT' && korisnik.zaposlenjeKorisnika != 'PACIJENT'&& korisnik.zaposlenjeKorisnika != 'GOST'">Preparati</a>
-<a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Profil Apoteke</a>
+<a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Apoteka</a>
 <a class="navigacija" href="#/profilAdminaApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Moj profil</a>
 <a class="navigacija" href="#/pregledZahtevaFarmaceuta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Zahtevi</a>
-<a class="navigacija" href="#/registracijaFarmaceuta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Registracija farmaceuta</a>
+<a class="navigacija" href="#/registracijaFarmaceuta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Reg. farmaceuta</a>
+<a class="navigacija" href="#/dermatoloziAdminApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Dermatolozi</a>
 <a class="navigacija" href="#/kreiranjeTerminaPregleda" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Kreiranje termina</a>
 <a class="navigacija" href="#/definicijaAkcijePromocije" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Akcije</a>
 <a class="navigacija" href="#/definicijaCenovnika" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Cenovnik</a>
@@ -152,6 +153,7 @@
 <script src="app/pregledNotifikacija.js"></script>
 <script src="app/kreiranjeTerminaPregleda.js"></script>
 <script src="app/godisnjiOdmor.js"></script>	
+<script src="app/dermatoloziAdminApoteke.js"></script>
 
 <script src="app/app.js"></script>
 </body>

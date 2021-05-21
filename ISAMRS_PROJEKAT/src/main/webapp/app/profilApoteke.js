@@ -93,6 +93,7 @@ Vue.component("profil-apoteke", {
 			<th>Ime</th>
 			<th>Prezime</th>
 			<th>Ocena</th>
+			<td></td>
 		</tr>
 	</thead>
 	<tbody>
@@ -100,6 +101,7 @@ Vue.component("profil-apoteke", {
 		<td>{{s.ime}}</td>
 		<td>{{s.prezime}}</td>
 		<td>{{s.ocjena.toFixed(2)}}</td>
+		<td><input type="button" class="button1" value="Ukloni" v-on:click="removeDermatologist(s)"/></td>
 	</tr>
 	</tbody>
 	</table>
@@ -251,7 +253,23 @@ Vue.component("profil-apoteke", {
 		  				});
 					}
 				});
-		}
+		},
+		removeDermatologist: function(d) {
+			axios
+			.delete("api/admin/removeDermatologist/" + this.apoteka.id + "/" + d.id)
+			.then(response => {
+				if (response.data != "OK") {
+					alert("Nemoguce obrisati dermatologa jer ima zakazane termine");
+				} else {
+					alert("Dermatolog uspesno uklonjen.");
+					axios
+		  			.get("api/dermatolog/apoteka/admin/" + this.apoteka.id)
+		  			.then(response => {
+			  			this.dermatolozi = response.data;
+		  			});
+				}
+			});
+		},
 	},
 	mounted: function() {
 		axios

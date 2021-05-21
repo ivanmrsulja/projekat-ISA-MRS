@@ -46,6 +46,7 @@ const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>
 const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifikacija>'};
 const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></kreiranje-termina-pregleda>'};
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
+const DermatoloziAdminApoteke = { template: '<dermatolozi-admin-apoteke></dermatolozi-admin-apoteke>'};
 
 
 
@@ -100,6 +101,7 @@ const router = new VueRouter({
         { path: '/izvestajiPregledi', component: IzvestajiPregledi},
         { path: '/pregledNotifikacija', component: PregledNotifikacija},
         { path: '/kreiranjeTerminaPregleda', component: KreiranjeTerminaPregleda},
+        { path: '/dermatoloziAdminApoteke', component: DermatoloziAdminApoteke}
 	  ]
 	});
 

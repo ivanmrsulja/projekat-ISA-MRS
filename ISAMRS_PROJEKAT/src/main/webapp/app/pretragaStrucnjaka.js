@@ -74,7 +74,7 @@ Vue.component("pretraga-strucnjaka", {
 	<tr v-for="s in dermatolozi">
 		<td>{{s.korisnik.ime}}</td>
 		<td>{{s.korisnik.prezime}}</td>
-		<td>{{s.ocena}}</td>
+		<td>{{s.ocena.toFixed(2)}}</td>
         <td>{{s.naziviApoteka.join(', ')}}</td>
 	</tr>
 	</tbody>
