@@ -72,9 +72,9 @@ Vue.component("pretraga-strucnjaka", {
 	</thead>
 	<tbody>
 	<tr v-for="s in dermatolozi">
-		<td>{{s.korisnik.ime}}</td>
-		<td>{{s.korisnik.prezime}}</td>
-		<td>{{s.ocena.toFixed(2)}}</td>
+		<td>{{s.ime}}</td>
+		<td>{{s.prezime}}</td>
+		<td>{{s.ocjena.toFixed(2)}}</td>
         <td>{{s.naziviApoteka.join(', ')}}</td>
 	</tr>
 	</tbody>
