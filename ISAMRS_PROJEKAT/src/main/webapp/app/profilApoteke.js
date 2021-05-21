@@ -1,7 +1,8 @@
 Vue.component("profil-apoteke", {
 	data: function () {
 		    return {
-				apoteka : {
+				korisnik: {},
+				apoteka: {
 					naziv: "",
                     lokacija: {ulica: ""},
                     opis: "",
@@ -85,13 +86,18 @@ Vue.component("profil-apoteke", {
 	<br>
 	<br>
 
-	<h2>Zaposleni dermatolozi</h2>
-	<table class="table table-hover" style="width: 50%" >
+	<h2 v-bind:hidden="dermatolozi.length == 0">Zaposleni dermatolozi</h2>
+
+	<br>
+	<br>
+
+	<table class="table table-hover" style="width: 50%" v-bind:hidden="dermatolozi.length == 0">
 	 <thead>
 		<tr bgcolor="#90a4ae">
 			<th>Ime</th>
 			<th>Prezime</th>
 			<th>Ocena</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -99,6 +105,7 @@ Vue.component("profil-apoteke", {
 		<td>{{s.ime}}</td>
 		<td>{{s.prezime}}</td>
 		<td>{{s.ocjena.toFixed(2)}}</td>
+		<td><input type="button" class="button1" value="Ukloni" v-on:click="removeDermatologist(s)"/></td>
 	</tr>
 	</tbody>
 	</table>
@@ -241,6 +248,22 @@ Vue.component("profil-apoteke", {
 				.then(response => {
 					this.farmaceuti = response.data;
 				});
+		},
+		removeDermatologist: function(d) {
+			axios
+			.delete("api/admin/removeDermatologist/" + this.apoteka.id + "/" + d.id)
+			.then(response => {
+				if (response.data != "OK") {
+					alert("Nemoguce obrisati dermatologa jer ima zakazane termine");
+				} else {
+					alert("Dermatolog uspesno uklonjen.");
+					axios
+		  			.get("api/dermatolog/apoteka/admin/" + this.apoteka.id)
+		  			.then(response => {
+			  			this.dermatolozi = response.data;
+		  			});
+				}
+			});
 		}
 	},
 	mounted: function() {

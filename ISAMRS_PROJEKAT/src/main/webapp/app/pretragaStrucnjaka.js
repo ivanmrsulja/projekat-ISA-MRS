@@ -12,8 +12,8 @@ Vue.component("pretraga-strucnjaka", {
         <div id="mySidebar" class="sidebar">
 		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		  <table>
-			  <tr><td colspan=2 ><input type="text" name="naziv" placeholder="Ime" v-model="searchParams.ime" /></td></tr>
-			  <tr><td colspan=2 ><input type="text" name="lokacija" placeholder="Prezime" v-model="searchParams.prezime" /></td></tr>
+			  <tr><td colspan=2 ><input type="text" name="ime" placeholder="Ime" v-model="searchParams.ime" /></td></tr>
+			  <tr><td colspan=2 ><input type="text" name="prezime" placeholder="Prezime" v-model="searchParams.prezime" /></td></tr>
 			  <tr><td style="color:white">Ocena od:</td> <td><input type="number" min="0" max="5" name="startOcena" v-model="searchParams.startOcena" ></td></tr>
 			  <tr><td style="color:white">Ocena do:</td> <td><input type="number" min="1" max="5" name="endOcena" v-model="searchParams.endOcena" ></td></tr>
 			  <tr><td style="color:white">Sortiraj po:</td> 
@@ -72,9 +72,9 @@ Vue.component("pretraga-strucnjaka", {
 	</thead>
 	<tbody>
 	<tr v-for="s in dermatolozi">
-		<td>{{s.korisnik.ime}}</td>
-		<td>{{s.korisnik.prezime}}</td>
-		<td>{{s.ocena}}</td>
+		<td>{{s.ime}}</td>
+		<td>{{s.prezime}}</td>
+		<td>{{s.ocjena.toFixed(2)}}</td>
         <td>{{s.naziviApoteka.join(', ')}}</td>
 	</tr>
 	</tbody>

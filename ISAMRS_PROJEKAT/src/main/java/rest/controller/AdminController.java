@@ -29,6 +29,7 @@ import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.dto.CenovnikDTO;
+import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
 import rest.dto.NarudzbenicaDTO;
@@ -282,6 +283,22 @@ public class AdminController {
 
 		return narudzbenicaDTO;
 	}
+
+	@AsAdminApoteke
+	@PostMapping(value = "/employDermatologist/{pharmacyId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String employDermatologist(@RequestBody DermatologDTO dermatologistDTO, @PathVariable("pharmacyId") int pharmacyId) {
+		if (adminService.employDermatologist(pharmacyId, dermatologistDTO) == null) {
+			return "ERR";
+		}
+
+		return "OK";
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/dermatologistsOutsidePharmacy/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<DermatologDTO> getDermatologistsOutsidePharmacy(@PathVariable("pharmacyId") int pharmacyId) {
+		return adminService.getDermatologistsOutsidePharmacy(pharmacyId);
+	}
 	
 	@AsAdminApoteke
 	@GetMapping(value = "/orderOffers/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -336,10 +353,22 @@ public class AdminController {
 	}
 
 	@AsAdminApoteke
+	@DeleteMapping(value = "/removeDermatologist/{pharmacyId}/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String removeDermatologist(@PathVariable("pharmacyId") int pharmacyId, @PathVariable("dermatologistId") int dermatologistId) {
+		if (adminService.scheduledAppointmentsForDermatologist(pharmacyId, dermatologistId).size() != 0) {
+			return "ERR";
+		}
+		adminService.removeDermatologist(pharmacyId, dermatologistId);
+
+		return "OK";
+	}
+
+	@AsAdminApoteke
 	@PostMapping(value = "/registerCenovnik/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerCenovnik(@RequestBody CenovnikDTO cenovnikDTO, @PathVariable("id") int idApoteke) throws Exception{
 		adminService.registerPricelist(cenovnikDTO, idApoteke);
 
 		return "OK";
 	}
+
 }

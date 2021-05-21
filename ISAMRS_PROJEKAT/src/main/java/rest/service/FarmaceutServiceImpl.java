@@ -1,5 +1,6 @@
 package rest.service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -98,6 +99,23 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 	@Override
 	public Collection<Farmaceut> findAllForPharmacy(int id) {
 		return farmaceutRepository.getWithEmployments(id);
+	}
+
+	@Override
+	public boolean checkIfPharmacistHasAppointments(int pharmacistId, int pharmacyId) {
+		Collection<Pregled> appointments = pregledRepository.getScheduledAppointments(pharmacistId, pharmacyId, LocalDate.now());
+		if (appointments.size() == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public void deletePharmacist(int pharmacistId) {
+		notifikacijaRepository.deleteNotificationsOfUser(pharmacistId);
+		farmaceutRepository.deleteById(pharmacistId);
+		zaposlenjeRepository.deleteForPharmacist(pharmacistId);
 	}
 
 }

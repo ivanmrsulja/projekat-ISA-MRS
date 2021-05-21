@@ -1,7 +1,7 @@
 Vue.component("pocetna-strana", {
 	data: function () {
 		    return {
-				user : {}
+				user: {}
 		    }
 	},
 	template: ` 

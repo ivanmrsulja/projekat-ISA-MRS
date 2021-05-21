@@ -72,6 +72,7 @@ Vue.component("definicija-akcije-promocije", {
                 .then(response => {
                     this.cenovnik = response.data;
                     this.cenovnik.krajVazenja = null;
+                    this.cenovnik.promoTekst = "";
                 });
 		    });
         });

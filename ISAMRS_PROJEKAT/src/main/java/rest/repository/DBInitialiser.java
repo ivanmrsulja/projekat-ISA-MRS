@@ -103,6 +103,7 @@ public class DBInitialiser implements ApplicationRunner {
 		Lokacija l8 = new Lokacija(45.245143, 19.812051, "Jovana Popovica 9, Novi Sad");
 		Lokacija l9 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
 		Lokacija l10 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
+		Lokacija l11 = new Lokacija(45.253836, 19.807212, "Vladike Cirica 27, Novi Sad");
 		lokacijaRepo.save(l1);
 		lokacijaRepo.save(l2);
 		lokacijaRepo.save(l3);
@@ -113,6 +114,7 @@ public class DBInitialiser implements ApplicationRunner {
 		lokacijaRepo.save(l8);
 		lokacijaRepo.save(l9);
 		lokacijaRepo.save(l10);
+		lokacijaRepo.save(l11);
 		
 		Apoteka a1 = new Apoteka("Benu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 3.0, 8.0, l2, 3000);
 		Apoteka a2 = new Apoteka("Lilly", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0.0, 0.0, l1, 2000);
@@ -198,8 +200,10 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		Dermatolog d1=new Dermatolog("Dusan", "Antic", "dermatolog", "dermatolog","isamrstim06+d1@gmail.com",true,"telefon",l6,ZaposlenjeKorisnika.DERMATOLOG,5.0,24.0);		
 		Dermatolog d2=new Dermatolog("Pera", "Peric", "pera123", "pera123","isamrstim06+d2@gmail.com",true,"telefon",l7,ZaposlenjeKorisnika.DERMATOLOG,7.0,10.0);		
+		Dermatolog d3 = new Dermatolog("Mico", "Pelkin", "micoPelkin", "micoPelkin", "isamrstim06+d3@gmail.com", true, "telefon", l11, ZaposlenjeKorisnika.DERMATOLOG, 0, 0);
 		korisnici.save(d1);
 		korisnici.save(d2);
+		korisnici.save(d3);
 		
 
 		Zaposlenje z1 = new Zaposlenje(LocalTime.parse("09:00"), LocalTime.parse("17:00"), a1, d1);

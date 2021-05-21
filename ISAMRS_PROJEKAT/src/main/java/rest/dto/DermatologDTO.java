@@ -1,6 +1,8 @@
 package rest.dto;
 
 import rest.domain.Dermatolog;
+
+import java.time.LocalTime;
 import java.util.ArrayList;
 import rest.domain.Zaposlenje;
 
@@ -9,6 +11,9 @@ public class DermatologDTO extends KorisnikDTO implements Comparable<DermatologD
 	private double ocjena;
 	private ArrayList<String> naziviApoteka = new ArrayList<String>();
 	private String kriterijum;
+	LocalTime pocetakRadnogVremena;
+	LocalTime krajRadnogVremena;
+	
 	
 	public DermatologDTO() {
 		super();
@@ -44,6 +49,25 @@ public class DermatologDTO extends KorisnikDTO implements Comparable<DermatologD
 
 	public void setNaziviApoteka(ArrayList<String> naziviApoteka) {
 		this.naziviApoteka = naziviApoteka;
+	}
+
+public String getKriterijum() {
+		return kriterijum;
+	}
+	public void setKriterijum(String kriterijum) {
+		this.kriterijum = kriterijum;
+	}
+	public LocalTime getPocetakRadnogVremena() {
+		return pocetakRadnogVremena;
+	}
+	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
+		this.pocetakRadnogVremena = pocetakRadnogVremena;
+	}
+	public LocalTime getKrajRadnogVremena() {
+		return krajRadnogVremena;
+	}
+	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
+		this.krajRadnogVremena = krajRadnogVremena;
 	}
 
 	@Override
