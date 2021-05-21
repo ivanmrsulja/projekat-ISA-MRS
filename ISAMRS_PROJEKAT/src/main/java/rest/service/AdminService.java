@@ -12,6 +12,7 @@ import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.TipKorisnikaDTO;
 
 
 public interface AdminService {
@@ -30,4 +31,6 @@ public interface AdminService {
 	public void updateStocks(int orderId, int adminId);
 	
 	public void updateZalba(int id);
+	
+	public void createType(TipKorisnikaDTO t);
 }

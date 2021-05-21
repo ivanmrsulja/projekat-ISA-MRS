@@ -24,12 +24,14 @@ import rest.domain.Ponuda;
 import rest.domain.Preparat;
 import rest.domain.StatusPonude;
 import rest.domain.TeloAkcijePromocije;
+import rest.domain.TipKorisnika;
 import rest.domain.Zalba;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.NarudzbenicaDTO;
 import rest.dto.PonudaDTO;
+import rest.dto.TipKorisnikaDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
@@ -38,6 +40,7 @@ import rest.repository.DostupanProizvodRepository;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
 import rest.repository.PreparatRepository;
+import rest.repository.TipKorisnikaRepository;
 import rest.repository.ZalbaRepository;
 
 @Service
@@ -53,14 +56,16 @@ public class AdminServiceImpl implements AdminService {
 	private PreparatRepository preparatRepository;
 	private AdminApotekeRepository adminApotekeRepository;
 	private ZalbaRepository zalbaRepository;
+	private TipKorisnikaRepository tipRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	public AdminServiceImpl(ZalbaRepository zalre,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
+	public AdminServiceImpl(TipKorisnikaRepository tkre,ZalbaRepository zalre,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar) {
 		this.ponudaRepository = imar;
+		this.tipRepository = tkre;
 		this.zalbaRepository = zalre;
 		this.env = env;
 		this.javaMailSender = jms;
@@ -156,6 +161,16 @@ public class AdminServiceImpl implements AdminService {
 		Zalba z = zalbaRepository.findById(id).get();
 		z.setAnswered(true);
 		zalbaRepository.save(z);
+		
+	}
+
+	@Override
+	public void createType(TipKorisnikaDTO t) {
+		TipKorisnika tk = new TipKorisnika();
+		tk.setBodovi(t.getBodovi());
+		tk.setNaziv(t.getNaziv());
+		tk.setPopust(t.getPopust());
+		tipRepository.save(tk);
 		
 	}
 

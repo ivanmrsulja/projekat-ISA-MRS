@@ -47,6 +47,7 @@ const listaZalbi = { template: '<lista-zalbi></lista-zalbi>'};
 const jednaZalba = { template: '<jedna-zalba></jedna-zalba>'};
 const listaZalbiAdmin = { template: '<lista-zalbiadmin></lista-zalbiadmin>'};
 const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>'};
+const registracijaTipa = { template: '<register-type></register-type>'};
 
 const router = new VueRouter({
     mode: 'hash',
@@ -99,6 +100,7 @@ const router = new VueRouter({
         { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba"},
         { path: '/listaZalbiAdmin', component: listaZalbiAdmin},
         { path: '/jednaZalbaAdmin/:zalId', component: jednaZalbaAdmin, name: "jednaZalbaAdmin"},
+        { path: '/registracijaTipa', component: registracijaTipa},
 	    { path: '/godisnji', component: GodisnjiOdmor},
 	  ]
 	});

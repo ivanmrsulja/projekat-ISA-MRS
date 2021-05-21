@@ -37,13 +37,16 @@ import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Preparat;
+import rest.domain.StatusNaloga;
 import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PreparatDTO;
+import rest.dto.TipKorisnikaDTO;
 import rest.dto.ZalbaDTO;
 import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
 import rest.domain.TeloAkcijePromocije;
+import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
@@ -82,6 +85,7 @@ public class AdminController {
 	private NarudzbenicaRepozitory narudzbenicaRepository;
 	private PonudaRepository ponudaRepository;
 	private PacijentService pacijentService;
+	
 	
 	@Autowired
 	public AdminController(PacijentService pacser,AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
@@ -126,6 +130,13 @@ public class AdminController {
 		}
 
 		return availablePharmacyProductsDTO;
+	}
+	
+	@PostMapping(value = "/registerType", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String register(@RequestBody TipKorisnikaDTO tip) throws Exception {
+		System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
+		adminService.createType(tip);
+		return "OK";
 	}
 	
 	@GetMapping(value= "/getZalba/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
