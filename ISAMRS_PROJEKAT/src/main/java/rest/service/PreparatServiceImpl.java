@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
 import rest.domain.DostupanProizvod;
-import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
@@ -71,7 +70,7 @@ public class PreparatServiceImpl implements PreparatService{
 
 	@Override
 	public Collection<Preparat> getAllForPharmacy(int id) {
-		return cenaRepository.drugsForPharmacy(id);
+		return cenaRepository.drugsForPharmacy(id, LocalDate.now());
 	}
 	
 	@Override

@@ -253,21 +253,27 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		ERecept er1 = new ERecept(LocalDate.parse("2021-05-07"), p1, StatusERecepta.NOV, a1);
 		ERecept er2 = new ERecept(LocalDate.parse("2021-03-03"), p1, StatusERecepta.OBRADJEN, a2);
+		ERecept er3 = new ERecept(LocalDate.parse("2021-08-07"), p1, StatusERecepta.OBRADJEN, a1);
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
+		eaReceptiRepo.save(er3);
 		
 		StavkaRecepta sr1R1 = new StavkaRecepta(2, pr1);
 		StavkaRecepta sr2R1 = new StavkaRecepta(3, pr2);
 		StavkaRecepta sr1R2 = new StavkaRecepta(1, pr1);
+		StavkaRecepta sr1R3 = new StavkaRecepta(3, pr1);
 		stavkaReceptaRepo.save(sr1R1);
 		stavkaReceptaRepo.save(sr2R1);
 		stavkaReceptaRepo.save(sr1R2);
+		stavkaReceptaRepo.save(sr1R3);
 		
 		er1.getStavkaRecepata().add(sr1R1);
 		er1.getStavkaRecepata().add(sr2R1);
 		er2.getStavkaRecepata().add(sr1R2);
+		er3.getStavkaRecepata().add(sr1R3);
 		eaReceptiRepo.save(er1);
 		eaReceptiRepo.save(er2);
+		eaReceptiRepo.save(er3);
 		
 		Rezervacija rez1 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.parse("2021-05-29"), p1, pr1, a1, 1000);
 		Rezervacija rez2 = new Rezervacija(StatusRezervacije.REZERVISANO, LocalDate.now(), p2, pr1, a1, 750);

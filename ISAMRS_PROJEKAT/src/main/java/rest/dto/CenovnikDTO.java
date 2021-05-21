@@ -10,6 +10,8 @@ public class CenovnikDTO {
 	
 	private ArrayList<DostupanProizvodDTO> dostupniProizvodi;
 	private LocalDate pocetakVazenja;
+	private LocalDate krajVazenja;
+	private String promoTekst;
 
 	public CenovnikDTO() {}
 
@@ -18,6 +20,7 @@ public class CenovnikDTO {
 		for (DostupanProizvod dp : c.getDostupniProizvodi())
 			this.dostupniProizvodi.add(new DostupanProizvodDTO(dp));
 		this.pocetakVazenja = c.getPocetakVazenja();
+		this.krajVazenja = c.getKrajVazenja();
 	}
 
 	public CenovnikDTO(ArrayList<DostupanProizvodDTO> dostupniProizvodi, LocalDate pocetakVazenja) {
@@ -38,6 +41,23 @@ public class CenovnikDTO {
 	public void setPocetakVazenja(LocalDate pocetakVazenja) {
 		this.pocetakVazenja = pocetakVazenja;
 	}
+
+	public LocalDate getKrajVazenja() {
+		return krajVazenja;
+	}
+
+	public void setKrajVazenja(LocalDate krajVazenja) {
+		this.krajVazenja = krajVazenja;
+	}
+
+	public String getPromoTekst() {
+		return promoTekst;
+	}
+
+	public void setPromoTekst(String promoTekst) {
+		this.promoTekst = promoTekst;
+	}
+
 	@Override
 	public String toString() {
 		return "CenovnikDTO [dostupniProizvodi=" + dostupniProizvodi + ", pocetakVazenja=" + pocetakVazenja + "]";

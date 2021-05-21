@@ -10,7 +10,12 @@ Vue.component("definicija-cenovnika", {
     
 	<div align = center style="width: 75% sm;">
 
+    <br>
+    <br>
+
     <h2>Cenovnik apoteke</h2>
+
+    <br>
 
     <table class="table table-hover" style="width: 50%">
     <thead>
@@ -68,7 +73,7 @@ Vue.component("definicija-cenovnika", {
                     this.cenovnik = response.data;
                     this.cenovnik.pocetakVazenja = null;
                 });
-		  });
+		    });
         });
     }
 });

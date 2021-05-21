@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,6 @@ import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
-import rest.domain.TeloAkcijePromocije;
 import rest.dto.CenovnikDTO;
 import rest.dto.DostupanProizvodDTO;
 import rest.dto.IzvestajValueDTO;
@@ -53,6 +53,10 @@ public class AdminController {
 		this.ponudaRepository = pr;
 	}
 
+	@Scheduled(cron = "${akcije.cron}")
+	public void cronJob() {
+		adminService.deleteOutdatedPromotion();
+	}
 
 	@AsAdminApoteke
 	@GetMapping(value = "/searchPharmacy/{id}/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -118,6 +122,13 @@ public class AdminController {
 		return incomes;
 	}
 	
+	@AsAdminApoteke
+	@GetMapping(value = "/yearlyDrugsUsage/{year}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getDrugsUsageForYear(@PathVariable("year") int year, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> usage = adminService.getYearlyUsage(year, pharmacyId);
+
+		return usage;
+	}
 
 	@AsAdminApoteke
 	@GetMapping(value = "/quarterlyExaminations/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -136,6 +147,14 @@ public class AdminController {
 	}
 
 	@AsAdminApoteke
+	@GetMapping(value = "/quarterlyDrugsUsage/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getDrugsUsageForQuarter(@PathVariable("year") int year, @PathVariable("quarter") int quarter, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> usage = adminService.getQuarterlyUsage(year, quarter, pharmacyId);
+
+		return usage;
+	}
+
+	@AsAdminApoteke
 	@GetMapping(value = "/monthlyExaminations/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<IzvestajValueDTO> getExaminationsForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
 		ArrayList<IzvestajValueDTO> examinations = adminService.getMonthlyExaminations(year, month, pharmacyId);
@@ -149,6 +168,14 @@ public class AdminController {
 		ArrayList<IzvestajValueDTO> incomes = adminService.getMonthlyIncome(year, month, pharmacyId);
 
 		return incomes;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/monthlyDrugsUsage/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getDrugsUsageForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> usage = adminService.getMonthlyUsage(year, month, pharmacyId);
+
+		return usage;
 	}
 
 	@AsAdminApoteke
@@ -278,9 +305,9 @@ public class AdminController {
 	}
 
 	@AsAdminApoteke
-	@PostMapping(value="/registerPromo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String registerPromotion(@RequestBody TeloAkcijePromocije telo) throws Exception{
-		adminService.registerPromotion(telo);
+	@PostMapping(value="/registerPromo/{adminId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String registerPromotion(@RequestBody CenovnikDTO cenovnik, @PathVariable("adminId") int adminId) throws Exception{
+		adminService.registerPromotion(cenovnik, adminId, cenovnik.getPromoTekst());
 
 		return "OK";
 	}
