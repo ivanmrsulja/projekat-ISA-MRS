@@ -5,13 +5,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Apoteka;
-import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
-import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
-import rest.dto.ZalbaDTO;
 import rest.repository.ApotekeRepository;
 import rest.repository.PacijentRepository;
 import rest.service.KorisnikService;
@@ -60,12 +54,6 @@ public class PacijentController {
 	@GetMapping(value = "spec/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PacijentDTO getSpec(@PathVariable("id") int id){
 		return new PacijentDTO(pacijentService.getOne(id));
-	}
-	
-	@PostMapping(value = "/sendZalba", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String changePass(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
-		pacijentService.sendZalba(user);
-		return "OK";
 	}
 	
 	@GetMapping(value = "pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

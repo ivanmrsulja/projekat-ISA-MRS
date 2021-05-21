@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import rest.domain.Apoteka;
 import rest.domain.Pacijent;
 import rest.domain.Preparat;
-import rest.domain.Zalba;
 
 public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 
@@ -27,16 +26,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 
 	@Query("select p from Pacijent p join fetch p.apoteke where p.id = ?1")
 	Pacijent getPatientWithPharmacies(int idPacijenta);
-	
-	@Query("select p from Pacijent p where p.username = ?1")
-	Pacijent getPatientByUser(String username);
 
-
-	
-	@Query("select z from Pacijent p join p.zalbe z where p.id = ?1")
-	Collection<Zalba> getPatientZalbe(int idPacijenta);
-	
-	
 	@Query("select p from Pacijent p join p.apoteke ap where ?1 in ap.id")
 	Collection<Pacijent> getPatientsSubscribedToPharmacy(int idApoteke);
 }

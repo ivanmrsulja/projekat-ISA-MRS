@@ -20,32 +20,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsAdminApoteke;
-import rest.domain.AdminApoteke;
-import rest.domain.AkcijaPromocija;
-import rest.domain.Apoteka;
-import rest.domain.Cena;
-import rest.domain.Dermatolog;
-import rest.domain.DostupanProizvod;
-import rest.domain.NaruceniProizvod;
 import rest.domain.Narudzbenica;
 import rest.domain.Ponuda;
-import rest.domain.Preparat;
-import rest.domain.StatusNaloga;
 import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
-import rest.dto.TipKorisnikaDTO;
-import rest.dto.ZalbaDTO;
-import rest.domain.StatusNarudzbenice;
-import rest.domain.StatusPonude;
-import rest.domain.TeloAkcijePromocije;
-import rest.domain.ZaposlenjeKorisnika;
-import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
@@ -55,8 +37,6 @@ import rest.dto.NotifikacijaDTO;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
 import rest.service.AdminService;
-import rest.service.AkcijaPromocijaService;
-import rest.service.PacijentService;
 
 
 @RestController
@@ -66,24 +46,10 @@ public class AdminController {
 	private AdminService adminService;
 	private NarudzbenicaRepozitory narudzbenicaRepository;
 	private PonudaRepository ponudaRepository;
-	private PacijentService pacijentService;
-	
 	
 	@Autowired
-	public AdminController(PacijentService pacser,AdminService as, AdminApotekeRepository aar, AkcijaPromocijaRepository apr, AkcijaPromocijaService aps, PacijentRepository pr,
-			ApotekaController ac, CenaRepository cr7, ApotekeRepository ar, DostupanProizvodRepository dpr, PreparatRepository prepRep, NarudzbenicaRepozitory nr,
-			PonudaRepository pRepo) {
+	public AdminController(AdminService as, NarudzbenicaRepozitory nr, PonudaRepository pr) {
 		this.adminService = as;
-		this.pacijentService = pacser;
-		this.adminApotekeRepository = aar;
-		this.akcijaPromocijaRepository = apr;
-		this.akcijaPromocijaService = aps;
-		this.pacijentRepository = pr;
-		this.apotekaController = ac;
-		this.cenaRepository = cr7;
-		this.apotekeRepository = ar;
-		this.dostupanProizvodRepository = dpr;
-		this.preparatRepository = prepRep;
 		this.narudzbenicaRepository = nr;
 		this.ponudaRepository = pr;
 	}
@@ -110,35 +76,6 @@ public class AdminController {
 	}
 	
 	@AsAdminApoteke
-	@PostMapping(value = "/registerType", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String register(@RequestBody TipKorisnikaDTO tip) throws Exception {
-		System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
-		adminService.createType(tip);
-		return "OK";
-	}
-	
-	@GetMapping(value= "/getZalba/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ZalbaDTO getZalba(@PathVariable("id") int id) {
-		ZalbaDTO users = pacijentService.getOneZalba(id);
-		
-		return users;
-	}
-	
-	@PutMapping(value = "/ZalbeUpdate/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String updateZalba(@PathVariable("id") int id) {
-		adminService.updateZalba(id);
-		return "OK";
-	}
-	
-	@GetMapping(value = "/Zalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<ZalbaDTO> getZalbeForAdmin(@PathVariable("id") int id){
-		Collection<ZalbaDTO> zdtos = pacijentService.getZalbeForAdmin(id);
-
-		return (ArrayList<ZalbaDTO>) zdtos;
-	}
-	
-
-	
 	@GetMapping(value = "/productsOutsidePharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(@PathVariable("id") int pharmacyId) {
 		ArrayList<PreparatDTO> productsDTO = adminService.getProductsOutsidePharmacy(pharmacyId);

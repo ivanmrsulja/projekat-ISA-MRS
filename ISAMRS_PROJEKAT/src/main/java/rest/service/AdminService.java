@@ -19,7 +19,6 @@ import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
-import rest.dto.TipKorisnikaDTO;
 
 
 public interface AdminService {
@@ -98,8 +97,4 @@ public interface AdminService {
 	public Collection<Pregled> scheduledAppointmentsForDermatologist(int pharmacyId, int dermatologistId);
 
 	public void removeDermatologist(int pharmacyId, int dermatologistId);
-	
-	public void updateZalba(int id);
-	
-	public void createType(TipKorisnikaDTO t);
 }

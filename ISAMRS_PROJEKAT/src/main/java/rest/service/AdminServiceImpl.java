@@ -34,9 +34,6 @@ import rest.domain.StatusPregleda;
 import rest.domain.TipPregleda;
 import rest.domain.Zahtjev;
 import rest.domain.Zaposlenje;
-import rest.domain.TeloAkcijePromocije;
-import rest.domain.TipKorisnika;
-import rest.domain.Zalba;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DermatologDTO;
@@ -48,7 +45,6 @@ import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
-import rest.dto.TipKorisnikaDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
@@ -66,8 +62,6 @@ import rest.repository.PreparatRepository;
 import rest.repository.RezervacijaRepository;
 import rest.repository.ZahtevRepository;
 import rest.repository.ZaposlenjeRepository;
-import rest.repository.TipKorisnikaRepository;
-import rest.repository.ZalbaRepository;
 
 @Service
 @Transactional
@@ -91,8 +85,6 @@ public class AdminServiceImpl implements AdminService {
 	private ZahtevRepository zahtevRepository;
 	private EReceptRepository ereceptRepository;
 	private DermatologRepository dermatologRepository;
-	private ZalbaRepository zalbaRepository;
-	private TipKorisnikaRepository tipRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
@@ -102,11 +94,7 @@ public class AdminServiceImpl implements AdminService {
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
 			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo, KorisnikRepository korisnikRepo,
 			ZaposlenjeRepository zaposlenjeRepo, ZahtevRepository zahtevRepo, EReceptRepository erecepRepo, DermatologRepository dermatologRepo) {
-	public AdminServiceImpl(TipKorisnikaRepository tkre,ZalbaRepository zalre,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
-			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar) {
 		this.ponudaRepository = imar;
-		this.tipRepository = tkre;
-		this.zalbaRepository = zalre;
 		this.env = env;
 		this.javaMailSender = jms;
 		this.narudzbenicaRepository = nr;
@@ -946,23 +934,6 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 		}
-	public void updateZalba(int id) {
-		Zalba z = zalbaRepository.findById(id).get();
-		z.setAnswered(true);
-		zalbaRepository.save(z);
-		
-	}
-
-	@Override
-	public void createType(TipKorisnikaDTO t) {
-		TipKorisnika tk = new TipKorisnika();
-		tk.setBodovi(t.getBodovi());
-		tk.setNaziv(t.getNaziv());
-		tk.setPopust(t.getPopust());
-		tipRepository.save(tk);
-		
-	}
-
 		
 		// provera da dermatolog nije na godisnjem/odsustvu
 		{

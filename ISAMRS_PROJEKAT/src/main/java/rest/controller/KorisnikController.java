@@ -35,7 +35,6 @@ import rest.domain.Ponuda;
 import rest.aspect.AsAdminApoteke;
 import rest.aspect.AsPacijent;
 import rest.domain.StatusNaloga;
-import rest.domain.Zalba;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.AdminApotekeDTO;
@@ -47,7 +46,6 @@ import rest.dto.PharmacyAdminDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.dto.RezervacijaDTO;
-import rest.dto.ZalbaDTO;
 import rest.service.AkcijaPromocijaService;
 import rest.service.ApotekaService;
 import rest.service.KorisnikService;
@@ -79,26 +77,6 @@ public class KorisnikController {
 	public ResponseEntity<Collection<Korisnik>> getUsers() {
 		Collection<Korisnik> users = userService.findAll();
 		return new ResponseEntity<Collection<Korisnik>>(users, HttpStatus.OK);
-	}
-	
-	
-	@GetMapping(value= "/getZalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<ZalbaDTO>> getZalbe(@PathVariable("id") int id) {
-		Collection<ZalbaDTO> users = pacijentService.getZalbeForPatient(id);
-		pacijentService.getAllAppealable(id);
-		return new ResponseEntity<Collection<ZalbaDTO>>(users, HttpStatus.OK);
-	}
-	
-	@GetMapping(value= "/getZaljivo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<String>> getZaljivo(@PathVariable("id") int id) {
-		Collection<String> users = pacijentService.getAllAppealable(id);
-		return new ResponseEntity<Collection<String>>(users, HttpStatus.OK);
-	}
-	
-	@GetMapping(value= "/getZalbe/{id}/{zalId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ZalbaDTO getZalba(@PathVariable("id") int id, @PathVariable("zalId") int zalId) {
-		ZalbaDTO users = pacijentService.getZalbaForPatient(id, zalId);
-		return users;
 	}
 	
 	@GetMapping(value = "/currentUser", produces = MediaType.APPLICATION_JSON_VALUE)
