@@ -147,6 +147,14 @@ public class AdminController {
 	}
 
 	@AsAdminApoteke
+	@GetMapping(value = "/quarterlyDrugsUsage/{year}/{quarter}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getDrugsUsageForQuarter(@PathVariable("year") int year, @PathVariable("quarter") int quarter, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> usage = adminService.getQuarterlyUsage(year, quarter, pharmacyId);
+
+		return usage;
+	}
+
+	@AsAdminApoteke
 	@GetMapping(value = "/monthlyExaminations/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<IzvestajValueDTO> getExaminationsForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
 		ArrayList<IzvestajValueDTO> examinations = adminService.getMonthlyExaminations(year, month, pharmacyId);
@@ -160,6 +168,14 @@ public class AdminController {
 		ArrayList<IzvestajValueDTO> incomes = adminService.getMonthlyIncome(year, month, pharmacyId);
 
 		return incomes;
+	}
+
+	@AsAdminApoteke
+	@GetMapping(value = "/monthlyDrugsUsage/{year}/{month}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<IzvestajValueDTO> getDrugsUsageForMonth(@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("pharmacyId") int pharmacyId) {
+		ArrayList<IzvestajValueDTO> usage = adminService.getMonthlyUsage(year, month, pharmacyId);
+
+		return usage;
 	}
 
 	@AsAdminApoteke

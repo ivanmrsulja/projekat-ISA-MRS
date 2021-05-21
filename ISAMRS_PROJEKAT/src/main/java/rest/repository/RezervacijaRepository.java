@@ -38,5 +38,8 @@ public interface RezervacijaRepository extends JpaRepository<Rezervacija, Intege
 
 	@Query("select date_trunc('month', r.datumPreuzimanja) as datum, count(r.id) as kolicina from Rezervacija r where r.datumPreuzimanja >= ?1 and r.datumPreuzimanja <= ?2 and r.status = 1 and r.apoteka.id = ?3 group by date_trunc('month', r.datumPreuzimanja)")
 	public ArrayList<Object[]> getDrugsUsagePerMonth(LocalDate date_low, LocalDate date_high, int pharmacyId);
+
+	@Query("select date_trunc('day', r.datumPreuzimanja) as datum, count(r.id) as kolicina from Rezervacija r where r.datumPreuzimanja >= ?1 and r.datumPreuzimanja <= ?2 and r.status = 1 and r.apoteka.id = ?3 group by date_trunc('day', r.datumPreuzimanja)")
+	public ArrayList<Object[]> getDrugsUsageForMonth(LocalDate date_low, LocalDate date_high, int pharmacyId);
 	
 }

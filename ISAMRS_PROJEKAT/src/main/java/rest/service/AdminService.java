@@ -70,6 +70,10 @@ public interface AdminService {
 
 	public ArrayList<IzvestajValueDTO> getYearlyUsage(int year, int pharmacyId);
 
+	public ArrayList<IzvestajValueDTO> getQuarterlyUsage(int year, int quarter, int pharmacyId);
+	
+	public ArrayList<IzvestajValueDTO> getMonthlyUsage(int year, int month, int pharmacyId);
+
 	public ArrayList<NotifikacijaDTO> getNotificationsForPharmacy(int pharmacyId);
 
 	public void updatePharmacyNotifications(int pharmacyId);
