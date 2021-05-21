@@ -16,18 +16,23 @@ public class Zalba {
 	private Integer Id;
 	@Column(name = "text", nullable = false)
 	private String text;
+	@Column(name = "answered", nullable = false)
+	private boolean answered;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private AdminSistema adminSistema;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
-	public Zalba() {}
+	public Zalba() {
+		this.answered = false;
+	}
 	
 	public Zalba(String text, AdminSistema adminSistema, Pacijent pacijent) {
 		super();
 		this.text = text;
 		this.adminSistema = adminSistema;
 		this.pacijent = pacijent;
+		this.answered = false;
 	}
 
 	public Integer getId() {
@@ -61,5 +66,14 @@ public class Zalba {
 	public void setPacijent(Pacijent pacijent) {
 		this.pacijent = pacijent;
 	}
+
+	public boolean isAnswered() {
+		return answered;
+	}
+
+	public void setAnswered(boolean answered) {
+		this.answered = answered;
+	}
+	
 	
 }
