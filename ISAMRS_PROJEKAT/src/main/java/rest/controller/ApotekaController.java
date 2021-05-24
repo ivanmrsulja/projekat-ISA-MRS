@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -135,6 +136,8 @@ public class ApotekaController {
 			pregledService.zakaziPregled(idp, idpa);
 			pregledService.sendConfirmationEmail(currentUser);
 			return "Uspesno zakazan pregled.";
+		} catch (OptimisticLockingFailureException ex) {
+			return "Doslo je do greske prilikom zakazivanja pregleda, molimo osvezite stranicu i pokusajte ponovo.";
 		} catch (Exception e) {
 			return e.getMessage();
 		}
