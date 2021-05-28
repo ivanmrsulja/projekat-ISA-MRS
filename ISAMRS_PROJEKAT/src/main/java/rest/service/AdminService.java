@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.scheduling.annotation.Async;
 
+import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.TeloAkcijePromocije;
@@ -33,4 +34,6 @@ public interface AdminService {
 	public void updateZalba(int id);
 	
 	public void createType(TipKorisnikaDTO t);
+	
+	public Collection<NarudzbenicaDTO> getAvailableNarudzbenice(int id);
 }

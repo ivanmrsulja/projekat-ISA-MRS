@@ -22,6 +22,7 @@ import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Preparat;
+import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
 import rest.domain.TeloAkcijePromocije;
 import rest.domain.TipKorisnika;
@@ -171,6 +172,33 @@ public class AdminServiceImpl implements AdminService {
 		tk.setNaziv(t.getNaziv());
 		tk.setPopust(t.getPopust());
 		tipRepository.save(tk);
+		
+	}
+
+	@Override
+	public Collection<NarudzbenicaDTO> getAvailableNarudzbenice(int id) {
+		 Collection<Narudzbenica> nars = narudzbenicaRepository.getAllWithProizvodi();
+		 System.out.println("THE DUZINA OVDE JE " + nars.size());
+		 Collection<NarudzbenicaDTO> newnar = new ArrayList<NarudzbenicaDTO>();
+		 for (Narudzbenica narudzbenica : nars) {
+			System.out.println("OVO JE NARUDZBENICA SA ID " +narudzbenica.getId());
+			boolean foundDob = false;
+			if(narudzbenica.getStatus().equals(StatusNarudzbenice.CEKA_PONUDE)) {
+				for (Ponuda pon : narudzbenica.getPonude()) {
+					if(pon.getDobavljac().getId() == id) {
+						foundDob = true;
+						break;
+					}
+				}
+				if(!foundDob) {
+					NarudzbenicaDTO nar = new NarudzbenicaDTO(narudzbenica);
+					newnar.add(nar);
+					
+				}
+				
+			}
+		}
+		 return newnar;
 		
 	}
 

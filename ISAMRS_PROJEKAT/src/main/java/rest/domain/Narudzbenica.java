@@ -30,7 +30,6 @@ public class Narudzbenica {
 	private AdminApoteke adminApoteke;
 	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Ponuda> ponude;
-	
 	public Narudzbenica() {
 		this.naruceniProizvodi = new HashSet<NaruceniProizvod>();
 		this.ponude = new HashSet<Ponuda>();

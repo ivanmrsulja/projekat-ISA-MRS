@@ -119,6 +119,13 @@ public class AdminController {
 
 		return availablePharmacyProductsDTO;
 	}
+	
+	@GetMapping(value = "/availableNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<NarudzbenicaDTO> availableNar(@PathVariable("id") int id){
+		Collection<NarudzbenicaDTO> abc = adminService.getAvailableNarudzbenice(id);
+
+		return (ArrayList<NarudzbenicaDTO>) abc;
+	}
 
 	@GetMapping(value = "/searchPharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<DostupanProizvodDTO> getAllProductsOfPharmacy(@PathVariable("id") int pharmacyId){

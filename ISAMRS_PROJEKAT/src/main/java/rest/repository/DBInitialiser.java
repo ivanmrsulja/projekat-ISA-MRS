@@ -171,6 +171,7 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		
 		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
+		Dobavljac de1 = new Dobavljac("Pera", "Peric", "dobavljacica", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
 		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-04"), adma2, StatusNarudzbenice.CEKA_PONUDE);
 		Set<NaruceniProizvod> naruceniProizvodi1 = new HashSet<NaruceniProizvod>();
 		NaruceniProizvod np1 = new NaruceniProizvod(8, pr1, n);
@@ -185,13 +186,24 @@ public class DBInitialiser implements ApplicationRunner {
 		naruceniProizvodi1.add(np3);
 		naruceniProizvodi1.add(np4);
 		n2.setNaruceniProizvodi(naruceniProizvodi2);
+		Narudzbenica n3 = new Narudzbenica(LocalDate.parse("2020-10-10"), adma2, StatusNarudzbenice.CEKA_PONUDE);
+		Set<NaruceniProizvod> naruceniProizvodi3 = new HashSet<NaruceniProizvod>();
+		NaruceniProizvod np6 = new NaruceniProizvod(4, pr1, n3);
+		NaruceniProizvod np5 = new NaruceniProizvod(14, pr3, n3);
+		naruceniProizvodi1.add(np6);
+		naruceniProizvodi1.add(np5);
+		n2.setNaruceniProizvodi(naruceniProizvodi3);
 		naruceniProizvodRepo.save(np1);
 		naruceniProizvodRepo.save(np2);
 		naruceniProizvodRepo.save(np3);
 		naruceniProizvodRepo.save(np4);
+		naruceniProizvodRepo.save(np5);
+		naruceniProizvodRepo.save(np6);
 		korisnici.save(d);
+		korisnici.save(de1);
 		narudzbenicaRepo.save(n);
 		narudzbenicaRepo.save(n2);
+		narudzbenicaRepo.save(n3);
 		adminRepo.save(new Ponuda(StatusPonude.CEKA_NA_ODGOVOR, 400.23, LocalDate.parse("2021-04-24"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.PRIHVACENA, 500.23, LocalDate.parse("2021-04-07"), n, d));
 		adminRepo.save(new Ponuda(StatusPonude.ODBIJENA, 500.23, LocalDate.parse("2021-04-06"), n, d));
@@ -355,6 +367,7 @@ public class DBInitialiser implements ApplicationRunner {
 		zalbaRepo.save(zal4);
 		p2.addZalba(zal4);
 		korisnici.save(p2);
+	
 	}
 
 }
