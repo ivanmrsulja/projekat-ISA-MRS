@@ -38,7 +38,9 @@ Vue.component("definicija-akcije-promocije", {
 <br>
 <br>
 
-<textarea rows="6" cols="25" name="text" v-model="cenovnik.promoTekst"></textarea>
+<h4>Telo akcije/promocije: </h4>
+<br>
+<textarea rows="6" style="width: 50%" name="text" v-model="cenovnik.promoTekst"></textarea>
 <br><br>
 <input type="button" class="button1" value="Zavrsi" v-bind:hidden="cenovnik.promoTekst == ''" v-on:click="createPromotion()"/>
 
@@ -72,6 +74,7 @@ Vue.component("definicija-akcije-promocije", {
                 .then(response => {
                     this.cenovnik = response.data;
                     this.cenovnik.krajVazenja = null;
+                    this.cenovnik.promoTekst = '';
                 });
 		    });
         });

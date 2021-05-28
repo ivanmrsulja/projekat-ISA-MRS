@@ -927,7 +927,8 @@ public class AdminServiceImpl implements AdminService {
 					boolean startInBetween = startStartDifference < 0 && endStartDifference > 0;
 					boolean endInBetween = startEndDifference < 0 && endEndDifference > 0;
 					boolean wrapping = startStartDifference > 0 && endEndDifference < 0;
-					if (startInBetween || endInBetween || wrapping) {
+					boolean sameStart = startStartDifference == 0;
+					if (startInBetween || endInBetween || wrapping || sameStart) {
 						return null;
 					}
 				}
