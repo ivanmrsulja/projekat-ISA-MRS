@@ -44,7 +44,9 @@ const registracijaApoteke = { template: '<register-apoteka></register-apoteka>' 
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
 const listaZalbi = { template: '<lista-zalbi></lista-zalbi>'};
+const listaNarudzbenica = { template: '<lista-narudzbenica></lista-narudzbenica>'};
 const jednaZalba = { template: '<jedna-zalba></jedna-zalba>'};
+const jednaNarudzbenica = { template: '<jedna-narudzbenica></jedna-narudzbenica>'};
 const listaZalbiAdmin = { template: '<lista-zalbiadmin></lista-zalbiadmin>'};
 const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>'};
 const registracijaTipa = { template: '<register-type></register-type>'};
@@ -98,8 +100,10 @@ const router = new VueRouter({
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
         { path: '/listaZalbi', component: listaZalbi},
         { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba"},
+        { path: '/jednaNarudzbenica/:zalId', component: jednaNarudzbenica, name: "jednaNarudzbenica"},
         { path: '/listaZalbiAdmin', component: listaZalbiAdmin},
         { path: '/jednaZalbaAdmin/:zalId', component: jednaZalbaAdmin, name: "jednaZalbaAdmin"},
+        { path: '/listaNarudzbenica', component: listaNarudzbenica},
         { path: '/registracijaTipa', component: registracijaTipa},
 	    { path: '/godisnji', component: GodisnjiOdmor},
 	  ]

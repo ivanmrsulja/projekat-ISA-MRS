@@ -36,4 +36,8 @@ public interface AdminService {
 	public void createType(TipKorisnikaDTO t);
 	
 	public Collection<NarudzbenicaDTO> getAvailableNarudzbenice(int id);
+	
+	public NarudzbenicaDTO getNarudzbenicaById(int id);
+	
+	public void createOffer(PonudaDTO p);
 }

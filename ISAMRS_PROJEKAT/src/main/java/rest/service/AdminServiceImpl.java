@@ -202,5 +202,24 @@ public class AdminServiceImpl implements AdminService {
 		
 	}
 
+	@Override
+	public NarudzbenicaDTO getNarudzbenicaById(int id) {
+		// TODO Auto-generated method stub
+		Narudzbenica n = narudzbenicaRepository.findById(id).get();
+		NarudzbenicaDTO narDTO = new NarudzbenicaDTO(n);
+		return narDTO;
+	}
+
+	@Override
+	public void createOffer(PonudaDTO p) {
+		// TODO Auto-generated method stub
+		Narudzbenica n = narudzbenicaRepository.findById(p.getIdNarudzbenice()).get();
+		Dobavljac d = dobavljacRepository.getSupplierByUsername(p.getDobavljac());
+		Ponuda pon = new Ponuda(StatusPonude.CEKA_NA_ODGOVOR, p.getUkupnaCena(), p.getRokIsporuke(), n, d);
+		ponudaRepository.save(pon);
+		d.addPonuda(pon);
+		dobavljacRepository.save(d);
+	}
+
 		
 }

@@ -120,6 +120,13 @@ public class AdminController {
 		return availablePharmacyProductsDTO;
 	}
 	
+	@GetMapping(value = "/oneNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public NarudzbenicaDTO oneNar(@PathVariable("id") int id){
+		NarudzbenicaDTO abc = adminService.getNarudzbenicaById(id);
+
+		return abc;
+	}
+	
 	@GetMapping(value = "/availableNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<NarudzbenicaDTO> availableNar(@PathVariable("id") int id){
 		Collection<NarudzbenicaDTO> abc = adminService.getAvailableNarudzbenice(id);
@@ -137,6 +144,13 @@ public class AdminController {
 		}
 
 		return availablePharmacyProductsDTO;
+	}
+	
+	@PostMapping(value = "/sendOffer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String sendOffer(@RequestBody PonudaDTO tip) throws Exception {
+		//System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
+		adminService.createOffer(tip);
+		return "OK";
 	}
 	
 	@PostMapping(value = "/registerType", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
