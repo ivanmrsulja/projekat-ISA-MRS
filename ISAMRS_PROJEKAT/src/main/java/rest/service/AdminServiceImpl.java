@@ -256,9 +256,9 @@ public class AdminServiceImpl implements AdminService {
 				dpToDelete = dp;
 			}
 		}
+		dostupanProizvodRepository.deleteById(productId);
 		cenovnik.getDostupniProizvodi().remove(dpToDelete);
 		cenaRepository.save(cenovnik);
-		dostupanProizvodRepository.deleteById(productId);
 	}
 
 	@Override

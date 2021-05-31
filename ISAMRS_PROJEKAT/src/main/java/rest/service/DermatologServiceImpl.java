@@ -1,6 +1,7 @@
 package rest.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -36,8 +37,11 @@ public class DermatologServiceImpl implements DermatologService {
 
 	@Override
 	public Dermatolog findOne(int id) {
-		Dermatolog user = dermatologRepository.findById(id).get();
-		return user;
+		Optional<Dermatolog> userOpt = dermatologRepository.findById(id);
+		if (userOpt.isPresent()) {
+			return userOpt.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -79,7 +83,14 @@ public class DermatologServiceImpl implements DermatologService {
 	}
 	@Override
 	public void zavrsi(PregledDTO pregled, int id){
-		Pregled p=pregledRepository.findById(id).get();
+		Optional<Pregled> pOpt = pregledRepository.findById(id);
+		Pregled p = null;
+		if (pOpt.isPresent()) {
+			p = pOpt.get();
+		}
+		else {
+			return;
+		}
 		p.setIzvjestaj(pregled.getIzvjestaj());
 		p.setStatus(StatusPregleda.ZAVRSEN);
 		pregledRepository.save(p);

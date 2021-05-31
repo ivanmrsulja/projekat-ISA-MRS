@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -64,8 +65,11 @@ public class PreparatServiceImpl implements PreparatService{
 	
 	@Override
 	public Preparat getOne(int id) {
-		Preparat prep = preparatRepository.findById(id).get();
-		return prep;
+		Optional<Preparat> prep = preparatRepository.findById(id);
+		if (prep.isPresent()) {
+			return prep.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -144,9 +148,26 @@ public class PreparatServiceImpl implements PreparatService{
 		}
 		
 		dp.setKolicina(dp.getKolicina() - 1);
-		Preparat p = preparatRepository.findById(idp).get();
-		Pacijent pa = pacijentRepository.findById(idpa).get();
-		Apoteka a = apotekeRepository.findById(ida).get();
+		Optional<Preparat> pOpt = preparatRepository.findById(idp);
+		Optional<Pacijent> paOpt = pacijentRepository.findById(idpa);
+		Optional<Apoteka> aOpt = apotekeRepository.findById(ida);
+		Preparat p = null;
+		Pacijent pa = null;
+		Apoteka a = null;
+		
+		if (pOpt.isPresent()) {
+			p = pOpt.get();
+		}
+		if (paOpt.isPresent()) {
+			pa = paOpt.get();
+		}
+		if(aOpt.isPresent()) {
+			a = aOpt.get();
+		}
+		
+		if (p == null || pa == null || a == null) {
+			throw new Exception("Trazeni entitet ne postoji u bazi.");
+		}
 		
 		double cena = dp.getCena() * pa.getTipKorisnika().getPopust();
 		Rezervacija rez = new Rezervacija(StatusRezervacije.REZERVISANO, datum, pa, p, a, cena);

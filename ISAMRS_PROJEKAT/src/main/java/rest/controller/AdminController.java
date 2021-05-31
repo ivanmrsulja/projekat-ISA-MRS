@@ -63,9 +63,7 @@ public class AdminController {
 	@AsAdminApoteke
 	@GetMapping(value = "/searchPharmacy/{id}/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<DostupanProizvodDTO> searchPharmacyProducts(@PathVariable("id") int pharmacyId, @PathVariable("name") String name) {
-		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = adminService.searhProductsOfPharmacy(pharmacyId, name);
-
-		return availablePharmacyProductsDTO;
+		return adminService.searhProductsOfPharmacy(pharmacyId, name);
 	}
 
 	@AsAdminApoteke

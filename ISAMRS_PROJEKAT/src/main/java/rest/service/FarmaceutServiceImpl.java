@@ -1,6 +1,7 @@
 package rest.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -48,8 +49,11 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 
 	@Override
 	public Farmaceut findOne(int id) {
-		Farmaceut user = farmaceutRepository.findById(id).get();
-		return user;
+		Optional<Farmaceut> user = farmaceutRepository.findById(id);
+		if (user.isPresent()) {
+			return user.get();
+		}
+		return null;
 	}
 
 	@Override

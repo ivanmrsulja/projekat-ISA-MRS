@@ -87,7 +87,7 @@ public class PregledServiceImpl implements PregledService {
 		Pregled p = preglediRepo.findById(idp).get();
 		Instant instant = p.getDatum().atStartOfDay(ZoneId.systemDefault()).toInstant();	
 		long timeInMillis = instant.toEpochMilli();
-		long timeMillis = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
+		long timeMillis = p.getVrijeme().getHour() * 3600000L + p.getVrijeme().getMinute() * 60000L;
 		long time = timeInMillis + timeMillis;
 		
 		if(time <= System.currentTimeMillis() + 86400000) {

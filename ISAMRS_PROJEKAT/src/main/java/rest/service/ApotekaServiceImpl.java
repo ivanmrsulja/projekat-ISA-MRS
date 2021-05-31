@@ -80,7 +80,12 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public Apoteka getByID(int id) {
-		return this.apoteke.findById(id).get();
+		Optional<Apoteka> opt = this.apoteke.findById(id);
+		if (opt.isPresent()) {
+			return opt.get();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -107,8 +112,10 @@ public class ApotekaServiceImpl implements ApotekaService {
 		
 		ArrayList<PregledDTO> ret = new ArrayList<PregledDTO>();
 		for(Pregled p : pregledi) {
-			Dermatolog d = dermatolozi.findById(p.getZaposleni().getId()).get();
-			ret.add(new PregledDTO(p, d.getOcena()));
+			Optional<Dermatolog> dOpt = dermatolozi.findById(p.getZaposleni().getId());
+			if(dOpt.isPresent()) {
+				ret.add(new PregledDTO(p, dOpt.get().getOcena()));
+			}
 		}
 		
 		if(criteria.equals("cena")) {
@@ -196,18 +203,25 @@ public class ApotekaServiceImpl implements ApotekaService {
 		for(int i : kandidati) {
 			Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(datum, i);
 			if(zauzeca.size() == 0) {
-				Farmaceut a = farmaceuti.findById(i).get();
-				if(!ret.contains(a)) {
-					ret.add(a);
+				Optional<Farmaceut> aOpt = farmaceuti.findById(i);
+				if(aOpt.isPresent()) {
+					Farmaceut a = aOpt.get();
+					if(!ret.contains(a)) {
+						ret.add(a);
+					}
 				}
+				
 			}
 			for(Pregled p: zauzeca) {
 				long start = p.getVrijeme().getHour() * 3600000L + p.getVrijeme().getMinute() * 60000L;
 				long end = start + p.getTrajanje() * 60000L;
 				if(mid > end || mid < start - trajanjeSavetovanja) {
-					Farmaceut a = farmaceuti.findById(i).get();
-					if(!ret.contains(a)) {
-						ret.add(a);
+					Optional<Farmaceut> aOpt = farmaceuti.findById(i);
+					if (aOpt.isPresent()) {
+						Farmaceut a = aOpt.get();
+						if(!ret.contains(a)) {
+							ret.add(a);
+						}
 					}
 				}
 			}
@@ -249,7 +263,14 @@ public class ApotekaServiceImpl implements ApotekaService {
 			}
 		}
 		
-		Pacijent p = pacijenti.findById(idPacijenta).get();
+		Optional<Pacijent> pOpt = pacijenti.findById(idPacijenta);
+		Pacijent p = null;
+		if (pOpt.isPresent()) {
+			p = pOpt.get();
+		}
+		else {
+			throw new Exception("Pacijent ne postoji.");
+		}
 		int brojPenala = penali.penalForUser(p.getId()).size();
 		if(brojPenala >= 3) {
 			throw new Exception("Imate " + brojPenala + " penala, zakazivanja su vam onemogucena do 1. u sledecem mesecu.");

@@ -2,6 +2,7 @@ package rest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -78,8 +79,11 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	@Override
 	public Korisnik findOne(int id) {
-		Korisnik user = korisnikRepository.findById(id).get();
-		return user;
+		Optional<Korisnik> user = korisnikRepository.findById(id);
+		if (user.isPresent()) {
+			return user.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -92,12 +96,15 @@ public class KorisnikServiceImpl implements KorisnikService {
 	@Override
 	public AdminApoteke createAdminPharm(PharmacyAdminDTO user) throws Exception {
 		lokacijaRepository.save(user.getLokacija());
-		Apoteka a = apotekeRepository.findById(Integer.parseInt(user.getApoteka())).get();
-		AdminApoteke k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
-		//k.setApoteka(a);
-		//korisnikRepository.save(k);
-		a.addAdmin(k);
-		apotekeRepository.save(a);
+		Optional<Apoteka> aOpt = apotekeRepository.findById(Integer.parseInt(user.getApoteka()));
+		AdminApoteke k = null;
+		Apoteka a = null;
+		if( aOpt.isPresent() ) {
+			a = aOpt.get();
+			k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
+			a.addAdmin(k);
+			apotekeRepository.save(a);
+		}
 		return k;
 	}
 
@@ -193,19 +200,29 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	@Override
 	public PacijentDTO findPacijentById(int id) {
-		Pacijent p = pacijentRepository.findById(id).get();
-		return new PacijentDTO(p);
+		Optional<Pacijent> p = pacijentRepository.findById(id);
+		if(p.isPresent()) {
+			return new PacijentDTO(p.get());
+		}
+		return null;
 	}
 
 	@Override
 	public AdminApotekeDTO findAdminApotekeById(int id) {
-		AdminApoteke a = adminApotekeRepository.findById(id).get();
-		return new AdminApotekeDTO(a);
+		Optional<AdminApoteke> a = adminApotekeRepository.findById(id);
+		if(a.isPresent()) {
+			return new AdminApotekeDTO(a.get());
+		}
+		return null;
 	}
 
 	@Override
 	public TipKorisnika pocetniTip() {
-		return tipRepo.findById(1).get();
+		Optional<TipKorisnika> t = tipRepo.findById(1);
+		if (t.isPresent()) {
+			return t.get();
+		}
+		return null;
 	}
 
 	@Override

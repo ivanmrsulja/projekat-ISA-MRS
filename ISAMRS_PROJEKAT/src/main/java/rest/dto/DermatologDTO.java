@@ -68,6 +68,21 @@ public class DermatologDTO extends KorisnikDTO implements Comparable<DermatologD
 	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((krajRadnogVremena == null) ? 0 : krajRadnogVremena.hashCode());
+		result = prime * result + ((kriterijum == null) ? 0 : kriterijum.hashCode());
+		result = prime * result + ((naziviApoteka == null) ? 0 : naziviApoteka.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(ocjena);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((pocetakRadnogVremena == null) ? 0 : pocetakRadnogVremena.hashCode());
+		return result;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
