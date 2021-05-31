@@ -4,6 +4,7 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -231,7 +232,14 @@ public class AdminController {
 	@AsAdminApoteke
 	@DeleteMapping(value = "/deleteOrder/{orderId}/{adminId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteOrder(@PathVariable("orderId") int orderId, @PathVariable("adminId") int adminId) {
-		Narudzbenica order = narudzbenicaRepository.findById(orderId).get();
+		Optional<Narudzbenica> orderOptional = narudzbenicaRepository.findById(orderId);
+		Narudzbenica order;
+		if (orderOptional.isPresent()) {
+			order = orderOptional.get();
+		}
+		else {
+			return "ERR";
+		}
 		int numberOfOffers = ponudaRepository.getNumberOfOffersForOrder(orderId);
 		if (numberOfOffers != 0 || order.getAdminApoteke().getId() != adminId) {
 			return "ERR";

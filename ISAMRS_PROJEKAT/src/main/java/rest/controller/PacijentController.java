@@ -3,6 +3,7 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,14 @@ public class PacijentController {
 	@PutMapping(value="updateApoteke/{idPacijent}/{idApoteka}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updatePacijentApoteke(@PathVariable("idPacijent") int idPacijenta, @PathVariable("idApoteka") int idApoteke) {
 		Pacijent pacijent = pacijentRepository.getPatientWithPharmacies(idPacijenta);
-		Apoteka apoteka = apotekeRepository.findById(idApoteke).get();
+		Optional<Apoteka> apotekaOption = apotekeRepository.findById(idApoteke);
+		Apoteka apoteka;
+		if(apotekaOption.isPresent()) {
+			apoteka = apotekaOption.get();
+		}
+		else {
+			return "ERROR";
+		}
 		Set<Apoteka> apoteke = pacijent.getApoteke();
 		apoteke.add(apoteka);
 		pacijent.setApoteke(apoteke);

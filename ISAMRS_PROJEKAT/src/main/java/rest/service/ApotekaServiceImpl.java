@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -143,8 +144,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 		}
 		Collection<Integer> kandidati = zaposlenja.slobodniFarmaceuti(vrijeme);
 		ArrayList<Apoteka> apotekeRet = new ArrayList<Apoteka>();
-		long trajanjeSavetovanja = 30 * 60000;
-		long mid = vrijeme.getHour() * 3600000 + vrijeme.getMinute() * 60000;
+		long trajanjeSavetovanja = 30L * 60000L;
+		long mid = vrijeme.getHour() * 3600000L + vrijeme.getMinute() * 60000L;
 		for(int id : kandidati) {
 			Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(datum, id);
 			if(zauzeca.size() == 0) {
@@ -154,8 +155,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 				}
 			}
 			for(Pregled p: zauzeca) {
-				long start = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
-				long end = start + p.getTrajanje() * 60000;
+				long start = p.getVrijeme().getHour() * 3600000L + p.getVrijeme().getMinute() * 60000L;
+				long end = start + p.getTrajanje() * 60000L;
 				if(mid > end || mid < start - trajanjeSavetovanja) {
 					Apoteka a = zaposlenja.apotekaZaFarmaceuta(id);
 					if(!apotekeRet.contains(a)) {
@@ -190,8 +191,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 		}
 		Collection<Integer> kandidati = zaposlenja.slobodniFarmaceutiApoteka(vrijeme, id);
 		ArrayList<Farmaceut> ret = new ArrayList<Farmaceut>();
-		long trajanjeSavetovanja = 30 * 60000;
-		long mid = vrijeme.getHour() * 3600000 + vrijeme.getMinute() * 60000;
+		long trajanjeSavetovanja = 30L * 60000L;
+		long mid = vrijeme.getHour() * 3600000L + vrijeme.getMinute() * 60000L;
 		for(int i : kandidati) {
 			Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(datum, i);
 			if(zauzeca.size() == 0) {
@@ -201,8 +202,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 				}
 			}
 			for(Pregled p: zauzeca) {
-				long start = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
-				long end = start + p.getTrajanje() * 60000;
+				long start = p.getVrijeme().getHour() * 3600000L + p.getVrijeme().getMinute() * 60000L;
+				long end = start + p.getTrajanje() * 60000L;
 				if(mid > end || mid < start - trajanjeSavetovanja) {
 					Farmaceut a = farmaceuti.findById(i).get();
 					if(!ret.contains(a)) {
@@ -238,11 +239,11 @@ public class ApotekaServiceImpl implements ApotekaService {
 		Farmaceut f = farmaceuti.findOneById(idFarmaceuta);
 		
 		Collection<Pregled> zauzeca = pregledi.zauzetiFarmaceutiNaDan(podaci.getDatum(), idFarmaceuta);
-		long trajanjeSavetovanja = 30 * 60000;
-		long mid = podaci.getVrijeme().getHour() * 3600000 + podaci.getVrijeme().getMinute() * 60000;
+		long trajanjeSavetovanja = 30L * 60000L;
+		long mid = podaci.getVrijeme().getHour() * 3600000L + podaci.getVrijeme().getMinute() * 60000L;
 		for(Pregled p: zauzeca) {
-			long start = p.getVrijeme().getHour() * 3600000 + p.getVrijeme().getMinute() * 60000;
-			long end = start + p.getTrajanje() * 60000;
+			long start = p.getVrijeme().getHour() * 3600000L + p.getVrijeme().getMinute() * 60000L;
+			long end = start + p.getTrajanje() * 60000L;
 			if(mid <= end && mid >= start - trajanjeSavetovanja) {
 				throw new Exception("Farmaceut je zauzet u tom terminu.");
 			}
@@ -254,7 +255,14 @@ public class ApotekaServiceImpl implements ApotekaService {
 			throw new Exception("Imate " + brojPenala + " penala, zakazivanja su vam onemogucena do 1. u sledecem mesecu.");
 		}
 		
-		Apoteka a = apoteke.findById(idApoteke).get();
+		Optional<Apoteka> aOpt = apoteke.findById(idApoteke);
+		Apoteka a = null;
+		if(aOpt.isPresent()) {
+			a= aOpt.get();
+		}else {
+			throw new Exception("Zeljena apoteka ne postoji.");
+		}
+		
 		Pregled novi = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, podaci.getDatum(), podaci.getVrijeme(), 30, a.getCenaSavetovanja() * p.getTipKorisnika().getPopust(), f, p, a);
 		pregledi.save(novi);
 		a.addPregled(novi);

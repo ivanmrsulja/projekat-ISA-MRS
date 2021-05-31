@@ -74,9 +74,10 @@ public class KorisnikController {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Korisnik>> getUsers() {
-		Collection<Korisnik> users = userService.findAll();
-		return new ResponseEntity<Collection<Korisnik>>(users, HttpStatus.OK);
+	public ResponseEntity<Collection<KorisnikDTO>> getUsers() {
+		@SuppressWarnings("unchecked")
+		Collection<KorisnikDTO> users = (Collection<KorisnikDTO>) userService.findAll().stream().map(u -> new KorisnikDTO(u));
+		return new ResponseEntity<Collection<KorisnikDTO>>(users, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/currentUser", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -107,17 +108,6 @@ public class KorisnikController {
 			request.getSession().invalidate();
 		}
 		return "OK";
-	}
-	
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> getUSer(@PathVariable("id") int id) {
-		Korisnik user = userService.findOne(id);
-
-		if (user == null) {
-			return new ResponseEntity<Korisnik>(HttpStatus.NOT_FOUND);
-		}
-		
-		return new ResponseEntity<Korisnik>(user, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/changePass", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -213,20 +203,10 @@ public class KorisnikController {
 	
 	@PostMapping(value = "/registerAdminPharm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerAdminPharm(@RequestBody PharmacyAdminDTO user) throws Exception {
-//		Apoteka a = apotekaService.getByID(Integer.parseInt(user.getApoteka()));
-//		System.out.println("PRONASLI SMO APOTEKUUUUUUUUUUUUUUUUUUUU " + a.getNaziv());
-//		AdminApoteke k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
-//		a.addAdmin(k);
-//		k.setApoteka(a);
 		userService.createAdminPharm(user);
 		return "OK";
 	}
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Korisnik> createUser(@RequestBody Korisnik user) throws Exception {
-		Korisnik savedUser = userService.create(user);
-		return new ResponseEntity<Korisnik>(savedUser, HttpStatus.CREATED);
-	}
 
 	@AsPacijent
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -18,7 +18,7 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 	@Column(name = "ocena", nullable = true)
 	private double ocena;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Zaposlenje> zaposlenja;
 	
 	public Dermatolog() {
