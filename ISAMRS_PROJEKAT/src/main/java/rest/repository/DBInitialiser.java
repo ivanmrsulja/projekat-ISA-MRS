@@ -344,29 +344,6 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		apotekaRepo.save(a1);
 		apotekaRepo.save(a2);
-		
-		Zalba zal1 = new Zalba("Zalba broj 1", as1, p2);
-		zalbaRepo.save(zal1);
-		as1.addZalba(zal1);
-		korisnici.save(as1);
-		p2.addZalba(zal1);
-		korisnici.save(p2);
-		Zalba zal2 = new Zalba("Zalba broj 2", as1, p2);
-		zalbaRepo.save(zal2);
-		as1.addZalba(zal2);
-		korisnici.save(as1);
-		p2.addZalba(zal2);
-		korisnici.save(p2);
-		Zalba zal3 = new Zalba("Zalba broj 3", as1, p2);
-		zalbaRepo.save(zal3);
-		as1.addZalba(zal3);
-		korisnici.save(as1);
-		p2.addZalba(zal3);
-		korisnici.save(p2);
-		Zalba zal4 = new Zalba("Zalba broj 3", null, p2);
-		zalbaRepo.save(zal4);
-		p2.addZalba(zal4);
-		korisnici.save(p2);
 	
 	}
 

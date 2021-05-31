@@ -10,7 +10,7 @@ Vue.component("lista-zalbi", {
 	template: ` 
 <div align = center style="width:75%">
 		
-		<h1>Moje ponude</h1>
+		<h1>Moje zalbe</h1>
 		<br/>
 	</br>
 		<table class="table table-hover">

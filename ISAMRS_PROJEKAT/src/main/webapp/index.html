@@ -73,6 +73,9 @@
         <a class="navigacija" href="#/listaZalbi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Istorija zalbi</a>
         <a class="navigacija" href="#/listaZalbiAdmin" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Istorija zalbi i odgovora</a>
         <a class="navigacija" href="#/listaNarudzbenica" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Lista narudzbenica</a>
+        <a class="navigacija" href="#/regAdminPharm" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Registrovanje admina apoteke</a>
+        <a class="navigacija" href="#/regApoteka" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Registrovanje apoteke</a>
+        <a class="navigacija" href="#/registracijaTipa" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Kreiranje tipa korisnika</a>
         
 
 
