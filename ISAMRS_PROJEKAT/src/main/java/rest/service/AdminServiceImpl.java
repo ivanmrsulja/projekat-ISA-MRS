@@ -31,6 +31,7 @@ import rest.domain.Preparat;
 import rest.domain.StatusNarudzbenice;
 import rest.domain.StatusPonude;
 import rest.domain.StatusPregleda;
+import rest.domain.TipKorisnika;
 import rest.domain.TipPregleda;
 import rest.domain.Zahtjev;
 import rest.domain.Zaposlenje;
@@ -61,6 +62,7 @@ import rest.repository.PonudaRepository;
 import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
 import rest.repository.RezervacijaRepository;
+import rest.repository.TipKorisnikaRepository;
 import rest.repository.ZahtevRepository;
 import rest.repository.ZaposlenjeRepository;
 
@@ -86,16 +88,18 @@ public class AdminServiceImpl implements AdminService {
 	private ZahtevRepository zahtevRepository;
 	private EReceptRepository ereceptRepository;
 	private DermatologRepository dermatologRepository;
+	private TipKorisnikaRepository tipRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	public AdminServiceImpl(PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
+	public AdminServiceImpl(TipKorisnikaRepository tpkr,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
 			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo, KorisnikRepository korisnikRepo,
 			ZaposlenjeRepository zaposlenjeRepo, ZahtevRepository zahtevRepo, EReceptRepository erecepRepo, DermatologRepository dermatologRepo) {
 		this.ponudaRepository = imar;
+		this.tipRepository = tpkr;
 		this.env = env;
 		this.javaMailSender = jms;
 		this.narudzbenicaRepository = nr;
@@ -1042,7 +1046,11 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void createType(TipKorisnikaDTO t) {
-		// TODO Auto-generated method stub
+		TipKorisnika tk = new TipKorisnika();
+		tk.setBodovi(t.getBodovi());
+		tk.setNaziv(t.getNaziv());
+		tk.setPopust(t.getPopust());
+		tipRepository.save(tk);
 		
 	}
 
