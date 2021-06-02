@@ -29,6 +29,7 @@ import rest.dto.KorisnikDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
+import rest.dto.TipKorisnikaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
@@ -94,6 +95,7 @@ public class AdminController {
 		ArrayList<PreparatDTO> productsDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
 
 		return productsDTO;
+	}
 	@PostMapping(value = "/sendOffer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String sendOffer(@RequestBody PonudaDTO tip) throws Exception {
 		//System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());

@@ -20,6 +20,7 @@ import rest.dto.NotifikacijaDTO;
 import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
+import rest.dto.TipKorisnikaDTO;
 
 
 public interface AdminService {
