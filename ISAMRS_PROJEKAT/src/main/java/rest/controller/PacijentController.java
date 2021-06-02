@@ -6,10 +6,13 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +24,7 @@ import rest.domain.Apoteka;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.dto.PacijentDTO;
+import rest.dto.ZalbaDTO;
 import rest.repository.ApotekeRepository;
 import rest.repository.PacijentRepository;
 import rest.service.KorisnikService;
