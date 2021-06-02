@@ -65,20 +65,6 @@ public class AdminController {
 	public ArrayList<DostupanProizvodDTO> searchPharmacyProducts(@PathVariable("id") int pharmacyId, @PathVariable("name") String name) {
 		return adminService.searhProductsOfPharmacy(pharmacyId, name);
 	}
-	
-	@GetMapping(value = "/oneNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public NarudzbenicaDTO oneNar(@PathVariable("id") int id){
-		NarudzbenicaDTO abc = adminService.getNarudzbenicaById(id);
-
-		return abc;
-	}
-	
-	@GetMapping(value = "/availableNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<NarudzbenicaDTO> availableNar(@PathVariable("id") int id){
-		Collection<NarudzbenicaDTO> abc = adminService.getAvailableNarudzbenice(id);
-
-		return (ArrayList<NarudzbenicaDTO>) abc;
-	}
 
 	@AsAdminApoteke
 	@GetMapping(value = "/searchPharmacy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,18 +80,6 @@ public class AdminController {
 		ArrayList<PreparatDTO> productsDTO = adminService.getProductsOutsidePharmacy(pharmacyId);
 
 		return productsDTO;
-	@PostMapping(value = "/sendOffer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String sendOffer(@RequestBody PonudaDTO tip) throws Exception {
-		//System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
-		adminService.createOffer(tip);
-		return "OK";
-	}
-	
-	@PostMapping(value = "/registerType", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String register(@RequestBody TipKorisnikaDTO tip) throws Exception {
-		System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
-		adminService.createType(tip);
-		return "OK";
 	}
 
 	@AsAdminApoteke

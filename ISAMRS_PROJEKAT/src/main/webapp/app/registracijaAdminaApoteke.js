@@ -7,7 +7,7 @@ Vue.component("register-adminphar", {
     },
     template: ` 
 <div>
-		<h1>Registracija admina apoteke: </h1>
+		<h1>Registracija admina sistema: </h1>
 		
 		
 		<div style="display: inline-block; margin-right: 50px">
@@ -98,7 +98,7 @@ Vue.component("register-adminphar", {
             console.log(newUser);
             axios.post("/api/users/registerAdminPharm", newUser).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste registrovali admina apoteke! Moze se ulogovati");
+                    alert("Uspesno ste registrovali admina sistema! Moze se ulogovati");
                 }
             });
         },

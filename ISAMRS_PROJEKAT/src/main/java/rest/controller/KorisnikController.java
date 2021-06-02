@@ -1,6 +1,5 @@
 package rest.controller;
 
-import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +45,6 @@ import rest.dto.PenalDTO;
 import rest.dto.PharmacyAdminDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
-import rest.dto.QRCodeReaderDTO;
 import rest.dto.RezervacijaDTO;
 import rest.service.AkcijaPromocijaService;
 import rest.service.ApotekaService;
@@ -129,13 +127,6 @@ public class KorisnikController {
 		request.getSession().setAttribute("user", updateUser);
 		return "OK";
 	}
-	
-//	public ResponseEntity<Collection<Korisnik>> getUsers() {
-//		Collection<Korisnik> users = userService.findAll();
-//		return new ResponseEntity<Collection<Korisnik>>(users, HttpStatus.OK);
-//	}
-	
-
 
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody KorisnikDTO user) throws Exception {
@@ -156,14 +147,6 @@ public class KorisnikController {
 		userService.create(k);
 		userService.sendRegistrationMail(k);
 		return "OK";
-	}
-	
-	@PostMapping(value = "/sendQr", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String sendQr(@RequestBody String q) throws Exception {
-		String s = URLDecoder.decode(q, "UTF-8");
-		String i = s.replace(" ","+");
-		QRCodeReaderDTO qrc = new QRCodeReaderDTO();
-		return qrc.readQRCode(i);
 	}
 	
 	@PostMapping(value = "/registerSupp", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

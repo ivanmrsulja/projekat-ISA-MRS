@@ -6,7 +6,7 @@ Vue.component("add-cure", {
 	},
 	template: ` 
 <div>
-		<h1>Dodavanje leka: </h1>
+		<h1>Registracija korisnika: </h1>
 		
 		
 		<div style="display: inline-block; margin-right: 50px">
@@ -74,7 +74,7 @@ Vue.component("add-cure", {
 			let newCure = {"naziv": naziv, "kontraindikacije": kontraindikacije, "sastav": sastav, "preporuceniUnos" : preporuceniUnos, "oblik": oblik, "proizvodjac": proizvodjac, "rezim": rezim, "tip": tip, "ocena": 0.0};
 			axios.post("/api/preparat/addCure", newCure).then(data => {
 				if(data.data == "OK") {
-					alert("Uspesno ste kreirali lek!");
+					alert("Uspesno ste kreirali lek! Mozete se ulogovati");
 				}
 			});
 		}
