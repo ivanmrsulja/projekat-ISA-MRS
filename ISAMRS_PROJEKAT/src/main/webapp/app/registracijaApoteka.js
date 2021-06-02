@@ -6,7 +6,7 @@ Vue.component("register-apoteka", {
     },
     template: ` 
 <div>
-		<h1>Registracija admina sistema: </h1>
+		<h1>Registracija apoteke: </h1>
 		
 		
 		<div style="display: inline-block; margin-right: 50px">
@@ -63,7 +63,7 @@ Vue.component("register-apoteka", {
             console.log(newPhar);
             axios.post("/api/apoteke/register", newPhar).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste registrovali admina sistema! Moze se ulogovati");
+                    alert("Uspesno ste registrovali apoteku!");
                 }
             });
         },
