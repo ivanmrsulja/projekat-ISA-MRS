@@ -48,6 +48,7 @@ import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.dto.QRCodeReaderDTO;
 import rest.dto.RezervacijaDTO;
+import rest.dto.ZalbaDTO;
 import rest.service.AkcijaPromocijaService;
 import rest.service.ApotekaService;
 import rest.service.KorisnikService;
@@ -88,6 +89,25 @@ public class KorisnikController {
 		u = (KorisnikDTO) request.getSession().getAttribute("user");
 		return u;
 	}
+	@GetMapping(value= "/getZalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Collection<ZalbaDTO>> getZalbe(@PathVariable("id") int id) {
+			Collection<ZalbaDTO> users = pacijentService.getZalbeForPatient(id);
+			//pacijentService.getAllAppealable(id);
+			return new ResponseEntity<Collection<ZalbaDTO>>(users, HttpStatus.OK);
+		}
+	
+	@GetMapping(value= "/getZalbe/{id}/{zalId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ZalbaDTO getZalba(@PathVariable("id") int id, @PathVariable("zalId") int zalId) {
+		ZalbaDTO users = pacijentService.getZalbaForPatient(id, zalId);
+		return users;
+	}
+	
+	@GetMapping(value= "/getZaljivo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<String>> getZaljivo(@PathVariable("id") int id) {
+		Collection<String> users = pacijentService.getAllAppealable(id);
+		return new ResponseEntity<Collection<String>>(users, HttpStatus.OK);
+	}
+
 	
 	@GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> login(HttpServletRequest request, @RequestParam String user, @RequestParam String pass){

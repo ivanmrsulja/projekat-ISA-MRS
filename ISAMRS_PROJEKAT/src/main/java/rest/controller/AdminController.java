@@ -30,6 +30,7 @@ import rest.dto.PonudaDTO;
 import rest.dto.PregledDTO;
 import rest.dto.PreparatDTO;
 import rest.dto.TipKorisnikaDTO;
+import rest.dto.ZalbaDTO;
 import rest.dto.CenovnikDTO;
 import rest.dto.DermatologDTO;
 import rest.dto.DostupanProizvodDTO;
@@ -39,6 +40,7 @@ import rest.dto.NotifikacijaDTO;
 import rest.repository.NarudzbenicaRepozitory;
 import rest.repository.PonudaRepository;
 import rest.service.AdminService;
+import rest.service.PacijentService;
 
 
 @RestController
@@ -48,10 +50,12 @@ public class AdminController {
 	private AdminService adminService;
 	private NarudzbenicaRepozitory narudzbenicaRepository;
 	private PonudaRepository ponudaRepository;
+	private PacijentService pacijentService;
 	
 	@Autowired
-	public AdminController(AdminService as, NarudzbenicaRepozitory nr, PonudaRepository pr) {
+	public AdminController(PacijentService pas,AdminService as, NarudzbenicaRepozitory nr, PonudaRepository pr) {
 		this.adminService = as;
+		this.pacijentService = pas;
 		this.narudzbenicaRepository = nr;
 		this.ponudaRepository = pr;
 	}
@@ -72,6 +76,19 @@ public class AdminController {
 		NarudzbenicaDTO abc = adminService.getNarudzbenicaById(id);
 
 		return abc;
+	}
+	
+	@GetMapping(value = "/Zalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<ZalbaDTO> getZalbeForAdmin(@PathVariable("id") int id){
+		Collection<ZalbaDTO> zdtos = pacijentService.getZalbeForAdmin(id);
+
+		return (ArrayList<ZalbaDTO>) zdtos;
+	}
+	
+	@PutMapping(value = "/ZalbeUpdate/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateZalba(@PathVariable("id") int id) {
+		adminService.updateZalba(id);
+		return "OK";
 	}
 	
 	@GetMapping(value = "/availableNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

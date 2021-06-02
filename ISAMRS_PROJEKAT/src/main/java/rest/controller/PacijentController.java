@@ -57,6 +57,13 @@ public class PacijentController {
 		return new PacijentDTO(pacijentService.getOne(id));
 	}
 	
+	@PostMapping(value = "/sendZalba", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String changePass(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
+		pacijentService.sendZalba(user);
+		return "OK";
+	}
+
+	
 	@GetMapping(value = "pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PacijentDTO> getMine(@PathVariable("id") int id, @RequestParam("search") String searchParam, @RequestParam("criteria") String criteria){
 		Collection<Pacijent> pacijenti = pacijentService.getMine(id, searchParam, criteria);
