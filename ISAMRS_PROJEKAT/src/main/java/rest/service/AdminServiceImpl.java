@@ -935,6 +935,51 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 		}
+	public Collection<NarudzbenicaDTO> getAvailableNarudzbenice(int id) {
+		 Collection<Narudzbenica> nars = narudzbenicaRepository.getAllWithProizvodi();
+		 System.out.println("THE DUZINA OVDE JE " + nars.size());
+		 Collection<NarudzbenicaDTO> newnar = new ArrayList<NarudzbenicaDTO>();
+		 for (Narudzbenica narudzbenica : nars) {
+			System.out.println("OVO JE NARUDZBENICA SA ID " +narudzbenica.getId());
+			boolean foundDob = false;
+			if(narudzbenica.getStatus().equals(StatusNarudzbenice.CEKA_PONUDE)) {
+				for (Ponuda pon : narudzbenica.getPonude()) {
+					if(pon.getDobavljac().getId() == id) {
+						foundDob = true;
+						break;
+					}
+				}
+				if(!foundDob) {
+					NarudzbenicaDTO nar = new NarudzbenicaDTO(narudzbenica);
+					newnar.add(nar);
+					
+				}
+				
+			}
+		}
+		 return newnar;
+		
+	}
+
+	@Override
+	public NarudzbenicaDTO getNarudzbenicaById(int id) {
+		// TODO Auto-generated method stub
+		Narudzbenica n = narudzbenicaRepository.findById(id).get();
+		NarudzbenicaDTO narDTO = new NarudzbenicaDTO(n);
+		return narDTO;
+	}
+
+	@Override
+	public void createOffer(PonudaDTO p) {
+		// TODO Auto-generated method stub
+		Narudzbenica n = narudzbenicaRepository.findById(p.getIdNarudzbenice()).get();
+		Dobavljac d = dobavljacRepository.getSupplierByUsername(p.getDobavljac());
+		Ponuda pon = new Ponuda(StatusPonude.CEKA_NA_ODGOVOR, p.getUkupnaCena(), p.getRokIsporuke(), n, d);
+		ponudaRepository.save(pon);
+		d.addPonuda(pon);
+		dobavljacRepository.save(d);
+	}
+
 		
 		// provera da dermatolog nije na godisnjem/odsustvu
 		{

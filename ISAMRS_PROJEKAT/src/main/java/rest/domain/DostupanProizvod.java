@@ -23,6 +23,7 @@ public class DostupanProizvod {
 	@JoinColumn(name = "preparat_id", referencedColumnName = "id")
 	private Preparat preparat;
 	
+	
 	@Version
 	private Long version;
 	

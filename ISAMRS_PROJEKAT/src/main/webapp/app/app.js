@@ -19,36 +19,44 @@ const RegistracijaFarmaceuta = { template: '<register-pharmacist></register-phar
 const registracijaDobavljaca = { template: '<register-supplier></register-supplier>' };
 const updateDobavljaca = { template: '<update-supplier></update-supplier>' };
 const registracijaDermatologa = { template: '<register-dermatolog></register-dermatolog>' };
-const StranicaZalbe = {template: '<pisanje-zalbe></pisanje-zalbe>'};
-const pacijentTable = {template: '<profil-pacijenti></profil-pacijenti>'};
-const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>'};
-const promenaSifre = { template: '<promena-sifre></promena-sifre>'};
-const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>'};
-const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>'};
-const ProfilAdminaApoteke = { template: '<profil-admina-apoteke></profil-admina-apoteke>'};
-const PretragaStrucnjaka = { template: '<pretraga-strucnjaka></pretraga-strucnjaka>'};
-const PregledZahtevaFarmaceuta = { template: '<pregled-zahteva-farmaceuta></pregled-zahteva-farmaceuta>'};
-const DefinicijaAkcijePromocije = { template: '<definicija-akcije-promocije></definicija-akcije-promocije>'};
-const DefinicijaCenovnika = { template: '<definicija-cenovnika></definicija-cenovnika>'};
-const PregledNarudzbenica = { template: '<pregled-narudzbenica></pregled-narudzbenica>'};
-const PreparatiApoteke = { template: '<preparati-apoteke></preparati-apoteke>'};
-const PisanjeNarudzbenice = { template: '<pisanje-narudzbenice></pisanje-narudzbenice>'};
-const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>'};
-const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>'};
-const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>'};
-const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>'};
-const dodajLek = { template: '<add-cure></add-cure>'};
-const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>'};
-const OdabirPonude = { template: '<odabir-ponude></odabir-ponude>'};
+const StranicaZalbe = { template: '<pisanje-zalbe></pisanje-zalbe>' };
+const pacijentTable = { template: '<profil-pacijenti></profil-pacijenti>' };
+const PregledPacijenta = { template: '<pojedinacni-pacijent></pojedinacni-pacijent>' };
+const promenaSifre = { template: '<promena-sifre></promena-sifre>' };
+const ZakazivanjeSavetovanja = { template: '<zakazivanje-savetovanja></zakazivanje-savetovanja>' };
+const ZakazivanjeSavetovanjaKorak2 = { template: '<zakazivanje-savetovanjaK2></zakazivanje-savetovanjaK2>' };
+const ProfilAdminaApoteke = { template: '<profil-admina-apoteke></profil-admina-apoteke>' };
+const PretragaStrucnjaka = { template: '<pretraga-strucnjaka></pretraga-strucnjaka>' };
+const PregledZahtevaFarmaceuta = { template: '<pregled-zahteva-farmaceuta></pregled-zahteva-farmaceuta>' };
+const DefinicijaAkcijePromocije = { template: '<definicija-akcije-promocije></definicija-akcije-promocije>' };
+const DefinicijaCenovnika = { template: '<definicija-cenovnika></definicija-cenovnika>' };
+const PregledNarudzbenica = { template: '<pregled-narudzbenica></pregled-narudzbenica>' };
+const PreparatiApoteke = { template: '<preparati-apoteke></preparati-apoteke>' };
+const PisanjeNarudzbenice = { template: '<pisanje-narudzbenice></pisanje-narudzbenice>' };
+const ZapocniPregled = { template: '<pacijent-pregled></pacijent-pregled>' };
+const ZapocniNoviPregled = { template: '<zakazivanje-termina></zakazivanje-termina>' };
+const RadniKalendar = { template: '<radni-kalendar></radni-kalendar>' };
+const RadniKalendarFarmaceut = { template: '<radni-kalendar-farmaceut></radni-kalendar-farmaceut>' };
+const dodajLek = { template: '<add-cure></add-cure>' };
+const registracijaAdminaSistema = { template: '<register-adminsys></register-adminsys>' };
+const OdabirPonude = { template: '<odabir-ponude></odabir-ponude>' };
 const registracijaApoteke = { template: '<register-apoteka></register-apoteka>' };
 const registracijaAdminaApoteke = { template: '<register-adminphar></register-adminphar>' };
-const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>'};
-const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifikacija>'};
-const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></kreiranje-termina-pregleda>'};
-const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>'};
-const DermatoloziAdminApoteke = { template: '<dermatolozi-admin-apoteke></dermatolozi-admin-apoteke>'};
+const IzvestajiPregledi = { template: '<izvestaji-pregledi></izvestaji-pregledi>' };
+const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifikacija>' };
+const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></kreiranje-termina-pregleda>' };
+const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>' };
+const DermatoloziAdminApoteke = { template: '<dermatolozi-admin-apoteke></dermatolozi-admin-apoteke>' };
 
 
+const listaZalbi = { template: '<lista-zalbi></lista-zalbi>' };
+const listaNarudzbenica = { template: '<lista-narudzbenica></lista-narudzbenica>' };
+const jednaZalba = { template: '<jedna-zalba></jedna-zalba>' };
+const jednaNarudzbenica = { template: '<jedna-narudzbenica></jedna-narudzbenica>' };
+const listaZalbiAdmin = { template: '<lista-zalbiadmin></lista-zalbiadmin>' };
+const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>' };
+const registracijaTipa = { template: '<register-type></register-type>' };
+const sendQr = { template: '<send-qr></send-qr>' };
 
 const router = new VueRouter({
     mode: 'hash',
@@ -96,14 +104,22 @@ const router = new VueRouter({
         { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
         { path: '/preparatiApoteke', component: PreparatiApoteke },
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
-        { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude"},
-	    { path: '/godisnji', component: GodisnjiOdmor},
-        { path: '/izvestajiPregledi', component: IzvestajiPregledi},
-        { path: '/pregledNotifikacija', component: PregledNotifikacija},
-        { path: '/kreiranjeTerminaPregleda', component: KreiranjeTerminaPregleda},
-        { path: '/dermatoloziAdminApoteke', component: DermatoloziAdminApoteke}
-	  ]
-	});
+        { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude" },
+        { path: '/listaZalbi', component: listaZalbi },
+        { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba" },
+        { path: '/jednaNarudzbenica/:zalId', component: jednaNarudzbenica, name: "jednaNarudzbenica" },
+        { path: '/listaZalbiAdmin', component: listaZalbiAdmin },
+        { path: '/jednaZalbaAdmin/:zalId', component: jednaZalbaAdmin, name: "jednaZalbaAdmin" },
+        { path: '/listaNarudzbenica', component: listaNarudzbenica },
+        { path: '/registracijaTipa', component: registracijaTipa },
+        { path: '/sendQr', component: sendQr },
+        { path: '/godisnji', component: GodisnjiOdmor },
+        { path: '/izvestajiPregledi', component: IzvestajiPregledi },
+        { path: '/pregledNotifikacija', component: PregledNotifikacija },
+        { path: '/kreiranjeTerminaPregleda', component: KreiranjeTerminaPregleda },
+        { path: '/dermatoloziAdminApoteke', component: DermatoloziAdminApoteke }
+    ]
+});
 
 
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.scheduling.annotation.Async;
 
+import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Pregled;
@@ -97,4 +98,11 @@ public interface AdminService {
 	public Collection<Pregled> scheduledAppointmentsForDermatologist(int pharmacyId, int dermatologistId);
 
 	public void removeDermatologist(int pharmacyId, int dermatologistId);
+	public void createType(TipKorisnikaDTO t);
+	
+	public Collection<NarudzbenicaDTO> getAvailableNarudzbenice(int id);
+	
+	public NarudzbenicaDTO getNarudzbenicaById(int id);
+	
+	public void createOffer(PonudaDTO p);
 }
