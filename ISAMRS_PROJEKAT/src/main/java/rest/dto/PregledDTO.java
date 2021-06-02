@@ -2,6 +2,8 @@ package rest.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
@@ -21,6 +23,8 @@ public class PregledDTO {
 	private KorisnikDTO pacijent;
 	private ApotekaDTO apoteka;
 	
+	private List<PreparatDTO> terapija;
+	
 	public PregledDTO() {}
 
 	public PregledDTO(Pregled p, double ocena) {
@@ -39,8 +43,17 @@ public class PregledDTO {
 		else
 			this.pacijent=new KorisnikDTO(p.getPacijent());
 		apoteka=new ApotekaDTO(p.getApoteka());
+		terapija=new ArrayList<PreparatDTO>();
 	}
 	
+	public List<PreparatDTO> getTerapija() {
+		return terapija;
+	}
+
+	public void setTerapija(List<PreparatDTO> terapija) {
+		this.terapija = terapija;
+	}
+
 	public ApotekaDTO getApoteka() {
 		return apoteka;
 	}

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +31,7 @@ import rest.domain.Pregled;
 import rest.dto.DermatologDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
-import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
-import rest.domain.Ponuda;
-import rest.domain.ZaposlenjeKorisnika;
-import rest.dto.ApotekaDTO;
-import rest.dto.DermatologDTO;
-import rest.dto.FarmaceutDTO;
-import rest.dto.KorisnikDTO;
 import rest.repository.DermatologRepository;
-import rest.service.AdminService;
 import rest.service.DermatologService;
 import rest.service.PregledService;
 
@@ -187,7 +177,7 @@ public class DermatologController {
 		return new PregledDTO(pregledService.dobaviPregledZa(id),0);
 	}
 	
-	@PutMapping(value = "/zavrsi/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/zavrsi/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String zavrsiPregled(@RequestBody PregledDTO pregled, @PathVariable("id") int id)
 			throws Exception {
 		System.out.println(pregled);
@@ -198,7 +188,7 @@ public class DermatologController {
 		catch(Exception e){
 			return e.getMessage();
 		}
-		return ("OK");
+		return "OK";
 	}
 	
 	@PostMapping(value = "/zakaziNovi/{aid}/{kid}/{pid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -218,4 +208,6 @@ public class DermatologController {
 	public DermatologDTO zaOcenjivanje(@PathVariable int id) {
 		return new DermatologDTO(dermatologService.findOne(id));
 	}
+	
+	
 }
