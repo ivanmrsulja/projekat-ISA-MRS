@@ -28,4 +28,7 @@ public interface FarmaceutRepository extends JpaRepository<Farmaceut, Integer>{
 	@Query("select f from Farmaceut f where f.id = ?1")
 	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	Farmaceut findOneById(int id);
+	
+	@Query("select distinct f from Farmaceut f")
+	Collection<Farmaceut> getAllPharmacist();
 }

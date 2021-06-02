@@ -23,6 +23,7 @@ import rest.domain.Rezervacija;
 import rest.domain.Zalba;
 import rest.dto.PreparatDTO;
 import rest.dto.ZalbaDTO;
+import rest.repository.AdminSistemaRepository;
 import rest.repository.ApotekeRepository;
 import rest.repository.DermatologRepository;
 import rest.repository.EReceptRepository;
@@ -32,6 +33,7 @@ import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
 import rest.repository.RezervacijaRepository;
+import rest.repository.ZalbaRepository;
 
 @Service
 @Transactional
@@ -46,10 +48,14 @@ public class PacijentServiceImpl implements PacijentService {
 	private ApotekeRepository apotekeRepository;
 	private RezervacijaRepository rezervacijaRepository;
 	private EReceptRepository eReceptRepository;
+	private ZalbaRepository zalbaRepository;
+	private AdminSistemaRepository adminSistemaRepository;
 	
 	@Autowired
-	public PacijentServiceImpl(EReceptRepository ercsd,RezervacijaRepository rezvrs,ApotekeRepository aprkt,FarmaceutRepository farmr,DermatologRepository dermr,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
+	public PacijentServiceImpl(AdminSistemaRepository admsarsa,ZalbaRepository zalbrs,EReceptRepository ercsd,RezervacijaRepository rezvrs,ApotekeRepository aprkt,FarmaceutRepository farmr,DermatologRepository dermr,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
 		this.pacijentRepository = pacijentRepository;
+		this.adminSistemaRepository = admsarsa;
+		this.zalbaRepository = zalbrs;
 		this.eReceptRepository = ercsd;
 		this.rezervacijaRepository = rezvrs;
 		this.apotekeRepository = aprkt;

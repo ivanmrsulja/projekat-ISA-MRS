@@ -34,6 +34,7 @@ import rest.domain.StatusPregleda;
 import rest.domain.TipKorisnika;
 import rest.domain.TipPregleda;
 import rest.domain.Zahtjev;
+import rest.domain.Zalba;
 import rest.domain.Zaposlenje;
 import rest.dto.ApotekaDTO;
 import rest.dto.CenovnikDTO;
@@ -64,6 +65,7 @@ import rest.repository.PreparatRepository;
 import rest.repository.RezervacijaRepository;
 import rest.repository.TipKorisnikaRepository;
 import rest.repository.ZahtevRepository;
+import rest.repository.ZalbaRepository;
 import rest.repository.ZaposlenjeRepository;
 
 @Service
@@ -89,16 +91,18 @@ public class AdminServiceImpl implements AdminService {
 	private EReceptRepository ereceptRepository;
 	private DermatologRepository dermatologRepository;
 	private TipKorisnikaRepository tipRepository;
+	private ZalbaRepository zalbaRepository;
 
 	private Environment env;
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	public AdminServiceImpl(TipKorisnikaRepository tpkr,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
+	public AdminServiceImpl(ZalbaRepository zalbrs,TipKorisnikaRepository tpkr,PonudaRepository imar, Environment env, JavaMailSender jms, NarudzbenicaRepozitory nr, DobavljacRepository dr, ApotekeRepository ar, 
 			CenaRepository cr, DostupanProizvodRepository dpr, PreparatRepository pr, AdminApotekeRepository aar, AkcijaPromocijaService aps, PacijentRepository pacRepo,
 			PregledRepository pregledRepo, RezervacijaRepository rezervacijaRepo, NotifikacijaRepository notifikacijaRepo, KorisnikRepository korisnikRepo,
 			ZaposlenjeRepository zaposlenjeRepo, ZahtevRepository zahtevRepo, EReceptRepository erecepRepo, DermatologRepository dermatologRepo) {
 		this.ponudaRepository = imar;
+		this.zalbaRepository = zalbrs;
 		this.tipRepository = tpkr;
 		this.env = env;
 		this.javaMailSender = jms;
