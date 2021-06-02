@@ -5,6 +5,7 @@ import java.util.Collection;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.dto.PreparatDTO;
+import rest.dto.ZalbaDTO;
 
 public interface PacijentService {
 	
@@ -23,5 +24,11 @@ public interface PacijentService {
 	Pacijent getOne(int id);
 	
 	void addPenal(int id, Penal p);
+	
+	Collection<ZalbaDTO> getZalbeForPatient(int id);
+	ZalbaDTO getZalbaForPatient(int id, int zalId);
+	Collection<String> getAllAppealable(int id);
+	void sendZalba(ZalbaDTO zdto);
+	Collection<ZalbaDTO> getZalbeForAdmin(int id);
 
 }

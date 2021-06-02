@@ -10,15 +10,28 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rest.domain.AdminSistema;
+import rest.domain.Apoteka;
+import rest.domain.Dermatolog;
+import rest.domain.ERecept;
+import rest.domain.Farmaceut;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Pregled;
 import rest.domain.Preparat;
+import rest.domain.Rezervacija;
+import rest.domain.Zalba;
 import rest.dto.PreparatDTO;
+import rest.dto.ZalbaDTO;
+import rest.repository.ApotekeRepository;
+import rest.repository.DermatologRepository;
+import rest.repository.EReceptRepository;
+import rest.repository.FarmaceutRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
+import rest.repository.RezervacijaRepository;
 
 @Service
 @Transactional
@@ -28,10 +41,20 @@ public class PacijentServiceImpl implements PacijentService {
 	private PreparatRepository preparatRepository;
 	private PregledRepository pregledRepository;
 	private PenalRepository penaliRepository;
+	private DermatologRepository dermaRepository;
+	private FarmaceutRepository farmaRepository;
+	private ApotekeRepository apotekeRepository;
+	private RezervacijaRepository rezervacijaRepository;
+	private EReceptRepository eReceptRepository;
 	
 	@Autowired
-	public PacijentServiceImpl(PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
+	public PacijentServiceImpl(EReceptRepository ercsd,RezervacijaRepository rezvrs,ApotekeRepository aprkt,FarmaceutRepository farmr,DermatologRepository dermr,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
 		this.pacijentRepository = pacijentRepository;
+		this.eReceptRepository = ercsd;
+		this.rezervacijaRepository = rezvrs;
+		this.apotekeRepository = aprkt;
+		this.dermaRepository = dermr;
+		this.farmaRepository = farmr;
 		this.preparatRepository = preparatRepository;
 		this.pregledRepository=pregledRepository;
 		this.penaliRepository = pr;
@@ -152,6 +175,119 @@ public class PacijentServiceImpl implements PacijentService {
 		pacijent.addPenal(pp);
 		penaliRepository.save(pp);
 		pacijentRepository.save(pacijent);
+	}
+
+
+	@Override
+	public Collection<ZalbaDTO> getZalbeForPatient(int id) {
+		// TODO Auto-generated method stub
+				Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
+				Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+				for (Zalba z : zalbe) {
+					ZalbaDTO zt = new ZalbaDTO(z);
+					zdto.add(zt);
+				}
+				return zdto;
+	}
+
+
+	@Override
+	public ZalbaDTO getZalbaForPatient(int id, int zalId) {
+		// TODO Auto-generated method stub
+				Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
+				Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+				for (Zalba z : zalbe) {
+					if(z.getId().equals(zalId)) {
+						ZalbaDTO zald = new ZalbaDTO(z);
+						return zald;
+					}
+				}
+				return null;
+	}
+
+
+	@Override
+	public Collection<String> getAllAppealable(int id) {
+		Collection<String> zaljivi = new ArrayList<String>();
+		Collection<Dermatolog> dermatolozi = dermaRepository.getAllDerme();
+		for (Dermatolog dermatolog : dermatolozi) {
+			Collection<Pregled> pregledi = dermaRepository.getExaminationsForPatientAndDermatologist(dermatolog.getId(), id);
+			if (pregledi.size() == 0) {
+				continue;
+			}
+			zaljivi.add("Dermatolog: "+ dermatolog.getUsername());
+			
+		}
+		System.out.println("BROJ DERMATOLOGA JE    " + dermatolozi.size());
+		Collection<Farmaceut> farmaceuti = farmaRepository.getAllPharmacist();
+		for (Farmaceut farmaceut : farmaceuti) {
+			Collection<Pregled> pregledi = farmaRepository.getConsultmentsForPatientAndPharmacist(farmaceut.getId(), id);
+			if (pregledi.size() == 0) {
+				continue;
+			}
+			zaljivi.add("Farmaceut: " + farmaceut.getUsername());
+		}
+		
+		Collection<Apoteka> apoteke = apotekeRepository.getAll();
+		for (Apoteka apoteka : apoteke) {
+			Collection<Pregled> pregledi = pregledRepository.preglediUApoteci(apoteka.getId(), id);
+			Collection<Rezervacija> rezervacije = rezervacijaRepository.rezervacijaUApoteci(apoteka.getId(), id);
+			Collection<ERecept> eRecepti = eReceptRepository.zaApotekuIKorisnika(apoteka.getId(), id);
+			if (pregledi.size() == 0 && rezervacije.size() == 0 && eRecepti.size() == 0) {
+				continue;
+			}
+			zaljivi.add("Apoteka: " + apoteka.getNaziv());
+		}
+		return zaljivi;
+	}
+
+
+	@Override
+	public void sendZalba(ZalbaDTO zdto) {
+		Pacijent p = pacijentRepository.getPatientByUser(zdto.getNazivKorisnika());
+		Zalba z = new Zalba();
+		if(zdto.getNazivAdmina() == "") {
+			z = new Zalba(zdto.getTekst(), null, p);
+			zalbaRepository.save(z);
+			p.addZalba(z);
+			pacijentRepository.save(p);
+		} else {
+			AdminSistema as = adminSistemaRepository.getPatientByUser(zdto.getNazivAdmina());
+			z = new Zalba(zdto.getTekst(), as, p);
+			z.setAnswered(true);
+			zalbaRepository.save(z);
+			p.addZalba(z);
+			pacijentRepository.save(p);
+			as.addZalba(z);
+			adminSistemaRepository.save(as);
+		}
+		
+	}
+
+
+	@Override
+	public Collection<ZalbaDTO> getZalbeForAdmin(int id) {
+		Collection<Zalba> zalbe = zalbaRepository.getAll();
+		Collection<ZalbaDTO> zdtos = new ArrayList<ZalbaDTO>();
+		for (Zalba z : zalbe) {
+//			if((z.getAdminSistema() == null && z.isAnswered() == false)  || z.getAdminSistema().getId() == id) {
+//				ZalbaDTO zal = new ZalbaDTO(z);
+//				zdtos.add(zal);
+//			}
+			if(z.getAdminSistema() == null) {
+				if(!z.isAnswered()) {
+					ZalbaDTO zal = new ZalbaDTO(z);
+					zdtos.add(zal);
+				}
+			} else {
+				if(z.getAdminSistema().getId() == id) {
+					ZalbaDTO zal = new ZalbaDTO(z);
+					zdtos.add(zal);
+				}
+				
+			}
+		}
+		return zdtos;
 	}
 	
 }

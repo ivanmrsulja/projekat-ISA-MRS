@@ -25,12 +25,12 @@ public class Zalba {
 	
 	public Zalba() {}
 	
-	public Zalba(String text, AdminSistema adminSistema, Pacijent pacijent, boolean answered) {
+	public Zalba(String text, AdminSistema adminSistema, Pacijent pacijent) {
 		super();
 		this.text = text;
 		this.adminSistema = adminSistema;
 		this.pacijent = pacijent;
-		this.answered = answered;
+		this.answered = false;
 	}
 
 	public Integer getId() {

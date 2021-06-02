@@ -1100,4 +1100,12 @@ public class AdminServiceImpl implements AdminService {
 		
 	}
 
+	@Override
+	public void updateZalba(int id) {
+		Zalba z = zalbaRepository.findById(id).get();
+		z.setAnswered(true);
+		zalbaRepository.save(z);
+		
+	}
+
 }

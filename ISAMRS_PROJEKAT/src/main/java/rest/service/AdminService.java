@@ -106,4 +106,6 @@ public interface AdminService {
 	public NarudzbenicaDTO getNarudzbenicaById(int id);
 	
 	public void createOffer(PonudaDTO p);
+	
+	public void updateZalba(int id);
 }
