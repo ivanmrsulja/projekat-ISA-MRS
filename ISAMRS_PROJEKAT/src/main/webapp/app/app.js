@@ -50,6 +50,7 @@ const jednaNarudzbenica = { template: '<jedna-narudzbenica></jedna-narudzbenica>
 const listaZalbiAdmin = { template: '<lista-zalbiadmin></lista-zalbiadmin>'};
 const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>'};
 const registracijaTipa = { template: '<register-type></register-type>'};
+const sendQr = {template: '<send-qr></send-qr>'};
 
 const router = new VueRouter({
     mode: 'hash',
@@ -105,6 +106,7 @@ const router = new VueRouter({
         { path: '/jednaZalbaAdmin/:zalId', component: jednaZalbaAdmin, name: "jednaZalbaAdmin"},
         { path: '/listaNarudzbenica', component: listaNarudzbenica},
         { path: '/registracijaTipa', component: registracijaTipa},
+        { path: '/sendQr', component: sendQr},
 	    { path: '/godisnji', component: GodisnjiOdmor},
 	  ]
 	});
