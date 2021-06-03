@@ -295,5 +295,14 @@ public class PacijentServiceImpl implements PacijentService {
 		}
 		return zdtos;
 	}
+
+
+	@Override
+	public ZalbaDTO getOneZalba(int id) {
+		// TODO Auto-generated method stub
+				Zalba z = zalbaRepository.findById(id).get();
+				ZalbaDTO zal = new ZalbaDTO(z);
+				return zal;
+	}
 	
 }

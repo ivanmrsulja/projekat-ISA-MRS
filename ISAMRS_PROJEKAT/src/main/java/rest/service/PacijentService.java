@@ -30,5 +30,6 @@ public interface PacijentService {
 	Collection<String> getAllAppealable(int id);
 	void sendZalba(ZalbaDTO zdto);
 	Collection<ZalbaDTO> getZalbeForAdmin(int id);
+	ZalbaDTO getOneZalba(int id);
 
 }

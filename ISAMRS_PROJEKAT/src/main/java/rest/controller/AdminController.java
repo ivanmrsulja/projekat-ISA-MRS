@@ -167,6 +167,13 @@ public class AdminController {
 		return incomes;
 	}
 	
+	@GetMapping(value= "/getZalba/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ZalbaDTO getZalba(@PathVariable("id") int id) {
+		ZalbaDTO users = pacijentService.getOneZalba(id);
+		
+		return users;
+	}
+	
 	@AsAdminApoteke
 	@GetMapping(value = "/yearlyDrugsUsage/{year}/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<IzvestajValueDTO> getDrugsUsageForYear(@PathVariable("year") int year, @PathVariable("pharmacyId") int pharmacyId) {
