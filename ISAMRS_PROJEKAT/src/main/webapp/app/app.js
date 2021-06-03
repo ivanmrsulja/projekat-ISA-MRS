@@ -57,6 +57,7 @@ const listaZalbiAdmin = { template: '<lista-zalbiadmin></lista-zalbiadmin>' };
 const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>' };
 const registracijaTipa = { template: '<register-type></register-type>' };
 const sendQr = { template: '<send-qr></send-qr>' };
+const RezervacijaLeka = { template: '<rezervacija-leka></rezervacija-leka>'};
 
 const router = new VueRouter({
     mode: 'hash',
@@ -104,6 +105,7 @@ const router = new VueRouter({
         { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
         { path: '/preparatiApoteke', component: PreparatiApoteke },
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
+
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude" },
         { path: '/listaZalbi', component: listaZalbi },
         { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba" },
@@ -117,7 +119,8 @@ const router = new VueRouter({
         { path: '/izvestajiPregledi', component: IzvestajiPregledi },
         { path: '/pregledNotifikacija', component: PregledNotifikacija },
         { path: '/kreiranjeTerminaPregleda', component: KreiranjeTerminaPregleda },
-        { path: '/dermatoloziAdminApoteke', component: DermatoloziAdminApoteke }
+        { path: '/dermatoloziAdminApoteke', component: DermatoloziAdminApoteke },
+        { path: '/rezervacijaLeka', component: RezervacijaLeka}
     ]
 });
 

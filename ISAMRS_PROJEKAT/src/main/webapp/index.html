@@ -30,7 +30,7 @@
             <h2>Tim: 06</h2>
         </div>
         <br/>
-
+		
         <a class="navigacija" href="#/apoteke/0" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'ADMIN_SISTEMA' || korisnik.zaposlenjeKorisnika=='DERMATOLOG' || korisnik.zaposlenjeKorisnika=='FARMACEUT' || korisnik.zaposlenjeKorisnika=='DOBAVLJAC' || korisnik.zaposlenjeKorisnika=='ADMIN_APOTEKE'">Pocetna</a>
         <a class="navigacija" href="#/preparati" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT' && korisnik.zaposlenjeKorisnika != 'PACIJENT'&& korisnik.zaposlenjeKorisnika != 'GOST'">Preparati</a>
         <a class="navigacija" href="#/profileApoteke" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_APOTEKE'">Apoteka</a>
@@ -63,14 +63,8 @@
         <a class="navigacija" href="#/zakaziSavetovanje/0" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Zakazi savetovanje</a>
 
 
-        <a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Moje ponude</a>
-        <a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
-        <a class="navigacija" href="#/pregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Radni Kalendar</a>
-        <a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
+
         <a class="navigacija" href="#/savetovanja" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Lista Savetovanja</a>
-        <a class="navigacija" href="#/updateSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Azuriranje podataka</a>
-        <a class="navigacija" href="#/pacijenti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Pacijenti</a>
-        <a class="navigacija" href="#/godisnji" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Odmor/Odsustvo</a>
         <a class="navigacija" href="#/listaZalbi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Istorija zalbi</a>
         <a class="navigacija" href="#/listaZalbiAdmin" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Istorija zalbi i odgovora</a>
         <a class="navigacija" href="#/listaNarudzbenica" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Lista narudzbenica</a>
@@ -78,9 +72,18 @@
         <a class="navigacija" href="#/regApoteka" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Registrovanje apoteke</a>
         <a class="navigacija" href="#/registracijaTipa" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'ADMIN_SISTEMA'">Kreiranje tipa korisnika</a>
 
-
+<a class="navigacija" href="#/tab" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Moje ponude</a>
+<a class="navigacija" href="#/dermatolozi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'">Profil Dermatologa</a>
+<a class="navigacija" href="#/farmaceuti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Profil Farmaceuta</a>
+<a class="navigacija" href="#/pregledi" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG'&& korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Radni Kalendar</a>
+<a class="navigacija" href="#/updateSupp" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DOBAVLJAC'">Azuriranje podataka</a>
+<a class="navigacija" href="#/pacijenti" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Pacijenti</a>
+<a class="navigacija" href="#/godisnji" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Odmor/Odsustvo</a>
+<a class="navigacija" href="#/promeniSifru" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'DERMATOLOG' && korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Promena Lozinke</a>
+<a class="navigacija" href="#/rezervacijaLeka" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'FARMACEUT'">Rezervacija leka</a>
 
         <a class="navigacija" href="#/" v-on:click="logout()" v-bind:hidden="korisnik.zaposlenjeKorisnika == 'GOST'">Logout</a>
+        
         <br/>
         <br/>
         <router-view></router-view>
@@ -170,6 +173,8 @@
     <script src="app/jednaNarudzbenica.js"></script>
     <script src="app/sendQr.js"></script>
     <script src="app/app.js"></script>
+    <script src="app/rezervacijaLeka.js"></script>
+
 </body>
 
 </html>

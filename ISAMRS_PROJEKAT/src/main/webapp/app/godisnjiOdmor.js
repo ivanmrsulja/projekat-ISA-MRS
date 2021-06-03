@@ -36,9 +36,9 @@ Vue.component("zakazivanje-godisnjegOdmora", {
 					 <input name="odusustvo" type="radio"> Odusustvo<br>
 					
 					<br>
-					<tr>Datum: <input type="date" name="odDatuma"/></tr>
+					<tr>Od datuma: <input type="date" name="odDatuma"/></tr>
 					<br>
-					<tr>Datum: <input type="date" name="doDatuma"/></tr>
+					<tr>Do datuma: <input type="date" name="doDatuma"/></tr>
 				</th>
 			</thead>
 			</table>
