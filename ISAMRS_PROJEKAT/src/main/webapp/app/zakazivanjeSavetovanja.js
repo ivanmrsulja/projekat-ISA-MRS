@@ -63,7 +63,7 @@ Vue.component("zakazivanje-savetovanja", {
 	methods: {
 		pretrazi: function(criteria){
 			if(!this.datum || !this.vreme){
-				alert("Popunite sva polja.");
+				toast("Popunite sva polja.");
 				return;
 			}
 			sessionStorage.setItem('criteria', criteria);
@@ -75,7 +75,7 @@ Vue.component("zakazivanje-savetovanja", {
 						this.numPages = response.data.totalPages - 1;
 					}
 					else{
-						alert("Savetovanje mora biti u buducnosti.");
+						toast("Savetovanje mora biti u buducnosti.");
 					}
 				});
 		},
