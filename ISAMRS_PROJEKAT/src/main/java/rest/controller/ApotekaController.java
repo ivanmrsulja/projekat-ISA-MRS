@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
@@ -37,6 +38,7 @@ import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.LekProdajaDTO;
 import rest.dto.PregledDTO;
 import rest.service.ApotekaService;
 import rest.service.KorisnikService;
@@ -76,6 +78,22 @@ public class ApotekaController {
 			retVals.add(a);
 		}
 		return apoteke;
+	}
+	
+	@GetMapping(value="/test/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<LekProdajaDTO> test(@PathVariable("id") String id) {
+		System.out.println(id + "OVAKO PRVO IZGLEDATAJ NIz");
+		String[] ar = id.split(",");
+		System.out.println(ar.toString() + "OVAKO IZGLEDA TAJ NIZ DA SE ZNA");
+		return (ArrayList<LekProdajaDTO>) apotekaService.lekovi(ar);
+		
+	}
+	
+	@GetMapping(value="/sorting/{id}/{crit}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<LekProdajaDTO> sort(@PathVariable("id") String id, @PathVariable("crit") String crit) {
+		String[] ar = id.split(",");
+		return (ArrayList<LekProdajaDTO>) apotekaService.sortLekovi(ar, crit);
+		
 	}
 	
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

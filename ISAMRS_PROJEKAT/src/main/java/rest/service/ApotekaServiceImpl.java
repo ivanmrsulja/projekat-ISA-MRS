@@ -17,16 +17,21 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
+import rest.domain.Cena;
 import rest.domain.Dermatolog;
+import rest.domain.DostupanProizvod;
 import rest.domain.Farmaceut;
+import rest.domain.LekoviComparator;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
 import rest.domain.TipPregleda;
 import rest.dto.ApotekaDTO;
+import rest.dto.LekProdajaDTO;
 import rest.dto.PregledDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
+import rest.repository.CenaRepository;
 import rest.repository.DermatologRepository;
 import rest.repository.FarmaceutRepository;
 import rest.repository.LokacijaRepository;
@@ -49,12 +54,14 @@ public class ApotekaServiceImpl implements ApotekaService {
 	private PacijentRepository pacijenti;
 	private PenalRepository penali;
 	private LokacijaRepository lokacije;
+	private CenaRepository cene;
 	
 	private static final int pageSize = 10;
 
 	@Autowired
-	public ApotekaServiceImpl(LokacijaRepository lr,ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
+	public ApotekaServiceImpl(CenaRepository c,LokacijaRepository lr,ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
 		apoteke = ar;
+		cene = c;
 		lokacije = lr;
 		admin = are;
 		dermatolozi = dr;
@@ -329,6 +336,87 @@ public class ApotekaServiceImpl implements ApotekaService {
 		lokacije.save(user.getLokacija());
 		Apoteka savedUser = apoteke.save(user);
 		return savedUser;
+	}
+
+	@Override
+	public Collection<LekProdajaDTO> lekovi(String[] cures) {
+		Collection<Cena> sveCene = cene.getAll();
+		Collection<LekProdajaDTO> lista = new ArrayList<LekProdajaDTO>();
+		for (Cena cena : sveCene) {
+			if(LocalDate.now().isAfter(cena.getPocetakVazenja())) {
+				int foundCures = 0;
+				double price = 0;
+				for (DostupanProizvod dp : cena.getDostupniProizvodi()) {
+					for (String i : cures) {
+						if(Integer.parseInt(i) == dp.getPreparat().getId()) {
+							foundCures++;
+							price += dp.getCena();
+						}
+					}
+				}
+				if(foundCures == cures.length) {
+					//System.out.println("PRONASLI CISTO DAS DASKLDJLKSAJDLKAJLKASJDLKSAJDLKSAJDLKAS");
+					ApotekaDTO a = new ApotekaDTO(cena.getApoteka());
+					LekProdajaDTO lpdto = new LekProdajaDTO(cena.getId(),a, price);
+					lista.add(lpdto);
+				}
+			}
+		}
+		for (LekProdajaDTO lekProdajaDTO : lista) {
+			System.out.println(lekProdajaDTO.getApoteka().getNaziv() + " " + lekProdajaDTO.getCena());
+		}
+		return lista;
+	}
+
+	@Override
+	public Collection<LekProdajaDTO> sortLekovi(String[] cures, String crit) {
+		// TODO Auto-generated method stub
+		//ArrayList<LekProdajaDTO> sortirano = (ArrayList<LekProdajaDTO>) lekovi;
+		ArrayList<LekProdajaDTO> lekovi = (ArrayList<LekProdajaDTO>) lekovi(cures);
+		if(crit.equals("naziv")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return o1.getApoteka().getNaziv().compareTo(o2.getApoteka().getNaziv());
+				}
+			});
+		}
+		
+		if(crit.equals("mesto")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return o1.getApoteka().getLokacija().getUlica().compareTo(o2.getApoteka().getLokacija().getUlica());
+				}
+			});
+		}
+		
+		if(crit.equals("ocena")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return (int) (o1.getApoteka().getOcena() - o2.getApoteka().getOcena());
+				}
+			});
+		}
+		
+		if(crit.equals("cena")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return (int) (o1.getApoteka().getCena() - o2.getApoteka().getCena());
+				}
+			});
+		}
+		return lekovi;
 	}
 
 }

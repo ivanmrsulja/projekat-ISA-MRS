@@ -47,6 +47,7 @@ const PregledNotifikacija = { template: '<pregled-notifikacija></pregled-notifik
 const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></kreiranje-termina-pregleda>' };
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>' };
 const DermatoloziAdminApoteke = { template: '<dermatolozi-admin-apoteke></dermatolozi-admin-apoteke>' };
+const tabelaApoteka = { template: '<tabela-apoteka></tabela-apoteka>' };
 
 
 const listaZalbi = { template: '<lista-zalbi></lista-zalbi>' };
@@ -105,7 +106,7 @@ const router = new VueRouter({
         { path: '/pregledNarudzbenica', component: PregledNarudzbenica },
         { path: '/preparatiApoteke', component: PreparatiApoteke },
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
-
+	    { path: '/tabelaApoteka/:id', component: tabelaApoteka },
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude" },
         { path: '/listaZalbi', component: listaZalbi },
         { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba" },
