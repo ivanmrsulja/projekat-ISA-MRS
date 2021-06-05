@@ -118,6 +118,24 @@
     <script src="css/ol.js"></script>
     <script type="text/javascript" src="js/toast/dist/jquery.toast.min.js"></script>
     
+    <script type="text/javascript">
+    
+    	function toast(t){
+    		$.toast({ 
+				  text : t, 
+				  showHideTransition : 'slide', 
+				  bgColor : '#455a64', 
+				  textColor : 'white',
+				  allowToastClose : false,
+				  hideAfter : 5000,
+				  stack : 5,
+				  textAlign : 'left',
+				  position : 'bottom-right'
+				});
+    	}
+    	
+    </script>
+    
     <script src="app/ponudeTable.js"></script>
     <script src="app/promenaSifre.js"></script>
     <script src="app/login.js"></script>
