@@ -54,13 +54,13 @@ Vue.component("jedna-narudzbenica", {
     		let datum = $("#datum").val();
     		let cena = $("#cena").val();
     		if(datum.trim() == "" || cena.trim() == "") {
-    			alert("Ne ostavljajte prazna polja");
+    			toast("Ne ostavljajte prazna polja");
     			return;
     		}
     		newPonuda = {ukupnaCena:cena, rokIsporuke:datum, idNarudzbenice: this.zalbe.id, dobavljac: this.user.username};
     		axios.post("/api/admin//sendOffer", newPonuda).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste poslali ponudu");
+                    toast("Uspesno ste poslali ponudu");
                     self.$router.push({ path: "/listaNarudzbenica" });
                 }
             });

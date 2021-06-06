@@ -38,15 +38,15 @@ Vue.component("register-type", {
             let bod = parseInt($("input[name=points]").val());
             let pop = parseFloat($("input[name=percent]").val());
             if (naziv.trim() == "" || isNaN(bod) || isNaN(pop)) {
-                alert("Popunite sva polja.");
+                toast("Popunite sva polja.");
                 return;
             }
             if (bod < 0) {
-                alert("Ne sme biti negativan broj bodova.");
+                toast("Ne sme biti negativan broj bodova.");
                 return;
             }
             if (pop < 0 || pop > 100) {
-                alert("Popust mora biti izmedju 0 i 100 posto");
+                toast("Popust mora biti izmedju 0 i 100 posto");
                 return;
             }
 
@@ -54,7 +54,7 @@ Vue.component("register-type", {
             console.log(newUser);
             axios.post("/api/admin/registerType", newUser).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste registrovali novog tipa!");
+                    toast("Uspesno ste registrovali novog tipa!");
                 }
             });
 		}

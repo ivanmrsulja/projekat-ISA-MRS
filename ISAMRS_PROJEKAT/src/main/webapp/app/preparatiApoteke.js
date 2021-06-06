@@ -130,14 +130,14 @@ Vue.component("preparati-apoteke", {
         addProduct: function(preparat) {
             this.dodato = true;
             this.aktuelniPreparat = preparat;
-            alert("Unesite cenu ispod tabele.");
+            toast("Unesite cenu ispod tabele.");
         },
         registerProductForPharmacy: function(product) {
             axios
             .put("/api/admin/addProductToPharmacy/" + this.apoteka.id + "/" + this.cena, this.aktuelniPreparat)
             .then(response => {
                 if (response.data == "OK"){
-                    alert("Uspesno dodavanje.");
+                    toast("Uspesno dodavanje.");
                 }
             axios
             .get("api/admin/searchPharmacy/" + this.apoteka.id)

@@ -77,17 +77,17 @@ Vue.component("register-adminphar", {
             let adr = $("input[name=adresa]").val();
             let apo = $("#pharmas").children("option:selected").val();
             if (usr.trim() == "" || pas.trim() == "" || ime.trim() == "" || prz.trim() == "" || email.trim() == "" || tel.trim() == "") {
-                alert("Popunite sva polja.");
+                toast("Popunite sva polja.");
                 return;
             }
 
             if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-                alert("Email je u neispravnom formatu.");
+                toast("Email je u neispravnom formatu.");
                 return;
             }
 
             if (pas != pasConf) {
-                alert("Password-i moraju da se podudaraju.");
+                toast("Password-i moraju da se podudaraju.");
                 return;
             }
 
@@ -98,7 +98,7 @@ Vue.component("register-adminphar", {
             console.log(newUser);
             axios.post("/api/users/registerAdminPharm", newUser).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste registrovali admina apoteke! Moze se ulogovati");
+                    toast("Uspesno ste registrovali admina apoteke! Moze se ulogovati");
                 }
             });
         },

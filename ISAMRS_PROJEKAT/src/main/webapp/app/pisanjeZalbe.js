@@ -39,12 +39,12 @@ Vue.component("pisanje-zalbe", {
     		 let newUser = { nazivKorisnika: this.user.username, nazivAdmina: "", tekst: pismo, answered: false};
 
             if(tekst.trim() == "") {
-            	alert("Morate popuniti tekst");
+            	toast("Morate popuniti tekst");
             	return;
             }
             axios.post("/api/pacijenti/sendZalba", newUser).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste poslali zalbu");
+                    toast("Uspesno ste poslali zalbu");
                     self.$router.push({ path: "/listaZalbi" });
                 }
             });

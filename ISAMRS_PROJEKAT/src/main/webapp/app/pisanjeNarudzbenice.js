@@ -104,7 +104,7 @@ Vue.component("pisanje-narudzbenice", {
             now_date = new Date();
             comparison_date = new Date(this.rok);
             if (comparison_date < now_date) {
-                alert("Pogresna vrednost za datum roka.");
+                toast("Pogresna vrednost za datum roka.");
                 return;
             }
 
@@ -117,7 +117,7 @@ Vue.component("pisanje-narudzbenice", {
             .post("api/admin/registerOrder/" + this.admin.id, this.narudzbenica)
             .then(response => {
                 if (response.data == "OK") {
-                    alert("Uspesna registracija narudzbenice.");
+                    toast("Uspesna registracija narudzbenice.");
                 }
             });
         },
@@ -139,7 +139,7 @@ Vue.component("pisanje-narudzbenice", {
             .put("/api/admin/addProductToPharmacy/" + this.apoteka.id + "/" + this.cena, this.aktuelniPreparat)
             .then(response => {
                 if (response.data == "OK"){
-                    alert("Uspesno dodavanje.");
+                    toast("Uspesno dodavanje.");
                 }
             axios
             .get("api/admin/searchPharmacy/" + this.apoteka.id)

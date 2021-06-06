@@ -134,17 +134,17 @@ Vue.component("profil-pacijenta", {
 		update: function(){
 			
 			if (this.pacijent.korisnik.username.trim() == "" || this.pacijent.korisnik.ime.trim() == "" || this.pacijent.korisnik.prezime.trim() == "" || this.pacijent.korisnik.email.trim() == "" || this.pacijent.korisnik.telefon.trim() == ""){
-				alert("Popunite sva polja.");
+				toast("Popunite sva polja.");
 				return;
 			}
 			
 			axios
 				.put("api/users/" + this.pacijent.korisnik.id, this.pacijent.korisnik)
 				.then(response => {
-					alert(response.data);
+					toast(response.data);
 				})
 				.catch(err => {
-					alert(err.data);
+					toast(err.data);
 				});
 		},
 		filter: function(){

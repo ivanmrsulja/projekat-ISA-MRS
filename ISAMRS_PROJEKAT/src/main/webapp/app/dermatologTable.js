@@ -22,7 +22,7 @@ Vue.component("profil-dermatolozi", {
     		var s = {id:der.id, ime:der.ime, prezime:der.prezime, username:der.username, email:der.email, telefon:der.telefon, lokacija:der.lokacija};
     		axios
     		.put("api/dermatolog/"+this.dermatolog.id, s)
-    		.then(response => alert('Dermatolog ' + der.ime + " " + der.prezime + " uspešno snimljen."));
+    		.then(response => toast('Dermatolog ' + der.ime + " " + der.prezime + " uspešno snimljen."));
     		this.mode = 'BROWSE';
     	},
     	cancelEditing : function() {

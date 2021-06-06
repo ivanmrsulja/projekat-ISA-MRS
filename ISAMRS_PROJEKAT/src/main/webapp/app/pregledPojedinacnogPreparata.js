@@ -109,9 +109,9 @@ Vue.component("pojedinacni-preparat", {
 			axios
 				.get("api/preparat/rezervisi/" + this.$route.params.spec + "/" + this.selected.id + "?datum=" + this.datum)
 				.then(response => {
-					alert(response.data);
+					toast(response.data);
 				}).catch(response => {
-					alert("Morate uneti datum preuzimanja.");
+					toast("Morate uneti datum preuzimanja.");
 				});
 		},
 		cancel: function(){

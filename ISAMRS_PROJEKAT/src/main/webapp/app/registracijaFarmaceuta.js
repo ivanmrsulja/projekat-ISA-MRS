@@ -77,17 +77,17 @@ Vue.component("register-pharmacist", {
 			let adr = $("input[name=adresa]").val();
 			
 			if (usr.trim() == "" || pas.trim() == "" || ime.trim() == "" || prz.trim() == "" || email.trim() == "" || tel.trim() == ""){
-				alert("Niste popunili sva polja.");
+				toast("Niste popunili sva polja.");
 				return;
 			}
 			
 			if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-				alert("Email je u neispravnom formatu.");
+				toast("Email je u neispravnom formatu.");
 				return;
 			}
 			
 			if(pas != pasConf){
-				alert("Sifre se ne podudaraju.");
+				toast("Sifre se ne podudaraju.");
 				return;
 			}
 			
@@ -98,7 +98,7 @@ Vue.component("register-pharmacist", {
 			console.log(newUser);
 			axios.post("/api/farmaceut/register", newUser).then(data => {
 				if(data.data == "OK") {
-					alert("Uspesno ste registrovali farmaceuta!");
+					toast("Uspesno ste registrovali farmaceuta!");
 				}
 			});
 		},

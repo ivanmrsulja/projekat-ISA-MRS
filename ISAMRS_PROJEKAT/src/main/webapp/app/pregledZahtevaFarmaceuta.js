@@ -68,7 +68,7 @@ Vue.component("pregled-zahteva-farmaceuta", {
                     this.zahtevi = response.data;
                 });
 			}).catch(err => {
-            	alert("Azuriranje nije uspelo.");
+            	toast("Azuriranje nije uspelo.");
             });
 		},
 		rejectRequest : function(z){
@@ -87,7 +87,7 @@ Vue.component("pregled-zahteva-farmaceuta", {
                     this.zahtevi = response.data;
                 });
 			}).catch(err => {
-            	alert("Azuriranje nije uspelo.");
+            	toast("Azuriranje nije uspelo.");
             });
 			this.odbijen = false;
 		}

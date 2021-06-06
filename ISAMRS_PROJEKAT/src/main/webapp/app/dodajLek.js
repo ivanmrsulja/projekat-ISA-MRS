@@ -66,15 +66,15 @@ Vue.component("add-cure", {
 			let proizvodjac = $('input[name=proizvodjac]').val();
 			let rezim = $("#rezim").children("option:selected").val();
 			let tip = $("#tip").children("option:selected").val();
-			alert(rezim + tip);
+			toast(rezim + tip);
 			if (naziv.trim() == "" || kontraindikacije.trim() == "" || sastav.trim() == "" || preporuceniUnos.trim() == "" || oblik.trim() == "" || proizvodjac.trim() == ""){
-				alert("Popunite sva polja.");
+				toast("Popunite sva polja.");
 				return;
 			}
 			let newCure = {"naziv": naziv, "kontraindikacije": kontraindikacije, "sastav": sastav, "preporuceniUnos" : preporuceniUnos, "oblik": oblik, "proizvodjac": proizvodjac, "rezim": rezim, "tip": tip, "ocena": 0.0};
 			axios.post("/api/preparat/addCure", newCure).then(data => {
 				if(data.data == "OK") {
-					alert("Uspesno ste kreirali lek!");
+					toast("Uspesno ste kreirali lek!");
 				}
 			});
 		}

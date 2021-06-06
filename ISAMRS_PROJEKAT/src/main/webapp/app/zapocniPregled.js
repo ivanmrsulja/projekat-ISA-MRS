@@ -22,7 +22,7 @@ methods: {
 		this.pregled.terapija=this.terapija;
 		axios.post("/api/dermatolog/zavrsi/"+this.pregled.id, this.pregled).then(data => {
 			if(data.data == "OK") {
-				alert("Uspesno ste se zavrsili pregled!");
+				toast("Uspesno ste se zavrsili pregled!");
 			}
 		});
 		
@@ -33,7 +33,7 @@ methods: {
 		let noviPregled = {izvjestaj:"", datum : datum, vrijeme: vrijeme, trajanje: 45, cijena: 5000 };
 		
 		axios.post("/api/dermatolog/zakaziNovi/"+this.pregled.apoteka.id+"/"+this.pregled.zaposleni.id+"/"+this.pacijent.korisnik.id, noviPregled).then(data => {
-			alert(data.data);
+			toast(data.data);
 		});	
 	},
 	pregledajPreparat : function(r){
@@ -50,7 +50,7 @@ methods: {
 		var p={datum:this.pregled.datum,pacijent:this.pacijent};
 		axios
 		.put("api/pacijenti/penal/"+this.pacijent.korisnik.id, p)
-		.then(response => alert('Pacijentu ' + this.pacijent.korisnik.ime + " " + this.pacijent.korisnik.prezime + " uspešno dodan penal."));		
+		.then(response => toast('Pacijentu ' + this.pacijent.korisnik.ime + " " + this.pacijent.korisnik.prezime + " uspešno dodan penal."));		
 	},
 },
 	template: ` 

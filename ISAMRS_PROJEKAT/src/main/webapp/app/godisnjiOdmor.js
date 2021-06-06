@@ -16,7 +16,7 @@ Vue.component("zakazivanje-godisnjegOdmora", {
 				
 		axios.post("/api/zahtev/zahtjev", zahtjev).then(data => {
 			if(data.data == "OK") {
-				alert("Uspesno ste podneli zahtev!");
+				toast("Uspesno ste podneli zahtev!");
 			}
 		});
 	},

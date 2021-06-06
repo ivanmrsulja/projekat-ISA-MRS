@@ -32,7 +32,7 @@ Vue.component("promena-sifre", {
 			
 			let temp = this;
 			if (noviPass != pass) {
-                alert("Password-i moraju da se podudaraju.");
+                toast("Password-i moraju da se podudaraju.");
                 return;
             }
             
@@ -44,7 +44,7 @@ Vue.component("promena-sifre", {
 						newUser.loggedBefore = true;
 						axios.post("/api/users/changePass", newUser).then(data => {
 							if(data.data == "OK") {
-								alert("Uspesno ste promenili sifru!");
+								toast("Uspesno ste promenili sifru!");
 								if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC") {
 									temp.$router.push({ path: "/tab" });
 								}

@@ -46,14 +46,14 @@ Vue.component("definicija-cenovnika", {
             now_date = new Date();
             comparison_date = new Date(this.cenovnik.pocetakVazenja);
             if (comparison_date < now_date){
-                alert("Pogresna vrednost datuma.");
+                toast("Pogresna vrednost datuma.");
                 return;
             }
             axios
             .post("api/admin/registerCenovnik/" + this.apoteka.id, this.cenovnik)
             .then(response => {
                 if (response.data == "OK"){
-                    alert("Uspesno azuriranje cenovnika");
+                    toast("Uspesno azuriranje cenovnika");
                 }
             });
         },

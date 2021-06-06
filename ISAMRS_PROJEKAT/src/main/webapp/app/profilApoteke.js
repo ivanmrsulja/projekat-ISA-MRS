@@ -145,7 +145,7 @@ Vue.component("profil-apoteke", {
 			.put("api/admin/updateExaminationPrice", e)
 			.then(response => {
 				if (response.data == "OK") {
-					alert("Uspesno azuriranje cene pregleda.");
+					toast("Uspesno azuriranje cene pregleda.");
 				}
 			});
 		},
@@ -154,7 +154,7 @@ Vue.component("profil-apoteke", {
 			.delete("api/admin/deleteExamination/" + e.id)
 			.then(response => {
 				if (response.data == "OK") {
-					alert("Uspesno brisanje termina.");
+					toast("Uspesno brisanje termina.");
 				}
 				axios
 				.get("api/admin/openExaminations/" + this.apoteka.id)
@@ -224,9 +224,9 @@ Vue.component("profil-apoteke", {
                 .put("api/apoteke/update", this.apoteka)
                 .then(response => {
                     this.apoteka = response.data;
-                    alert("Uspesno azurirano.");
+                    toast("Uspesno azurirano.");
             }).catch(err => {
-            	alert("Azuriranje nije uspelo.");
+            	toast("Azuriranje nije uspelo.");
             });
         },
 		searchPharmacists : function(){
@@ -243,9 +243,9 @@ Vue.component("profil-apoteke", {
 				.delete("api/farmaceut/brisanjeFarmaceuta/" + f.id + "/" + this.apoteka.id)
 				.then(response => {
 					if (response.data == "ERR") {
-						alert("Nije moguce obrisati farmaceuta jer ima zakazana savetovanja.");
+						toast("Nije moguce obrisati farmaceuta jer ima zakazana savetovanja.");
 					} else {
-						alert("Uspesno brisanje farmaceuta.");
+						toast("Uspesno brisanje farmaceuta.");
 						axios
 		  				.get("api/farmaceut/apoteka/" + this.apoteka.id)
 		  				.then(response => {
@@ -259,9 +259,9 @@ Vue.component("profil-apoteke", {
 			.delete("api/admin/removeDermatologist/" + this.apoteka.id + "/" + d.id)
 			.then(response => {
 				if (response.data != "OK") {
-					alert("Nemoguce obrisati dermatologa jer ima zakazane termine");
+					toast("Nemoguce obrisati dermatologa jer ima zakazane termine");
 				} else {
-					alert("Dermatolog uspesno uklonjen.");
+					toast("Dermatolog uspesno uklonjen.");
 					axios
 		  			.get("api/dermatolog/apoteka/admin/" + this.apoteka.id)
 		  			.then(response => {

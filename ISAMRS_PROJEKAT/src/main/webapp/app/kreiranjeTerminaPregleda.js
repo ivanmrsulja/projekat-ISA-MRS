@@ -40,9 +40,9 @@ Vue.component("kreiranje-termina-pregleda", {
             .post("api/admin/registerExamination/" + this.aktuelniDermatolog + "/" + this.apoteka.id, this.noviTermin)
             .then(response => {
                 if (response.data == "OK") {
-                    alert("Uspesno kreiranje termina.");
+                    toast("Uspesno kreiranje termina.");
                 } else {
-                    alert("Neuspesno kreiranje termina.");
+                    toast("Neuspesno kreiranje termina.");
                 }
                 this.$router.push({name: "ProfilApoteke"});
             });
