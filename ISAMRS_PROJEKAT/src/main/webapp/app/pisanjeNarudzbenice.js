@@ -145,6 +145,18 @@ Vue.component("pisanje-narudzbenice", {
             .get("api/admin/searchPharmacy/" + this.apoteka.id)
             .then(response => {
                 this.preparati = response.data;
+                var elementsToRemove = [];
+                for (var i = 0; i < this.preparati.length; i++) {
+                    for (var p2 of this.preparatiNarudzbenice) {
+                        if (this.preparati[i].preparat == p2.preparat) {
+                            elementsToRemove.push(this.preparati[i]);
+                        }
+                    }
+                }
+                for (var element of elementsToRemove) {
+                    var index = this.preparati.indexOf(element);
+                    this.preparati.splice(index, 1);
+                }
             });
             axios
             .get("api/admin/productsOutsidePharmacy/" + this.apoteka.id)

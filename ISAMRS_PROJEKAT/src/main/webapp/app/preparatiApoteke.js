@@ -125,6 +125,11 @@ Vue.component("preparati-apoteke", {
             .delete("api/admin/deleteProduct/" + preparat.id + "/" + this.apoteka.id)
             .then(response => {
                 this.preparati = response.data;
+                axios
+                .get("api/admin/productsOutsidePharmacy/" + this.apoteka.id)
+                .then(response => {
+                    this.preparatiVanApoteke = response.data;
+                });
             });
         },
         addProduct: function(preparat) {
