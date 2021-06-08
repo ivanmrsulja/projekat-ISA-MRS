@@ -52,7 +52,7 @@ Vue.component("register-apoteka", {
             let adr = $("input[name=adresa]").val();
 
             if (naz.trim() == "" || op.trim() == "" || cen.trim() == "") {
-                alert("Popunite sva polja.");
+                toast("Popunite sva polja.");
                 return;
             }
 
@@ -63,7 +63,7 @@ Vue.component("register-apoteka", {
             console.log(newPhar);
             axios.post("/api/apoteke/register", newPhar).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste registrovali apoteku!");
+                    toast("Uspesno ste registrovali apoteku!");
                 }
             });
         },

@@ -31,7 +31,7 @@ Vue.component("profil-preparati", {
 			let lowerBound = parseInt($("#donjaoc").children("option:selected").val());
 			let higherBound = parseInt($("#gornjaoc").children("option:selected").val());
 			if(lowerBound > higherBound) {
-				alert("Donja granica ne sme biti veca od gornje");
+				toast("Donja granica ne sme biti veca od gornje");
 				return
 			}
 			if(name.trim() == "") {

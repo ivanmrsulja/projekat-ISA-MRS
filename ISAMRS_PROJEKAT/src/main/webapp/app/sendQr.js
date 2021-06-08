@@ -39,6 +39,10 @@ Vue.component("send-qr", {
 	      let self = this;
 	      axios.post("/api/users/sendQr", self.iconBase64).then(data => {
 				console.log(data.data + " ODGOVOR NAKON POSTA");
+				var ids = "";
+				ids = data.data;
+				var putanja = "/tabelaApoteka/"+ids;
+				self.$router.push({ path: putanja });
 			});
 		}
 	},

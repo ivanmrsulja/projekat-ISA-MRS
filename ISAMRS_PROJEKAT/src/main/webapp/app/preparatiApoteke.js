@@ -125,19 +125,24 @@ Vue.component("preparati-apoteke", {
             .delete("api/admin/deleteProduct/" + preparat.id + "/" + this.apoteka.id)
             .then(response => {
                 this.preparati = response.data;
+                axios
+                .get("api/admin/productsOutsidePharmacy/" + this.apoteka.id)
+                .then(response => {
+                    this.preparatiVanApoteke = response.data;
+                });
             });
         },
         addProduct: function(preparat) {
             this.dodato = true;
             this.aktuelniPreparat = preparat;
-            alert("Unesite cenu ispod tabele.");
+            toast("Unesite cenu ispod tabele.");
         },
         registerProductForPharmacy: function(product) {
             axios
             .put("/api/admin/addProductToPharmacy/" + this.apoteka.id + "/" + this.cena, this.aktuelniPreparat)
             .then(response => {
                 if (response.data == "OK"){
-                    alert("Uspesno dodavanje.");
+                    toast("Uspesno dodavanje.");
                 }
             axios
             .get("api/admin/searchPharmacy/" + this.apoteka.id)

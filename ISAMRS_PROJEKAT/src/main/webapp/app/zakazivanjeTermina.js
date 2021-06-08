@@ -12,7 +12,7 @@ Vue.component("zakazivanje-termina", {
 		
 		axios.post("/api/", noviPregled).then(data => {
 			if(data.data == "OK") {
-				alert("Uspesno ste se zakazali pregled!");
+				toast("Uspesno ste se zakazali pregled!");
 			}
 		});	this.$router.push({ path: "/pregledi" });
 	},

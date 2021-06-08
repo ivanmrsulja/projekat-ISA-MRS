@@ -39,4 +39,7 @@ public interface CenaRepository extends JpaRepository<Cena, Integer> {
 
 	@Query("delete from Cena c where c.krajVazenja = ?1")
 	public void deleteOutdatedPromotion(LocalDate now);
+	
+	@Query("select c from Cena c")
+	public Collection<Cena> getAll();
 }

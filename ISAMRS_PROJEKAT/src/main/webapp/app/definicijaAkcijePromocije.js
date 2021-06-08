@@ -53,10 +53,10 @@ Vue.component("definicija-akcije-promocije", {
             .post("api/admin/registerPromo/" + this.admin.id, this.cenovnik)
             .then(response => {
                 if (response.data == "OK"){
-                    alert("Uspesno kreiranje.");
+                    toast("Uspesno kreiranje.");
                 }
             }).catch(response => {
-                alert("Pogresna vrednost datuma isteka promocije.");
+                toast("Pogresna vrednost datuma isteka promocije.");
             });
         },
     },

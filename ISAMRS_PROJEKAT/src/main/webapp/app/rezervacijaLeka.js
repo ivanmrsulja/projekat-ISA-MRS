@@ -14,7 +14,7 @@ Vue.component("rezervacija-leka", {
             .then(response => {
                 this.rezervacija = response.data;
                 if(this.rezervacija.id==rezId)
-                	alert("trazena rezervacija postoji");
+                	toast("trazena rezervacija postoji");
             });
             }
 		},

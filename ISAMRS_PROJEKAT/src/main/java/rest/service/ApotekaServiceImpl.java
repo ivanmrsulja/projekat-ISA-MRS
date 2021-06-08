@@ -6,33 +6,54 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import rest.domain.Apoteka;
+import rest.domain.Cena;
 import rest.domain.Dermatolog;
+import rest.domain.DostupanProizvod;
+import rest.domain.ERecept;
 import rest.domain.Farmaceut;
+import rest.domain.LekoviComparator;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
+import rest.domain.Preparat;
+import rest.domain.StatusERecepta;
 import rest.domain.StatusPregleda;
+import rest.domain.StavkaRecepta;
+import rest.domain.TipKorisnika;
 import rest.domain.TipPregleda;
 import rest.dto.ApotekaDTO;
+import rest.dto.LekProdajaDTO;
 import rest.dto.PregledDTO;
 import rest.repository.AdminApotekeRepository;
 import rest.repository.ApotekeRepository;
+import rest.repository.CenaRepository;
 import rest.repository.DermatologRepository;
+import rest.repository.DostupanProizvodRepository;
+import rest.repository.EReceptRepository;
 import rest.repository.FarmaceutRepository;
 import rest.repository.LokacijaRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
+import rest.repository.PreparatRepository;
+import rest.repository.StavkaReceptaRepository;
+import rest.repository.TipKorisnikaRepository;
 import rest.repository.ZaposlenjeRepository;
 import rest.util.ApotekaSearchParams;
 
@@ -49,14 +70,30 @@ public class ApotekaServiceImpl implements ApotekaService {
 	private PacijentRepository pacijenti;
 	private PenalRepository penali;
 	private LokacijaRepository lokacije;
+	private CenaRepository cene;
+	private DostupanProizvodRepository dostupniproizvodi;
+	private PreparatRepository lekovi;
+	private TipKorisnikaRepository tipovi;
+	private JavaMailSender javaMailSender;
+	private Environment env;
+	private StavkaReceptaRepository stavkerecepta;
+	private EReceptRepository erecepti;
 	
 	private static final int pageSize = 10;
 
 	@Autowired
-	public ApotekaServiceImpl(LokacijaRepository lr,ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
+	public ApotekaServiceImpl(EReceptRepository ercrps,StavkaReceptaRepository stvrsa,Environment e,JavaMailSender jms,TipKorisnikaRepository tips,PreparatRepository prepires,DostupanProizvodRepository dpsra,CenaRepository c,LokacijaRepository lr,ApotekeRepository ar, AdminApotekeRepository are, DermatologRepository dr, ZaposlenjeRepository zaposlenja, PregledRepository pregledi, FarmaceutRepository farmaceuti, PacijentRepository pacijenti, PenalRepository penali) {
 		apoteke = ar;
+		env = e;
+		javaMailSender = jms;
+		tipovi = tips;
+		lekovi = prepires;
+		erecepti = ercrps;
+		cene = c;
+		stavkerecepta = stvrsa;
 		lokacije = lr;
 		admin = are;
+		dostupniproizvodi = dpsra;
 		dermatolozi = dr;
 		this.zaposlenja = zaposlenja;
 		this.pregledi = pregledi;
@@ -329,6 +366,148 @@ public class ApotekaServiceImpl implements ApotekaService {
 		lokacije.save(user.getLokacija());
 		Apoteka savedUser = apoteke.save(user);
 		return savedUser;
+	}
+
+	@Override
+	public Collection<LekProdajaDTO> lekovi(String[] cures) {
+		Collection<Cena> sveCene = cene.getAll();
+		Collection<LekProdajaDTO> lista = new ArrayList<LekProdajaDTO>();
+		for (Cena cena : sveCene) {
+			if(LocalDate.now().isAfter(cena.getPocetakVazenja())) {
+				int foundCures = 0;
+				double price = 0;
+				for (DostupanProizvod dp : cena.getDostupniProizvodi()) {
+					for (String i : cures) {
+						if(Integer.parseInt(i.split("\\:")[0]) == dp.getPreparat().getId()) {
+							if(Integer.parseInt(i.split("\\:")[1]) <= dp.getKolicina()) {
+								foundCures++;
+								price += dp.getCena()*Integer.parseInt(i.split("\\:")[1]);
+							}
+							
+						}
+					}
+				}
+				if(foundCures == cures.length) {
+					//System.out.println("PRONASLI CISTO DAS DASKLDJLKSAJDLKAJLKASJDLKSAJDLKSAJDLKAS");
+					ApotekaDTO a = new ApotekaDTO(cena.getApoteka());
+					LekProdajaDTO lpdto = new LekProdajaDTO(cena.getId(),a, price);
+					lista.add(lpdto);
+				}
+			}
+		}
+		for (LekProdajaDTO lekProdajaDTO : lista) {
+			System.out.println(lekProdajaDTO.getApoteka().getNaziv() + " " + lekProdajaDTO.getCena());
+		}
+		return lista;
+	}
+
+	@Override
+	public Collection<LekProdajaDTO> sortLekovi(String[] cures, String crit) {
+		// TODO Auto-generated method stub
+		//ArrayList<LekProdajaDTO> sortirano = (ArrayList<LekProdajaDTO>) lekovi;
+		ArrayList<LekProdajaDTO> lekovi = (ArrayList<LekProdajaDTO>) lekovi(cures);
+		if(crit.equals("naziv")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return o1.getApoteka().getNaziv().compareTo(o2.getApoteka().getNaziv());
+				}
+			});
+		}
+		
+		if(crit.equals("mesto")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return o1.getApoteka().getLokacija().getUlica().compareTo(o2.getApoteka().getLokacija().getUlica());
+				}
+			});
+		}
+		
+		if(crit.equals("ocena")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return (int) (o1.getApoteka().getOcena() - o2.getApoteka().getOcena());
+				}
+			});
+		}
+		
+		if(crit.equals("cena")) {
+			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+				@Override
+				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+					// TODO Auto-generated method stub
+					return (int) (o1.getApoteka().getCena() - o2.getApoteka().getCena());
+				}
+			});
+		}
+		return lekovi;
+	}
+
+	@Override
+	public void kupiLekove(String[] cures, int id, int pacId) {
+		// TODO Auto-generated method stub
+		Cena c = cene.findById(id).get();
+		ArrayList<DostupanProizvod> zaBrisanje = new ArrayList<DostupanProizvod>();
+		ArrayList<Preparat> preparati = new ArrayList<Preparat>();
+		int price = 0;
+		int bodovi = 0;
+		for (Iterator<DostupanProizvod> iterator = c.getDostupniProizvodi().iterator(); iterator.hasNext();) {
+		    DostupanProizvod dp = iterator.next();
+		    for (String cid : cures) { 
+				if(Integer.parseInt(cid.split("\\:")[0]) == dp.getPreparat().getId()) {
+					dp.setKolicina(dp.getKolicina() - Integer.parseInt(cid.split("\\:")[1]));
+					if(dp.getKolicina() == 0) {
+						zaBrisanje.add(dp);
+					}
+					preparati.add(dp.getPreparat());
+					price += dp.getCena() * Integer.parseInt(cid.split("\\:")[1]);
+					//poeni += dp.getPreparat().getPoeni() * Integer.parseInt(cid.split("\\:")[1]);
+				}
+		    }
+		    
+		}
+		dostupniproizvodi.saveAll(c.getDostupniProizvodi());
+		String naziviLekova = "";
+		ArrayList<StavkaRecepta> sveStavke = new ArrayList<StavkaRecepta>();
+		for (String prepId : cures) {
+			int sifra = Integer.parseInt(prepId.split("\\:")[0]);
+			int kol = Integer.parseInt(prepId.split("\\:")[1]);
+			Preparat p = lekovi.findById(sifra).get();
+			bodovi += p.getPoeni() * kol;
+			naziviLekova += p.getNaziv() +"\n";
+			StavkaRecepta ss = new StavkaRecepta(kol, p);
+		}
+		Pacijent pac = pacijenti.findById(pacId).get();
+		stavkerecepta.saveAll(sveStavke);
+		ERecept erec = new ERecept(LocalDate.now(), pac, StatusERecepta.OBRADJEN, c.getApoteka());
+		erecepti.save(erec);
+		pac.setBrojPoena(pac.getBrojPoena() + bodovi);
+		pac.addERecept(erec);
+		pacijenti.save(pac);
+		Collection<TipKorisnika> redomTipovi = tipovi.getAllOrdered();
+		for (TipKorisnika tipKorisnika : redomTipovi) {
+			if(pac.getBrojPoena() > tipKorisnika.getBodovi()) {
+				pac.setTipKorisnika(tipKorisnika);
+				break;
+			}
+		}
+		pacijenti.save(pac);
+		SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(pac.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Kupovina lekova");
+        mail.setText("Pozdrav " + pac.getIme() + " " + pac.getPrezime() + ",\n\nLista lekova koje ste kupili:\n"+naziviLekova+"Vas racun (ukljucujuci popust je): " + (double) (price * (100-pac.getTipKorisnika().getPopust())/100) + "\nOsvojili ste " + bodovi + " bodova!");
+        javaMailSender.send(mail);
+		
 	}
 
 }

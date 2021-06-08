@@ -69,17 +69,17 @@ Vue.component("register-user", {
 			let adr = $("input[name=adresa]").val();
 			
 			if (usr.trim() == "" || pas.trim() == "" || ime.trim() == "" || prz.trim() == "" || email.trim() == "" || tel.trim() == ""){
-				alert("Popunite sva polja.");
+				toast("Popunite sva polja.");
 				return;
 			}
 			
 			if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-				alert("Email je u neispravnom formatu.");
+				toast("Email je u neispravnom formatu.");
 				return;
 			}
 			
 			if(pas != pasConf){
-				alert("Password-i moraju da se podudaraju.");
+				toast("Password-i moraju da se podudaraju.");
 				return;
 			}
 			
@@ -90,7 +90,7 @@ Vue.component("register-user", {
 			console.log(newUser);
 			axios.post("/api/users/register", newUser).then(data => {
 				if(data.data == "OK") {
-					alert("Uspesno ste se registrovali! Mozete se ulogovati");
+					toast("Uspesno ste se registrovali! Mozete se ulogovati");
 				}
 			});
 		},

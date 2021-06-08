@@ -62,7 +62,7 @@ Vue.component("pocetna-stranas", {
 	methods: {	
     	pregledajBtn : function() {
     		let tip = $("#kriterijum").children("option:selected").val();
-    		alert(tip);
+    		toast(tip);
     		axios
 			.get("api/admin/cures/"+tip)
 			.then(response => {

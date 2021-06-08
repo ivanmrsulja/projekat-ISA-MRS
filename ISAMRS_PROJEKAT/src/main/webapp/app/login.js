@@ -69,7 +69,7 @@ Vue.component("pocetna-strana", {
 						
 					});
 				}else{
-					alert(response.data);
+					toast(response.data);
 				}
     		});
 		}  

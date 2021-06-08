@@ -8,6 +8,7 @@ import java.util.Comparator;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import rest.domain.AdminSistema;
@@ -51,8 +52,10 @@ public class PacijentServiceImpl implements PacijentService {
 	private ZalbaRepository zalbaRepository;
 	private AdminSistemaRepository adminSistemaRepository;
 	
+	
+	
 	@Autowired
-	public PacijentServiceImpl(AdminSistemaRepository admsarsa,ZalbaRepository zalbrs,EReceptRepository ercsd,RezervacijaRepository rezvrs,ApotekeRepository aprkt,FarmaceutRepository farmr,DermatologRepository dermr,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
+	public PacijentServiceImpl(JavaMailSender jms,AdminSistemaRepository admsarsa,ZalbaRepository zalbrs,EReceptRepository ercsd,RezervacijaRepository rezvrs,ApotekeRepository aprkt,FarmaceutRepository farmr,DermatologRepository dermr,PacijentRepository pacijentRepository, PreparatRepository preparatRepository,PregledRepository pregledRepository, PenalRepository pr) {
 		this.pacijentRepository = pacijentRepository;
 		this.adminSistemaRepository = admsarsa;
 		this.zalbaRepository = zalbrs;

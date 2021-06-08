@@ -26,6 +26,7 @@ Vue.component("pojedinacni-preparat", {
                 <tr scope="col">Oblik:\t{{spec.oblik}}</tr>
                 <tr scope="col">Proizvodjac:\t{{spec.proizvodjac}}</tr>
                 <tr scope="col">Rezim:\t{{spec.rezim}}</tr>
+                <tr scope="col">Bodovi:\t{{spec.poeni}}</tr> 
                 <tr scope="col">Ocena:\t{{spec.ocena.toFixed(2)}}</tr>
                 <tr scope="col">
                 <td v-bind:hidden="ocenjivo == false" >Moja ocena:</td>
@@ -109,9 +110,9 @@ Vue.component("pojedinacni-preparat", {
 			axios
 				.get("api/preparat/rezervisi/" + this.$route.params.spec + "/" + this.selected.id + "?datum=" + this.datum)
 				.then(response => {
-					alert(response.data);
+					toast(response.data);
 				}).catch(response => {
-					alert("Morate uneti datum preuzimanja.");
+					toast("Morate uneti datum preuzimanja.");
 				});
 		},
 		cancel: function(){

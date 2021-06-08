@@ -53,7 +53,7 @@ Vue.component("odabir-ponude", {
             .put("api/admin/updateOrderStatus/" + this.narudzbenica.id)
             .then(response => {
                 if (response.data != "OK") {
-                    alert("Doslo je do greske.");
+                    toast("Doslo je do greske.");
                     return;
                 }
             });
@@ -61,7 +61,7 @@ Vue.component("odabir-ponude", {
             .put("api/admin/updateOffersStatus/" + this.narudzbenica.id + "/" + ponuda.id, this.ponude)
             .then(response => {
                 if (response.data != "OK") {
-                    alert("Doslo je do greske.");
+                    toast("Doslo je do greske.");
                     return;
                 }
             });
@@ -69,7 +69,7 @@ Vue.component("odabir-ponude", {
             .put("api/admin/updateStocks/" + this.narudzbenica.id + "/" + this.admin.id)
             .then(response => {
                 if (response.data == "OK") {
-                    alert("Uspesno azuriranje.");
+                    toast("Uspesno azuriranje.");
                     this.$router.push({name: "PregledNarudzbenica"});
                 }
             });
@@ -80,7 +80,7 @@ Vue.component("odabir-ponude", {
         .then(response => {
             this.ponude = response.data;
             if (this.ponude.length == 0) {
-                alert("Ne postoje ponude za narudzbinu.");
+                toast("Ne postoje ponude za narudzbinu.");
                 this.$router.push({name: "PregledNarudzbenica"});
             }
             axios
@@ -97,7 +97,7 @@ Vue.component("odabir-ponude", {
                     this.date_now = new Date();
                     this.narudzbenica_date = new Date(this.narudzbenica.rok);
                     if (this.admin.id != this.narudzbenica.idAdmina) {
-                        alert("Niste kreirali ovu narudzbinu i ne mozete je pregledati.");
+                        toast("Niste kreirali ovu narudzbinu i ne mozete je pregledati.");
                         this.$router.push({name: "PregledNarudzbenica"});
                     }
                 });

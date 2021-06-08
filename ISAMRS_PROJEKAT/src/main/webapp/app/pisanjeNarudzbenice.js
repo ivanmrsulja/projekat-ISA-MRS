@@ -104,7 +104,7 @@ Vue.component("pisanje-narudzbenice", {
             now_date = new Date();
             comparison_date = new Date(this.rok);
             if (comparison_date < now_date) {
-                alert("Pogresna vrednost za datum roka.");
+                toast("Pogresna vrednost za datum roka.");
                 return;
             }
 
@@ -117,7 +117,7 @@ Vue.component("pisanje-narudzbenice", {
             .post("api/admin/registerOrder/" + this.admin.id, this.narudzbenica)
             .then(response => {
                 if (response.data == "OK") {
-                    alert("Uspesna registracija narudzbenice.");
+                    toast("Uspesna registracija narudzbenice.");
                 }
             });
         },
@@ -139,12 +139,24 @@ Vue.component("pisanje-narudzbenice", {
             .put("/api/admin/addProductToPharmacy/" + this.apoteka.id + "/" + this.cena, this.aktuelniPreparat)
             .then(response => {
                 if (response.data == "OK"){
-                    alert("Uspesno dodavanje.");
+                    toast("Uspesno dodavanje.");
                 }
             axios
             .get("api/admin/searchPharmacy/" + this.apoteka.id)
             .then(response => {
                 this.preparati = response.data;
+                var elementsToRemove = [];
+                for (var i = 0; i < this.preparati.length; i++) {
+                    for (var p2 of this.preparatiNarudzbenice) {
+                        if (this.preparati[i].preparat == p2.preparat) {
+                            elementsToRemove.push(this.preparati[i]);
+                        }
+                    }
+                }
+                for (var element of elementsToRemove) {
+                    var index = this.preparati.indexOf(element);
+                    this.preparati.splice(index, 1);
+                }
             });
             axios
             .get("api/admin/productsOutsidePharmacy/" + this.apoteka.id)

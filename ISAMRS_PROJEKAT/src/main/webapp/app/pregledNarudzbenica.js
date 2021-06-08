@@ -63,9 +63,9 @@ Vue.component("pregled-narudzbenica", {
             .delete("api/admin/deleteOrder/" + narduzbenica.id + "/" + this.admin.id)
             .then(response => {
                 if (response.data == "OK") {
-                    alert("Uspesno brisanje narudzbine.");
+                    toast("Uspesno brisanje narudzbine.");
                 } else {
-                    alert("Nemoguce obrisati narudzbenicu jer vec postoje ponude ili niste kreirali istu.");
+                    toast("Nemoguce obrisati narudzbenicu jer vec postoje ponude ili niste kreirali istu.");
                 }
                 axios
                 .get("api/admin/narudzbenice/" + this.admin.id)

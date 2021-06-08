@@ -82,11 +82,11 @@ Vue.component("dermatolozi-admin-apoteke", {
             hidden = true;
             selected = true;
             this.aktuelniDermatolog = d;
-            alert("Unesite pocetak i kraj radnog vremena ispod tabele.");
+            toast("Unesite pocetak i kraj radnog vremena ispod tabele.");
         },
         registerDermatologist: function() {
             if (this.aktuelniDermatolog == null) {
-                alert("Niste odabrali dermatologa.");
+                toast("Niste odabrali dermatologa.");
                 return;
             }
             this.aktuelniDermatolog.pocetakRadnogVremena = this.pocetakRadnogVremena;
@@ -95,9 +95,9 @@ Vue.component("dermatolozi-admin-apoteke", {
             .post("api/admin/employDermatologist/" + this.apoteka.id, this.aktuelniDermatolog)
             .then(response => {
                 if (response.data != "OK") {
-                    alert("Neuspesno zaposljavanje dermatologa(radno vreme se poklapa sa drugima ili se ne poklapa sa radnim vremenom apoteke).");
+                    toast("Neuspesno zaposljavanje dermatologa(radno vreme se poklapa sa drugima ili se ne poklapa sa radnim vremenom apoteke).");
                 } else {
-                    alert("Uspesno zaposljavanje dermatologa.");
+                    toast("Uspesno zaposljavanje dermatologa.");
                     axios
                     .get("api/admin/dermatologistsOutsidePharmacy/" + this.apoteka.id)
                     .then(response => {

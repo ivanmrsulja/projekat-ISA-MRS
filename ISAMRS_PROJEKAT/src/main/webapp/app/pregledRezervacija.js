@@ -158,7 +158,7 @@ Vue.component("lista-rezervacija", {
 	        .patch("/api/preparat/otkazi/" + r.id)
 	        .then(response => {
 	            if(response.data != "OK"){
-	            	alert(response.data);
+	            	toast(response.data);
 	            }
 	            axios.get("/api/users/currentUser").then(data =>{
 		            axios

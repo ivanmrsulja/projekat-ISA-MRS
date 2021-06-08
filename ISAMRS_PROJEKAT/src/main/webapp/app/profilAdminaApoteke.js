@@ -58,17 +58,17 @@ Vue.component("profil-admina-apoteke", {
 		update: function(){
 			
 			if (this.admin_apoteke.korisnik.username.trim() == "" || this.admin_apoteke.korisnik.ime.trim() == "" || this.admin_apoteke.korisnik.prezime.trim() == "" || this.admin_apoteke.korisnik.email.trim() == "" || this.admin_apoteke.korisnik.telefon.trim() == ""){
-				alert("Popunite sva polja.");
+				toast("Popunite sva polja.");
 				return;
 			}
 			
 			axios
 				.put("api/users/updateAdmin/" + this.admin_apoteke.korisnik.id, this.admin_apoteke.korisnik)
 				.then(response => {
-					alert(response.data);
+					toast(response.data);
 				})
 				.catch(err => {
-					alert(err.data);
+					toast(err.data);
 				});
 		},
 		reverseGeolocation: function(coords){

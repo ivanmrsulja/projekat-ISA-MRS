@@ -351,17 +351,24 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		LocalDate ld = LocalDate.parse("2018-12-27");
 		Cena cena = new Cena(a1, ld);
+		Cena cena1 = new Cena(a2, ld);
+		Cena cena3 = new Cena(a3, ld);
 		Set<DostupanProizvod> dostupni_proizvodi = new HashSet<DostupanProizvod>();
+		Set<DostupanProizvod> dostupni_proizvodi2 = new HashSet<DostupanProizvod>();
 		DostupanProizvod dp1 = new DostupanProizvod(4, 1000, pr1);
 		DostupanProizvod dp2 = new DostupanProizvod(7, 600, pr2);
 		dostupni_proizvodi.add(dp1);
 		dostupni_proizvodi.add(dp2);
+		dostupni_proizvodi2.add(dp1);
 		cena.setDostupniProizvodi(dostupni_proizvodi);
+		cena1.setDostupniProizvodi(dostupni_proizvodi);
+		cena3.setDostupniProizvodi(dostupni_proizvodi2);
 		a1.addCena(cena);
-		
 		apotekaRepo.save(a1);
+		a2.addCena(cena1);
 		apotekaRepo.save(a2);
-	
+		a3.addCena(cena3);
+		apotekaRepo.save(a3);
 	}
 
 }

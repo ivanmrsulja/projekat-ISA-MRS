@@ -59,7 +59,7 @@ Vue.component("zakazani-pregledi", {
 				if (response.data == "OK"){
 					this.loadNext(this.$route.params.page);
 				}else{
-					alert(response.data);
+					toast(response.data);
 				}
 			});
 		},

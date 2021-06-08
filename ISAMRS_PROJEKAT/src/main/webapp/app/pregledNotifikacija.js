@@ -55,7 +55,7 @@ Vue.component("pregled-notifikacija", {
                 .then(response => {
                     this.notifikacije = response.data;
                     if (this.notifikacije.length == 0) {
-                        alert("Nemate notifikacije.");
+                        toast("Nemate notifikacije.");
                         this.$router.push({name: "ProfilApoteke"});
                     }
                 });

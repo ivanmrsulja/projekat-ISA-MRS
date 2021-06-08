@@ -43,7 +43,7 @@ Vue.component("jedna-zalbaadmin", {
     		let newUser = { nazivKorisnika: this.zalbe.nazivKorisnika, nazivAdmina: this.user.username, tekst: konTekst, answered: true};
             axios.post("/api/pacijenti/sendZalba", newUser).then(data => {
                 if (data.data == "OK") {
-                    alert("Uspesno ste poslali zalbu");
+                    toast("Uspesno ste poslali zalbu");
                     
                 }
             });
@@ -52,7 +52,7 @@ Vue.component("jedna-zalbaadmin", {
     'Content-Type': 'text/plain'
     }}).then(data => {
                 if (data.data == "OK") {
-                    //alert("Uspesno ste poslali zalbu");
+                    //toast("Uspesno ste poslali zalbu");
                     self.$router.push({ path: "/listaZalbiAdmin" });
                     
                 }
