@@ -891,7 +891,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO) {
+	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO) throws Exception{
 
 		// provera poklapanja sa trenutnim datumom/vremenom
 		{
@@ -944,11 +944,6 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 		}
-
-	
-
-
-
 		
 		// provera da dermatolog nije na godisnjem/odsustvu
 		{

@@ -310,7 +310,11 @@ public class AdminController {
 	@AsAdminApoteke
 	@PostMapping(value = "/registerExamination/{dermatologistId}/{pharmacyId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerExamination(@RequestBody PregledDTO examinationDTO, @PathVariable("dermatologistId") int dermatologistId, @PathVariable("pharmacyId") int pharmacyId) {
-		if (adminService.registerExamination(dermatologistId, pharmacyId, examinationDTO) == null) {
+		try {
+			if (adminService.registerExamination(dermatologistId, pharmacyId, examinationDTO) == null) {
+				return "ERR";
+			}
+		} catch (Exception e) {
 			return "ERR";
 		}
 		

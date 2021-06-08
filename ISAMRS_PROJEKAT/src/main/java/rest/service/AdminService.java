@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.springframework.scheduling.annotation.Async;
 
-import rest.domain.Narudzbenica;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.domain.Pregled;
@@ -88,7 +87,7 @@ public interface AdminService {
 
 	public void deleteExamination(int examinationId);
 	
-	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO);
+	public Pregled registerExamination(int dermatologistId, int pharmacyId, PregledDTO examinationDTO) throws Exception;
 
 	public void deleteOutdatedPromotion();
 
