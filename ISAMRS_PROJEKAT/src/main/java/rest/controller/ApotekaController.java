@@ -40,6 +40,7 @@ import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.LekProdajaDTO;
 import rest.dto.PregledDTO;
+import rest.dto.RacunDTO;
 import rest.service.ApotekaService;
 import rest.service.KorisnikService;
 import rest.service.PregledService;
@@ -95,6 +96,14 @@ public class ApotekaController {
 		return (ArrayList<LekProdajaDTO>) apotekaService.sortLekovi(ar, crit);
 		
 	}
+	
+	@PutMapping(value = "/buy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String buy(HttpSession sess, @RequestBody RacunDTO racun) throws Exception {
+		KorisnikDTO user = (KorisnikDTO) sess.getAttribute("user");
+		apotekaService.kupiLekove(racun.getLekoviId().split(","), racun.getCenaId(), user.getId());
+		return "OK";
+	}
+	
 	
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody ApotekaDTO user) throws Exception {

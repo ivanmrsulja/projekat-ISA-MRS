@@ -24,6 +24,7 @@ import rest.domain.Rezervacija;
 import rest.domain.StatusRezervacije;
 import rest.dto.CenaDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.PreparatDTO;
 import rest.repository.ApotekeRepository;
 import rest.repository.CenaRepository;
 import rest.repository.DostupanProizvodRepository;
@@ -177,5 +178,22 @@ public class PreparatServiceImpl implements PreparatService{
 		pacijentRepository.save(pa);
 		dostupanRepo.save(dp);
 		return rez;
+	}
+
+	@Override
+	public void addlek(PreparatDTO cure) {
+		Preparat p = new Preparat();
+		p.setNaziv(cure.getNaziv());
+		p.setKontraindikacije(cure.getKontraindikacije());
+		p.setSastav(cure.getSastav());
+		p.setPreporuceniUnos(cure.getPreporuceniUnos());
+		p.setOblik(cure.getOblik());
+		p.setProizvodjac(cure.getProizvodjac());
+		p.setIzdavanje(cure.getRezim());
+		p.setOcena(cure.getOcena());
+		p.setTip(cure.getTip());
+		p.setPoeni(cure.getPoeni());
+		preparatRepository.save(p);
+		
 	}
 }

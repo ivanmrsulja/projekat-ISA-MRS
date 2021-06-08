@@ -31,11 +31,12 @@ Vue.component("tabela-apoteka", {
                 </tr>
            	</thead>
             <tbody>
-                <tr v-for="l in lekovi" v-bind:key="l.id">
-                                <td>{{l.apoteka.naziv}}</td>
-                                <td>{{l.apoteka.lokacija.ulica}}</td>
-                                <td>{{l.apoteka.ocena.toFixed(2)}}</td>
-                                <td>{{l.cena}}</td>
+                <tr v-for="l in lekovi" v-bind:key="l.id" v-bind:id="l.id">
+                                <td class="naziv">{{l.apoteka.naziv}}</td>
+                                <td class="ulica">{{l.apoteka.lokacija.ulica}}</td>
+                                <td class="ocena">{{l.apoteka.ocena.toFixed(2)}}</td>
+                                <td class="cena">{{l.cena}}</td>
+                                <td><input type="button" class="button1" value="Posalji" v-on:click="kupi(l.apoteka.id)"/></td>
                           
             	</tr>           
             </tbody>
@@ -70,10 +71,26 @@ Vue.component("tabela-apoteka", {
 				console.log(resp.data);
 				
 			});
+    	},
+    	kupi : function(sifra) {
+    		var self = this;
+        	var newRacun = {cenaId: parseInt(sifra), lekoviId: self.$route.params.id};
+        	axios
+			.put("/api/apoteke/buy", newRacun )
+			.then(function(resp){
+				console.log(resp.data);
+				
+			});
     	}
     },
 	mounted: function() {
 		var self = this;
+		axios
+		.get("/api/users/currentUser")
+		.then(function(resp){
+			self.user = resp.data;
+			console.log(self.user);
+		});
         axios
 		.get("/api/apoteke/test/"+self.$route.params.id)
 		.then(function(resp){

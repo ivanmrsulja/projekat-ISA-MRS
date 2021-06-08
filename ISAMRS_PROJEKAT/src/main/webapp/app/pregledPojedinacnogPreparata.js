@@ -26,6 +26,7 @@ Vue.component("pojedinacni-preparat", {
                 <tr scope="col">Oblik:\t{{spec.oblik}}</tr>
                 <tr scope="col">Proizvodjac:\t{{spec.proizvodjac}}</tr>
                 <tr scope="col">Rezim:\t{{spec.rezim}}</tr>
+                <tr scope="col">Bodovi:\t{{spec.poeni}}</tr> 
                 <tr scope="col">Ocena:\t{{spec.ocena.toFixed(2)}}</tr>
                 <tr scope="col">
                 <td v-bind:hidden="ocenjivo == false" >Moja ocena:</td>
