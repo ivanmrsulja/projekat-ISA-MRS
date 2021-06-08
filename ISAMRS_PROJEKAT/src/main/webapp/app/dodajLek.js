@@ -45,6 +45,9 @@ Vue.component("add-cure", {
 													 </td>
 			</tr>
 			<tr>
+				<td> <h2>Bodovi:</h2> </td> <td> <input type="number" name="bodovi"/> </td>
+			</tr>
+			<tr>
 				<td align=center colspan=2> 
 					<input value="Registruj se" type="button" name="regBtn" v-on:click="registerUser()"/> 
 				</td>
@@ -59,6 +62,7 @@ Vue.component("add-cure", {
 	methods : {
 		registerUser : function () {
 			let naziv = $("input[name=naziv]").val();
+			let bodovi = $("input[name=bodovi]").val();
 			let kontraindikacije = $("input[name=kontraind]").val();
 			let sastav = $("input[name=sastav]").val();
 			let preporuceniUnos = $("input[name=prep]").val();
@@ -71,7 +75,7 @@ Vue.component("add-cure", {
 				toast("Popunite sva polja.");
 				return;
 			}
-			let newCure = {"naziv": naziv, "kontraindikacije": kontraindikacije, "sastav": sastav, "preporuceniUnos" : preporuceniUnos, "oblik": oblik, "proizvodjac": proizvodjac, "rezim": rezim, "tip": tip, "ocena": 0.0};
+			let newCure = {"naziv": naziv, poeni:parseInt(bodovi), "kontraindikacije": kontraindikacije, "sastav": sastav, "preporuceniUnos" : preporuceniUnos, "oblik": oblik, "proizvodjac": proizvodjac, "rezim": rezim, "tip": tip, "ocena": 0.0};
 			axios.post("/api/preparat/addCure", newCure).then(data => {
 				if(data.data == "OK") {
 					toast("Uspesno ste kreirali lek!");

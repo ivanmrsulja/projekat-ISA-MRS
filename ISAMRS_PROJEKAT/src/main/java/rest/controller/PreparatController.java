@@ -57,17 +57,7 @@ public class PreparatController {
 	
 	@PostMapping(value = "/addCure", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody PreparatDTO cure) throws Exception {
-		Preparat p = new Preparat();
-		p.setNaziv(cure.getNaziv());
-		p.setKontraindikacije(cure.getKontraindikacije());
-		p.setSastav(cure.getSastav());
-		p.setPreporuceniUnos(cure.getPreporuceniUnos());
-		p.setOblik(cure.getOblik());
-		p.setProizvodjac(cure.getProizvodjac());
-		p.setIzdavanje(cure.getRezim());
-		p.setOcena(cure.getOcena());
-		p.setTip(cure.getTip());
-		preparatService.create(p);
+		preparatService.addlek(cure);
 		//userService.sendRegistrationMail(k);
 		return "OK";
 	}
