@@ -3,6 +3,7 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -182,13 +183,19 @@ public class FarmaceutController {
 	@GetMapping(value ="/rezervacijaLeka/{idKorisnika}/{idRezervacije}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RezervacijaDTO getRezervaciju(@PathVariable("idKorisnika") int idKor,@PathVariable("idRezervacije") int idRez) {
 		
-		Farmaceut farmaceut=farmaceutService.findOne(idKor);
-	    Rezervacija rezervacija=rezervacijaRepository.findById(idRez).get();
-  
-	    if(rezervacija.getApoteka().getNaziv().equals(farmaceut.getZaposlenje().getApoteka().getNaziv()))
+		Farmaceut farmaceut = farmaceutService.findOne(idKor);
+	    Optional<Rezervacija> rezervacijaOptional = rezervacijaRepository.findById(idRez);
+	    
+	    Rezervacija rezervacija = null;
+	    if(rezervacijaOptional.isPresent()) {
+	    	rezervacija = rezervacijaOptional.get();
+	    }
+	    
+	    if(rezervacija != null && rezervacija.getApoteka().getNaziv().equals(farmaceut.getZaposlenje().getApoteka().getNaziv()))
 	    {	    			  
 	    	return new RezervacijaDTO(rezervacija);
 	    }
+	    
 	    return null;
 	}
 }

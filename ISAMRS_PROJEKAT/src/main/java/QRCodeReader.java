@@ -30,7 +30,7 @@ public class QRCodeReader {
             BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
             encodedContent = readQRCode(bufferedImage);
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
         return encodedContent;
     }
@@ -42,7 +42,7 @@ public class QRCodeReader {
 
             encodedContent = readQRCode(bufferedImage);
         } catch (IOException e) {
-            e.printStackTrace();
+        	return null;
         }
         return encodedContent;
     }
@@ -58,7 +58,7 @@ public class QRCodeReader {
             Result result = multiFormatReader.decode(binaryBitmap);
             encodedContent = result.getText();
         } catch (NotFoundException e) {
-            e.printStackTrace();
+        	return null;
         }
         return encodedContent;
     }

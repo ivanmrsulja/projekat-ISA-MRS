@@ -342,10 +342,13 @@ public class AdminController {
 		for(Ponuda p : offers) {
 			if(p.getDobavljac().getUsername().equals(u.getUsername())) {
 				if(p.getStatus().toString().equals(status) || status.equals("SVI")) {
-					Narudzbenica naru = narudzbenicaRepository.findById(p.getNarudzbenica().getId()).get(); // DHSAKJHDSAJKHAJKDSJAKDHSAJKDAJKSDHDAJKSDHSKJHDJKHDJKHSAJKDHAHDKJHJKDHSAJKHDKJASHDJKHKJASDHASJKDHAJKSHASKJDHASJKDHASJKDKHJKH
-					PonudaDTO pondt = new PonudaDTO(p);
-					pondt.setRokIsporukeNarudzbenice(naru.getRok());
-					ponude.add(pondt);
+					Optional<Narudzbenica> naruOpt = narudzbenicaRepository.findById(p.getNarudzbenica().getId());
+					if (naruOpt.isPresent()) {
+						Narudzbenica naru = naruOpt.get();
+						PonudaDTO pondt = new PonudaDTO(p);
+						pondt.setRokIsporukeNarudzbenice(naru.getRok());
+						ponude.add(pondt);
+					}
 				}
 
 			}
@@ -378,10 +381,13 @@ public class AdminController {
 		ArrayList<PonudaDTO> ponude = new ArrayList<PonudaDTO>();
 		for(Ponuda p : offers) {
 			if(p.getDobavljac().getUsername().equals(u.getUsername())) {
-				Narudzbenica naru = narudzbenicaRepository.findById(p.getNarudzbenica().getId()).get(); // DHSAKJHDSAJKHAJKDSJAKDHSAJKDAJKSDHDAJKSDHSKJHDJKHDJKHSAJKDHAHDKJHJKDHSAJKHDKJASHDJKHKJASDHASJKDHAJKSHASKJDHASJKDHASJKDKHJKH
-				PonudaDTO pondt = new PonudaDTO(p);
-				pondt.setRokIsporukeNarudzbenice(naru.getRok());
-				ponude.add(pondt);
+				Optional<Narudzbenica> naruOpt = narudzbenicaRepository.findById(p.getNarudzbenica().getId());
+				if(naruOpt.isPresent()) {
+					Narudzbenica naru = naruOpt.get();
+					PonudaDTO pondt = new PonudaDTO(p);
+					pondt.setRokIsporukeNarudzbenice(naru.getRok());
+					ponude.add(pondt);
+				}
 			}
 		}
 		return new ResponseEntity<Collection<PonudaDTO>>(ponude, HttpStatus.OK);

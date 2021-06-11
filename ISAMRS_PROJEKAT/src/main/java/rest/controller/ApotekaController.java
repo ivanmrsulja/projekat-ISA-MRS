@@ -84,9 +84,7 @@ public class ApotekaController {
 	@AsPacijent
 	@GetMapping(value="/test/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<LekProdajaDTO> test(@PathVariable("id") String id) {
-		System.out.println(id + "OVAKO PRVO IZGLEDATAJ NIz");
 		String[] ar = id.split(",");
-		System.out.println(ar.toString() + "OVAKO IZGLEDA TAJ NIZ DA SE ZNA");
 		return (ArrayList<LekProdajaDTO>) apotekaService.lekovi(ar);
 		
 	}
