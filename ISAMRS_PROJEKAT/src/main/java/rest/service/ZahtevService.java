@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.springframework.scheduling.annotation.Async;
 
 import rest.domain.Zahtjev;
-import rest.dto.FarmaceutDTO;
 import rest.dto.ZahtevDTO;
 
 public interface ZahtevService {

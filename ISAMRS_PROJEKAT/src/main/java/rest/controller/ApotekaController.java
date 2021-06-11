@@ -4,10 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -32,9 +30,6 @@ import rest.domain.AdminApoteke;
 import rest.domain.Apoteka;
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
-import rest.domain.Pacijent;
-import rest.domain.StatusNaloga;
-import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.ApotekaDTO;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;

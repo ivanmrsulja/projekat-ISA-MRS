@@ -3,8 +3,6 @@ package rest.dto;
 import java.time.LocalTime;
 
 import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
-import rest.dto.KorisnikDTO;
 
 public class FarmaceutDTO extends KorisnikDTO implements Comparable<FarmaceutDTO>{
 

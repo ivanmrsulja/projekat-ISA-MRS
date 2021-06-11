@@ -196,7 +196,11 @@ public class PreparatServiceImpl implements PreparatService{
 		p.setPoeni(cure.getPoeni());
 		HashSet<Preparat> zamene = new HashSet<Preparat>();
 		for (int zi : cure.getZamenskiPreparati()) {
-			Preparat pi = preparatRepository.findById(zi).get();
+			Optional<Preparat> piOptional = preparatRepository.findById(zi);
+			if (!piOptional.isPresent())
+				return;
+
+			Preparat pi = piOptional.get();
 			zamene.add(pi);
 		}
 		p.setZamjenskiPreparati(zamene);

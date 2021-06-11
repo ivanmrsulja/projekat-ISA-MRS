@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.springframework.scheduling.annotation.Async;
 
-import rest.domain.Korisnik;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
 import rest.dto.CenaDTO;

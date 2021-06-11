@@ -27,7 +27,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.domain.AdminApoteke;
 import rest.domain.AdminSistema;
-import rest.domain.Apoteka;
 import rest.domain.Dermatolog;
 import rest.domain.Dobavljac;
 import rest.domain.Korisnik;
@@ -52,7 +51,6 @@ import rest.dto.QRCodeReaderDTO;
 import rest.dto.RezervacijaDTO;
 import rest.dto.ZalbaDTO;
 import rest.service.AkcijaPromocijaService;
-import rest.service.ApotekaService;
 import rest.service.KorisnikService;
 import rest.service.PacijentService;
 
@@ -63,14 +61,12 @@ public class KorisnikController {
 	private KorisnikService userService;
 	private AkcijaPromocijaService akcijaService;
 	private PacijentService pacijentService;
-	private ApotekaService apotekaService;
 	
 	@Autowired
-	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps, PacijentService pacijentService, ApotekaService as) {
+	public KorisnikController(KorisnikService us, AkcijaPromocijaService aps, PacijentService pacijentService) {
 		this.userService = us;
 		this.akcijaService = aps;
 		this.pacijentService = pacijentService;
-		this.apotekaService = as;
 	}
 	
 	@Scheduled(cron = "${penali.cron}")

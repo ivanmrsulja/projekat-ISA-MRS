@@ -3,6 +3,7 @@ package rest.service;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Apoteka;
+import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.StatusPregleda;
@@ -74,7 +76,14 @@ public class PregledServiceImpl implements PregledService {
 		if(brojPenala >= 3) {
 			throw new Exception("Imate " + brojPenala + " penala, rezervacije su vam onemogucene do 1. u sledecem mesecu.");
 		}
-		Pacijent pa = pacijentiRepo.findById(idpa).get();
+		Pacijent pa = null;
+		Optional<Pacijent> paOptional = pacijentiRepo.findById(idpa);
+
+		if (!paOptional.isPresent())
+			return null;
+
+		pa = paOptional.get();
+
 		pa.addPregled(p);
 		p.setStatus(StatusPregleda.ZAKAZAN);
 		p.setCijena(p.getCijena() * pa.getTipKorisnika().getPopust());
@@ -84,7 +93,14 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public void otkaziPregled(int idp) throws Exception{
-		Pregled p = preglediRepo.findById(idp).get();
+		Pregled p = null;
+		Optional<Pregled> pOptional = preglediRepo.findById(idp);
+
+		if (!pOptional.isPresent())
+			return;
+
+		p = pOptional.get();
+
 		Instant instant = p.getDatum().atStartOfDay(ZoneId.systemDefault()).toInstant();	
 		long timeInMillis = instant.toEpochMilli();
 		long timeMillis = p.getVrijeme().getHour() * 3600000L + p.getVrijeme().getMinute() * 60000L;
@@ -93,7 +109,15 @@ public class PregledServiceImpl implements PregledService {
 		if(time <= System.currentTimeMillis() + 86400000) {
 			throw new Exception("Isteklo je vreme za otkazivanje.");
 		}
-		Pacijent pa = pacijentiRepo.findById(p.getPacijent().getId()).get();
+
+		Pacijent pa = null;
+		Optional<Pacijent> paOptional = pacijentiRepo.findById(p.getPacijent().getId());
+
+		if (!paOptional.isPresent())
+			return;
+
+		pa = paOptional.get();
+
 		pa.removePregled(p);
 		if(p.getTip().equals(TipPregleda.PREGLED)) {
 			p.setStatus(StatusPregleda.SLOBODAN);
@@ -135,18 +159,36 @@ public class PregledServiceImpl implements PregledService {
 	}
 	
 	public Pregled dobaviPregledZa(Integer id){
-		return preglediRepo.findById(id).get();
+		Pregled p = null;
+		Optional<Pregled> pOptional = preglediRepo.findById(id);
+
+		if (pOptional.isPresent())
+			p = pOptional.get();
+
+		return p;
 	}
 	
 	public void makeNewExam (PregledDTO p,int apotekaId,int korisnikId,int pacijentId) throws Exception{
-		Pregled pre=new Pregled(p.getIzvjestaj(), StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, p.getDatum(), p.getVrijeme(), 45,
-				p.getCijena(),korisnikRepo.findById(korisnikId).get(), pacijentiRepo.findById(pacijentId).get(),apotekaRepo.findById(apotekaId).get());
+		Korisnik korisnik = null;
+		Pacijent pacijent = null;
+		Apoteka apoteka = null;
+
+		Optional<Korisnik> korisnikOptional = korisnikRepo.findById(korisnikId);
+		Optional<Pacijent> pacijentOptional = pacijentiRepo.findById(pacijentId);
+		Optional<Apoteka> apotekaOptional = apotekaRepo.findById(apotekaId);
+
+		if (!korisnikOptional.isPresent() || !pacijentOptional.isPresent() || !apotekaOptional.isPresent())
+			return;
+
+		korisnik = korisnikOptional.get();
+		pacijent = pacijentOptional.get();
+		apoteka = apotekaOptional.get();
+
+		Pregled pre=new Pregled(p.getIzvjestaj(), StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, p.getDatum(), p.getVrijeme(), 45, p.getCijena(), korisnik, pacijent, apoteka);
 		
-		
-		Pacijent pacijent=pacijentiRepo.findById(pacijentId).get();
 		pacijent.addPregled(pre);
-		Apoteka apoteka=apotekaRepo.findById(apotekaId).get();
 		apoteka.addPregled(pre);
+
 		preglediRepo.save(pre);
 		pacijentiRepo.save(pacijent);
 		apotekaRepo.save(apoteka);

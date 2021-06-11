@@ -33,7 +33,6 @@ import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
-import rest.repository.FarmaceutRepository;
 import rest.repository.RezervacijaRepository;
 import rest.service.ApotekaService;
 import rest.service.FarmaceutService;
@@ -48,15 +47,13 @@ public class FarmaceutController {
 	private ApotekaService apotekaService;
 	private PregledService pregledService;
 
-	private FarmaceutRepository farmaceutRepository;
 	private RezervacijaRepository rezervacijaRepository;
 	
 	@Autowired
-	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService,FarmaceutRepository fr,RezervacijaRepository rr) {
+	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService, RezervacijaRepository rr) {
 		this.farmaceutService = farmaceut;
 		this.apotekaService = as;
 		this.pregledService = pregledService;
-		this.farmaceutRepository=fr;
 		this.rezervacijaRepository=rr;
 	}
 	

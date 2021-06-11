@@ -2,7 +2,6 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,21 +28,18 @@ import rest.dto.PacijentDTO;
 import rest.dto.ZalbaDTO;
 import rest.repository.ApotekeRepository;
 import rest.repository.PacijentRepository;
-import rest.service.KorisnikService;
 import rest.service.PacijentService;
 
 @RestController
 @RequestMapping("/api/pacijenti")
 public class PacijentController {
 	
-	private KorisnikService korisnikService;
 	private PacijentService pacijentService;
 	private PacijentRepository pacijentRepository;
 	private ApotekeRepository apotekeRepository;
 	
 	@Autowired
-	public PacijentController(KorisnikService ks, PacijentService er, PacijentRepository pr, ApotekeRepository ar) {
-		this.korisnikService = ks;
+	public PacijentController(PacijentService er, PacijentRepository pr, ApotekeRepository ar) {
 		this.pacijentService = er;
 		this.pacijentRepository = pr;
 		this.apotekeRepository = ar;

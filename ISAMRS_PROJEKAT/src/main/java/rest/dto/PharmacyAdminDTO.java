@@ -1,8 +1,6 @@
 package rest.dto;
 
 import rest.domain.AdminApoteke;
-import rest.domain.Apoteka;
-import rest.domain.Korisnik;
 import rest.domain.Lokacija;
 import rest.domain.ZaposlenjeKorisnika;
 

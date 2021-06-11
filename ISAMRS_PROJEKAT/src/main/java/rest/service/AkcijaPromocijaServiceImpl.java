@@ -2,6 +2,7 @@ package rest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -35,36 +36,39 @@ public class AkcijaPromocijaServiceImpl implements AkcijaPromocijaService{
 	public Collection<ApotekaDTO> getForUser(int id) {
 		Collection<Apoteka> result =  pacijentRepo.getPharmaciesForUser(id);
 		ArrayList<ApotekaDTO> retVal = new ArrayList<ApotekaDTO>();
+
 		for(Apoteka a : result) {
 			retVal.add(new ApotekaDTO(a));
 		}
+
 		return retVal;
 	}
 
 	@Override
 	public AkcijaPromocija create(AkcijaPromocija ap) throws Exception {
 		AkcijaPromocija akcijaPromocija = akcijaPromocijaRepository.save(ap);
+
 		return akcijaPromocija;
 	}
 
 	@Override
 	public void removeForUser(int idUser, int idApo) {
-		Pacijent p = pacijentRepo.findById(idUser).get();
-		Apoteka a = apotekeRepository.findById(idApo).get();
-		if(p.getApoteke().contains(a)) {
+		Pacijent p = null;
+		Apoteka a = null;
+
+		Optional<Pacijent> pOptional = pacijentRepo.findById(idUser);
+		Optional<Apoteka> aOptional = apotekeRepository.findById(idApo);
+
+		if (!pOptional.isPresent() || !aOptional.isPresent())
+			return;
+
+		p = pOptional.get();
+		a = aOptional.get();
+
+		if (p.getApoteke().contains(a)) {
 			p.getApoteke().remove(a);
 			apotekeRepository.save(a);
 			pacijentRepo.save(p);
 		}
-		
 	}
-
-	@Override
-	public void addForUser(int idUser, int idApo) {
-		// TODO Auto-generated method stub
-		Pacijent p = pacijentRepo.findById(idUser).get();
-		Apoteka a = apotekeRepository.findById(idApo).get();
-		//a.add
-	}
-
 }

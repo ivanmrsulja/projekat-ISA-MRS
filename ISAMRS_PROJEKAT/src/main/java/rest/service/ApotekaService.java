@@ -2,14 +2,12 @@ package rest.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.data.domain.Page;
 
 import rest.domain.Apoteka;
 import rest.domain.Farmaceut;
-import rest.domain.Korisnik;
 import rest.domain.Pregled;
 import rest.dto.ApotekaDTO;
 import rest.dto.LekProdajaDTO;

@@ -24,7 +24,6 @@ import rest.dto.KorisnikDTO;
 import rest.dto.ZahtevDTO;
 import rest.repository.FarmaceutRepository;
 import rest.repository.ZahtevRepository;
-import rest.service.FarmaceutService;
 import rest.service.ZahtevService;
 
 @RestController
@@ -33,14 +32,12 @@ public class ZahtevController {
 
 	private ZahtevRepository zahtevRepository;
 	private FarmaceutRepository farmaceutRepository;
-	private FarmaceutService farmaceutService;
 	private ZahtevService zahtevService;
 
 	@Autowired
-	public ZahtevController (ZahtevRepository zr, FarmaceutRepository fr, FarmaceutService fs, ZahtevService zs) {
+	public ZahtevController (ZahtevRepository zr, FarmaceutRepository fr, ZahtevService zs) {
 		this.zahtevRepository = zr;
 		this.farmaceutRepository = fr;
-		this.farmaceutService = fs;
 		this.zahtevService = zs;
 	}
 

@@ -22,7 +22,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import rest.domain.Apoteka;
 import rest.domain.Cena;
@@ -30,7 +29,6 @@ import rest.domain.Dermatolog;
 import rest.domain.DostupanProizvod;
 import rest.domain.ERecept;
 import rest.domain.Farmaceut;
-import rest.domain.LekoviComparator;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Preparat;
@@ -337,7 +335,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public Collection<ApotekaDTO> getAllPharmacies() {
-		// TODO Auto-generated method stub
 		Collection<Apoteka> pharms = apoteke.getAll();
 		Collection<ApotekaDTO> apos = new ArrayList<ApotekaDTO>();
 		for (Apoteka a : pharms) {
@@ -349,7 +346,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public Apoteka getByName(String name) {
-		// TODO Auto-generated method stub
 		Collection<Apoteka> pharms = apoteke.getAll();
 		for (Apoteka apoteka : pharms) {
 			System.out.println("APOTEKU " + apoteka.getNaziv() + " POREDIMO SA APOTEKOM " + name);
@@ -364,7 +360,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public Apoteka create(Apoteka user) throws Exception {
-		// TODO Auto-generated method stub
 		lokacije.save(user.getLokacija());
 		Apoteka savedUser = apoteke.save(user);
 		return savedUser;
@@ -392,7 +387,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 					}
 				}
 				if(foundCures == cures.length) {
-					//System.out.println("PRONASLI CISTO DAS DASKLDJLKSAJDLKAJLKASJDLKSAJDLKSAJDLKAS");
 					ApotekaDTO a = new ApotekaDTO(cena.getApoteka());
 					LekProdajaDTO lpdto = new LekProdajaDTO(cena.getId(),a, price);
 					lpdto.setNazivLekova(String.join(", ", nazivi));
@@ -408,15 +402,12 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public Collection<LekProdajaDTO> sortLekovi(String[] cures, String crit) {
-		// TODO Auto-generated method stub
-		//ArrayList<LekProdajaDTO> sortirano = (ArrayList<LekProdajaDTO>) lekovi;
 		ArrayList<LekProdajaDTO> lekovi = (ArrayList<LekProdajaDTO>) lekovi(cures);
 		if(crit.equals("naziv")) {
 			Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
 
 				@Override
 				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-					// TODO Auto-generated method stub
 					return o1.getApoteka().getNaziv().compareTo(o2.getApoteka().getNaziv());
 				}
 			});
@@ -427,7 +418,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 				@Override
 				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-					// TODO Auto-generated method stub
 					return o1.getApoteka().getLokacija().getUlica().compareTo(o2.getApoteka().getLokacija().getUlica());
 				}
 			});
@@ -438,7 +428,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 				@Override
 				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-					// TODO Auto-generated method stub
 					return (int) (o1.getApoteka().getOcena() - o2.getApoteka().getOcena());
 				}
 			});
@@ -449,7 +438,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 				@Override
 				public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-					// TODO Auto-generated method stub
 					return (int) (o1.getApoteka().getCena() - o2.getApoteka().getCena());
 				}
 			});
@@ -459,14 +447,21 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public void kupiLekove(String[] cures, int id, int pacId) {
-		// TODO Auto-generated method stub
-		Cena c = cene.findById(id).get();
+		Cena c = null;
+		Optional<Cena> cOptional = cene.findById(id);
+
+		if (cOptional.isPresent())
+			c = cOptional.get();
+
 		ArrayList<DostupanProizvod> zaBrisanje = new ArrayList<DostupanProizvod>();
 		ArrayList<Preparat> preparati = new ArrayList<Preparat>();
+
 		int price = 0;
 		int bodovi = 0;
+
 		for (Iterator<DostupanProizvod> iterator = c.getDostupniProizvodi().iterator(); iterator.hasNext();) {
 		    DostupanProizvod dp = iterator.next();
+
 		    for (String cid : cures) { 
 				if(Integer.parseInt(cid.split("\\:")[0]) == dp.getPreparat().getId()) {
 					dp.setKolicina(dp.getKolicina() - Integer.parseInt(cid.split("\\:")[1]));
@@ -479,22 +474,32 @@ public class ApotekaServiceImpl implements ApotekaService {
 					//sr.add(new StavkaRecepta(Integer.parseInt(cid.split("\\:")[1]), dp.getPreparat()));
 				}
 		    }
-		    
 		}
 		dostupniproizvodi.saveAll(c.getDostupniProizvodi());
 		//stavkerecepta.saveAll(sr);
 		String naziviLekova = "";
 		Set<StavkaRecepta> sveStavke = new HashSet<StavkaRecepta>();
+
 		for (String prepId : cures) {
 			int sifra = Integer.parseInt(prepId.split("\\:")[0]);
 			int kol = Integer.parseInt(prepId.split("\\:")[1]);
-			Preparat p = lekovi.findById(sifra).get();
+			Preparat p = null;
+			Optional<Preparat> pOptional = lekovi.findById(sifra);
+
+			if (pOptional.isPresent())
+				p = pOptional.get();
+
 			bodovi += p.getPoeni() * kol;
 			naziviLekova += p.getNaziv() +"\n";
 			StavkaRecepta ss = new StavkaRecepta(kol, p);
 			sveStavke.add(ss);
 		}
-		Pacijent pac = pacijenti.findById(pacId).get();
+		Pacijent pac = null;
+		Optional<Pacijent> pacOptional = pacijenti.findById(pacId);
+
+		if (pacOptional.isPresent())
+			pac = pacOptional.get();
+
 		stavkerecepta.saveAll(sveStavke);
 		ERecept erec = new ERecept(LocalDate.now(), pac, StatusERecepta.OBRADJEN, c.getApoteka());
 		erec.setStavkaRecepata(sveStavke);
@@ -524,7 +529,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 	@Override
 	public Collection<LekProdajaDTO> sortLekoviasc(String[] cures, String crit, String asc) {
-		// TODO Auto-generated method stub
 				//ArrayList<LekProdajaDTO> sortirano = (ArrayList<LekProdajaDTO>) lekovi;
 				ArrayList<LekProdajaDTO> lekovi = (ArrayList<LekProdajaDTO>) lekovi(cures);
 				if(crit.equals("naziv")) {
@@ -532,7 +536,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 						@Override
 						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-							// TODO Auto-generated method stub
 							if(asc.equals("value2")) {
 								
 								return o1.getApoteka().getNaziv().compareTo(o2.getApoteka().getNaziv());
@@ -549,7 +552,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 						@Override
 						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-							// TODO Auto-generated method stub
 							if(asc.equals("value2")) {
 								
 								return o1.getApoteka().getLokacija().getUlica().compareTo(o2.getApoteka().getLokacija().getUlica());
@@ -566,7 +568,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 						@Override
 						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-							// TODO Auto-generated method stub
 							if(asc.equals("value2")) {
 								
 								return (int) (o1.getApoteka().getOcena() - o2.getApoteka().getOcena());							
@@ -584,7 +585,6 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 						@Override
 						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
-							// TODO Auto-generated method stub
 							if(asc.equals("value2")) {		
 								return (int) (o1.getApoteka().getCena() - o2.getApoteka().getCena());							
 							} else {
@@ -594,6 +594,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 						}
 					});
 				}
+
 				return lekovi;
 	}
 

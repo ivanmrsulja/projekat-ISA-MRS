@@ -1,7 +1,6 @@
 package rest.dto;
 
 import rest.domain.AdminApoteke;
-import rest.domain.Apoteka;
 
 public class AdminApotekeDTO {
 

@@ -20,30 +20,21 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsAdminSistema;
 import rest.aspect.AsPacijent;
-import rest.domain.Pacijent;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
-import rest.domain.RezimIzdavanja;
-import rest.domain.StatusNaloga;
-import rest.domain.TipLeka;
-import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.CenaDTO;
-import rest.dto.DostupanProizvodDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PreparatDTO;
-import rest.service.KorisnikService;
 import rest.service.PreparatService;
 
 @RestController
 @RequestMapping("/api/preparat")
 public class PreparatController {
 	
-	private KorisnikService korisnikService;
 	private PreparatService preparatService;
 	
 	@Autowired
-	public PreparatController(KorisnikService ks, PreparatService er) {
-		this.korisnikService = ks;
+	public PreparatController(PreparatService er) {
 		this.preparatService = er;
 	}
 	

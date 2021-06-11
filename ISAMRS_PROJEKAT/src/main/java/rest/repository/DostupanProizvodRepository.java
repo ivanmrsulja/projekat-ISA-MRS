@@ -3,12 +3,10 @@ package rest.repository;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import rest.domain.DostupanProizvod;
-import rest.domain.NaruceniProizvod;
 import rest.domain.Preparat;
 
 @Repository

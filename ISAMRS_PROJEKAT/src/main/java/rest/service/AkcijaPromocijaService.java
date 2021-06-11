@@ -14,7 +14,6 @@ public interface AkcijaPromocijaService {
 	
 	void removeForUser(int idUser, int idApo);
 	
-	void addForUser(int idUser, int idApo);
 	
 	AkcijaPromocija create(AkcijaPromocija ap) throws Exception;
 

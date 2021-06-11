@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -78,37 +79,64 @@ public class PacijentServiceImpl implements PacijentService {
 		for(Preparat p : alergije) {
 			ret.add(new PreparatDTO(p));
 		}
+
 		return ret;
 	}
 
 	@Override
 	public Collection<PreparatDTO> addAllergy(int id, int idPrep) {
-		Pacijent p = pacijentRepository.findById(id).get();
-		Preparat pr = preparatRepository.findById(idPrep).get();
+		Pacijent p = null;
+		Preparat pr = null;
+		Optional<Pacijent> pOptional = pacijentRepository.findById(id);
+		Optional<Preparat> prOptional = preparatRepository.findById(idPrep);
+
+		if (!pOptional.isPresent() || !prOptional.isPresent())
+			return null;
+
+		p = pOptional.get();
+		pr = prOptional.get();
+
 		p.getAlergije().add(pr);
 		pacijentRepository.save(p);
+
 		return allergies(id);
 	}
 
 
 	@Override
 	public Collection<PreparatDTO> removeAllergy(int id, int idPrep) {
-		Pacijent p = pacijentRepository.findById(id).get();
-		Preparat pr = preparatRepository.findById(idPrep).get();
+		Pacijent p = null;
+		Preparat pr = null;
+		Optional<Pacijent> pOptional = pacijentRepository.findById(id);
+		Optional<Preparat> prOptional = preparatRepository.findById(idPrep);
+
+		if (!pOptional.isPresent() || !prOptional.isPresent())
+			return null;
+
+		p = pOptional.get();
+		pr = prOptional.get();
+
 		p.getAlergije().remove(pr);
 		pacijentRepository.save(p);
+
 		return allergies(id);
 	}
 	
 	@Override
 	public Collection<Pacijent> getAll(){
 		Collection<Pacijent> users = pacijentRepository.findAll();
+
 		return users;
 	}
 	
 	@Override
 	public Pacijent getOne(int id) {
-		Pacijent prep = pacijentRepository.findById(id).get();
+		Pacijent prep = null;
+		Optional<Pacijent> prepOptional = pacijentRepository.findById(id);
+
+		if (prepOptional.isPresent())
+			prep = prepOptional.get();
+
 		return prep;
 	}
 	
@@ -180,8 +208,13 @@ public class PacijentServiceImpl implements PacijentService {
 	
 	@Override
 	public void addPenal(int id, Penal p) {
-		Penal pp= new Penal(p.getDatum(),p.getPacijent());
-		Pacijent pacijent = pacijentRepository.findById(id).get();
+		Penal pp = new Penal(p.getDatum(), p.getPacijent());
+		Pacijent pacijent = null;
+		Optional<Pacijent> pacijentOptional = pacijentRepository.findById(id);
+
+		if (pacijentOptional.isPresent())
+			pacijent = pacijentOptional.get();
+
 		pacijent.addPenal(pp);
 		penaliRepository.save(pp);
 		pacijentRepository.save(pacijent);
@@ -190,29 +223,29 @@ public class PacijentServiceImpl implements PacijentService {
 
 	@Override
 	public Collection<ZalbaDTO> getZalbeForPatient(int id) {
-		// TODO Auto-generated method stub
-				Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
-				Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
-				for (Zalba z : zalbe) {
-					ZalbaDTO zt = new ZalbaDTO(z);
-					zdto.add(zt);
-				}
-				return zdto;
+		Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
+		Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+		for (Zalba z : zalbe) {
+			ZalbaDTO zt = new ZalbaDTO(z);
+			zdto.add(zt);
+		}
+
+		return zdto;
 	}
 
 
 	@Override
 	public ZalbaDTO getZalbaForPatient(int id, int zalId) {
-		// TODO Auto-generated method stub
-				Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
-				Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
-				for (Zalba z : zalbe) {
-					if(z.getId().equals(zalId)) {
-						ZalbaDTO zald = new ZalbaDTO(z);
-						return zald;
-					}
-				}
-				return null;
+		Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
+		//Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+		for (Zalba z : zalbe) {
+			if(z.getId().equals(zalId)) {
+				ZalbaDTO zald = new ZalbaDTO(z);
+				return zald;
+			}
+		}
+
+		return null;
 	}
 
 
@@ -256,7 +289,8 @@ public class PacijentServiceImpl implements PacijentService {
 	public void sendZalba(ZalbaDTO zdto) {
 		Pacijent p = pacijentRepository.getPatientByUser(zdto.getNazivKorisnika());
 		Zalba z = new Zalba();
-		if(zdto.getNazivAdmina() == "") {
+
+		if (zdto.getNazivAdmina().equals("")) {
 			z = new Zalba(zdto.getTekst(), null, p);
 			zalbaRepository.save(z);
 			p.addZalba(z);
@@ -297,23 +331,29 @@ public class PacijentServiceImpl implements PacijentService {
 				
 			}
 		}
+
 		return zdtos;
 	}
 
 
 	@Override
 	public ZalbaDTO getOneZalba(int id) {
-		// TODO Auto-generated method stub
-				Zalba z = zalbaRepository.findById(id).get();
-				ZalbaDTO zal = new ZalbaDTO(z);
-				return zal;
+		Optional<Zalba> zOptional = zalbaRepository.findById(id);
+		ZalbaDTO zal = null;
+
+		if (zOptional.isPresent())
+			zal = new ZalbaDTO(zOptional.get());
+
+		return zal;
 	}
 
 
 	@Override
 	public String activate(int id) {
-		// TODO Auto-generated method stub
-		Pacijent p = pacijentRepository.findById(id).get();
+		Pacijent p = null;
+		Optional<Pacijent> pOptional = pacijentRepository.findById(id);
+		if (pOptional.isPresent())
+			p = pOptional.get();
 		if(p.getLoggedBefore() == true) {
 			return "Vas nalog je vec aktiviran, kliknite na dugme ispod kako bi se vratili na formu za prijavu.";
 		} else {

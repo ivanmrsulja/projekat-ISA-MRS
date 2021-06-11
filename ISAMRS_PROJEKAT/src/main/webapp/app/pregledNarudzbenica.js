@@ -26,6 +26,7 @@ Vue.component("pregled-narudzbenica", {
 
     <div style="width: 50%" v-for="narudzbenica in narudzbenice" 
     v-bind:hidden="(filtriranje == 'Obradjene' && narudzbenica.status != 'OBRADJENA') || (filtriranje == 'Cekanje' && narudzbenica.status != 'CEKA_PONUDE') || narudzbenice.length == 0">
+
     <table class="table table-hover">
     <thead>
     <tr bgcolor="#90a4ae">
@@ -47,7 +48,9 @@ Vue.component("pregled-narudzbenica", {
     </tr>
     </tbody>
     </table>
+
     <br><br><br>
+
     </div>
 
     </div>
@@ -84,6 +87,10 @@ Vue.component("pregled-narudzbenica", {
             .get("api/admin/narudzbenice/" + response.data.id)
             .then(response => {
                 this.narudzbenice = response.data;
+                if (this.narudzbenice.length == 0) {
+                    toast("Ne postoji aktuelna narudzbenica za apoteku.");
+                    this.$router.push({name: "ProfilApoteke"});
+                }
             });
         });
     }
