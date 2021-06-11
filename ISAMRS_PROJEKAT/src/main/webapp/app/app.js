@@ -59,6 +59,7 @@ const jednaZalbaAdmin = { template: '<jedna-zalbaadmin></jedna-zalbaadmin>' };
 const registracijaTipa = { template: '<register-type></register-type>' };
 const sendQr = { template: '<send-qr></send-qr>' };
 const RezervacijaLeka = { template: '<rezervacija-leka></rezervacija-leka>'};
+const verifyAccount = {template: '<verify-account></verify-account>'};
 
 const router = new VueRouter({
     mode: 'hash',
@@ -111,6 +112,7 @@ const router = new VueRouter({
         { path: '/listaZalbi', component: listaZalbi },
         { path: '/jednaZalba/:zalId', component: jednaZalba, name: "jednaZalba" },
         { path: '/jednaNarudzbenica/:zalId', component: jednaNarudzbenica, name: "jednaNarudzbenica" },
+        { path: '/verifikacija/:id', component: verifyAccount, name: "verifyAccount" },
         { path: '/listaZalbiAdmin', component: listaZalbiAdmin },
         { path: '/jednaZalbaAdmin/:zalId', component: jednaZalbaAdmin, name: "jednaZalbaAdmin" },
         { path: '/listaNarudzbenica', component: listaNarudzbenica },

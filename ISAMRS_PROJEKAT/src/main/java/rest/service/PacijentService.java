@@ -31,5 +31,6 @@ public interface PacijentService {
 	void sendZalba(ZalbaDTO zdto);
 	Collection<ZalbaDTO> getZalbeForAdmin(int id);
 	ZalbaDTO getOneZalba(int id);
+	String activate(int id);
 
 }

@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -471,13 +473,15 @@ public class ApotekaServiceImpl implements ApotekaService {
 					preparati.add(dp.getPreparat());
 					price += dp.getCena() * Integer.parseInt(cid.split("\\:")[1]);
 					//poeni += dp.getPreparat().getPoeni() * Integer.parseInt(cid.split("\\:")[1]);
+					//sr.add(new StavkaRecepta(Integer.parseInt(cid.split("\\:")[1]), dp.getPreparat()));
 				}
 		    }
 		    
 		}
 		dostupniproizvodi.saveAll(c.getDostupniProizvodi());
+		//stavkerecepta.saveAll(sr);
 		String naziviLekova = "";
-		ArrayList<StavkaRecepta> sveStavke = new ArrayList<StavkaRecepta>();
+		Set<StavkaRecepta> sveStavke = new HashSet<StavkaRecepta>();
 		for (String prepId : cures) {
 			int sifra = Integer.parseInt(prepId.split("\\:")[0]);
 			int kol = Integer.parseInt(prepId.split("\\:")[1]);
@@ -485,14 +489,19 @@ public class ApotekaServiceImpl implements ApotekaService {
 			bodovi += p.getPoeni() * kol;
 			naziviLekova += p.getNaziv() +"\n";
 			StavkaRecepta ss = new StavkaRecepta(kol, p);
+			sveStavke.add(ss);
 		}
 		Pacijent pac = pacijenti.findById(pacId).get();
 		stavkerecepta.saveAll(sveStavke);
 		ERecept erec = new ERecept(LocalDate.now(), pac, StatusERecepta.OBRADJEN, c.getApoteka());
+		erec.setStavkaRecepata(sveStavke);
+		//Set<DostupanProizvod> set = new HashSet<DostupanProizvod>(zaBrisanje);
+		//erec.setStavkaRecepata(set);
 		erecepti.save(erec);
 		pac.setBrojPoena(pac.getBrojPoena() + bodovi);
 		pac.addERecept(erec);
 		pacijenti.save(pac);
+		//erecepti.save(erec);
 		Collection<TipKorisnika> redomTipovi = tipovi.getAllOrdered();
 		for (TipKorisnika tipKorisnika : redomTipovi) {
 			if(pac.getBrojPoena() > tipKorisnika.getBodovi()) {
@@ -508,6 +517,81 @@ public class ApotekaServiceImpl implements ApotekaService {
         mail.setText("Pozdrav " + pac.getIme() + " " + pac.getPrezime() + ",\n\nLista lekova koje ste kupili:\n"+naziviLekova+"Vas racun (ukljucujuci popust je): " + (double) (price * (100-pac.getTipKorisnika().getPopust())/100) + "\nOsvojili ste " + bodovi + " bodova!");
         javaMailSender.send(mail);
 		
+	}
+
+	@Override
+	public Collection<LekProdajaDTO> sortLekoviasc(String[] cures, String crit, String asc) {
+		// TODO Auto-generated method stub
+				//ArrayList<LekProdajaDTO> sortirano = (ArrayList<LekProdajaDTO>) lekovi;
+				ArrayList<LekProdajaDTO> lekovi = (ArrayList<LekProdajaDTO>) lekovi(cures);
+				if(crit.equals("naziv")) {
+					Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+						@Override
+						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+							// TODO Auto-generated method stub
+							if(asc.equals("value2")) {
+								
+								return o1.getApoteka().getNaziv().compareTo(o2.getApoteka().getNaziv());
+							} else {
+								return o2.getApoteka().getNaziv().compareTo(o1.getApoteka().getNaziv());
+							}
+							
+						}
+					});
+				}
+				
+				if(crit.equals("mesto")) {
+					Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+						@Override
+						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+							// TODO Auto-generated method stub
+							if(asc.equals("value2")) {
+								
+								return o1.getApoteka().getLokacija().getUlica().compareTo(o2.getApoteka().getLokacija().getUlica());
+							} else {
+								return o2.getApoteka().getLokacija().getUlica().compareTo(o1.getApoteka().getLokacija().getUlica());
+							}
+							
+						}
+					});
+				}
+				
+				if(crit.equals("ocena")) {
+					Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+						@Override
+						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+							// TODO Auto-generated method stub
+							if(asc.equals("value2")) {
+								
+								return (int) (o1.getApoteka().getOcena() - o2.getApoteka().getOcena());							
+							} else {
+								return (int) (o2.getApoteka().getOcena() - o1.getApoteka().getOcena());
+							}
+							
+							
+						}
+					});
+				}
+				
+				if(crit.equals("cena")) {
+					Collections.sort(lekovi, new Comparator<LekProdajaDTO>() {
+
+						@Override
+						public int compare(LekProdajaDTO o1, LekProdajaDTO o2) {
+							// TODO Auto-generated method stub
+							if(asc.equals("value2")) {		
+								return (int) (o1.getApoteka().getCena() - o2.getApoteka().getCena());							
+							} else {
+								return (int) (o2.getApoteka().getCena() - o1.getApoteka().getCena());
+							}
+							
+						}
+					});
+				}
+				return lekovi;
 	}
 
 }

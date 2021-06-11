@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.aspect.AsAdminSistema;
+import rest.aspect.AsPacijent;
 import rest.domain.Apoteka;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
@@ -61,8 +63,17 @@ public class PacijentController {
 		return new PacijentDTO(pacijentService.getOne(id));
 	}
 	
+	
+	@AsPacijent
 	@PostMapping(value = "/sendZalba", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String changePass(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
+		pacijentService.sendZalba(user);
+		return "OK";
+	}
+	
+	@AsAdminSistema
+	@PostMapping(value = "/sendZalbaa", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String changePassa(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
 		pacijentService.sendZalba(user);
 		return "OK";
 	}
@@ -100,6 +111,7 @@ public class PacijentController {
 		Set<Apoteka> apoteke = pacijent.getApoteke();
 		apoteke.add(apoteka);
 		pacijent.setApoteke(apoteke);
+		apotekeRepository.save(apoteka);
 		pacijentRepository.save(pacijent);
 		return "OK";
 	}
@@ -107,5 +119,11 @@ public class PacijentController {
 	@PutMapping(value = "penal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void addPenal(@PathVariable("id") int id,@RequestBody Penal p){
 		pacijentService.addPenal(id, p);
+	}
+	
+	@PutMapping(value="activate/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String activate(@PathVariable("id") int id) {
+		
+		return pacijentService.activate(id);
 	}
 }

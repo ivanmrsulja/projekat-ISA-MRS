@@ -43,7 +43,7 @@ Vue.component("register-supplier", {
 			</tr>
 			<tr>
 				<td align=center colspan=2> 
-					<input value="Registruj se" type="button" name="regBtn" v-on:click="registerUser()"/> 
+					<input class="button1" value="Registruj dobavljaca" type="button" name="regBtn" v-on:click="registerUser()"/> 
 				</td>
 			</tr>
 		</table>
@@ -90,6 +90,8 @@ Vue.component("register-supplier", {
             axios.post("/api/users/registerSupp", newUser).then(data => {
                 if (data.data == "OK") {
                     toast("Uspesno ste registrovali dobavljaca! Moze se ulogovati");
+                }else {
+                	toast("Nalog sa tim korisnickim imenom vec postoji!");
                 }
             });
         },
@@ -150,6 +152,38 @@ Vue.component("register-supplier", {
         }
     },
     mounted() {
+    let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(!resp.data.loggedBefore) {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
         this.showMap();
     }
 });

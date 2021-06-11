@@ -90,6 +90,7 @@ Vue.component("pregled-erecepata", {
 				.get("api/eRecept/all/" + data.data.id + "?sort=false&descending=false&status=SVI")
 				.then(response => {
 					this.recepti = response.data;
+					console.log(data.data.id);
 				});
             }else{
             	this.$router.push({ path: "/" });

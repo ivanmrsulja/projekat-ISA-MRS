@@ -81,6 +81,7 @@ public class ApotekaController {
 		return apoteke;
 	}
 	
+	@AsPacijent
 	@GetMapping(value="/test/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<LekProdajaDTO> test(@PathVariable("id") String id) {
 		System.out.println(id + "OVAKO PRVO IZGLEDATAJ NIz");
@@ -90,13 +91,15 @@ public class ApotekaController {
 		
 	}
 	
-	@GetMapping(value="/sorting/{id}/{crit}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<LekProdajaDTO> sort(@PathVariable("id") String id, @PathVariable("crit") String crit) {
+	@AsPacijent
+	@GetMapping(value="/sorting/{id}/{crit}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<LekProdajaDTO> sort(@PathVariable("id") String id, @PathVariable("crit") String crit, @PathVariable("asc") String asc) {
 		String[] ar = id.split(",");
-		return (ArrayList<LekProdajaDTO>) apotekaService.sortLekovi(ar, crit);
+		return (ArrayList<LekProdajaDTO>) apotekaService.sortLekoviasc(ar, crit, asc);
 		
 	}
 	
+	@AsPacijent
 	@PutMapping(value = "/buy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String buy(HttpSession sess, @RequestBody RacunDTO racun) throws Exception {
 		KorisnikDTO user = (KorisnikDTO) sess.getAttribute("user");
@@ -130,7 +133,7 @@ public class ApotekaController {
 	@GetMapping(value="admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOneForAdmin(@PathVariable int id) {
 		AdminApoteke a = (AdminApoteke) userService.findOne(id);
-		return new ApotekaDTO(this.apotekaService.getForAdmin(a.getApoteka().getId()));
+		return new ApotekaDTO(this.apotekaService.getForAdmin(a.getId()));
 	}
 	
 	@GetMapping(value="pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

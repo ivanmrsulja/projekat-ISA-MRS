@@ -28,8 +28,8 @@ Vue.component("lista-narudzbenica", {
                 <tr v-for="z in zalbe" v-bind:key="z.id">
                                 <td>{{z.rok}}</td>
                                 <td>{{z.status}}...</td>
-                               <td>{{z.naruceniProizvodi}}</td>
-                                <td><a :href="'#/jednaNarudzbenica/'+z.id" class="btn btn-primary">Detaljnije</a></td>
+                               <td>{{z.adminApoteka}}</td>
+                                <td><a :href="'#/jednaNarudzbenica/'+z.id" class="button1">Detaljnije</a></td>
             	</tr>           
             </tbody>
      	</table>
@@ -74,6 +74,38 @@ Vue.component("lista-narudzbenica", {
     },
 	mounted: function() {
 		var self = this;
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(!resp.data.loggedBefore) {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
         axios
 		.get("/api/users/currentUser")
 		.then(function(resp){
@@ -82,6 +114,7 @@ Vue.component("lista-narudzbenica", {
 			.get("/api/admin/availableNar/"+self.user.id)
 			.then(function(re){
 				self.zalbe = re.data;
+				console.log(re.data[0]);
 				//self.zalbe.forEach(element => element.naruceniProizvodi.forEach(e => element.listProizvod.push(e.preparat+ ": "+ e.kolicina)));
 				var i;
 				narudzbenice = [];
@@ -102,6 +135,7 @@ Vue.component("lista-narudzbenica", {
 			});
 		});
 		console.log(this.user);
+		console.log(this.zalbe);
 	  	
     }
 });

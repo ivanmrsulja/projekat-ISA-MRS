@@ -31,7 +31,7 @@ Vue.component("register-apoteka", {
 			</tr>
 			<tr>
 				<td align=center colspan=2> 
-					<input value="Registruj se" type="button" name="regBtn" v-on:click="registerPhar()"/> 
+					<input class="button1" value="Registruj apoteku" type="button" name="regBtn" v-on:click="registerPhar()"/> 
 				</td>
 			</tr>
 		</table>
@@ -54,6 +54,10 @@ Vue.component("register-apoteka", {
             if (naz.trim() == "" || op.trim() == "" || cen.trim() == "") {
                 toast("Popunite sva polja.");
                 return;
+            }
+            if(Number.isNaN(parseFloat(cen))) {
+            	toast("Cena mora biti broj.");
+            	return;
             }
 
             let lok = { sirina: sir, duzina: duz, ulica: adr };
@@ -124,6 +128,39 @@ Vue.component("register-apoteka", {
         }
     },
     mounted() {
+    	
+    	let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(!resp.data.loggedBefore) {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
         this.showMap();
     }
 });

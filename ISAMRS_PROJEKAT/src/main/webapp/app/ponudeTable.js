@@ -36,9 +36,11 @@ Vue.component("pocetna-stranas", {
                 <th scope="col">Id</th>
                 <th scope="col">Status</th>
                 <th scope="col">Ukupna cena</th>
-               	<th scope="col">Rok isporuke</th>
+               	<th scope="col">Rok isporuke ponude</th>
              	<th scope="col">Narudzbenica</th>
            		<th scope="col">Dobavljac</th>
+           		<th scope="col">Rok isporuke narudzbenice</th>
+           		<th scope="col">Azuriraj ponudu</th>
 
                 </tr>
            	</thead>
@@ -50,6 +52,12 @@ Vue.component("pocetna-stranas", {
                                 <td>{{offer.rokIsporuke}}</td>
                                 <td>{{offer.idNarudzbenice}}</td>
                                 <td>{{offer.dobavljac}}</td>
+                                <td>{{offer.rokIsporukeNarudzbenice}}</td>
+                                <div v-if="new Date() < new Date(offer.rokIsporukeNarudzbenice) && offer.status != 'PRIHVACENA'">
+                                <td ><input type="date" :id="'datumAzur'+offer.id"/></td>
+                                <td ><input type="number" :id="'cenaAzur'+offer.id"/></td>
+                                <td ><input @click="proveri(offer.id)" type="button" class="button1" value="Azuriraj ponudu"/></td>
+                                </div>
             	</tr>           
             </tbody>
      	</table>
@@ -68,9 +76,69 @@ Vue.component("pocetna-stranas", {
 			.then(response => {
 				this.offers = response.data;
 			});
+    	},
+    	proveri : function(i) {
+    		let d = "#datumAzur" + i;
+    		let n = "#cenaAzur" + i;
+    		let datumZaAzur = $(d).val();
+    		let novacZaAzur = parseFloat($(n).val());
+    		if(datumZaAzur.trim() == "" || Number.isNaN(novacZaAzur)) {
+    			toast("Ne ostavljajte prazna polja");
+    			return;
+    		}
+    		if(new Date(datumZaAzur) < new Date()) {
+    			toast("Morate uneti datum posle danasnjeg");
+    			return;
+    		}
+    		
+    		axios
+			.put("api/admin/updateOffer/"+i+"/"+datumZaAzur+"/"+novacZaAzur)
+			.then(response => {
+				if(response.data == "OK") {
+					axios
+					.get("api/admin")
+					.then(respo => {
+						this.offers = respo.data;
+						
+					});
+				}
+			});
     	}
     },
 	mounted: function() {
+	
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(!resp.data.loggedBefore) {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
 		axios
 			.get("api/admin")
 			.then(response => {

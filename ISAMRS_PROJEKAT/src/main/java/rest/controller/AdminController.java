@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.aspect.AsAdminApoteke;
+import rest.aspect.AsAdminSistema;
+import rest.aspect.AsDobavljac;
 import rest.domain.Narudzbenica;
 import rest.domain.Ponuda;
 import rest.dto.KorisnikDTO;
@@ -71,6 +73,7 @@ public class AdminController {
 		return adminService.searhProductsOfPharmacy(pharmacyId, name);
 	}
 	
+	@AsDobavljac
 	@GetMapping(value = "/oneNar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public NarudzbenicaDTO oneNar(@PathVariable("id") int id){
 		NarudzbenicaDTO abc = adminService.getNarudzbenicaById(id);
@@ -113,6 +116,8 @@ public class AdminController {
 
 		return productsDTO;
 	}
+	
+	@AsDobavljac
 	@PostMapping(value = "/sendOffer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String sendOffer(@RequestBody PonudaDTO tip) throws Exception {
 		//System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
@@ -120,10 +125,14 @@ public class AdminController {
 		return "OK";
 	}
 	
+	@AsAdminSistema
 	@PostMapping(value = "/registerType", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody TipKorisnikaDTO tip) throws Exception {
 		System.out.println(tip.getNaziv() + tip.getBodovi() + tip.getPopust());
-		adminService.createType(tip);
+		TipKorisnikaDTO tkdto =  adminService.createType(tip);
+		if(tkdto == null) {
+			return "Not OK";
+		}
 		return "OK";
 	}
 
@@ -317,6 +326,7 @@ public class AdminController {
 		return "OK";
 	}
 	
+	@AsDobavljac
 	@GetMapping(value = "cures/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PonudaDTO>> getStatusPonuda(HttpServletRequest request, @PathVariable("status") String status) {
 		KorisnikDTO u = (KorisnikDTO) request.getSession().getAttribute("user");
@@ -325,7 +335,10 @@ public class AdminController {
 		for(Ponuda p : offers) {
 			if(p.getDobavljac().getUsername().equals(u.getUsername())) {
 				if(p.getStatus().toString().equals(status) || status.equals("SVI")) {
-					ponude.add(new PonudaDTO(p));
+					Narudzbenica naru = narudzbenicaRepository.findById(p.getNarudzbenica().getId()).get(); // DHSAKJHDSAJKHAJKDSJAKDHSAJKDAJKSDHDAJKSDHSKJHDJKHDJKHSAJKDHAHDKJHJKDHSAJKHDKJASHDJKHKJASDHASJKDHAJKSHASKJDHASJKDHASJKDKHJKH
+					PonudaDTO pondt = new PonudaDTO(p);
+					pondt.setRokIsporukeNarudzbenice(naru.getRok());
+					ponude.add(pondt);
 				}
 
 			}
@@ -350,6 +363,7 @@ public class AdminController {
 		return offersDTO;
 	}
 	
+	@AsDobavljac
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PonudaDTO>> getOffers(HttpServletRequest request) {
 		KorisnikDTO u = (KorisnikDTO) request.getSession().getAttribute("user");
@@ -357,7 +371,10 @@ public class AdminController {
 		ArrayList<PonudaDTO> ponude = new ArrayList<PonudaDTO>();
 		for(Ponuda p : offers) {
 			if(p.getDobavljac().getUsername().equals(u.getUsername())) {
-				ponude.add(new PonudaDTO(p));
+				Narudzbenica naru = narudzbenicaRepository.findById(p.getNarudzbenica().getId()).get(); // DHSAKJHDSAJKHAJKDSJAKDHSAJKDAJKSDHDAJKSDHSKJHDJKHDJKHSAJKDHAHDKJHJKDHSAJKHDKJASHDJKHKJASDHASJKDHAJKSHASKJDHASJKDHASJKDKHJKH
+				PonudaDTO pondt = new PonudaDTO(p);
+				pondt.setRokIsporukeNarudzbenice(naru.getRok());
+				ponude.add(pondt);
 			}
 		}
 		return new ResponseEntity<Collection<PonudaDTO>>(ponude, HttpStatus.OK);
@@ -387,6 +404,14 @@ public class AdminController {
 		CenovnikDTO cenovnikDTO = adminService.findPricelistForPharmacy(pharmacyId);
 
 		return cenovnikDTO;
+	}
+	
+	@AsDobavljac
+	@PutMapping(value = "/updateOffer/{id}/{date}/{price}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String updateOffer(@PathVariable("id") int idOffer, @PathVariable("date") String date, @PathVariable("price") double price) {
+		//CenovnikDTO cenovnikDTO = adminService.findPricelistForPharmacy(idOffer); //DSAJHDJLKSAHDJKLSHDBJSAHDJKSAHDJHSADJKASHJDKASDJKASHJKDHSAJKDHASDSJKHSJDKAHSKDJAKSHJSJKHDJKASDHASJKDH
+		adminService.updateOffer(idOffer, date, price);
+		return "OK";
 	}
 	
 	@AsAdminApoteke

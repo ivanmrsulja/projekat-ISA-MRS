@@ -45,5 +45,7 @@ public interface ApotekaService {
 	Collection<LekProdajaDTO> sortLekovi(String cures[], String crit);
 	
 	void kupiLekove(String cures[], int id, int pacId);
+	
+	Collection<LekProdajaDTO> sortLekoviasc(String cures[], String crit, String asc);
 
 }

@@ -174,21 +174,21 @@ public class DBInitialiser implements ApplicationRunner {
 		
 		Dobavljac d = new Dobavljac("Pera", "Peric", "dobavljac", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
 		Dobavljac de1 = new Dobavljac("Pera", "Peric", "dobavljacica", "dobavljac", "isamrstim06+pera@gmail.com", true, "069655655", null, ZaposlenjeKorisnika.DOBAVLJAC);
-		Narudzbenica n = new Narudzbenica(LocalDate.parse("2020-04-04"), adma2, StatusNarudzbenice.CEKA_PONUDE);
+		Narudzbenica n = new Narudzbenica(LocalDate.parse("2022-04-04"), adma2, StatusNarudzbenice.CEKA_PONUDE);
 		Set<NaruceniProizvod> naruceniProizvodi1 = new HashSet<NaruceniProizvod>();
 		NaruceniProizvod np1 = new NaruceniProizvod(8, pr1, n);
 		NaruceniProizvod np2 = new NaruceniProizvod(10, pr2, n);
 		naruceniProizvodi1.add(np1);
 		naruceniProizvodi1.add(np2);
 		n.setNaruceniProizvodi(naruceniProizvodi1);
-		Narudzbenica n2 = new Narudzbenica(LocalDate.parse("2020-10-10"), adma2, StatusNarudzbenice.OBRADJENA);
+		Narudzbenica n2 = new Narudzbenica(LocalDate.parse("2021-08-10"), adma2, StatusNarudzbenice.OBRADJENA);
 		Set<NaruceniProizvod> naruceniProizvodi2 = new HashSet<NaruceniProizvod>();
 		NaruceniProizvod np3 = new NaruceniProizvod(4, pr1, n2);
 		NaruceniProizvod np4 = new NaruceniProizvod(14, pr3, n2);
 		naruceniProizvodi1.add(np3);
 		naruceniProizvodi1.add(np4);
 		n2.setNaruceniProizvodi(naruceniProizvodi2);
-		Narudzbenica n3 = new Narudzbenica(LocalDate.parse("2020-10-10"), adma2, StatusNarudzbenice.CEKA_PONUDE);
+		Narudzbenica n3 = new Narudzbenica(LocalDate.parse("2021-10-10"), adma2, StatusNarudzbenice.CEKA_PONUDE);
 		Set<NaruceniProizvod> naruceniProizvodi3 = new HashSet<NaruceniProizvod>();
 		NaruceniProizvod np6 = new NaruceniProizvod(4, pr1, n3);
 		NaruceniProizvod np5 = new NaruceniProizvod(14, pr3, n3);

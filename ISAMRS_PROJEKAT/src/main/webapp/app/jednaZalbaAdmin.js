@@ -26,7 +26,7 @@ Vue.component("jedna-zalbaadmin", {
 			<textarea rows="25" cols="100" id="tekst">
 			</textarea>
 			<br>
-			<input value="Posalji" class="btn btn-primary" type="button" name="zalBtn" v-on:click="sendZalba()"/>  
+			<input value="Posalji" class="button1" type="button" name="zalBtn" v-on:click="sendZalba()"/>  
 		</div>
 
 	
@@ -41,7 +41,7 @@ Vue.component("jedna-zalbaadmin", {
     		let konTekst = tekst + "\n==================\nODGOVOR:\n" + $("#tekst").val()
     		console.log(konTekst);
     		let newUser = { nazivKorisnika: this.zalbe.nazivKorisnika, nazivAdmina: this.user.username, tekst: konTekst, answered: true};
-            axios.post("/api/pacijenti/sendZalba", newUser).then(data => {
+            axios.post("/api/pacijenti/sendZalbaa", newUser).then(data => {
                 if (data.data == "OK") {
                     toast("Uspesno ste poslali zalbu");
                     

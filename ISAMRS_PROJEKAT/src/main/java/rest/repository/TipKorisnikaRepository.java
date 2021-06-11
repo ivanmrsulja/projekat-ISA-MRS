@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import rest.domain.Apoteka;
+import rest.domain.Farmaceut;
 import rest.domain.TipKorisnika;
 
 @Repository
@@ -15,4 +16,7 @@ public interface TipKorisnikaRepository extends JpaRepository<TipKorisnika, Inte
 	
 	@Query("select tp from TipKorisnika tp order by tp.bodovi desc")
 	public Collection<TipKorisnika> getAllOrdered();
+	
+	@Query("select tp from TipKorisnika tp where tp.bodovi = ?1")
+	TipKorisnika getTipWithPoints(int bodovi);
 }

@@ -51,6 +51,7 @@
         <a class="navigacija" href="#/register" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Register</a>
         <a class="navigacija" href="#/" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'GOST'">Login</a>
         <a class="navigacija" href="#/profilPacijenta" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Moj Profil</a>
+        <a class="navigacija" href="#/sendQr" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Upload QR</a>
         <a class="navigacija" href="#/pretragaStrucnjaka" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'">Pretraga</a>
         <a class="navigacija" href="#/regDerm" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje dermatologa</a>
         <a class="navigacija" href="#/registracijaAdminaSistema" v-bind:hidden="korisnik.zaposlenjeKorisnika !='ADMIN_SISTEMA'">Registrovanje admina sistema</a>
@@ -195,6 +196,7 @@
     <script src="app/jednaNarudzbenica.js"></script>
     <script src="app/tabelaApoteka.js"></script>
     <script src="app/sendQr.js"></script>
+    <script src="app/verifyAccount.js"></script>
     <script src="app/app.js"></script>
     <script src="app/rezervacijaLeka.js"></script>
 

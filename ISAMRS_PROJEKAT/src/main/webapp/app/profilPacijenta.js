@@ -53,7 +53,7 @@ Vue.component("profil-pacijenta", {
 			</tr>
 			<tr>
 				<td> <h2>Popust:</h2> </td>
-				<td> <input type="text" :value="(1 - pacijent.tip.popust).toFixed(2) * 100" disabled/> % </td>
+				<td> <input type="text" :value="pacijent.tip.popust" disabled/> % </td>
 			</tr>
 			<tr>
 				<td> <h2>Adresa:</h2> </td>

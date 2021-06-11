@@ -64,6 +64,7 @@ public class Preparat implements Ocenjivo{
 		this.izdavanje = izdavanje;
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
+		this.zamjenskiPreparati = new HashSet<Preparat>();
 		this.ocena=izracunajOcenu();
 	}
 	

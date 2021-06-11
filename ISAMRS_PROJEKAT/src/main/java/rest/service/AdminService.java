@@ -99,7 +99,7 @@ public interface AdminService {
 	public Collection<Pregled> scheduledAppointmentsForDermatologist(int pharmacyId, int dermatologistId);
 
 	public void removeDermatologist(int pharmacyId, int dermatologistId);
-	public void createType(TipKorisnikaDTO t);
+	public TipKorisnikaDTO createType(TipKorisnikaDTO t);
 	
 	public Collection<NarudzbenicaDTO> getAvailableNarudzbenice(int id);
 	
@@ -108,4 +108,6 @@ public interface AdminService {
 	public void createOffer(PonudaDTO p);
 	
 	public void updateZalba(int id);
+	
+	public void updateOffer(int id, String date, double price);
 }

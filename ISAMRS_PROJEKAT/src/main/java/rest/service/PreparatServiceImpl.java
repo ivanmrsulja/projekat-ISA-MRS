@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -193,6 +194,12 @@ public class PreparatServiceImpl implements PreparatService{
 		p.setOcena(cure.getOcena());
 		p.setTip(cure.getTip());
 		p.setPoeni(cure.getPoeni());
+		HashSet<Preparat> zamene = new HashSet<Preparat>();
+		for (int zi : cure.getZamenskiPreparati()) {
+			Preparat pi = preparatRepository.findById(zi).get();
+			zamene.add(pi);
+		}
+		p.setZamjenskiPreparati(zamene);
 		preparatRepository.save(p);
 		
 	}

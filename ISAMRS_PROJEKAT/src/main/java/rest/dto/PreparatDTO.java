@@ -1,5 +1,7 @@
 package rest.dto;
 
+import java.util.ArrayList;
+
 import rest.domain.Preparat;
 import rest.domain.RezimIzdavanja;
 import rest.domain.TipLeka;
@@ -20,6 +22,7 @@ public class PreparatDTO {
 	private int poeni;
 	private double brojOcena;
 	private double sumaOcena;
+	private ArrayList<Integer> zamenskiPreparati = new ArrayList<Integer>();
 	
 	public PreparatDTO()
 	{}
@@ -39,6 +42,10 @@ public class PreparatDTO {
 		this.rezim=preparat.getIzdavanje();
 		this.ocena=preparat.getOcena();
 		this.tip = preparat.getTip();
+		this.zamenskiPreparati = new ArrayList<>();
+//		for (Preparat p : preparat.getZamjenskiPreparati()) {
+//			zamenskiPreparati.add(p.getId());
+//		}
 	}
 	public Integer getId() {
 		return id;
@@ -119,6 +126,13 @@ public class PreparatDTO {
 	public void setTip(TipLeka tip) {
 		this.tip = tip;
 	}
+	public ArrayList<Integer> getZamenskiPreparati() {
+		return zamenskiPreparati;
+	}
+	public void setZamenskiPreparati(ArrayList<Integer> zamenskiPreparati) {
+		this.zamenskiPreparati = zamenskiPreparati;
+	}
+	
 	
 	
 	

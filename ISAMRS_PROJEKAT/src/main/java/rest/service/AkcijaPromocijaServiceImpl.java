@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.AkcijaPromocija;
 import rest.domain.Apoteka;
+import rest.domain.Pacijent;
 import rest.dto.ApotekaDTO;
 import rest.repository.AkcijaPromocijaRepository;
+import rest.repository.ApotekeRepository;
 import rest.repository.PacijentRepository;
 
 @Service
@@ -20,10 +22,12 @@ public class AkcijaPromocijaServiceImpl implements AkcijaPromocijaService{
 
 	private PacijentRepository pacijentRepo;
 	private AkcijaPromocijaRepository akcijaPromocijaRepository;
+	private ApotekeRepository apotekeRepository;
 	
 	@Autowired
-	public AkcijaPromocijaServiceImpl(PacijentRepository pacijentRepo, AkcijaPromocijaRepository apr) {
+	public AkcijaPromocijaServiceImpl(ApotekeRepository aptrks,PacijentRepository pacijentRepo, AkcijaPromocijaRepository apr) {
 		this.pacijentRepo = pacijentRepo;
+		this.apotekeRepository = aptrks;
 		this.akcijaPromocijaRepository = apr;
 	}
 	
@@ -41,6 +45,26 @@ public class AkcijaPromocijaServiceImpl implements AkcijaPromocijaService{
 	public AkcijaPromocija create(AkcijaPromocija ap) throws Exception {
 		AkcijaPromocija akcijaPromocija = akcijaPromocijaRepository.save(ap);
 		return akcijaPromocija;
+	}
+
+	@Override
+	public void removeForUser(int idUser, int idApo) {
+		Pacijent p = pacijentRepo.findById(idUser).get();
+		Apoteka a = apotekeRepository.findById(idApo).get();
+		if(p.getApoteke().contains(a)) {
+			p.getApoteke().remove(a);
+			apotekeRepository.save(a);
+			pacijentRepo.save(p);
+		}
+		
+	}
+
+	@Override
+	public void addForUser(int idUser, int idApo) {
+		// TODO Auto-generated method stub
+		Pacijent p = pacijentRepo.findById(idUser).get();
+		Apoteka a = apotekeRepository.findById(idApo).get();
+		//a.add
 	}
 
 }

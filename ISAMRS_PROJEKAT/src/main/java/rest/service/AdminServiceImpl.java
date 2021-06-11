@@ -1049,12 +1049,27 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void createType(TipKorisnikaDTO t) {
+	public TipKorisnikaDTO createType(TipKorisnikaDTO t) {
 		TipKorisnika tk = new TipKorisnika();
 		tk.setBodovi(t.getBodovi());
 		tk.setNaziv(t.getNaziv());
 		tk.setPopust(t.getPopust());
+		if(tipRepository.getTipWithPoints(tk.getBodovi()) != null) {
+			return null;
+		}
 		tipRepository.save(tk);
+		Collection<Pacijent> pacijenti = pacijentRepository.findAll();
+		Collection<TipKorisnika> tSort= tipRepository.getAllOrdered();
+		for (Pacijent pacijent : pacijenti) {
+			for (TipKorisnika tipKorisnika : tSort) {
+				if(pacijent.getBrojPoena() >= tipKorisnika.getBodovi()) {
+					pacijent.setTipKorisnika(tipKorisnika);
+					break;
+				}
+			}
+		}
+		pacijentRepository.saveAll(pacijenti);
+		return t;
 		
 	}
 
@@ -1109,6 +1124,17 @@ public class AdminServiceImpl implements AdminService {
 		Zalba z = zalbaRepository.findById(id).get();
 		z.setAnswered(true);
 		zalbaRepository.save(z);
+		
+	}
+
+	@Override
+	public void updateOffer(int id, String date, double price) {
+		Ponuda p = ponudaRepository.findById(id).get();
+		LocalDate d = LocalDate.parse(date);
+		p.setRokIsporuke(d);
+		p.setUkupnaCena(price);
+		p.setStatus(StatusPonude.CEKA_NA_ODGOVOR);
+		ponudaRepository.save(p);
 		
 	}
 

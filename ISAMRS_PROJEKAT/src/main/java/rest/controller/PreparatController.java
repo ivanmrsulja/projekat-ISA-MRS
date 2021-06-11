@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import rest.aspect.AsAdminSistema;
 import rest.aspect.AsPacijent;
 import rest.domain.Pacijent;
 import rest.domain.Preparat;
@@ -55,6 +56,7 @@ public class PreparatController {
 		return preparati;
 	}
 	
+	@AsAdminSistema
 	@PostMapping(value = "/addCure", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String register(@RequestBody PreparatDTO cure) throws Exception {
 		preparatService.addlek(cure);

@@ -6,12 +6,18 @@ Vue.component("send-qr", {
 	},
 	template: ` 
 <div align = center class="col">
-	<input type="file" name="" id="fileId" @change="displayString()">
-    <br><br>
-  
-    <button @click="postString()">
-        Display String
-    </button>	
+	<table>
+			<tr>
+				<td> <h2>Upload Qr:</h2> </td>
+				<td> <input type="file" name="" id="fileId" @change="displayString()"> </td>
+			</tr>
+			<tr>
+				<td align=center colspan="2">
+					<input type="button" class="button1" value="Posalji" @click="postString()"/>
+				</td>
+			</tr>
+		</table>
+
 
 </div>		  
 `
@@ -47,6 +53,39 @@ Vue.component("send-qr", {
 		}
 	},
 	mounted: function() {
-
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
     }
 });

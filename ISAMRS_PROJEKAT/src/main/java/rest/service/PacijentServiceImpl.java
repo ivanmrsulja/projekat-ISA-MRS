@@ -21,6 +21,7 @@ import rest.domain.Penal;
 import rest.domain.Pregled;
 import rest.domain.Preparat;
 import rest.domain.Rezervacija;
+import rest.domain.StatusNaloga;
 import rest.domain.Zalba;
 import rest.dto.PreparatDTO;
 import rest.dto.ZalbaDTO;
@@ -306,6 +307,21 @@ public class PacijentServiceImpl implements PacijentService {
 				Zalba z = zalbaRepository.findById(id).get();
 				ZalbaDTO zal = new ZalbaDTO(z);
 				return zal;
+	}
+
+
+	@Override
+	public String activate(int id) {
+		// TODO Auto-generated method stub
+		Pacijent p = pacijentRepository.findById(id).get();
+		if(p.getLoggedBefore() == true) {
+			return "Vas nalog je vec aktiviran, kliknite na dugme ispod kako bi se vratili na formu za prijavu.";
+		} else {
+			p.setLoggedBefore(true);
+			p.setStatusNaloga(StatusNaloga.AKTIVAN);
+			pacijentRepository.save(p);
+			return "Uspesno ste aktivirali nalog, kliknite na dugme ispod kako bi se vratili na formu za prijavu.";
+		}
 	}
 	
 }

@@ -34,6 +34,8 @@ import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Ponuda;
 import rest.aspect.AsAdminApoteke;
+import rest.aspect.AsAdminSistema;
+import rest.aspect.AsDobavljac;
 import rest.aspect.AsPacijent;
 import rest.domain.StatusNaloga;
 import rest.domain.Zaposlenje;
@@ -115,6 +117,9 @@ public class KorisnikController {
 		for (Korisnik korisnik : users) {
 			if(korisnik.getUsername().equals(user) && korisnik.getPassword().equals(pass)) {
 				KorisnikDTO k = new KorisnikDTO(korisnik);
+				if(k.getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.PACIJENT) && k.isLoggedBefore() == false) {
+					return new ResponseEntity<String>("Niste verifikovali nalog!", HttpStatus.OK);
+				}
 				request.getSession().setAttribute("user", k);
 				return new ResponseEntity<String>("OK", HttpStatus.OK);
 			}
@@ -140,11 +145,16 @@ public class KorisnikController {
 		return "OK";
 	}
 	
+	
+	@AsDobavljac
 	@PostMapping(value = "/updateSupp", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updateSupp(HttpServletRequest request, @RequestBody KorisnikDTO user) throws Exception {
 		KorisnikDTO u = null;
 		u = (KorisnikDTO) request.getSession().getAttribute("user");
 		Korisnik k = userService.updateSupp(u, user);
+		if(k == null) {
+			return "Not OK";
+		}
 		KorisnikDTO updateUser = new KorisnikDTO(k);
 		request.getSession().setAttribute("user", updateUser);
 		return "OK";
@@ -173,11 +183,15 @@ public class KorisnikController {
 		k.setBrojPoena(0);
 		k.setTipKorisnika(userService.pocetniTip());
 		k.setStatusNaloga(StatusNaloga.AKTIVAN); //ovo se menja
-		userService.create(k);
+		Korisnik t = userService.create(k);
+		if(t == null) {
+			return "Not OK";
+		}
 		userService.sendRegistrationMail(k);
 		return "OK";
 	}
 	
+	@AsPacijent
 	@PostMapping(value = "/sendQr", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String sendQr(@RequestBody String q) throws Exception {
 		String s = URLDecoder.decode(q, "UTF-8");
@@ -186,6 +200,7 @@ public class KorisnikController {
 		return qrc.readQRCode(i);
 	}
 	
+	@AsAdminSistema
 	@PostMapping(value = "/registerSupp", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerSupp(@RequestBody KorisnikDTO user) throws Exception {
 		Dobavljac k = new Dobavljac();
@@ -200,10 +215,14 @@ public class KorisnikController {
 		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DOBAVLJAC);
 		Set<Ponuda> p = new HashSet<Ponuda>();
 		k.setPonude(p);
-		userService.create(k);
+		Korisnik t = userService.create(k);
+		if(t == null) {
+			return "Not OK";
+		}
 		return "OK";
 	}
 	
+	@AsAdminSistema
 	@PostMapping(value = "/registerDerm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerDerm(@RequestBody KorisnikDTO user) throws Exception {
 		Dermatolog k = new Dermatolog();
@@ -218,10 +237,14 @@ public class KorisnikController {
 		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.DERMATOLOG);
 		Set<Zaposlenje> p = new HashSet<Zaposlenje>();
 		k.setZaposlenja(p);
-		userService.create(k);
+		Korisnik t = userService.create(k);
+		if(t == null) {
+			return "Not OK";
+		}
 		return "OK";
 	}
 	
+	@AsAdminSistema
 	@PostMapping(value = "/registerAdminSys", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerAdminSys(@RequestBody KorisnikDTO user) throws Exception {
 		AdminSistema k = new AdminSistema();
@@ -234,13 +257,21 @@ public class KorisnikController {
 		k.setPassword(user.getNoviPassw());
 		k.setLoggedBefore(false);
 		k.setZaposlenjeKorisnika(ZaposlenjeKorisnika.ADMIN_SISTEMA);
-		userService.create(k);
+		Korisnik t = userService.create(k);
+		if(t == null) {
+			return "Not OK";
+		}
 		return "OK";
 	}
 	
+	@AsAdminSistema
 	@PostMapping(value = "/registerAdminPharm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerAdminPharm(@RequestBody PharmacyAdminDTO user) throws Exception {
-		userService.createAdminPharm(user);
+		
+		AdminApoteke ap =  userService.createAdminPharm(user); //DHASJKHDSAJKHDAKHDJKDHHDJAKHKDHASKJD
+		if(ap == null) {
+			return "Not OK";
+		}
 		return "OK";
 	}
 	
@@ -370,6 +401,15 @@ public class KorisnikController {
 			return null;
 		}
 		return akcijaService.getForUser(id);
+	}
+	
+	@AsPacijent
+	@PutMapping(value = "/unsub/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String unsubActionsPromotions(@PathVariable("id") int id){
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		KorisnikDTO currentUser = (KorisnikDTO) attr.getRequest().getSession().getAttribute("user");
+		akcijaService.removeForUser(currentUser.getId(), id);
+		return "OK";
 	}
 	
 	@AsPacijent

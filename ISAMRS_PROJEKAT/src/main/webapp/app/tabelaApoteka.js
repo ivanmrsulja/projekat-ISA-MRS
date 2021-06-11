@@ -13,13 +13,18 @@ Vue.component("tabela-apoteka", {
 		<h1>Lekovi</h1>
 		<br/>
 	</br>
-		<select name="g1" id="select_g1" v-on:change="sorting()">
+		<table>
+			<td><h2>Sortiraj po:</h2></td>
+			<td><select name="g1" id="select_g1" v-on:change="sorting()">
 		    <option value="standard"></option>
 	        <option value="cena">Sortiraj po ceni</option>
 	        <option value="naziv">Sortiraj po nazivu</option>
 	        <option value="ocena">Sortiraj po oceni</option>
 	        <option value="mesto">Sortiraj po mestu</option>
-    	</select>
+    	</select></td>
+    	<td> <input type="radio" value="value1" name="group1" @change="sorting()">Opadajuce
+    		  <input type="radio" value="value2" name="group1" @change="sorting()" checked>Rastuce</td>
+		</table>
 		<table class="table table-hover">
             <thead>
             	<tr>
@@ -62,15 +67,21 @@ Vue.component("tabela-apoteka", {
     	},
     	sorting : function() {
     		let user = $("#select_g1").val();
+    		let v = $("input[name='group1']:checked").val();
+    		console.log(v);
     		console.log(user);
     		var self = this;
     		axios
-			.get("/api/apoteke/sorting/"+self.$route.params.id+"/"+user)
+			.get("/api/apoteke/sorting/"+self.$route.params.id+"/"+user+"/"+v)
 			.then(function(resp){
 				self.lekovi = resp.data;
 				console.log(resp.data);
 				
 			});
+    	},
+    	prik : function() {
+    		let v = $("input[name='group1']:checked").val();
+    		console.log(v);
     	},
     	kupi : function(sifra) {
     		var self = this;
@@ -84,6 +95,39 @@ Vue.component("tabela-apoteka", {
     	}
     },
 	mounted: function() {
+		let temp = this;
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
 		var self = this;
 		axios
 		.get("/api/users/currentUser")

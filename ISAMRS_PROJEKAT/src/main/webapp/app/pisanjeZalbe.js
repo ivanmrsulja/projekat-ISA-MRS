@@ -22,7 +22,7 @@ Vue.component("pisanje-zalbe", {
 		<textarea rows="25" cols="100" id="tekst">
 		</textarea>
 		<br>
-		<input value="Posalji" class="btn btn-primary" type="button" name="zalBtn" v-on:click="sendZalba()"/>  
+		<input value="Posalji" class="button1" type="button" name="zalBtn" v-on:click="sendZalba()"/>  
 
 	
 	
@@ -51,6 +51,40 @@ Vue.component("pisanje-zalbe", {
     	}
     },
 	mounted: function() {
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
 		var self = this;
         axios
 		.get("/api/users/currentUser")

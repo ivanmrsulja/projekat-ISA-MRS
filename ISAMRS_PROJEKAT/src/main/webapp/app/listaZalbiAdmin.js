@@ -28,7 +28,7 @@ Vue.component("lista-zalbiadmin", {
                                 <td>{{z.nazivKorisnika}}</td>
                                 <td>{{z.tekst.substring(0,35)}}...</td>
                                 <td>{{z.nazivAdmina}}</td>
-                                <td><a :href="'#/jednaZalbaAdmin/'+z.id" class="btn btn-primary">Detaljnije</a></td>
+                                <td><a :href="'#/jednaZalbaAdmin/'+z.id" class="button1">Detaljnije</a></td>
             	</tr>           
             </tbody>
      	</table>
@@ -72,6 +72,38 @@ Vue.component("lista-zalbiadmin", {
     	}
     },
 	mounted: function() {
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(!resp.data.loggedBefore) {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else {
+							temp.$router.push({ path: "/" });
+						}
+						
+					});
 		var self = this;
         axios
 		.get("/api/users/currentUser")
