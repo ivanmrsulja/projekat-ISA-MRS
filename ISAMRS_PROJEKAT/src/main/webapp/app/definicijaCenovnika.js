@@ -72,6 +72,10 @@ Vue.component("definicija-cenovnika", {
                 .then(response => {
                     this.cenovnik = response.data;
                     this.cenovnik.pocetakVazenja = null;
+                    if (this.cenovnik.dostupniProizvodi.length == 0) {
+                        toast("Apoteka jos uvek nema cenovnik. Prvo odaberite preparate za apoteku.");
+                        this.$router.push({name: "PreparatiApoteke"});
+                    }
                 });
 		    });
         });

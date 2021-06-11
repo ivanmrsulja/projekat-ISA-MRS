@@ -105,7 +105,7 @@ const router = new VueRouter({
         { path: '/definicijaAkcijePromocije', component: DefinicijaAkcijePromocije },
         { path: '/definicijaCenovnika', component: DefinicijaCenovnika },
         { path: '/pregledNarudzbenica', component: PregledNarudzbenica, name: "PregledNarudzbenica" },
-        { path: '/preparatiApoteke', component: PreparatiApoteke },
+        { path: '/preparatiApoteke', component: PreparatiApoteke, name: "PreparatiApoteke" },
         { path: '/pisanjeNarudzbenice', component: PisanjeNarudzbenice },
 	    { path: '/tabelaApoteka/:id', component: tabelaApoteka },
         { path: '/odabirPonude/:id', component: OdabirPonude, name: "OdabirPonude" },
