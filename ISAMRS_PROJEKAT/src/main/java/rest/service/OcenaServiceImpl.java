@@ -173,6 +173,8 @@ public class OcenaServiceImpl implements OcenaService {
 
 		if (dOptional.isPresent())
 			d = dOptional.get();
+		else
+			return;
 
 		if (staraOcena != null) {
 			d.setSumaOcena(d.getSumaOcena() - staraOcena.getOcena() + ocena);
@@ -186,6 +188,8 @@ public class OcenaServiceImpl implements OcenaService {
 
 			if (pOptional.isPresent())
 				p = pOptional.get();
+			else
+				return;
 
 			OcenaZaposlenog ocenaNova = new OcenaZaposlenog(ocena, p, d);
 
@@ -212,6 +216,8 @@ public class OcenaServiceImpl implements OcenaService {
 
 		if (fOptional.isPresent())
 			f = fOptional.get();
+		else
+			return;
 
 		if (staraOcena != null) {
 			f.setSumaOcena(f.getSumaOcena() - staraOcena.getOcena() + ocena);
@@ -225,6 +231,8 @@ public class OcenaServiceImpl implements OcenaService {
 
 			if (pOptional.isPresent())
 				p = pOptional.get();
+			else
+				return;
 
 			OcenaZaposlenog ocenaNova = new OcenaZaposlenog(ocena, p, f);
 

@@ -1087,7 +1087,7 @@ public class AdminServiceImpl implements AdminService {
 		Optional<Apoteka> aOptional = apotekeRepository.findById(pharmacyId);
 		Optional<Dermatolog> dOptional = dermatologRepository.findById(dermatologistDTO.getId());
 
-		if (aOptional.isPresent() || dOptional.isPresent()) {
+		if (aOptional.isPresent() && dOptional.isPresent()) {
 			a = aOptional.get();
 			d = dOptional.get();
 

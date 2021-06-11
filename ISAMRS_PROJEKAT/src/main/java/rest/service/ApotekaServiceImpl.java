@@ -488,6 +488,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 			if (pOptional.isPresent())
 				p = pOptional.get();
+			else
+				return;
 
 			bodovi += p.getPoeni() * kol;
 			naziviLekova += p.getNaziv() +"\n";
@@ -499,6 +501,8 @@ public class ApotekaServiceImpl implements ApotekaService {
 
 		if (pacOptional.isPresent())
 			pac = pacOptional.get();
+		else
+			return;
 
 		stavkerecepta.saveAll(sveStavke);
 		ERecept erec = new ERecept(LocalDate.now(), pac, StatusERecepta.OBRADJEN, c.getApoteka());

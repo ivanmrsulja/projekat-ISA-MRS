@@ -214,6 +214,8 @@ public class PacijentServiceImpl implements PacijentService {
 
 		if (pacijentOptional.isPresent())
 			pacijent = pacijentOptional.get();
+		else
+			return;
 
 		pacijent.addPenal(pp);
 		penaliRepository.save(pp);
@@ -354,6 +356,9 @@ public class PacijentServiceImpl implements PacijentService {
 		Optional<Pacijent> pOptional = pacijentRepository.findById(id);
 		if (pOptional.isPresent())
 			p = pOptional.get();
+		else
+			return "Pacijent sa ovim ID ne postoji.";
+		
 		if(p.getLoggedBefore() == true) {
 			return "Vas nalog je vec aktiviran, kliknite na dugme ispod kako bi se vratili na formu za prijavu.";
 		} else {
