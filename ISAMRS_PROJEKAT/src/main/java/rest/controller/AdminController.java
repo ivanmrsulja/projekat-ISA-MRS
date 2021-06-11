@@ -81,6 +81,7 @@ public class AdminController {
 		return abc;
 	}
 	
+	@AsAdminSistema
 	@GetMapping(value = "/Zalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ArrayList<ZalbaDTO> getZalbeForAdmin(@PathVariable("id") int id){
 		Collection<ZalbaDTO> zdtos = pacijentService.getZalbeForAdmin(id);
@@ -88,6 +89,7 @@ public class AdminController {
 		return (ArrayList<ZalbaDTO>) zdtos;
 	}
 	
+	@AsAdminSistema
 	@PutMapping(value = "/ZalbeUpdate/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String updateZalba(@PathVariable("id") int id) {
 		adminService.updateZalba(id);
@@ -176,6 +178,7 @@ public class AdminController {
 		return incomes;
 	}
 	
+	@AsAdminSistema
 	@GetMapping(value= "/getZalba/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ZalbaDTO getZalba(@PathVariable("id") int id) {
 		ZalbaDTO users = pacijentService.getOneZalba(id);

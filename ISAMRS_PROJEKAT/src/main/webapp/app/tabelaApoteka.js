@@ -31,6 +31,7 @@ Vue.component("tabela-apoteka", {
                 <th scope="col">Naziv apoteke</th>
                 <th scope="col">Ulica apoteke</th>
                 <th scope="col">Ocena apoteke</th>
+                <th scope="col">Naziv preparata</th>
                 <th scope="col">Cena preparata</th>
 
                 </tr>
@@ -40,6 +41,7 @@ Vue.component("tabela-apoteka", {
                                 <td class="naziv">{{l.apoteka.naziv}}</td>
                                 <td class="ulica">{{l.apoteka.lokacija.ulica}}</td>
                                 <td class="ocena">{{l.apoteka.ocena.toFixed(2)}}</td>
+                                <td>{{l.nazivLekova}}</td>
                                 <td class="cena">{{l.cena}}</td>
                                 <td><input type="button" class="button1" value="Posalji" v-on:click="kupi(l.apoteka.id)"/></td>
                           
@@ -90,6 +92,9 @@ Vue.component("tabela-apoteka", {
 			.put("/api/apoteke/buy", newRacun )
 			.then(function(resp){
 				console.log(resp.data);
+				toast("Uspesno ste kupili lekove!");
+				self.$router.push({ path: "/apoteke/0" });
+				
 				
 			});
     	}

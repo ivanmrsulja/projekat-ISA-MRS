@@ -4,6 +4,7 @@ public class LekProdajaDTO {
 	private int id;
 	private ApotekaDTO apoteka;
 	private double cena;
+	private String nazivLekova;
 	
 	public LekProdajaDTO(int id,ApotekaDTO apoteka, double price) {
 		super();
@@ -38,6 +39,15 @@ public class LekProdajaDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public String getNazivLekova() {
+		return nazivLekova;
+	}
+
+	public void setNazivLekova(String nazivLekova) {
+		this.nazivLekova = nazivLekova;
+	}
+	
 	
 	
 	

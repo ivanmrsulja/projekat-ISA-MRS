@@ -91,6 +91,8 @@ public class KorisnikController {
 		u = (KorisnikDTO) request.getSession().getAttribute("user");
 		return u;
 	}
+	
+	@AsPacijent
 	@GetMapping(value= "/getZalbe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<Collection<ZalbaDTO>> getZalbe(@PathVariable("id") int id) {
 			Collection<ZalbaDTO> users = pacijentService.getZalbeForPatient(id);
@@ -98,6 +100,7 @@ public class KorisnikController {
 			return new ResponseEntity<Collection<ZalbaDTO>>(users, HttpStatus.OK);
 		}
 	
+	@AsPacijent
 	@GetMapping(value= "/getZalbe/{id}/{zalId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ZalbaDTO getZalba(@PathVariable("id") int id, @PathVariable("zalId") int zalId) {
 		ZalbaDTO users = pacijentService.getZalbaForPatient(id, zalId);

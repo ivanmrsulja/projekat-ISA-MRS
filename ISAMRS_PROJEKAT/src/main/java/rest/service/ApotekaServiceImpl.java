@@ -375,6 +375,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		Collection<Cena> sveCene = cene.getAll();
 		Collection<LekProdajaDTO> lista = new ArrayList<LekProdajaDTO>();
 		for (Cena cena : sveCene) {
+			ArrayList<String> nazivi = new ArrayList<String>();
 			if(LocalDate.now().isAfter(cena.getPocetakVazenja())) {
 				int foundCures = 0;
 				double price = 0;
@@ -384,6 +385,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 							if(Integer.parseInt(i.split("\\:")[1]) <= dp.getKolicina()) {
 								foundCures++;
 								price += dp.getCena()*Integer.parseInt(i.split("\\:")[1]);
+								nazivi.add(dp.getPreparat().getNaziv());
 							}
 							
 						}
@@ -393,6 +395,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 					//System.out.println("PRONASLI CISTO DAS DASKLDJLKSAJDLKAJLKASJDLKSAJDLKSAJDLKAS");
 					ApotekaDTO a = new ApotekaDTO(cena.getApoteka());
 					LekProdajaDTO lpdto = new LekProdajaDTO(cena.getId(),a, price);
+					lpdto.setNazivLekova(String.join(", ", nazivi));
 					lista.add(lpdto);
 				}
 			}
