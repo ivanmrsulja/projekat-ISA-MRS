@@ -44,7 +44,7 @@ Vue.component("promena-sifre", {
 						newUser.loggedBefore = true;
 						axios.post("/api/users/changePass", newUser).then(data => {
 							if(data.data == "OK") {
-								toast("Uspesno ste promenili sifru!");
+								toast_lapse("Uspesno ste promenili sifru!");
 								if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC") {
 									temp.$router.push({ path: "/tab" });
 								}
