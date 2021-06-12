@@ -445,6 +445,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		return lekovi;
 	}
 
+	@Transactional
 	@Override
 	public void kupiLekove(String[] cures, int id, int pacId) {
 		Cena c = null;

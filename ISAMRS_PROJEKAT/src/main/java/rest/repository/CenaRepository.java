@@ -2,6 +2,7 @@ package rest.repository;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.persistence.LockModeType;
 
@@ -30,6 +31,9 @@ public interface CenaRepository extends JpaRepository<Cena, Integer> {
 	
 	@Query("select dp.cena from Cena c join c.dostupniProizvodi dp where dp.preparat.id = ?1 and c.apoteka.id = ?2")
 	double getPrice(int idp, int ida);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	Optional<Cena> findById(int id);
 
 	@Query("select c from Cena c join fetch c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2)")
 	public Cena getLatestPricelistForPharmacy(int idApoteke, LocalDate now);

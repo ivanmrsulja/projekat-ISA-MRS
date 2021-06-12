@@ -85,10 +85,13 @@ public class KorisnikServiceImpl implements KorisnikService {
 		}
 		return null;
 	}
-
+	
+	
+	@Transactional
 	@Override
 	public Korisnik create(Korisnik user) throws Exception {
-		if(korisnikRepository.getUserByUsername(user.getUsername()) != null) {
+		Korisnik k = korisnikRepository.getUserByUsername(user.getUsername());
+		if(k != null) {
 			return null;
 		}
 		lokacijaRepository.save(user.getLokacija());

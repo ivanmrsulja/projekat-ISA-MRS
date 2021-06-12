@@ -287,6 +287,7 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 
 
+	@Transactional
 	@Override
 	public void sendZalba(ZalbaDTO zdto) {
 		Pacijent p = pacijentRepository.getPatientByUser(zdto.getNazivKorisnika());
@@ -298,7 +299,7 @@ public class PacijentServiceImpl implements PacijentService {
 			p.addZalba(z);
 			pacijentRepository.save(p);
 		} else {
-			AdminSistema as = adminSistemaRepository.getPatientByUser(zdto.getNazivAdmina());
+			AdminSistema as = adminSistemaRepository.getAdminByUser(zdto.getNazivAdmina());
 			z = new Zalba(zdto.getTekst(), as, p);
 			z.setAnswered(true);
 			zalbaRepository.save(z);
