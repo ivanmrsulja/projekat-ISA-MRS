@@ -2,7 +2,10 @@ package rest.repository;
 
 import java.util.Collection;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +19,9 @@ public interface ZahtevRepository extends JpaRepository<Zahtjev, Integer>{
 	
 	@Query("select z from Zahtjev z where z.korisnik.id = ?1 and z.status != 1")
 	public Collection<Zahtjev> getAcceptedAndPendingForUser(int userId);
+
+	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Query("select z from Zahtjev z where z.id = ?1")
+	public Zahtjev getOneById(int requestId);
 
 }
