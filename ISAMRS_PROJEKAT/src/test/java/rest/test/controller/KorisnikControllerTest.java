@@ -89,14 +89,14 @@ public class KorisnikControllerTest {
 		try {
 			mockMvc.perform(get(URL_PREFIX)).andExpect(status().isOk())
 			.andExpect(content().contentType(contentType))
-			.andExpect(jsonPath("$.[*].id").value(hasItem(1)))
-			.andExpect(jsonPath("$.[*].ime").value(hasItem("Pera")))
-			.andExpect(jsonPath("$.[*].prezime").value(hasItem("Peric")))
-			.andExpect(jsonPath("$.[*].username").value(hasItem("pera99")))
-			.andExpect(jsonPath("$.[*].password").value(hasItem("pera123")))
-			.andExpect(jsonPath("$.[*].email").value(hasItem("pera99@yahoo.com")))
+			.andExpect(jsonPath("$.[*].id").value(hasItem(5)))
+			.andExpect(jsonPath("$.[*].ime").value(hasItem("Ivan")))
+			.andExpect(jsonPath("$.[*].prezime").value(hasItem("Mrsulja")))
+			.andExpect(jsonPath("$.[*].username").value(hasItem("gfdgfd")))
+			.andExpect(jsonPath("$.[*].password").value(hasItem("ivan")))
+			.andExpect(jsonPath("$.[*].email").value(hasItem("isamrstim06+im@gmail.com")))
 			.andExpect(jsonPath("$.[*].loggedBefore").value(hasItem(true)))
-			.andExpect(jsonPath("$.[*].telefon").value(hasItem("3432432234")))
+			.andExpect(jsonPath("$.[*].telefon").value(hasItem("069069069")))
 			.andExpect(jsonPath("$.[*].zaposlenjeKorisnika").value(hasItem(ZaposlenjeKorisnika.PACIJENT)));
 		} catch (Exception e) {
 			e.printStackTrace();

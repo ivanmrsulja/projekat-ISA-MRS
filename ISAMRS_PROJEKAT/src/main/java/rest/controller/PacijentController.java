@@ -62,14 +62,14 @@ public class PacijentController {
 	
 	@AsPacijent
 	@PostMapping(value = "/sendZalba", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String changePass(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
+	public String sendAppeal(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
 		pacijentService.sendZalba(user);
 		return "OK";
 	}
 	
 	@AsAdminSistema
 	@PostMapping(value = "/sendZalbaa", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String changePassa(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
+	public String sendReply(HttpServletRequest request, @RequestBody ZalbaDTO user) throws Exception {
 		pacijentService.sendZalba(user);
 		return "OK";
 	}
