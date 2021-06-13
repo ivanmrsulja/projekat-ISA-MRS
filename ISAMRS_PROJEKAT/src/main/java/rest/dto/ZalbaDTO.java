@@ -45,13 +45,19 @@ public class ZalbaDTO {
 	}
 	
 	public ZalbaDTO(Zalba z) {
+		
 		this.id = z.getId();
+	
+		
 		if(z.getAdminSistema() == null) {
 			this.nazivAdmina = "";
 		} else {
 			this.nazivAdmina = z.getAdminSistema().getUsername();
 		}
+		
 		this.nazivKorisnika = z.getPacijent().getUsername();
+
+		
 		this.tekst = z.getText();
 		this.answered = z.isAnswered();
 	}

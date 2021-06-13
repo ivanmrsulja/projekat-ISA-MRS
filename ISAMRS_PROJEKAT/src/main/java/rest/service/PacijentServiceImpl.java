@@ -226,10 +226,9 @@ public class PacijentServiceImpl implements PacijentService {
 	@Override
 	public Collection<ZalbaDTO> getZalbeForPatient(int id) {
 		Collection<Zalba> zalbe = pacijentRepository.getPatientZalbe(id);
-		Collection<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
+		ArrayList<ZalbaDTO> zdto = new ArrayList<ZalbaDTO>();
 		for (Zalba z : zalbe) {
-			ZalbaDTO zt = new ZalbaDTO(z);
-			zdto.add(zt);
+			zdto.add(new ZalbaDTO(z));
 		}
 
 		return zdto;
