@@ -2,7 +2,6 @@ package rest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -51,13 +50,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 
 	@Override
 	public Zahtjev update(ZahtevDTO zahtev) throws Exception {
-		Optional<Zahtjev> zahtevToUpdateOpt = zahtevRepository.findById(zahtev.getId());
-		Zahtjev zahtevToUpdate = null;
-		if (zahtevToUpdateOpt.isPresent()) {
-			zahtevToUpdate = zahtevToUpdateOpt.get();
-		} else {
-			throw new Exception("Trazeni zahtev nije pronadjen.");
-		}
+		Zahtjev zahtevToUpdate = zahtevRepository.getOneById(zahtev.getId());
 		
 		if (zahtevToUpdate == null) {
 			throw new Exception("Trazeni entitet nije pronadjen.");

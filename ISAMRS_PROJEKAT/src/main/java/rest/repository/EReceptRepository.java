@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import rest.domain.ERecept;
+import rest.domain.StavkaRecepta;
 
 @Repository
 public interface EReceptRepository extends JpaRepository<ERecept, Integer> {
@@ -41,4 +42,7 @@ public interface EReceptRepository extends JpaRepository<ERecept, Integer> {
 			+ "from ERecept r join r.stavkaRecepata sr where r.apoteka.id = ?3 and r.status = 1 and r.datumIzdavanja >= ?1 and r.datumIzdavanja <= ?2 "
 			+ "group by date_trunc('day', r.datumIzdavanja)")
 	public ArrayList<Object[]> getProcessedIncomeForMonth(LocalDate date_low, LocalDate date_high, int pharmacyId, LocalDate now);
+	
+	@Query("select s from ERecept r join r.stavkaRecepata s where r.id = ?1")
+	public Collection<StavkaRecepta> getContents(int id);
 }
