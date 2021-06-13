@@ -3,9 +3,12 @@ package rest.repository;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -32,5 +35,9 @@ public interface ApotekeRepository extends JpaRepository<Apoteka, Integer> {
 	
 	@Query("select a from Apoteka a")
 	public Collection<Apoteka> getAll();
+
+	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Query("select a from Apoteka a where a.id = ?1")
+	public Apoteka getOneById(int pharmacyId);
 	
 }

@@ -176,16 +176,12 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void registerPricelist(CenovnikDTO cenovnikDTO, int idApoteke) throws Exception {
-		Apoteka apoteka = null;
-		Optional<Apoteka> apotekaOptional = apotekeRepository.findById(idApoteke);
-
-		if (!apotekaOptional.isPresent())
+		Apoteka apoteka = apotekeRepository.getOneById(idApoteke);
+		
+		if (apoteka == null)
 			return;
 
-		apoteka = apotekaOptional.get();
-
 		Cena cenovnik = new Cena();
-		cenovnik.setApoteka(apoteka);
 		for (DostupanProizvodDTO dpDTO : cenovnikDTO.getDostupniProizvodi()) {
 			Preparat p = preparatRepository.getPreparatByName(dpDTO.getPreparat());
 			DostupanProizvod dp = new DostupanProizvod(dpDTO.getKolicina(), dpDTO.getCena(), p);
@@ -195,7 +191,9 @@ public class AdminServiceImpl implements AdminService {
 
 		cenovnik.setPocetakVazenja(cenovnikDTO.getPocetakVazenja());
 		cenovnik.setKrajVazenja(cenovnikDTO.getKrajVazenja());
+		apoteka.addCena(cenovnik);
 		cenaRepository.save(cenovnik);
+		apotekeRepository.save(apoteka);
 	}
 
 	@Override

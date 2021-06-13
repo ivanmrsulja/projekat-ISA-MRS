@@ -55,7 +55,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 		Zahtjev zahtevToUpdate = null;
 		if (zahtevToUpdateOpt.isPresent()) {
 			zahtevToUpdate = zahtevToUpdateOpt.get();
-		}else {
+		} else {
 			throw new Exception("Trazeni zahtev nije pronadjen.");
 		}
 		
