@@ -86,6 +86,10 @@ public class DBInitialiser implements ApplicationRunner {
 	private NaruceniProizvodRepository naruceniProizvodRepo;
 	@Autowired
 	private NotifikacijaRepository notifikacijaRepo;
+	@Autowired
+	private CenaRepository ceneRepository;
+	@Autowired
+	private DostupanProizvodRepository dostupniProizovdiRepo;
 	
 	@Override
 	@Transactional
@@ -350,24 +354,41 @@ public class DBInitialiser implements ApplicationRunner {
 		p2.addApoteka(a2);
 		
 		LocalDate ld = LocalDate.parse("2018-12-27");
-		Cena cena = new Cena(a1, ld);
-		Cena cena1 = new Cena(a2, ld);
-		Cena cena3 = new Cena(a3, ld);
-		Set<DostupanProizvod> dostupni_proizvodi = new HashSet<DostupanProizvod>();
-		Set<DostupanProizvod> dostupni_proizvodi2 = new HashSet<DostupanProizvod>();
-		DostupanProizvod dp1 = new DostupanProizvod(4, 1000, pr1);
-		DostupanProizvod dp2 = new DostupanProizvod(7, 600, pr2);
-		dostupni_proizvodi.add(dp1);
-		dostupni_proizvodi.add(dp2);
-		dostupni_proizvodi2.add(dp1);
-		cena.setDostupniProizvodi(dostupni_proizvodi);
-		cena1.setDostupniProizvodi(dostupni_proizvodi);
-		cena3.setDostupniProizvodi(dostupni_proizvodi2);
-		a1.addCena(cena);
+		LocalDate ld1 = LocalDate.parse("2022-12-27");
+		Cena cen1 = new Cena(a1, ld);
+		cen1.setKrajVazenja(ld1);
+		ceneRepository.save(cen1);
+		Set<DostupanProizvod> dp1 = new HashSet<DostupanProizvod>();
+		dp1.add(new DostupanProizvod(5, 300.00, pr1));
+		dostupniProizovdiRepo.saveAll(dp1);
+		cen1.setDostupniProizvodi(dp1);
+		ceneRepository.save(cen1);
+		a1.addCena(cen1);
 		apotekaRepo.save(a1);
-		a2.addCena(cena1);
+		
+		Cena cen2 = new Cena(a2, ld);
+		cen2.setKrajVazenja(ld1);
+		ceneRepository.save(cen2);
+		Set<DostupanProizvod> dp2 = new HashSet<DostupanProizvod>();
+		dp2.add(new DostupanProizvod(4, 340.00, pr1));
+		dp2.add(new DostupanProizvod(8, 420.00, pr2));
+		dostupniProizovdiRepo.saveAll(dp2);
+		cen2.setDostupniProizvodi(dp2);
+		ceneRepository.save(cen2);
+		a2.addCena(cen2);
 		apotekaRepo.save(a2);
-		a3.addCena(cena3);
+		
+		Cena cen3 = new Cena(a3,ld);
+		cen3.setKrajVazenja(ld1);
+		ceneRepository.save(cen3);
+		Set<DostupanProizvod> dp3 = new HashSet<DostupanProizvod>();
+		dp3.add(new DostupanProizvod(3, 540.00, pr1));
+		dp3.add(new DostupanProizvod(6, 490.00, pr2));
+		dp3.add(new DostupanProizvod(7, 630.00, pr3));
+		dostupniProizovdiRepo.saveAll(dp3);
+		cen3.setDostupniProizvodi(dp3);
+		ceneRepository.save(cen3);
+		a3.addCena(cen3);
 		apotekaRepo.save(a3);
 	}
 

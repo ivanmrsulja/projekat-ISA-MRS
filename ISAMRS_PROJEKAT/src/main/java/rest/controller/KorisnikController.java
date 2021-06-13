@@ -1,6 +1,7 @@
 package rest.controller;
 
 import java.net.URLDecoder;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -193,10 +194,29 @@ public class KorisnikController {
 	@AsPacijent
 	@PostMapping(value = "/sendQr", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String sendQr(@RequestBody String q) throws Exception {
-		String s = URLDecoder.decode(q, "UTF-8");
-		String i = s.replace(" ","+");
+		String s = URLDecoder.decode(q, "UTF-8").trim();
+		s=s.replace(' ', '+');
+		System.out.println("NA POCETKU DUZINA JE " + s.length());
+		while(s.length() % 4 != 0) {
+			System.out.println("MODUO JE SADA "  + s.length() % 4);
+			s+="=";
+			System.out.println("POVECALI SMO ZA JEDAN " + s.length());
+		}
+//		s = s.replace("==", "=");
+//		q=q.replace("\\%2F", "\\/");
+//		q=q.replace("\\%2B", "\\+");
 		QRCodeReaderDTO qrc = new QRCodeReaderDTO();
-		return qrc.readQRCode(i);
+		
+		System.out.println("DUZINA JE " + s.length());
+		s = s.replace("=","");
+		System.out.println("KADA OBRISEMO = ONDA JE DUZINA" + s.length());
+		while(s.length() % 4 != 0) {
+			System.out.println("MODUO JE SADA "  + s.length() % 4);
+			s+="=";
+			System.out.println("POVECALI SMO ZA JEDAN " + s.length());
+		}
+		System.out.println(s);
+		return qrc.readQRCode(s);
 	}
 	
 	@AsAdminSistema
