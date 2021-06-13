@@ -43,12 +43,6 @@ import rest.service.PreparatService;
 @SpringBootTest
 public class PreparatServiceTest {
 
-	
-	
-	
-	
-	
-	
 	@Mock
 	private Preparat preparatMock;
 	

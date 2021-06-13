@@ -82,19 +82,7 @@ public class KorisnikControllerTest {
 	@Before
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	
 	}
-	
-//	private Integer id;
-//	private String ime;
-//	private String prezime;
-//	private String username;
-//	private String password;
-//	private String email;
-//	private Boolean loggedBefore;
-//	private String telefon;
-//	private ZaposlenjeKorisnika zaposlenjeKorisnika;
-	
 	
 	@Test
 	public void testGetAllUsers()  {
@@ -111,10 +99,8 @@ public class KorisnikControllerTest {
 			.andExpect(jsonPath("$.[*].telefon").value(hasItem("3432432234")))
 			.andExpect(jsonPath("$.[*].zaposlenjeKorisnika").value(hasItem(ZaposlenjeKorisnika.PACIJENT)));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Test
@@ -135,16 +121,13 @@ public class KorisnikControllerTest {
 		try {
 			json = mapper.writeValueAsString(k);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			this.mockMvc.perform(post(URL_PREFIX+"/register").contentType(contentType).content(json)).andExpect(status().isCreated());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Test
@@ -168,11 +151,8 @@ public class KorisnikControllerTest {
 			.andExpect(jsonPath("$.brojPoena").value(320))
 			.andExpect(jsonPath("$.tip").value(new TipKorisnika()));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	
-
 }
