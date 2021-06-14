@@ -179,7 +179,12 @@ public class AdminServiceImpl implements AdminService {
 		Apoteka apoteka = apotekeRepository.getOneById(idApoteke);
 		
 		if (apoteka == null)
-			return;
+			throw new Exception("Apoteka sa trazenim ID-jem ne postoji.");
+
+		Cena temp_cenovnik = cenaRepository.getForSameDate(idApoteke, LocalDate.now());
+		
+		if (temp_cenovnik != null)
+			throw new Exception("Vec postoji cenovnik sa istim datumom pocetka vazenja.");
 
 		Cena cenovnik = new Cena();
 		for (DostupanProizvodDTO dpDTO : cenovnikDTO.getDostupniProizvodi()) {

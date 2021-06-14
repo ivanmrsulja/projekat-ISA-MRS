@@ -53,7 +53,9 @@ Vue.component("definicija-cenovnika", {
             .post("api/admin/registerCenovnik/" + this.apoteka.id, this.cenovnik)
             .then(response => {
                 if (response.data == "OK"){
-                    toast("Uspesno azuriranje cenovnika");
+                    toast("Uspesno azuriranje cenovnika.");
+                } else {
+                    toast("Doslo je do greske pri azuriranju cenovnika.");
                 }
             });
         },

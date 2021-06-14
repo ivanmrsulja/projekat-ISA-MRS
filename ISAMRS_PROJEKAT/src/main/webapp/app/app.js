@@ -64,7 +64,7 @@ const verifyAccount = {template: '<verify-account></verify-account>'};
 const router = new VueRouter({
     mode: 'hash',
     routes: [
-        { path: '/', component: LoginStrana },
+        { path: '/', component: LoginStrana, name: "LoginStrana" },
         { path: '/tab', component: TabelaPonuda },
         { path: '/dermatolozi', component: dermatoloziTable },
         { path: '/pregledi', component: RadniKalendar },
@@ -155,7 +155,7 @@ var app = new Vue({
                 .then(function(resp) {
                     if (resp.data == "OK") {
                         self.korisnik = { zaposlenjeKorisnika: "GOST" };
-                        self.$router.push({ path: "/" });
+                        self.$router.push({ name: "LoginStrana" });
                         self.$root.$emit('loggingUserOut', self.korisnik);
                     }
                 });

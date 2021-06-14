@@ -55,14 +55,19 @@ public class ZahtevController {
 	@PutMapping(value = "/update/{text}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZahtevDTO> updateZahtev(@RequestBody ZahtevDTO zahtev, @PathVariable("text") String text)
 			throws Exception {
-		Zahtjev updatedZahtev = zahtevService.update(zahtev);
+		Zahtjev updatedZahtev = null;
+		try {
+			updatedZahtev = zahtevService.update(zahtev);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 		if (updatedZahtev == null) {
 			return new ResponseEntity<ZahtevDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		try {
-		zahtevService.notifyViaEmail(zahtev, text);
+			zahtevService.notifyViaEmail(zahtev, text);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

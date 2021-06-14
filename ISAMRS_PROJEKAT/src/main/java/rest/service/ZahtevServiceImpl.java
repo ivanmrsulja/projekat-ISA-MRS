@@ -52,9 +52,12 @@ public class ZahtevServiceImpl implements ZahtevService {
 	public Zahtjev update(ZahtevDTO zahtev) throws Exception {
 		Zahtjev zahtevToUpdate = zahtevRepository.getOneById(zahtev.getId());
 		
-		if (zahtevToUpdate == null) {
+		if (zahtevToUpdate == null)
 			throw new Exception("Trazeni entitet nije pronadjen.");
-		}
+
+		if (zahtevToUpdate.getStatus() != StatusZahtjeva.CEKANJE)
+			throw new Exception("Odluka o zahtevu vec doneta.");
+
 		zahtevToUpdate.setStatus(zahtev.getStatus());
 		
 		Zahtjev updatedZahtev = zahtevRepository.save(zahtevToUpdate);
