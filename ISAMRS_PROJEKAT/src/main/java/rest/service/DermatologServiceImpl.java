@@ -1,6 +1,7 @@
 package rest.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -10,11 +11,14 @@ import org.springframework.stereotype.Service;
 import rest.domain.Dermatolog;
 import rest.domain.Korisnik;
 import rest.domain.Pregled;
+import rest.domain.Preparat;
 import rest.domain.StatusPregleda;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
+import rest.dto.PreparatDTO;
 import rest.repository.DermatologRepository;
 import rest.repository.PregledRepository;
+import rest.repository.PreparatRepository;
 
 @Service
 @Transactional
@@ -22,10 +26,13 @@ public class DermatologServiceImpl implements DermatologService {
 
 	private DermatologRepository dermatologRepository;
 	private PregledRepository pregledRepository;
+	private PreparatRepository preparatRepository;
 	
 	@Autowired
-	public DermatologServiceImpl(DermatologRepository imdr) {
+	public DermatologServiceImpl(DermatologRepository imdr,PreparatRepository pr,PregledRepository pp) {
 		this.dermatologRepository = imdr;
+		this.preparatRepository=pr;
+		this.pregledRepository=pp;
 	}
 
 	@Override
@@ -36,8 +43,11 @@ public class DermatologServiceImpl implements DermatologService {
 
 	@Override
 	public Dermatolog findOne(int id) {
-		Dermatolog user = dermatologRepository.findById(id).get();
-		return user;
+		Optional<Dermatolog> userOpt = dermatologRepository.findById(id);
+		if (userOpt.isPresent()) {
+			return userOpt.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -79,9 +89,23 @@ public class DermatologServiceImpl implements DermatologService {
 	}
 	@Override
 	public void zavrsi(PregledDTO pregled, int id){
-		Pregled p=pregledRepository.findById(id).get();
+
+		Optional<Pregled> pOpt = pregledRepository.findById(id);
+		Pregled p = null;
+		if (pOpt.isPresent()) {
+			p = pOpt.get();
+		}
+		else {
+			return;
+		}
+
 		p.setIzvjestaj(pregled.getIzvjestaj());
 		p.setStatus(StatusPregleda.ZAVRSEN);
+		
+		for(PreparatDTO pr : pregled.getTerapija()) {
+			Preparat tmp=preparatRepository.getOne(pr.getId());
+			p.getTerapija().add(tmp);
+		}
 		pregledRepository.save(p);
 	}
 }

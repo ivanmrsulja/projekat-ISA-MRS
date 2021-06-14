@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+
 @Entity
 public class Farmaceut extends Korisnik implements Ocenjivo{
 	@Column(name = "brojOcena", nullable = true)

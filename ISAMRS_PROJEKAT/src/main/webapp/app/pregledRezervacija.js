@@ -91,7 +91,8 @@ Vue.component("lista-rezervacija", {
 		        
 		        <tr>
 		        <td><h6>Ocena preparata:</h6></td>
-		        <td>{{selected.detaljno.ocena.toFixed(2)}}</td>
+		        <td v-bind:hidden="selected.detaljno.ocena == 0">{{selected.detaljno.ocena.toFixed(2)}}</td>
+		        <td v-bind:hidden="selected.detaljno.ocena > 0" style="color: gray">NIJE OCENJENO</td>
 		        </tr>
 		        
 		        <tr>
@@ -135,7 +136,7 @@ Vue.component("lista-rezervacija", {
     	},
     	clickStar: function() {
     		axios
-	        .get("/api/ocene/oceniPreparat/" + this.selected.detaljno.id + "/" + this.ocena)
+	        .put("/api/ocene/oceniPreparat/" + this.selected.detaljno.id + "/" + this.ocena)
 	        .then(response => {
 	        	axios
 		        .get("/api/preparat/specifikacija/" + this.selected.detaljno.id)
@@ -157,7 +158,7 @@ Vue.component("lista-rezervacija", {
 	        .patch("/api/preparat/otkazi/" + r.id)
 	        .then(response => {
 	            if(response.data != "OK"){
-	            	alert(response.data);
+	            	toast(response.data);
 	            }
 	            axios.get("/api/users/currentUser").then(data =>{
 		            axios

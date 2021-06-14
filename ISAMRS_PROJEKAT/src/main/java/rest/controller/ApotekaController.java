@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +26,16 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsPacijent;
+import rest.domain.AdminApoteke;
 import rest.domain.Apoteka;
 import rest.domain.Farmaceut;
 import rest.domain.Korisnik;
 import rest.dto.ApotekaDTO;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.LekProdajaDTO;
 import rest.dto.PregledDTO;
+import rest.dto.RacunDTO;
 import rest.service.ApotekaService;
 import rest.service.KorisnikService;
 import rest.service.PregledService;
@@ -72,6 +76,48 @@ public class ApotekaController {
 		return apoteke;
 	}
 	
+	@AsPacijent
+	@GetMapping(value="/test/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<LekProdajaDTO> test(@PathVariable("id") String id) {
+		String[] ar = id.split(",");
+		return (ArrayList<LekProdajaDTO>) apotekaService.lekovi(ar);
+		
+	}
+	
+	@AsPacijent
+	@GetMapping(value="/sorting/{id}/{crit}/{asc}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<LekProdajaDTO> sort(@PathVariable("id") String id, @PathVariable("crit") String crit, @PathVariable("asc") String asc) {
+		String[] ar = id.split(",");
+		return (ArrayList<LekProdajaDTO>) apotekaService.sortLekoviasc(ar, crit, asc);
+		
+	}
+	
+	@AsPacijent
+	@PutMapping(value = "/buy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String buy(HttpSession sess, @RequestBody RacunDTO racun) throws Exception {
+		KorisnikDTO user = (KorisnikDTO) sess.getAttribute("user");
+		apotekaService.kupiLekove(racun.getLekoviId().split(","), racun.getCenaId(), user.getId());
+		return "OK";
+	}
+	
+	
+	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String register(@RequestBody ApotekaDTO user) throws Exception {
+		Apoteka k = new Apoteka();
+		k.setNaziv(user.getNaziv());
+		k.setOpis(user.getOpis());
+		k.setOcena(user.getOcena());
+		k.setLokacija(user.getLokacija());
+		k.setCenaSavetovanja(user.getCena());
+		apotekaService.create(k);
+		return "OK";
+	}
+	
+	@GetMapping(value="/every", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<ApotekaDTO> getAll() {
+		return apotekaService.getAllPharmacies();
+	}
+	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOne(@PathVariable int id) {
 		return new ApotekaDTO(this.apotekaService.getByID(id));
@@ -79,10 +125,10 @@ public class ApotekaController {
 	
 	@GetMapping(value="admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApotekaDTO getOneForAdmin(@PathVariable int id) {
-		return new ApotekaDTO(this.apotekaService.getForAdmin(id));
+		AdminApoteke a = (AdminApoteke) userService.findOne(id);
+		return new ApotekaDTO(this.apotekaService.getForAdmin(a.getId()));
 	}
 	
-	@AsPacijent
 	@GetMapping(value="pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<PregledDTO> getPreCreatedExaminations(@PathVariable int id, @RequestParam String criteria) {
 		return apotekaService.getPregledi(id, criteria);
@@ -113,6 +159,8 @@ public class ApotekaController {
 			pregledService.zakaziPregled(idp, idpa);
 			pregledService.sendConfirmationEmail(currentUser);
 			return "Uspesno zakazan pregled.";
+		} catch (OptimisticLockingFailureException ex) {
+			return "Doslo je do greske prilikom zakazivanja pregleda, molimo osvezite stranicu i pokusajte ponovo.";
 		} catch (Exception e) {
 			return e.getMessage();
 		}

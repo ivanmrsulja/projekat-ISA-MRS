@@ -22,7 +22,7 @@ Vue.component("profil-farmaceuti", {
     		var s = {id:far.id, ime:far.ime, prezime:far.prezime, username:far.username, email:far.email, telefon:far.telefon, lokacija:far.lokacija};
     		axios
     		.put("api/farmaceut/"+this.farmaceut.id, s)
-    		.then(response => alert('Farmaceut ' + far.ime + " " + far.prezime + " uspešno snimljen."));
+    		.then(response => toast('Farmaceut ' + far.ime + " " + far.prezime + " uspešno snimljen."));
     		this.mode = 'BROWSE';
     	},
     	cancelEditing : function() {

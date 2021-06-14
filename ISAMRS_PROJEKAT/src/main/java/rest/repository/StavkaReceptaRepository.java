@@ -13,4 +13,5 @@ public interface StavkaReceptaRepository extends JpaRepository<StavkaRecepta, In
 	
 	@Query("select sr from StavkaRecepta sr where sr.preparat.id = ?1")
 	Collection<StavkaRecepta> getForRecipeId(int id);
+	
 }

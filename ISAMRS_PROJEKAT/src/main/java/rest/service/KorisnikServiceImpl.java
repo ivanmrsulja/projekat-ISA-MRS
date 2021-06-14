@@ -2,6 +2,7 @@ package rest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -14,15 +15,22 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import rest.domain.AdminApoteke;
+import rest.domain.Apoteka;
 import rest.domain.Korisnik;
 import rest.domain.Pacijent;
 import rest.domain.Penal;
 import rest.domain.Rezervacija;
 import rest.domain.TipKorisnika;
+import rest.dto.AdminApotekeDTO;
+import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.KorisnikDTO;
 import rest.dto.PacijentDTO;
+import rest.dto.PharmacyAdminDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
+import rest.repository.AdminApotekeRepository;
+import rest.repository.ApotekeRepository;
 import rest.repository.KorisnikRepository;
 import rest.repository.LokacijaRepository;
 import rest.repository.PacijentRepository;
@@ -37,6 +45,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	private static final int defaultPageSize = 10;
 	private KorisnikRepository korisnikRepository;
+	private AdminApotekeRepository adminApotekeRepository;
 	private PacijentRepository pacijentRepository;
 	private PenalRepository penalRepository;
 	private PregledRepository pregledRepository;
@@ -45,11 +54,13 @@ public class KorisnikServiceImpl implements KorisnikService {
 	private TipKorisnikaRepository tipRepo;
 	private Environment env;
 	private JavaMailSender javaMailSender;
-	
+	private ApotekeRepository apotekeRepository;
 	
 	@Autowired
-	public KorisnikServiceImpl(KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
+	public KorisnikServiceImpl(ApotekeRepository phr,AdminApotekeRepository aar,KorisnikRepository imkr, PenalRepository pr, PregledRepository prer, RezervacijaRepository rr, PacijentRepository pacr, LokacijaRepository locr, TipKorisnikaRepository rt, Environment e, JavaMailSender jms) {
 		this.korisnikRepository = imkr;
+		this.apotekeRepository = phr;
+		this.adminApotekeRepository = aar;
 		this.penalRepository = pr;
 		this.rezervacijeRepository = rr;
 		this.pregledRepository = prer;
@@ -68,18 +79,63 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	@Override
 	public Korisnik findOne(int id) {
-		Korisnik user = korisnikRepository.findById(id).get();
-		return user;
+		Optional<Korisnik> user = korisnikRepository.findById(id);
+		if (user.isPresent()) {
+			return user.get();
+		}
+		return null;
 	}
-
+	
+	
+	@Transactional
 	@Override
 	public Korisnik create(Korisnik user) throws Exception {
+		Korisnik k = korisnikRepository.getUserByUsername(user.getUsername());
+		if(k != null) {
+			return null;
+		}
 		lokacijaRepository.save(user.getLokacija());
 		Korisnik savedUser = korisnikRepository.save(user);
 		return savedUser;
 	}
+	
+	@Override
+	public AdminApoteke createAdminPharm(PharmacyAdminDTO user) throws Exception {
+		lokacijaRepository.save(user.getLokacija());
+		Optional<Apoteka> aOpt = apotekeRepository.findById(Integer.parseInt(user.getApoteka()));
+		AdminApoteke k = null;
+		Apoteka a = null;
+		if(korisnikRepository.getUserByUsername(user.getUsername()) != null) {
+			return null;
+		}
+		if( aOpt.isPresent() ) {
+			a = aOpt.get();
+			k = new AdminApoteke(user.getIme(), user.getPrezime(), user.getUsername(),user.getNoviPassw(), user.getEmail(), true, user.getTelefon(), user.getLokacija(),ZaposlenjeKorisnika.ADMIN_APOTEKE, a);
+			a.addAdmin(k);
+			apotekeRepository.save(a);
+		}
+		return k;
+	}
 
 	@Override
+	public Korisnik changePass(KorisnikDTO user) throws Exception {
+		Korisnik userToUpdate = findOne(user.getId());
+		if (userToUpdate == null) {
+			throw new Exception("Trazeni entitet nije pronadjen.");
+		}
+		userToUpdate.setLoggedBefore(true);
+		userToUpdate.setPassword(user.getNoviPassw());
+		userToUpdate.setIme(user.getIme());
+		userToUpdate.setPrezime(user.getPrezime());
+		userToUpdate.setUsername(user.getUsername());
+		userToUpdate.setTelefon(user.getTelefon());
+		lokacijaRepository.save(user.getLokacija());
+		userToUpdate.setLokacija(user.getLokacija());
+		
+		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
+		return updatedUSer;
+	}
+	
 	public Korisnik update(KorisnikDTO user) throws Exception {
 		Korisnik userToUpdate = findOne(user.getId());
 		if (userToUpdate == null) {
@@ -97,6 +153,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 			userToUpdate.setPassword(user.getNoviPassw());
 		}
 		
+		userToUpdate.setLoggedBefore(true);
 		userToUpdate.setIme(user.getIme());
 		userToUpdate.setPrezime(user.getPrezime());
 		userToUpdate.setUsername(user.getUsername());
@@ -152,13 +209,29 @@ public class KorisnikServiceImpl implements KorisnikService {
 
 	@Override
 	public PacijentDTO findPacijentById(int id) {
-		Pacijent p = pacijentRepository.findById(id).get();
-		return new PacijentDTO(p);
+		Optional<Pacijent> p = pacijentRepository.findById(id);
+		if(p.isPresent()) {
+			return new PacijentDTO(p.get());
+		}
+		return null;
+	}
+
+	@Override
+	public AdminApotekeDTO findAdminApotekeById(int id) {
+		Optional<AdminApoteke> a = adminApotekeRepository.findById(id);
+		if(a.isPresent()) {
+			return new AdminApotekeDTO(a.get());
+		}
+		return null;
 	}
 
 	@Override
 	public TipKorisnika pocetniTip() {
-		return tipRepo.findById(1).get();
+		Optional<TipKorisnika> t = tipRepo.findById(1);
+		if (t.isPresent()) {
+			return t.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -168,8 +241,32 @@ public class KorisnikServiceImpl implements KorisnikService {
         mail.setTo(p.getEmail());
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Hvala sto ste se prijavili na nasu aplikaciju!");
-        mail.setText("Pozdrav " + p.getIme() + " " + p.getPrezime() + ",\n\nhvala što koristite nasu aplikaciju, kliknite na link ispod kako biste verifikovali nalog\nLorem ipsum dolor sit amet.");
+        mail.setText("Pozdrav " + p.getIme() + " " + p.getPrezime() + ",\n\nhvala što koristite nasu aplikaciju, kliknite na link ispod kako biste verifikovali nalog\nhttp://localhost:8080/#/verifikacija/"+p.getId());
         javaMailSender.send(mail);
+	}
+
+	@Override
+	public Korisnik updateSupp(KorisnikDTO user, KorisnikDTO updateInfo) throws Exception {
+		Korisnik userToUpdate = findOne(user.getId());
+		if (userToUpdate == null) {
+			throw new Exception("Trazeni entitet nije pronadjen.");
+		}
+		if(korisnikRepository.getUserByUsername(updateInfo.getUsername())!= null) {
+			if(!korisnikRepository.getUserByUsername(updateInfo.getUsername()).getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.DOBAVLJAC)) {
+				return null;
+			}
+		}
+		userToUpdate.setLoggedBefore(true);
+		userToUpdate.setPassword(updateInfo.getNoviPassw());
+		userToUpdate.setIme(updateInfo.getIme());
+		userToUpdate.setPrezime(updateInfo.getPrezime());
+		userToUpdate.setUsername(updateInfo.getUsername());
+		userToUpdate.setTelefon(updateInfo.getTelefon());
+		lokacijaRepository.save(updateInfo.getLokacija());
+		userToUpdate.setLokacija(updateInfo.getLokacija());
+		
+		Korisnik updatedUSer = korisnikRepository.save(userToUpdate);
+		return updatedUSer;
 	}
 	
 	

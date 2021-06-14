@@ -61,7 +61,7 @@ public class EReceptServiceImpl implements EreceptService {
 
 	@Override
 	public Collection<StavkaReceptaDTO> getStavkeRecepta(int id) {
-		Collection<StavkaRecepta> stavke = stavkaRepository.getForRecipeId(id);
+		Collection<StavkaRecepta> stavke = eReceptRepo.getContents(id);
 		ArrayList<StavkaReceptaDTO> ret = new ArrayList<StavkaReceptaDTO>();
 		for(StavkaRecepta sr : stavke) {
 			ret.add(new StavkaReceptaDTO(sr));

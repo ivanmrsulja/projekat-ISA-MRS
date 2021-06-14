@@ -1,6 +1,7 @@
 package rest.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -8,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Farmaceut;
+import rest.domain.Pregled;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.repository.FarmaceutRepository;
 import rest.repository.LokacijaRepository;
+import rest.repository.NotifikacijaRepository;
+import rest.repository.PregledRepository;
 import rest.repository.ZaposlenjeRepository;
 
 @Service
@@ -24,13 +28,17 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 	private ApotekaService apotekaService;
 	private ZaposlenjeRepository zaposlenjeRepository;
 	private LokacijaRepository lokacijaRepository;
+	private PregledRepository pregledRepository;
+	private NotifikacijaRepository notifikacijaRepository;
 	
 	@Autowired
-	public FarmaceutServiceImpl(FarmaceutRepository imfr, ApotekaService as, ZaposlenjeRepository zr, LokacijaRepository lr) {
+	public FarmaceutServiceImpl(FarmaceutRepository imfr, ApotekaService as, ZaposlenjeRepository zr, LokacijaRepository lr, PregledRepository pr, NotifikacijaRepository nr) {
 		this.farmaceutRepository = imfr;
 		this.apotekaService = as;
 		this.zaposlenjeRepository = zr;
 		this.lokacijaRepository = lr;
+		this.pregledRepository = pr;
+		this.notifikacijaRepository = nr;
 	}
 
 	@Override
@@ -41,8 +49,11 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 
 	@Override
 	public Farmaceut findOne(int id) {
-		Farmaceut user = farmaceutRepository.findById(id).get();
-		return user;
+		Optional<Farmaceut> user = farmaceutRepository.findById(id);
+		if (user.isPresent()) {
+			return user.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -98,6 +109,23 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 	@Override
 	public Collection<Farmaceut> findAllForPharmacy(int id) {
 		return farmaceutRepository.getWithEmployments(id);
+	}
+
+	@Override
+	public boolean checkIfPharmacistHasAppointments(int pharmacistId, int pharmacyId) {
+		Collection<Pregled> appointments = pregledRepository.getScheduledAppointments(pharmacistId, pharmacyId);
+		if (appointments.size() == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public void deletePharmacist(int pharmacistId) {
+		notifikacijaRepository.deleteNotificationsOfUser(pharmacistId);
+		farmaceutRepository.deleteById(pharmacistId);
+		zaposlenjeRepository.deleteForPharmacist(pharmacistId);
 	}
 
 }

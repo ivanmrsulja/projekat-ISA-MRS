@@ -2,10 +2,6 @@ package rest.service;
 
 import java.util.Collection;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import rest.domain.Dermatolog;
 import rest.domain.Korisnik;
 import rest.dto.KorisnikDTO;

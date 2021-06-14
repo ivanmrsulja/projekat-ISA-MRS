@@ -10,6 +10,7 @@ public class PonudaDTO {
 	private StatusPonude status;
 	private double ukupnaCena;
 	private LocalDate rokIsporuke;
+	private LocalDate rokIsporukeNarudzbenice;
 	private int idNarudzbenice;
 	private String dobavljac;
 	
@@ -71,5 +72,14 @@ public class PonudaDTO {
 	public void setDobavljac(String dobavljac) {
 		this.dobavljac = dobavljac;
 	}
+
+	public LocalDate getRokIsporukeNarudzbenice() {
+		return rokIsporukeNarudzbenice;
+	}
+
+	public void setRokIsporukeNarudzbenice(LocalDate rokIsporukeNarudzbenice) {
+		this.rokIsporukeNarudzbenice = rokIsporukeNarudzbenice;
+	}
+	
 	
 }

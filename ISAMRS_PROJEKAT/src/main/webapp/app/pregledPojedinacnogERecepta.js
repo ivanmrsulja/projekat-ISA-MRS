@@ -38,6 +38,7 @@ Vue.component("pojedinacni-erecept", {
 					.get("api/eRecept/stavke/" + this.$route.params.recept)
 					.then(response => {
 						this.stavke = response.data;
+						console.log(this.$route.params.recept);
 					});
            }else{
             	this.$router.push({ path: "/" });

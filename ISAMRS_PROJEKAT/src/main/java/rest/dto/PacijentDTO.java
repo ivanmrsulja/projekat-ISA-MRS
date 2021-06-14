@@ -17,6 +17,15 @@ public class PacijentDTO {
 	}
 	
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + brojPoena;
+		result = prime * result + ((korisnik == null) ? 0 : korisnik.hashCode());
+		result = prime * result + ((tip == null) ? 0 : tip.hashCode());
+		return result;
+	}
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

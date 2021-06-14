@@ -8,7 +8,7 @@ import rest.domain.Apoteka;
 
 public interface AdminApotekeRepository extends JpaRepository<AdminApoteke, Integer>{
 	
-	@Query("select a.apoteka from AdminApoteke a where a.apoteka.id = ?1")
+	@Query("select a.apoteka from AdminApoteke a where a.id = ?1")
 	Apoteka getApoteka(int id);
-	
+
 }

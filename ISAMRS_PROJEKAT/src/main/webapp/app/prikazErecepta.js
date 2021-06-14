@@ -50,7 +50,7 @@ Vue.component("pregled-erecepata", {
                     <th>{{r.id}}</th>
                     <td>{{r.status}}</td>
                     <td>{{r.datumIzdavanja}}</td>
-                    <td><input type="button" value="Pregledaj" v-on:click="pregledajRecept(r)"/></td>
+                    <td><input type="button" class="button1" value="Pregledaj" v-on:click="pregledajRecept(r)"/></td>
             	</tr>           
             </tbody>
      	</table>
@@ -90,6 +90,7 @@ Vue.component("pregled-erecepata", {
 				.get("api/eRecept/all/" + data.data.id + "?sort=false&descending=false&status=SVI")
 				.then(response => {
 					this.recepti = response.data;
+					console.log(data.data.id);
 				});
             }else{
             	this.$router.push({ path: "/" });
