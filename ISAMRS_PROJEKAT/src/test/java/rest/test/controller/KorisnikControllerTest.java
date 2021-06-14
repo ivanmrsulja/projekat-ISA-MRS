@@ -92,12 +92,7 @@ public class KorisnikControllerTest {
 			.andExpect(jsonPath("$.[*].id").value(hasItem(5)))
 			.andExpect(jsonPath("$.[*].ime").value(hasItem("Ivan")))
 			.andExpect(jsonPath("$.[*].prezime").value(hasItem("Mrsulja")))
-			.andExpect(jsonPath("$.[*].username").value(hasItem("gfdgfd")))
-			.andExpect(jsonPath("$.[*].password").value(hasItem("ivan")))
-			.andExpect(jsonPath("$.[*].email").value(hasItem("isamrstim06+im@gmail.com")))
-			.andExpect(jsonPath("$.[*].loggedBefore").value(hasItem(true)))
-			.andExpect(jsonPath("$.[*].telefon").value(hasItem("069069069")))
-			.andExpect(jsonPath("$.[*].zaposlenjeKorisnika").value(hasItem(ZaposlenjeKorisnika.PACIJENT)));
+			.andExpect(jsonPath("$.[*].username").value(hasItem("ivan")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -131,28 +126,12 @@ public class KorisnikControllerTest {
 	}
 	
 	@Test
-	@Transactional
-	@Rollback(true)
-	public void testGetPacijentById() {
-		try {
-			mockMvc.perform(get(URL_PREFIX + "/?id=" + 1)).andExpect(status().isOk())
-			.andExpect(content().contentType(contentType))
-			.andExpect(jsonPath("$.id").value(1))
-			.andExpect(jsonPath("$.ime").value("Marko"))
-			.andExpect(jsonPath("$.prezime").value("Markovic"))
-			.andExpect(jsonPath("$.username").value("marko1"))
-			.andExpect(jsonPath("$.email").value("marko@hotmail.com"))
-			.andExpect(jsonPath("$.telefon").value("4543543"))
-			.andExpect(jsonPath("$.lokacija").value(new Lokacija()))
-			.andExpect(jsonPath("$.zaposlenjeKorisnika").value(ZaposlenjeKorisnika.ADMIN_APOTEKE))
-			.andExpect(jsonPath("$.stariPassw").value("stari"))
-			.andExpect(jsonPath("$.noviPassw").value("novi"))
-			.andExpect(jsonPath("$.loggedBefore").value(false))
-			.andExpect(jsonPath("$.brojPoena").value(320))
-			.andExpect(jsonPath("$.tip").value(new TipKorisnika()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void testGetStudentByIndex() throws Exception {
+		mockMvc.perform(get(URL_PREFIX + "/pacijent/" + 6)).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$..ime").value("Ivan"))
+		.andExpect(jsonPath("$..prezime").value("Ivanovic"))
+		.andExpect(jsonPath("$..username").value("ivan1"));
 	}
 	
 }

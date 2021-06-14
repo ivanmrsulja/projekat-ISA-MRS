@@ -17,17 +17,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import rest.domain.AdminSistema;
+import rest.domain.Korisnik;
+import rest.domain.Lokacija;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Preparat;
+import rest.domain.StatusNaloga;
+import rest.domain.TipKorisnika;
 import rest.domain.Zalba;
+import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.PreparatDTO;
 import rest.dto.ZalbaDTO;
+import rest.repository.KorisnikRepository;
 import rest.repository.PacijentRepository;
 import rest.repository.PenalRepository;
 import rest.repository.PregledRepository;
 import rest.repository.PreparatRepository;
 import rest.repository.ZalbaRepository;
+import rest.service.KorisnikServiceImpl;
 import rest.service.PacijentServiceImpl;
 
 @RunWith(SpringRunner.class)
@@ -44,14 +51,15 @@ public class PacijentServiceTest {
 	private PenalRepository penaliRepositoryMock;
 	@Mock
 	private ZalbaRepository zalbeRepositoryMock;
+
 	
 	@Mock
 	private Pacijent pacijentMock;
 	
-
 	
 	@InjectMocks
 	private PacijentServiceImpl service;
+	
 	
 	
 	@Test
@@ -75,14 +83,18 @@ public class PacijentServiceTest {
 	}
 	
 	@Test
-	public void ZalbeTest() {
+	public void getZalbeTest() {
 		Zalba z1 = new Zalba("Zalba broj 1", null, pacijentMock);
 		Zalba z2 = new Zalba("Zalba broj 2", null, pacijentMock);
 		Zalba z3 = new Zalba("Zalba broj 3", null, pacijentMock);
 		z1.setId(1);
 		z2.setId(2);
 		z3.setId(3);
+		
+		
 		when(pacijentRepositoryMock.getPatientZalbe(1)).thenReturn(Arrays.asList(z1, z2, z3));
+		
+		
 		Collection<ZalbaDTO> retVal = service.getZalbeForPatient(1);
 		assertThat(retVal).hasSize(3);
 		
@@ -97,9 +109,15 @@ public class PacijentServiceTest {
 		z1.setId(1);
 		z2.setId(2);
 		z3.setId(3);
+		
+		
 		when(pacijentRepositoryMock.getPatientZalbe(1)).thenReturn(Arrays.asList(z1, z2, z3));
+		
+		
 		ZalbaDTO z = service.getZalbaForPatient(1, 2);
 		assertEquals(z.getTekst(), "Zalba broj 2");
 	}
+	
+
 	
 }

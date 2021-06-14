@@ -1,6 +1,7 @@
 package rest.controller;
 
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.HashSet;
@@ -78,7 +79,12 @@ public class KorisnikController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<KorisnikDTO>> getUsers() {
 		@SuppressWarnings("unchecked")
-		Collection<KorisnikDTO> users = (Collection<KorisnikDTO>) userService.findAll().stream().map(u -> new KorisnikDTO(u));
+		//Collection<KorisnikDTO> users = (Collection<KorisnikDTO>) userService.findAll().stream().map(u -> new KorisnikDTO(u));
+		Collection<KorisnikDTO> users = new ArrayList<KorisnikDTO>();
+		Collection<Korisnik> u = userService.findAll();
+		for (Korisnik korisnik : u) {
+			users.add(new KorisnikDTO(korisnik));
+		}
 		return new ResponseEntity<Collection<KorisnikDTO>>(users, HttpStatus.OK);
 	}
 	
