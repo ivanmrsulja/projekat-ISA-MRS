@@ -47,8 +47,10 @@ Vue.component("rezervacija-leka", {
 	,
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(response => {
-            if(response.data){
+            if(response.data && response.data.zaposlenjeKorisnika == "PACIJENT"){
             	this.korisnik = response.data;
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
     }

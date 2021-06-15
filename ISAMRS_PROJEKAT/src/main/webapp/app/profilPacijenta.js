@@ -245,7 +245,7 @@ Vue.component("profil-pacijenta", {
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(data => {
-            if(data.data){
+            if(data.data && data.data.zaposlenjeKorisnika == "PACIJENT"){
                 axios
 					.get("api/users/penali/" + data.data.id)
 					.then(response => {

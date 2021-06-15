@@ -69,7 +69,7 @@ Vue.component("zakazivanje-savetovanjaK2", {
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(response => {
-            if(response.data){
+            if(response.data && response.data.zaposlenjeKorisnika == "PACIJENT"){
             	this.datum = sessionStorage.getItem('datum');
 				this.vreme = sessionStorage.getItem('vreme');
 				axios

@@ -250,7 +250,7 @@ Vue.component("istorija-pregleda", {
 		initData: function(){
 			axios
 			.get("/api/users/currentUser").then(response => {
-	            if(response.data){
+	            if(response.data && response.data.zaposlenjeKorisnika == "PACIJENT"){
 	            	this.korisnik = response.data;
 	                axios
 						.get("api/users/istorijaPregleda/" + response.data.id + "/" + this.$route.params.page + "/" + this.$route.params.criteria)

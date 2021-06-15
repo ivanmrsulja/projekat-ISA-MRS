@@ -33,7 +33,7 @@ Vue.component("pojedinacni-erecept", {
 	,
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(data => {
-            if(data.data){
+            if(data.data && data.data.zaposlenjeKorisnika == "PACIJENT"){
             	axios
 					.get("api/eRecept/stavke/" + this.$route.params.recept)
 					.then(response => {
