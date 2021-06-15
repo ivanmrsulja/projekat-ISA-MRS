@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 @Entity
 public class Zaposlenje {
@@ -28,6 +29,8 @@ public class Zaposlenje {
 	@JoinColumn(name = "korisnik_id", referencedColumnName = "id")
 	private Korisnik korisnik;
 	
+
+	
 	public Zaposlenje() {}
 	
 	public Zaposlenje(LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena, Apoteka apoteka, Korisnik korisnik) {
@@ -37,6 +40,7 @@ public class Zaposlenje {
 		this.apoteka = apoteka;
 		this.korisnik=korisnik;
 	}
+
 
 	public Integer getId() {
 		return id;

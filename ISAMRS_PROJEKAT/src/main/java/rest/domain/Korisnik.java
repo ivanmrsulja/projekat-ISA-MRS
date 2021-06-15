@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 
 @Entity
@@ -37,6 +38,9 @@ public class Korisnik {
 	private String telefon;
 	@Column(name = "zaposlenjeKorisnika", nullable = true)
 	private ZaposlenjeKorisnika zaposlenjeKorisnika;
+	
+	@Version
+	private Long version;
 	
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
@@ -69,7 +73,15 @@ public class Korisnik {
 		this.telefon = telefon;
 		this.lokacija = lokacije;
 		this.zaposlenjeKorisnika=zaposlenjeKorisnika;
-	}	
+	}
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	
 	public void addNotifikacija(Notifikacija n) {
 		notifikacije.add(n);

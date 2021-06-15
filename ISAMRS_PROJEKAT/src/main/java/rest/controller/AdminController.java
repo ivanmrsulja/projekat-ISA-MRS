@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -404,7 +405,12 @@ public class AdminController {
 	@AsAdminApoteke
 	@PostMapping(value = "/employDermatologist/{pharmacyId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String employDermatologist(@RequestBody DermatologDTO dermatologistDTO, @PathVariable("pharmacyId") int pharmacyId) {
-		if (adminService.employDermatologist(pharmacyId, dermatologistDTO) == null) {
+		try {
+			if (adminService.employDermatologist(pharmacyId, dermatologistDTO) == null) {
+				return "ERR";
+			}
+		}  catch (Exception e) {
+			
 			return "ERR";
 		}
 

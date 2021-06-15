@@ -1,17 +1,25 @@
 package rest.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,13 +34,17 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import rest.aspect.AsAdminApoteke;
 import rest.aspect.AsPacijent;
+import rest.domain.Dermatolog;
 import rest.domain.Farmaceut;
 import rest.domain.Pregled;
 import rest.domain.Rezervacija;
+import rest.domain.StatusRezervacije;
+import rest.dto.DermatologDTO;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
 import rest.dto.RezervacijaDTO;
+import rest.repository.FarmaceutRepository;
 import rest.repository.RezervacijaRepository;
 import rest.service.ApotekaService;
 import rest.service.FarmaceutService;
@@ -46,15 +58,21 @@ public class FarmaceutController {
 	private FarmaceutService farmaceutService;
 	private ApotekaService apotekaService;
 	private PregledService pregledService;
+	private FarmaceutRepository farmaceutRepository;
 
 	private RezervacijaRepository rezervacijaRepository;
+	private Environment env;
+	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService, RezervacijaRepository rr) {
+	public FarmaceutController(FarmaceutService farmaceut, ApotekaService as, PregledService pregledService, RezervacijaRepository rr, FarmaceutRepository fr, Environment env, JavaMailSender jms) {
 		this.farmaceutService = farmaceut;
 		this.apotekaService = as;
 		this.pregledService = pregledService;
 		this.rezervacijaRepository=rr;
+		this.farmaceutRepository=fr;
+		this.env = env;
+		this.javaMailSender = jms;
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -181,18 +199,63 @@ public class FarmaceutController {
 	public RezervacijaDTO getRezervaciju(@PathVariable("idKorisnika") int idKor,@PathVariable("idRezervacije") int idRez) {
 		
 		Farmaceut farmaceut = farmaceutService.findOne(idKor);
-	    Optional<Rezervacija> rezervacijaOptional = rezervacijaRepository.findById(idRez);
 	    
-	    Rezervacija rezervacija = null;
-	    if(rezervacijaOptional.isPresent()) {
-	    	rezervacija = rezervacijaOptional.get();
-	    }
-	    
-	    if(rezervacija != null && rezervacija.getApoteka().getNaziv().equals(farmaceut.getZaposlenje().getApoteka().getNaziv()))
-	    {	    			  
-	    	return new RezervacijaDTO(rezervacija);
+	    if(rezervacijaRepository.existsById(idRez))
+	    {
+	    	Optional<Rezervacija> rezervacijaOptional = rezervacijaRepository.findById(idRez);
+	    	
+	    	Rezervacija rezervacija;	 	   
+	 	    rezervacija = rezervacijaOptional.get();	
+	 	    
+	 	    LocalDate lt=LocalDate.now().plusDays(10);
+	 	    LocalDate ll=rezervacija.getDatumPreuzimanja();
+	 	    if(lt.compareTo(ll)>0)
+	 	    {
+	 	    	rezervacija.setStatus(StatusRezervacije.OTKAZANO);
+	 	    	rezervacijaRepository.save(rezervacija);
+	 	    	return null;
+	 	    }
+	 	    
+	 	    if(rezervacija.getApoteka().getNaziv().equals(farmaceut.getZaposlenje().getApoteka().getNaziv()))
+	 	    {	  
+	 	    	
+	 	    	SimpleMailMessage mail=new SimpleMailMessage();
+				mail.setTo(rezervacija.getPacijent().getEmail());
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Preuzimanje leka");
+				mail.setText("Preuzet lek u "+ rezervacija.getApoteka().getNaziv()+ "  apoteci, datuma "+ LocalDate.now().toString());
+				javaMailSender.send(mail);
+				
+				rezervacija.setStatus(StatusRezervacije.PODIGNUTO);
+				rezervacijaRepository.save(rezervacija);
+				
+	 	    	return new RezervacijaDTO(rezervacija);
+	 	    }
 	    }
 	    
 	    return null;
 	}
+	
+	@GetMapping(value="/findOne/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public FarmaceutDTO getFarmaceut(@PathVariable("id") int id) {
+		Farmaceut user = farmaceutRepository.getOne(id);
+		FarmaceutDTO farmaceut=new FarmaceutDTO(user);
+		return farmaceut;
+	}
+	
+	@GetMapping(value ="/savetovanjaSedmica", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaSedmica(HttpSession s) {
+		return farmaceutService.getSavetovanjaSedmica(s);
+	}
+	
+	@GetMapping(value ="/savetovanjaMesec", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaMesec(HttpSession s) {
+		return farmaceutService.getSavetovanjaMesec(s);
+	}
+	
+	@GetMapping(value ="/savetovanjaGodina", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaGodina(HttpSession s) {
+		return farmaceutService.getSavetovanjaGodina(s);
+	}
+	
 }

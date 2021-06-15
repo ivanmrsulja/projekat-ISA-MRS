@@ -11,7 +11,10 @@ Vue.component("profil-pacijenti", {
     		this.selectedPacijent = el;
     	},   
     	pregledajPacijent : function(r){
-    		this.$router.push({ path: "/pacijenti/"+r.korisnik.id });
+			this.$router.push({ path: "/pacijenti/"+r.korisnik.id });
+		},
+		noviTerminPacijent : function(r){
+			this.$router.push({ name: "zakaziTerminPacijentu"});
 		},
 		searchSort: function(kriterijum){
 			axios
@@ -81,7 +84,7 @@ Vue.component("profil-pacijenti", {
 			<th>Ime</th>
 			<th>Prezime</th>
 			<th>Username</th>
-			<th></th>
+			<th>Akcija</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -90,7 +93,8 @@ Vue.component("profil-pacijenti", {
                 <td>{{pacijent.korisnik.ime}}</td>
                 <td>{{pacijent.korisnik.prezime}}</td> 
                 <td>{{pacijent.korisnik.username}}</td>
-                <td><input type="button" class="button1" value="Informacije" v-on:click="pregledajPacijent(pacijent)"/></td>   
+                <td><input type="button" class="button1" value="Informacije" v-on:click="pregledajPacijent(pacijent)"/>
+				<input type="button" class="button1" value="Novi termin" v-on:click="noviTerminPacijent(pacijent)"/></td>   
                                  
 		</tr>
 	</tbody>

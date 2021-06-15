@@ -49,7 +49,12 @@ Vue.component("pocetna-strana", {
 								temp.$router.push({ path: "/promeniSifru" });
 							}
 						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
-							temp.$router.push({ path: "/farmaceuti" });
+							if (!resp.data.loggedBefore) {
+							temp.$router.push({ path: "/promeniSifruDerFar" });
+							}
+							else {
+								temp.$router.push({ path: "/farmaceuti" });
+							}
 						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
 							if(resp.data.loggedBefore) {
 								temp.$router.push({ path: "/tab" });
@@ -57,7 +62,13 @@ Vue.component("pocetna-strana", {
 								temp.$router.push({ path: "/promeniSifru" });
 							}
 						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
-							temp.$router.push({ path: "/dermatolozi" });
+							if (!resp.data.loggedBefore) {
+							temp.$router.push({ path: "/promeniSifruDerFar" });
+							}
+							else
+								{
+								temp.$router.push({ path: "/dermatolozi" });
+								}
 						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
 							temp.$router.push({ path: "/apoteke/0" });
 						}else {

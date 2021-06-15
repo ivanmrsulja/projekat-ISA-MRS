@@ -1063,7 +1063,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Zaposlenje employDermatologist(int pharmacyId, DermatologDTO dermatologistDTO) {
+	public Zaposlenje employDermatologist(int pharmacyId, DermatologDTO dermatologistDTO) throws Exception {
 		Collection<Zaposlenje> employments = zaposlenjeRepository.getEmploymentsForDermatologist(dermatologistDTO.getId());
 
 		for (Zaposlenje z : employments) {
@@ -1086,14 +1086,12 @@ public class AdminServiceImpl implements AdminService {
 		}
 
 		Apoteka a = null;
-		Dermatolog d = null;
 		Optional<Apoteka> aOptional = apotekeRepository.findById(pharmacyId);
-		Optional<Dermatolog> dOptional = dermatologRepository.findById(dermatologistDTO.getId());
+		Dermatolog d = dermatologRepository.getOneById(dermatologistDTO.getId());
 
-		if (aOptional.isPresent() && dOptional.isPresent()) {
+		if (aOptional.isPresent() && d!=null) {
 			a = aOptional.get();
-			d = dOptional.get();
-
+			
 			Zaposlenje z = new Zaposlenje(dermatologistDTO.getPocetakRadnogVremena(), dermatologistDTO.getKrajRadnogVremena(), a, d);
 			d.addZaposlenje(z);
 

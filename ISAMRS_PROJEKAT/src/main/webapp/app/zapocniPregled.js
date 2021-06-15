@@ -6,51 +6,89 @@ Vue.component("pacijent-pregled", {
 			spec : {korisnik:{lokacija:{}}},
 	    	preparati:{},
 	    	terapija:[],
+			alergije:{},
 	    }
 },
 methods: {	
 	zakaziTermin : function(r) {
 		window.location.href = "#/pacijenti/zapocniNoviPregled/" + r.id;
-	},   
-	dodajTerapiju : function(r){
-		window.location.href = "#/pacijenti/terapijaDodaj/" + r.id;
-	},
+	},  
 	zavrsiPregled : function(){
 		
-		let text = $("input[name=textArea]").val();
+		let text = $.trim($("textArea").val());
 		let noviPregled = {izvjestaj: text, StatusPregleda: "ZAVRSEN", TipPregleda: "PREGLED", LocalDate : "2020-04-07", LocalTime:"09:00", trajanje: 45, cijena: 5000, zaposleni:"" ,pacijent:this.pacijent ,apoteka:""};
 		this.pregled.terapija=this.terapija;
+
+		if($.trim($("textArea").val()) != "")
+			this.pregled.izvjestaj=$("textArea").val();
 		axios.post("/api/dermatolog/zavrsi/"+this.pregled.id, this.pregled).then(data => {
-			if(data.data == "OK") {
-				toast("Uspesno ste se zavrsili pregled!");
-			}
-		});
-		
+			axios
+			.get("/api/dermatolog/proveraAlergija/" + this.pregled.id)
+			.then(response => {
+				this.alergije=response.data;
+				if(this.alergije.length==0)
+				{
+					toast("Uspesno zavrsen pregled");
+					window.location.href = "#/pregledi" ;
+				}
+			});
+		});		
 	},
 	zavrsiZakazivanje : function(){
 		let datum = $("input[name=datum]").val();
 		let vrijeme = $("input[name=vrijeme]").val();
 		let noviPregled = {izvjestaj:"", datum : datum, vrijeme: vrijeme, trajanje: 45, cijena: 5000 };
-		
 		axios.post("/api/dermatolog/zakaziNovi/"+this.pregled.apoteka.id+"/"+this.pregled.zaposleni.id+"/"+this.pacijent.korisnik.id, noviPregled).then(data => {
 			toast(data.data);
-		});	
+		});		
 	},
+	
 	pregledajPreparat : function(r){
 		window.location.href = "#/preparati/" + r.id;
 	},
 	IzaberiZaTerapiju: function(r){
-		this.terapija.push(r);
+		if(this.terapija.indexOf(r) === -1) {
+			this.terapija.push(r);			
+		}
 	},
 	otkaziPregled : function(r){
-		this.$router.push({ path: "/pacijenti" });
+		window.location.href = "#/pregledi" ;
+	},
+	Obrisi : function(r){
+		var index = this.terapija.indexOf(r);
+		if (index > -1) {
+			this.terapija.splice(index, 1);
+		}
 	},
 	
 	nijeDosao : function(){
 		var p={datum:this.pregled.datum,pacijent:this.pacijent};
+		
+		if($.trim($("textArea").val()) != "")
+			this.pregled.izvjestaj=$("textArea").val();
+		let text = $.trim($("textArea").val());
+		let noviPregled = {izvjestaj: text, StatusPregleda: "ZAVRSEN", TipPregleda: "PREGLED", LocalDate : "2020-04-07", LocalTime:"09:00", trajanje: 45, cijena: 5000, zaposleni:"" ,pacijent:this.pacijent ,apoteka:""};
+		this.pregled.terapija=this.terapija;
+
 		axios
 		.put("api/pacijenti/penal/"+this.pacijent.korisnik.id, p)
-		.then(response => toast('Pacijentu ' + this.pacijent.korisnik.ime + " " + this.pacijent.korisnik.prezime + " uspešno dodan penal."));		
+		.then(response => {
+			toast('Pacijentu ' + this.pacijent.korisnik.ime + " " + this.pacijent.korisnik.prezime + " uspešno dodan penal.");
+				axios.post("/api/dermatolog/zavrsi/"+this.pregled.id, this.pregled).then(data => {
+				axios
+				.get("/api/dermatolog/proveraAlergija/" + this.pregled.id)
+				.then(response => {
+					this.alergije=response.data;
+					if(this.alergije.length==0)
+					{
+						toast("Uspesno zavrsen pregled");
+						window.location.href = "#/pregledi" ;
+					}
+				});
+			});
+		});
+
+		window.location.href = "#/pregledi" ;	
 	},
 },
 	template: ` 
@@ -101,7 +139,8 @@ methods: {
 		<tr bgcolor="lightgrey">
 			<th>Terapija</th>
 			<th>Propisana kolicina</th>
-			<th>Kolicina</th>
+			<th>Trajanje u Danima</th>
+			<th>Obrisi</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -109,9 +148,28 @@ methods: {
                 <td>{{p.naziv}}</td>
                 <td>{{p.preporuceniUnos}}</td>                
 				<td><input type="text" name="kolicinaLeka" value="1"/></td>
+				<td> <button type="button" class="button1" v-on:click="Obrisi(p)" >Obrisi</button> </td>
 		</tr>
 	</tbody>
 	</table>
+
+	</table>
+	
+			<table class="table table-hover">
+	 <thead>
+		<tr bgcolor="lightgrey">
+			<th>Alergije pacijenta</th>
+			<th>Izaberi zamenski lek</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="p in alergije""	>
+                <td>{{p.naziv}}</td>
+				<td> <button type="button" class="button1" data-toggle="modal" data-target="#exampleModalCenter1">Izaberi</button> </td>
+         </tr>
+	</tbody>
+	</table>
+	
 	
 	<input type="button" class="button1" v-on:click="nijeDosao()" value="Nije Dosao" />
 	<input type="button" class="button1" v-on:click="otkaziPregled(this.spec)" value="Otkazi" />
@@ -196,7 +254,6 @@ methods: {
 			.get("api/dermatolog/pregledi/" + this.$route.params.spec)
 			.then(response => {
 				this.pregled = response.data;
-				console.log(response.data);
 				axios
 				.get("api/pacijenti/spec/" + this.pregled.pacijent.id)
 				.then(response => {
