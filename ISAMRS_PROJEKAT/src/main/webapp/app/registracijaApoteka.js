@@ -59,6 +59,11 @@ Vue.component("register-apoteka", {
             	toast("Cena mora biti broj.");
             	return;
             }
+            
+            if(parseFloat(cen) < 0) {
+            	toast("Cena ne sme biti negativan broj.");
+            	return;
+            }
 
             let lok = { sirina: sir, duzina: duz, ulica: adr };
 

@@ -276,7 +276,8 @@ public class PacijentServiceImpl implements PacijentService {
 		for (Apoteka apoteka : apoteke) {
 			Collection<Pregled> pregledi = pregledRepository.preglediUApoteci(apoteka.getId(), id);
 			Collection<Rezervacija> rezervacije = rezervacijaRepository.rezervacijaUApoteci(apoteka.getId(), id);
-			Collection<ERecept> eRecepti = eReceptRepository.zaApotekuIKorisnika(apoteka.getId(), id);
+			Collection<ERecept> eRecepti = eReceptRepository.zaApotekuIKorisnika(id, apoteka.getId());
+			System.out.println(eRecepti.size() + "EVO VELICINA ERECEPATA");
 			if (pregledi.size() == 0 && rezervacije.size() == 0 && eRecepti.size() == 0) {
 				continue;
 			}
