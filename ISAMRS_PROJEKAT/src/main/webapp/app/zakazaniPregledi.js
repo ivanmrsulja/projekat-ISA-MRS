@@ -72,7 +72,7 @@ Vue.component("zakazani-pregledi", {
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(response => {
-            if(response.data){
+            if(response.data && response.data.zaposlenjeKorisnika == "PACIJENT"){
             	this.korisnik = response.data;
                 axios
 				.get("api/users/pregledi/" + response.data.id + "/" + this.$route.params.page)

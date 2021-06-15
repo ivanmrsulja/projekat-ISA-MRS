@@ -87,7 +87,7 @@ Vue.component("akcije-promocije", {
 						
 					});
 		axios.get("/api/users/currentUser").then( response => {
-            if(response.data){
+            if(response.data && response.data.zaposlenjeKorisnika == "PACIJENT"){
             	this.user = response.data;
             	console.log(this.user);
                 axios

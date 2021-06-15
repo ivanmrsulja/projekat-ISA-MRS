@@ -5,6 +5,7 @@ Vue.component("rezervacija-leka", {
 				rezervacija:{}
 		    }
 	},
+
 	methods : { 
 		Pretrazi : function () {
 			let rezId = $("input[name=brojRezervacije]").val();
@@ -14,8 +15,15 @@ Vue.component("rezervacija-leka", {
             .then(response => {
                 this.rezervacija = response.data;
                 if(this.rezervacija.id==rezId)
-                	toast("trazena rezervacija postoji");
-            });
+				{
+                	toast("Izdavanje leka "+ this.rezervacija.preparat);
+					
+				}
+				else
+				{
+					toast("trazena rezervacija ne postoji");
+				}
+			});
             }
 		},
 	template: ` 
@@ -33,13 +41,16 @@ Vue.component("rezervacija-leka", {
 				</td>
 			</tr>
 		</table>	
-</div>		
+	
+	</div>	
 `
 	,
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(response => {
-            if(response.data){
+            if(response.data && response.data.zaposlenjeKorisnika == "PACIJENT"){
             	this.korisnik = response.data;
+            }else{
+            	this.$router.push({ path: "/" });
             }
         });
     }

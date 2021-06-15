@@ -91,7 +91,7 @@ public interface AdminService {
 
 	public void deleteOutdatedPromotion();
 
-	public Zaposlenje employDermatologist(int pharmacyId, DermatologDTO dermatologistDTO);
+	public Zaposlenje employDermatologist(int pharmacyId, DermatologDTO dermatologistDTO) throws Exception;
 
 	public ArrayList<DermatologDTO> getDermatologistsOutsidePharmacy(int pharmacyId);
 

@@ -84,7 +84,7 @@ Vue.component("pregled-erecepata", {
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(data => {
-            if(data.data){
+            if(data.data && data.data.zaposlenjeKorisnika == "PACIJENT"){
             	this.korisnik = data.data;
                 axios
 				.get("api/eRecept/all/" + data.data.id + "?sort=false&descending=false&status=SVI")
