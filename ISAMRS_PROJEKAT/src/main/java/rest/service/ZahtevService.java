@@ -16,5 +16,5 @@ public interface ZahtevService {
 	@Async
 	void notifyViaEmail(ZahtevDTO z, String obrazlozenje);
 
-	void addZahtjev(Zahtjev p,int id);
+	String addZahtjev(Zahtjev p,int id);
 }

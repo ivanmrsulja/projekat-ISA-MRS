@@ -54,10 +54,12 @@ Vue.component("profil-farmaceuti", {
 			.then(response => {
 				this.farmaceuti = response.data
 				axios.get("/api/users/currentUser").then(response => {
-		            if(response.data){
-		            	this.farmaceut = response.data;
-		            }
-		           			
+					if(response.data){
+						this.farmaceut = response.data;
+						if (!response.data.loggedBefore) {
+							this.$router.push({ path: "/promeniSifruDerFar" });
+							}
+					}
 			});
     });
 	}

@@ -78,11 +78,16 @@ public class ZahtevServiceImpl implements ZahtevService {
         mail.setText(telo);
         javaMailSender.send(mail);
 	}
-
+	
 	@Override
-	public void addZahtjev(Zahtjev p,int id) {
+	public String addZahtjev(Zahtjev p,int id) {
 		Korisnik k=korisnikRepo.getOne(id);
+		if(p.getPocetak().compareTo(p.getKraj())>0)
+		{
+			return "ERR";
+		}
 		Zahtjev pp= new Zahtjev(p.getTip(),StatusZahtjeva.CEKANJE,k,p.getPocetak(), p.getKraj());		
 		zahtevRepository.save(pp);
+		return "OK";
 	}
 }

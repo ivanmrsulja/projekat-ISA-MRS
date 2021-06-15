@@ -79,7 +79,6 @@ public class ZahtevController {
 	@PostMapping(value = "/zahtjev", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String addZahtjev(HttpSession session, @RequestBody Zahtjev p){
 		KorisnikDTO user = (KorisnikDTO) session.getAttribute("user");
-		zahtevService.addZahtjev(p,user.getId());
-		return "OK";
+		return zahtevService.addZahtjev(p,user.getId());
 	}
 }

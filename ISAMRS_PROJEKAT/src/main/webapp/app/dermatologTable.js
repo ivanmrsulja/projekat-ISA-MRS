@@ -53,9 +53,13 @@ Vue.component("profil-dermatolozi", {
 			.then(response => {
 				this.dermatolozi = response.data
 				axios.get("/api/users/currentUser").then(response => {
-		            if(response.data){
-		            	this.dermatolog = response.data;
-		            }				
+
+					if(response.data){
+						if (!response.data.loggedBefore) {
+							this.$router.push({ path: "/promeniSifruDerFar" });
+							}	
+							this.dermatolog = response.data;
+						}			
 			});
     });
 	}

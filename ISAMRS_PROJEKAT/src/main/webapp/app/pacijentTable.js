@@ -107,6 +107,11 @@ Vue.component("profil-pacijenti", {
 		axios
 		.get("api/users/currentUser")
 		.then(response => {
+			if(response.data){
+				if (!response.data.loggedBefore) {
+					this.$router.push({ path: "/promeniSifruDerFar" });
+					}
+				}
 			axios
 			.get("api/pacijenti/pregledi/"+response.data.id + "?search= " + "&criteria=none")
 			.then(response => {

@@ -18,6 +18,9 @@ Vue.component("zakazivanje-godisnjegOdmora", {
 			if(data.data == "OK") {
 				toast("Uspesno ste podneli zahtev!");
 			}
+			else{
+				toast("Greska !");
+			}
 		});
 	},
 	
@@ -48,9 +51,12 @@ Vue.component("zakazivanje-godisnjegOdmora", {
 `
 	,
 	mounted: function() {
-		axios.get("/api/users/currentUser").then(data => {
-            if(data.data){
-            	this.korisnik=data.data;
+		axios.get("/api/users/currentUser").then(response => {
+			if(response.data){
+				this.korisnik=response.data;
+				if (!response.data.loggedBefore) {
+							this.$router.push({ path: "/promeniSifruDerFar" });
+							}
             }else{
             	this.$router.push({ path: "/" });
             } 

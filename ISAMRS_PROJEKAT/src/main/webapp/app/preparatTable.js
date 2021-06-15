@@ -117,10 +117,17 @@ Vue.component("profil-preparati", {
 `
 	,
 	mounted: function() {
-		axios
-			.get("api/preparat")
-			.then(response => {
-				this.preparati = response.data
-			});
+		axios.get("/api/users/currentUser").then(response => {
+            if(response.data){
+                if (!response.data.loggedBefore) {
+							this.$router.push({ path: "/promeniSifruDerFar" });
+							}
+						}
+			axios
+				.get("api/preparat")
+				.then(response => {
+					this.preparati = response.data;
+				});
+		});
     }
 });
