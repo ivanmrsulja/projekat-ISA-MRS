@@ -7,6 +7,7 @@ Vue.component("pocetna-strana", {
 	template: ` 
 <div align = center>
 		<h1>Login korisnika: </h1>
+		<br/>
 		<table>
 			<tr>
 				<td> <h2>Username:</h2> </td> <td> <input type="text" name="username" /> </td>
@@ -16,7 +17,7 @@ Vue.component("pocetna-strana", {
 			</tr>
 			<tr>
 				<td align=center colspan=2>
-					<input type="button" value="Posalji" v-on:click="logUserIn()"/>
+					<input type="button" class="button1" value="Posalji" v-on:click="logUserIn()"/>
 				</td>
 			</tr>
 		</table>
@@ -32,6 +33,7 @@ Vue.component("pocetna-strana", {
 			
 			let temp = this;
 			
+			
 			axios
     		.get("api/users/login?user="+user+"&pass="+pass)
     		.then(function(response){
@@ -41,31 +43,86 @@ Vue.component("pocetna-strana", {
 					.then(function(resp){
 						temp.$root.$emit('sendingUser', resp.data);
 						if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
-							temp.$router.push({ path: "/profileApoteke" });
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
 						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
-							temp.$router.push({ path: "/farmaceuti" });
+							if (!resp.data.loggedBefore) {
+							temp.$router.push({ path: "/promeniSifruDerFar" });
+							}
+							else {
+								temp.$router.push({ path: "/farmaceuti" });
+							}
 						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
-							temp.$router.push({ path: "/tab" });
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
 						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
-							temp.$router.push({ path: "/dermatolozi" });
+							if (!resp.data.loggedBefore) {
+							temp.$router.push({ path: "/promeniSifruDerFar" });
+							}
+							else
+								{
+								temp.$router.push({ path: "/dermatolozi" });
+								}
 						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
 							temp.$router.push({ path: "/apoteke/0" });
 						}else {
-							temp.$router.push({ path: "/regDerm" });
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
 						}
 						
 					});
 				}else{
-					alert(response.data);
+					toast(response.data);
 				}
     		});
 		}  
 	},
 	mounted () {
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}
+						
+					});
 		this.user = { zaposlenjeKorisnika: "GOST"};
-		let self = this;
+		
         this.$root.$on('sendingUser', (data) => {
-			self.user = data;
+			temp.user = data;
 		});
     }
 });

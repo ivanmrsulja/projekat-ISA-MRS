@@ -43,7 +43,7 @@ Vue.component("register-user", {
 			</tr>
 			<tr>
 				<td align=center colspan=2> 
-					<input value="Registruj se" type="button" name="regBtn" v-on:click="registerUser()"/> 
+					<input value="Registruj se" type="button" class="button1" name="regBtn" v-on:click="registerUser()"/> 
 				</td>
 			</tr>
 		</table>
@@ -69,28 +69,31 @@ Vue.component("register-user", {
 			let adr = $("input[name=adresa]").val();
 			
 			if (usr.trim() == "" || pas.trim() == "" || ime.trim() == "" || prz.trim() == "" || email.trim() == "" || tel.trim() == ""){
-				alert("Popunite sva polja.");
+				toast("Popunite sva polja.");
 				return;
 			}
 			
 			if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-				alert("Email je u neispravnom formatu.");
+				toast("Email je u neispravnom formatu.");
 				return;
 			}
 			
 			if(pas != pasConf){
-				alert("Password-i moraju da se podudaraju.");
+				toast("Password-i moraju da se podudaraju.");
 				return;
 			}
 			
 			let lok = {sirina: sir, duzina: duz, ulica: adr};
 			
-			let newUser = {username: usr, noviPassw: pas, ime: ime, prezime : prz, email: email, telefon: tel, lokacija: lok};
-			
+			let newUser = {username: usr, noviPassw: pas, ime: ime, prezime : prz, email: email, telefon: tel, lokacija: lok, loggedBefore: false};
+			let temp = this;
 			console.log(newUser);
 			axios.post("/api/users/register", newUser).then(data => {
 				if(data.data == "OK") {
-					alert("Uspesno ste se registrovali! Mozete se ulogovati");
+					toast("Uspesno ste se registrovali! Poslat Vam je link za verifikaciju naloga na mejl.");
+					temp.$router.push({ path: "/#" });
+				} else {
+					toast("Nalog sa tim korisnickim imenom vec postoji!");
 				}
 			});
 		},
@@ -151,6 +154,39 @@ Vue.component("register-user", {
 		} 
 	},
 	mounted () {
+		let temp = this;
+	
+		axios
+			.get("/api/users/currentUser")
+			.then(function(resp){
+				if(resp.data.zaposlenjeKorisnika == "ADMIN_APOTEKE"){
+							if (resp.data.loggedBefore) {
+								temp.$router.push({ path: "/profileApoteke" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "FARMACEUT"){
+							temp.$router.push({ path: "/farmaceuti" });
+						}else if(resp.data.zaposlenjeKorisnika == "DOBAVLJAC"){
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/tab" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}else if(resp.data.zaposlenjeKorisnika == "DERMATOLOG"){
+							temp.$router.push({ path: "/dermatolozi" });
+						}else if(resp.data.zaposlenjeKorisnika == "PACIJENT"){
+							temp.$router.push({ path: "/apoteke/0" });
+						}else if(resp.data.zaposlenjeKorisnika == "ADMIN_SISTEMA") {
+							if(resp.data.loggedBefore) {
+								temp.$router.push({ path: "/regDerm" });
+							} else {
+								temp.$router.push({ path: "/promeniSifru" });
+							}
+						}
+						
+					});
+		
         this.showMap();
     }
 });

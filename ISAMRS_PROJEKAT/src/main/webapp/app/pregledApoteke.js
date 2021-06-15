@@ -2,6 +2,7 @@ Vue.component("pregled-apoteke", {
 	data: function () {
 		    return {
 				apoteka : {
+					id: 0,
 					naziv: "",
                     lokacija: {ulica: ""},
                     opis: "",
@@ -20,6 +21,7 @@ Vue.component("pregled-apoteke", {
 <div align = center style="width:75% sm">
 		
 		<h1>Pregled apoteke</h1>
+		<input type="button" class="button1" value="Pretplati se" v-bind:hidden="korisnik.zaposlenjeKorisnika != 'PACIJENT'" v-on:click="pretplatiSe()">
 		<br/>
         <table>
             <tr><td><h2>Naziv: </h2></td><td><h2>{{apoteka.naziv}}</h2></td></tr>
@@ -118,15 +120,15 @@ Vue.component("pregled-apoteke", {
 		  </div>
 	</div>
 	<br/>
-     <table class="table table-hover" style="width: 60%" v-bind:hidden=" pregledi.length == 0" >
+     <table class="table table-hover" style="width: 60%" v-bind:hidden="pregledi.length == 0">
 		 <thead>
-			<tr  bgcolor="#90a4ae">
+			<tr bgcolor="#90a4ae">
 				<th>Dermatolog</th>
 				<th>Datum termina</th>
 				<th>Vreme</th>
 				<th>Cena</th>
 				<th>Ocena dermatologa</th>
-				<th>Akcija</th>
+				<th v-bind:hidden="!korisnik">Akcija</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -135,17 +137,37 @@ Vue.component("pregled-apoteke", {
 			<td>{{p.datum}}</td>
 			<td>{{p.vrijeme}}</td>
 			<td>{{p.cijena}}</td>
-			<td>{{p.ocena}} </td>
-			<td><input type="button" class="button1" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik" /></td>
+			<td>{{p.ocena.toFixed(2)}} </td>
+			<td v-bind:hidden="!korisnik"><input type="button" class="button1" value="Zakazi pregled" v-on:click="zakazi(p)" v-bind:disabled="!korisnik"/></td>
 		</tr>
 		</tbody>
 	</table>
-
+	
 	
 </div>		  
 `
     ,
     methods: {
+		pretplatiSe : function() {
+			axios
+			.put("api/pacijenti/updateApoteke/" + this.korisnik.id + "/" + this.apoteka.id)
+			.then(response => {
+				if (response.data == "OK"){
+					$.toast({ 
+					  text : "Uspesno ste se pretplatili na akcije i promocije apoteke.", 
+					  showHideTransition : 'slide',  // It can be plain, fade or slide
+					  bgColor : '#455a64',              // Background color for toast
+					  textColor : 'white',            // text color
+					  allowToastClose : false,       // Show the close button or not
+					  hideAfter : 5000,              // `false` to make it sticky or time in miliseconds to hide after
+					  stack : 5,                     // `fakse` to show one stack at a time count showing the number of toasts that can be shown at once
+					  textAlign : 'left',            // Alignment of text i.e. left, right, center
+					  position : 'bottom-right',       // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values to position the toast on page
+					  font_size : 20,
+					});
+				}
+			})
+		},
     	SetRatingStar: function(){
     		let self = this;
     		var $star_rating = $('.star-rating .fa');
@@ -160,7 +182,7 @@ Vue.component("pregled-apoteke", {
     	},
     	clickStar: function() {
     	  	axios
-		        .get("/api/ocene/oceniApoteku/" + this.$route.params.id + "/" + this.ocena)
+		        .put("/api/ocene/oceniApoteku/" + this.$route.params.id + "/" + this.ocena)
 		        .then(response => {
 		        	axios
 			        .get("/api/apoteke/" + this.$route.params.id)
@@ -199,16 +221,46 @@ Vue.component("pregled-apoteke", {
 	        .get("/api/users/currentUser")
 	        .then(response => {
 	            if(response.data == null){
-	            	alert("Niste ulogovani");
+	            	$.toast({ 
+					  text : "Niste ulogovani.", 
+					  showHideTransition : 'slide', 
+					  bgColor : '#455a64', 
+					  textColor : 'white',
+					  allowToastClose : false,
+					  hideAfter : 5000,
+					  stack : 5,
+					  textAlign : 'left',
+					  position : 'bottom-right'
+					});
 	            }else{
 	            console.log(response.data);
 	            	axios
 			        .put("/api/apoteke/zakaziPregled/" + p.id + "/" + response.data.id)
 			        .then(response => {
 			        	if(response.data){
-			            	alert(response.data);
+			            	$.toast({ 
+							  text : response.data, 
+							  showHideTransition : 'slide', 
+							  bgColor : '#455a64',
+							  textColor : 'white', 
+							  allowToastClose : false,
+							  hideAfter : 5000,
+							  stack : 5,
+							  textAlign : 'left',
+							  position : 'bottom-right'
+							});
 			            } else {
-			            	alert("Doslo je do greske prilikom zakazivanja.");
+			            	$.toast({ 
+								  text : "Doslo je do greske prilikom zakazivanja.", 
+								  showHideTransition : 'slide',  
+								  bgColor : '#455a64',             
+								  textColor : 'white',           
+								  allowToastClose : false,      
+								  hideAfter : 5000, 
+								  stack : 5,
+								  textAlign : 'left',
+								  position : 'bottom-right'
+								});
 			            }
                         axios
                             .get("/api/apoteke/pregledi/" + this.$route.params.id + "?criteria=none")

@@ -16,18 +16,15 @@ import rest.dto.EReceptDTO;
 import rest.dto.StavkaReceptaDTO;
 import rest.service.EReceptSortFilterParams;
 import rest.service.EreceptService;
-import rest.service.KorisnikService;
 
 @RestController
 @RequestMapping("/api/eRecept")
 public class EReceptController {
 	
-	private KorisnikService korisnikService;
 	private EreceptService eReceptService;
 	
 	@Autowired
-	public EReceptController(KorisnikService ks, EreceptService er) {
-		korisnikService = ks;
+	public EReceptController(EreceptService er) {
 		eReceptService = er;
 	}
 	

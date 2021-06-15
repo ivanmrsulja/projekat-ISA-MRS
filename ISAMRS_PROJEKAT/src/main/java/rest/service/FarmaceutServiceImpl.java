@@ -1,19 +1,32 @@
 package rest.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Farmaceut;
+import rest.domain.Pregled;
 import rest.domain.Zaposlenje;
 import rest.domain.ZaposlenjeKorisnika;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.PregledDTO;
 import rest.repository.FarmaceutRepository;
 import rest.repository.LokacijaRepository;
+import rest.repository.NotifikacijaRepository;
+import rest.repository.PregledRepository;
 import rest.repository.ZaposlenjeRepository;
 
 @Service
@@ -24,13 +37,19 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 	private ApotekaService apotekaService;
 	private ZaposlenjeRepository zaposlenjeRepository;
 	private LokacijaRepository lokacijaRepository;
+	private PregledRepository pregledRepository;
+	private NotifikacijaRepository notifikacijaRepository;
+	private PregledService pregledService;
 	
 	@Autowired
-	public FarmaceutServiceImpl(FarmaceutRepository imfr, ApotekaService as, ZaposlenjeRepository zr, LokacijaRepository lr) {
+	public FarmaceutServiceImpl(FarmaceutRepository imfr, ApotekaService as, ZaposlenjeRepository zr, LokacijaRepository lr, PregledRepository pr, NotifikacijaRepository nr,PregledService ps) {
 		this.farmaceutRepository = imfr;
 		this.apotekaService = as;
 		this.zaposlenjeRepository = zr;
 		this.lokacijaRepository = lr;
+		this.pregledRepository = pr;
+		this.notifikacijaRepository = nr;
+		this.pregledService=ps;
 	}
 
 	@Override
@@ -41,8 +60,11 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 
 	@Override
 	public Farmaceut findOne(int id) {
-		Farmaceut user = farmaceutRepository.findById(id).get();
-		return user;
+		Optional<Farmaceut> user = farmaceutRepository.findById(id);
+		if (user.isPresent()) {
+			return user.get();
+		}
+		return null;
 	}
 
 	@Override
@@ -100,4 +122,168 @@ public class FarmaceutServiceImpl implements FarmaceutService {
 		return farmaceutRepository.getWithEmployments(id);
 	}
 
+	@Override
+	public boolean checkIfPharmacistHasAppointments(int pharmacistId, int pharmacyId) {
+		Collection<Pregled> appointments = pregledRepository.getScheduledAppointments(pharmacistId, pharmacyId);
+		if (appointments.size() == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public void deletePharmacist(int pharmacistId) {
+		notifikacijaRepository.deleteNotificationsOfUser(pharmacistId);
+		farmaceutRepository.deleteById(pharmacistId);
+		zaposlenjeRepository.deleteForPharmacist(pharmacistId);
+	}
+
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaSedmica(HttpSession s) {
+		KorisnikDTO korisnik = (KorisnikDTO)s.getAttribute("user");
+		Collection<Pregled> pregledi= pregledService.dobaviZaDermatologa(korisnik.getId());
+		ArrayList<PregledDTO> preglediDTO = new ArrayList<PregledDTO>();
+		HashMap<LocalDate, ArrayList<PregledDTO>> hmap = new HashMap<LocalDate, ArrayList<PregledDTO>>();
+	
+		for(Pregled d : pregledi) {
+			 LocalDate za7=LocalDate.now().plusDays(7);
+			 LocalDate sad=LocalDate.now();
+		 	 LocalDate ll=d.getDatum();
+		 	   
+			if(sad.compareTo(ll)<0 && za7.compareTo(ll)>0)
+			{
+				preglediDTO.add(new PregledDTO(d,0));	
+				if(hmap.containsKey(d.getDatum())) {
+					hmap.get(d.getDatum()).add(new PregledDTO(d,0));
+				}
+				else {
+					hmap.put(d.getDatum(),new ArrayList<PregledDTO>());
+					
+					hmap.get(d.getDatum()).add(new PregledDTO(d,0));
+				}
+			}
+		}
+		
+		Map<LocalDate, ArrayList<PregledDTO>> sortedMap = new TreeMap<>(new Comparator<LocalDate>() {
+		    @Override
+		    public int compare(LocalDate o1, LocalDate o2) {
+		        return o1.compareTo(o2);
+		    }
+		});
+		
+		for(LocalDate datumi:hmap.keySet()) {
+			Collections.sort(hmap.get(datumi),new Comparator<PregledDTO>() {
+
+				@Override
+				public int compare(PregledDTO o1, PregledDTO o2) {
+					
+					return o1.getVrijeme().compareTo(o2.getVrijeme());
+				}
+			});
+		}
+			
+		
+		sortedMap.putAll(hmap);
+			
+		return sortedMap;
+	}
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaMesec(HttpSession s) {
+		KorisnikDTO korisnik = (KorisnikDTO)s.getAttribute("user");
+		Collection<Pregled> pregledi= pregledService.dobaviZaDermatologa(korisnik.getId());
+		ArrayList<PregledDTO> preglediDTO = new ArrayList<PregledDTO>();
+		HashMap<LocalDate, ArrayList<PregledDTO>> hmap = new HashMap<LocalDate, ArrayList<PregledDTO>>();
+	
+		for(Pregled d : pregledi) {
+			 LocalDate za7=LocalDate.now().plusDays(30);
+			 LocalDate sad=LocalDate.now();
+		 	 LocalDate ll=d.getDatum();
+		 	   
+			if(sad.compareTo(ll)<0 && za7.compareTo(ll)>0)
+			{
+				preglediDTO.add(new PregledDTO(d,0));	
+				if(hmap.containsKey(d.getDatum())) {
+					hmap.get(d.getDatum()).add(new PregledDTO(d,0));
+				}
+				else {
+					hmap.put(d.getDatum(),new ArrayList<PregledDTO>());
+					
+					hmap.get(d.getDatum()).add(new PregledDTO(d,0));
+				}
+			}
+		}
+		
+		Map<LocalDate, ArrayList<PregledDTO>> sortedMap = new TreeMap<>(new Comparator<LocalDate>() {
+		    @Override
+		    public int compare(LocalDate o1, LocalDate o2) {
+		        return o1.compareTo(o2);
+		    }
+		});
+		
+		for(LocalDate datumi:hmap.keySet()) {
+			Collections.sort(hmap.get(datumi),new Comparator<PregledDTO>() {
+
+				@Override
+				public int compare(PregledDTO o1, PregledDTO o2) {
+					
+					return o1.getVrijeme().compareTo(o2.getVrijeme());
+				}
+			});
+		}
+			
+		
+		sortedMap.putAll(hmap);
+			
+		return sortedMap;
+	}
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaGodina(HttpSession s)
+	{
+		KorisnikDTO korisnik = (KorisnikDTO)s.getAttribute("user");
+		Collection<Pregled> pregledi= pregledService.dobaviZaDermatologa(korisnik.getId());
+		ArrayList<PregledDTO> preglediDTO = new ArrayList<PregledDTO>();
+		HashMap<LocalDate, ArrayList<PregledDTO>> hmap = new HashMap<LocalDate, ArrayList<PregledDTO>>();
+	
+		for(Pregled d : pregledi) {
+			 LocalDate za7=LocalDate.now().plusDays(365);
+			 LocalDate sad=LocalDate.now();
+		 	 LocalDate ll=d.getDatum();
+		 	   
+			if(sad.compareTo(ll)<0 && za7.compareTo(ll)>0)
+			{
+				preglediDTO.add(new PregledDTO(d,0));	
+				if(hmap.containsKey(d.getDatum())) {
+					hmap.get(d.getDatum()).add(new PregledDTO(d,0));
+				}
+				else {
+					hmap.put(d.getDatum(),new ArrayList<PregledDTO>());
+					
+					hmap.get(d.getDatum()).add(new PregledDTO(d,0));
+				}
+			}
+		}
+		
+		Map<LocalDate, ArrayList<PregledDTO>> sortedMap = new TreeMap<>(new Comparator<LocalDate>() {
+		    @Override
+		    public int compare(LocalDate o1, LocalDate o2) {
+		        return o1.compareTo(o2);
+		    }
+		});
+		
+		for(LocalDate datumi:hmap.keySet()) {
+			Collections.sort(hmap.get(datumi),new Comparator<PregledDTO>() {
+
+				@Override
+				public int compare(PregledDTO o1, PregledDTO o2) {
+					
+					return o1.getVrijeme().compareTo(o2.getVrijeme());
+				}
+			});
+		}
+			
+		
+		sortedMap.putAll(hmap);
+			
+		return sortedMap;
+	}
 }

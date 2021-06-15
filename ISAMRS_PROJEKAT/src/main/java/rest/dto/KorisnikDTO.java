@@ -16,6 +16,7 @@ public class KorisnikDTO {
 	private ZaposlenjeKorisnika zaposlenjeKorisnika;
 	private String stariPassw;
 	private String noviPassw;
+	private boolean loggedBefore;
 	
 	public KorisnikDTO() {
 		super();
@@ -31,8 +32,9 @@ public class KorisnikDTO {
 		this.telefon=korisnik.getTelefon();
 		this.lokacija=korisnik.getLokacija();
 		this.zaposlenjeKorisnika=korisnik.getZaposlenjeKorisnika();
+		this.loggedBefore = korisnik.getLoggedBefore();
 		this.stariPassw = null;
-		this.noviPassw = null;
+		this.noviPassw = korisnik.getPassword();
 	}	
 
 	@Override
@@ -68,6 +70,14 @@ public class KorisnikDTO {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public boolean isLoggedBefore() {
+		return loggedBefore;
+	}
+
+	public void setLoggedBefore(boolean loggedBefore) {
+		this.loggedBefore = loggedBefore;
 	}
 
 	public void setUsername(String username) {

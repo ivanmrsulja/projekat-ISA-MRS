@@ -8,17 +8,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class Dermatolog extends Korisnik implements Ocenjivo{
 	@Column(name = "brojOcena", nullable = true)
-	private int brojOcena;
+	private double brojOcena;
 	@Column(name = "sumaOcena", nullable = true)
-	private int sumaOcena;
+	private double sumaOcena;
 	@Column(name = "ocena", nullable = true)
 	private double ocena;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+		
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Zaposlenje> zaposlenja;
 	
 	public Dermatolog() {
@@ -27,14 +28,14 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 	}
 	
 	public Dermatolog(String ime, String prezime, String username, String password, String email,
-			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,int brojOcena,int sumaOcena) {
+			Boolean loggedBefore, String telefon, Lokacija lokacija,ZaposlenjeKorisnika zaposlenjeKorisnika,double brojOcena,double sumaOcena) {
 		super(ime, prezime, username, password, email, loggedBefore, telefon,lokacija,zaposlenjeKorisnika);
 		this.brojOcena = brojOcena;
 		this.sumaOcena = sumaOcena;
 		this.zaposlenja = new HashSet<Zaposlenje>();
 		this.ocena=izracunajOcenu();
 	}
-	
+
 	public void addZaposlenje(Zaposlenje z) {
 		zaposlenja.add(z);
 		z.setKorisnik(this);
@@ -53,19 +54,19 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 		return 0;
 	}
 
-	public int getBrojOcena() {
+	public double getBrojOcena() {
 		return brojOcena;
 	}
 
-	public void setBrojOcena(int brojOcena) {
+	public void setBrojOcena(double brojOcena) {
 		this.brojOcena = brojOcena;
 	}
 
-	public int getSumaOcena() {
+	public double getSumaOcena() {
 		return sumaOcena;
 	}
 
-	public void setSumaOcena(int sumaOcena) {
+	public void setSumaOcena(double sumaOcena) {
 		this.sumaOcena = sumaOcena;
 	}
 

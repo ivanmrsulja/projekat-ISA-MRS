@@ -3,39 +3,92 @@ Vue.component("pacijent-pregled", {
 	    return {
 	    	pregled: {},
 	    	pacijent:{korisnik:{id:{},lokacija:{}}},
-			spec : {korisnik:{lokacija:{}}}
+			spec : {korisnik:{lokacija:{}}},
+	    	preparati:{},
+	    	terapija:[],
+			alergije:{},
 	    }
 },
 methods: {	
 	zakaziTermin : function(r) {
 		window.location.href = "#/pacijenti/zapocniNoviPregled/" + r.id;
-	},   
-	dodajTerapiju : function(r){
-		
-	},
+	},  
 	zavrsiPregled : function(){
 		
-		let text = $("input[name=textArea]").val();
-		let noviPregled = {izvjestaj: text, StatusPregleda:  StatusPregleda.ZAVRSEN, TipPregleda: TipPregleda.PREGLED, LocalDate : LocalDate.parse("2020-04-07"), LocalTime: LocalTime.parse("09:00"), trajanje: 45, cijena: 5000, zaposleni:d1 ,spec , a1};
-		
-		axios.post("/api/dermatolog/zavrsi/"+this.pregled.id).then(data => {
-			if(data.data == "OK") {
-				alert("Uspesno ste se zavrsili pregled!");
-			}
-		});
+		let text = $.trim($("textArea").val());
+		let noviPregled = {izvjestaj: text, StatusPregleda: "ZAVRSEN", TipPregleda: "PREGLED", LocalDate : "2020-04-07", LocalTime:"09:00", trajanje: 45, cijena: 5000, zaposleni:"" ,pacijent:this.pacijent ,apoteka:""};
+		this.pregled.terapija=this.terapija;
+
+		if($.trim($("textArea").val()) != "")
+			this.pregled.izvjestaj=$("textArea").val();
+		axios.post("/api/dermatolog/zavrsi/"+this.pregled.id, this.pregled).then(data => {
+			axios
+			.get("/api/dermatolog/proveraAlergija/" + this.pregled.id)
+			.then(response => {
+				this.alergije=response.data;
+				if(this.alergije.length==0)
+				{
+					toast("Uspesno zavrsen pregled");
+					window.location.href = "#/pregledi" ;
+				}
+			});
+		});		
 	},
-		zavrsiZakazivanje : function(){
-			let datum = $("input[name=datum]").val();
-			let vrijeme = $("input[name=vrijeme]").val();
-			let noviPregled = {izvjestaj:"", datum : datum, vrijeme: vrijeme, trajanje: 45, cijena: 5000 };
-			
-			axios.post("/api/dermatolog/zakaziNovi/"+this.pregled.apoteka.id+"/"+this.pregled.zaposleni.id+"/"+this.pacijent.korisnik.id, noviPregled).then(data => {
-				alert(data.data);
-			});	
-		},
+	zavrsiZakazivanje : function(){
+		let datum = $("input[name=datum]").val();
+		let vrijeme = $("input[name=vrijeme]").val();
+		let noviPregled = {izvjestaj:"", datum : datum, vrijeme: vrijeme, trajanje: 45, cijena: 5000 };
+		axios.post("/api/dermatolog/zakaziNovi/"+this.pregled.apoteka.id+"/"+this.pregled.zaposleni.id+"/"+this.pacijent.korisnik.id, noviPregled).then(data => {
+			toast(data.data);
+		});		
+	},
 	
+	pregledajPreparat : function(r){
+		window.location.href = "#/preparati/" + r.id;
+	},
+	IzaberiZaTerapiju: function(r){
+		if(this.terapija.indexOf(r) === -1) {
+			this.terapija.push(r);			
+		}
+	},
 	otkaziPregled : function(r){
-		this.$router.push({ path: "/pacijenti" });
+		window.location.href = "#/pregledi" ;
+	},
+	Obrisi : function(r){
+		var index = this.terapija.indexOf(r);
+		if (index > -1) {
+			this.terapija.splice(index, 1);
+		}
+	},
+	
+	nijeDosao : function(){
+		var p={datum:this.pregled.datum,pacijent:this.pacijent};
+		
+		if($.trim($("textArea").val()) != "")
+			this.pregled.izvjestaj=$("textArea").val();
+		let text = $.trim($("textArea").val());
+		let noviPregled = {izvjestaj: text, StatusPregleda: "ZAVRSEN", TipPregleda: "PREGLED", LocalDate : "2020-04-07", LocalTime:"09:00", trajanje: 45, cijena: 5000, zaposleni:"" ,pacijent:this.pacijent ,apoteka:""};
+		this.pregled.terapija=this.terapija;
+
+		axios
+		.put("api/pacijenti/penal/"+this.pacijent.korisnik.id, p)
+		.then(response => {
+			toast('Pacijentu ' + this.pacijent.korisnik.ime + " " + this.pacijent.korisnik.prezime + " uspešno dodan penal.");
+				axios.post("/api/dermatolog/zavrsi/"+this.pregled.id, this.pregled).then(data => {
+				axios
+				.get("/api/dermatolog/proveraAlergija/" + this.pregled.id)
+				.then(response => {
+					this.alergije=response.data;
+					if(this.alergije.length==0)
+					{
+						toast("Uspesno zavrsen pregled");
+						window.location.href = "#/pregledi" ;
+					}
+				});
+			});
+		});
+
+		window.location.href = "#/pregledi" ;	
 	},
 },
 	template: ` 
@@ -73,13 +126,52 @@ methods: {
 			<tr scope="col">Izvestaj o pregledu:</tr>
 			 <textarea rows="4" cols="80" name="textArea"></textarea> 
 			 <br>		
-			<tr> <button type="button" class="button1" data-toggle="modal" data-target="#exampleModalCenter">Zakazi novi termin
-</button> </tr>
+			<tr> <button type="button" class="button1" data-toggle="modal" data-target="#exampleModalCenter">Zakazi novi termin</button> </tr>
 			<br>
-			<tr>Terapija: <input type="button" class="button1" v-on:click="dodajTerapiju" value="Izaberi" /></tr>				
+			<tr> <button type="button" class="button1" data-toggle="modal" data-target="#exampleModalCenter1">Terapija</button> </tr>
+		
 		</th>
 	</thead>
 	</table>
+	
+			<table class="table table-hover">
+	 <thead>
+		<tr bgcolor="lightgrey">
+			<th>Terapija</th>
+			<th>Propisana kolicina</th>
+			<th>Trajanje u Danima</th>
+			<th>Obrisi</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="p in terapija""	>
+                <td>{{p.naziv}}</td>
+                <td>{{p.preporuceniUnos}}</td>                
+				<td><input type="text" name="kolicinaLeka" value="1"/></td>
+				<td> <button type="button" class="button1" v-on:click="Obrisi(p)" >Obrisi</button> </td>
+		</tr>
+	</tbody>
+	</table>
+
+	</table>
+	
+			<table class="table table-hover">
+	 <thead>
+		<tr bgcolor="lightgrey">
+			<th>Alergije pacijenta</th>
+			<th>Izaberi zamenski lek</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="p in alergije""	>
+                <td>{{p.naziv}}</td>
+				<td> <button type="button" class="button1" data-toggle="modal" data-target="#exampleModalCenter1">Izaberi</button> </td>
+         </tr>
+	</tbody>
+	</table>
+	
+	
+	<input type="button" class="button1" v-on:click="nijeDosao()" value="Nije Dosao" />
 	<input type="button" class="button1" v-on:click="otkaziPregled(this.spec)" value="Otkazi" />
 	<input type="button" class="button1" v-on:click="zavrsiPregled" value="Zavrsi" />
 	
@@ -112,7 +204,44 @@ methods: {
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Otkazi</button>
-	        <button type="button" class="btn btn-primary " v-on:click="zavrsiZakazivanje()">Zakazi</button>
+	        <button type="button" class="btn btn-primary" v-on:click="zavrsiZakazivanje()">Zakazi</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        	
+			<table class="table table-hover">
+	 <thead>
+		<tr bgcolor="lightgrey">
+			<th>Terapija</th>
+			<th>Informacije o leku</th>
+			<th>Izaberi</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr v-for="p in preparati""	>
+                <td>{{p.naziv}}</td>
+                <td><input type="button" class="button1" value="Informacije" data-dismiss="modal" v-on:click="pregledajPreparat(p)"/></td>   
+                <td><input type="button" class="button1" value="Izaberi" v-on:click="IzaberiZaTerapiju(p)"/></td>   
+		</tr>
+	</tbody>
+	</table>
+			
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Otkazi</button>
 	      </div>
 	    </div>
 	  </div>
@@ -125,11 +254,15 @@ methods: {
 			.get("api/dermatolog/pregledi/" + this.$route.params.spec)
 			.then(response => {
 				this.pregled = response.data;
-				console.log(response.data);
 				axios
 				.get("api/pacijenti/spec/" + this.pregled.pacijent.id)
 				.then(response => {
 					this.pacijent = response.data;
+					axios
+					.get("api/preparat")
+					.then(response => {
+						this.preparati = response.data
+					});
 				});	
 			});		
 	}

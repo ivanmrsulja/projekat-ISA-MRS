@@ -9,6 +9,7 @@ import rest.domain.Preparat;
 import rest.domain.Rezervacija;
 import rest.dto.CenaDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.PreparatDTO;
 
 public interface PreparatService {
 
@@ -18,7 +19,8 @@ public interface PreparatService {
 	Preparat getOne(int id);
 	void otkazi(int idr, int id) throws Exception;
 	Rezervacija rezervisi(int idp, int idpa, int ida, LocalDate datum) throws Exception;
-	
+	Preparat create(Preparat cure) throws Exception;
+	void addlek(PreparatDTO cure);
 	@Async
 	void sendConfirmationEmail(KorisnikDTO user, Rezervacija p);
 }

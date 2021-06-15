@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 @Entity
 public class Rezervacija {
@@ -29,6 +30,9 @@ public class Rezervacija {
 	private Preparat preparat;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Apoteka apoteka;
+	
+	@Version
+	private Long version;
 	
 	public Rezervacija() {}
 	
@@ -96,5 +100,14 @@ public class Rezervacija {
 
 	public void setCena(double cena) {
 		this.cena = cena;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}	
+	
 }

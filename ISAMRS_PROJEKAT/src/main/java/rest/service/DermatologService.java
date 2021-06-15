@@ -1,15 +1,19 @@
 package rest.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import javax.servlet.http.HttpSession;
 
 import rest.domain.Dermatolog;
 import rest.domain.Korisnik;
+import rest.domain.Pregled;
 import rest.dto.KorisnikDTO;
 import rest.dto.PregledDTO;
+import rest.dto.PreparatDTO;
 
 
 public interface DermatologService {
@@ -25,5 +29,17 @@ public interface DermatologService {
 
 	Dermatolog update(KorisnikDTO user) throws Exception;
 	
-	void zavrsi(PregledDTO pregled, int id) throws Exception;;
+	void zavrsi(PregledDTO pregled, int id) throws Exception;
+	
+	public void updateAlergije(int pid,int aid);
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> PreglediSedmica(HttpSession s);
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> PreglediMesec(HttpSession s);
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> PreglediGodina(HttpSession s);
+	
+	public Set<PreparatDTO> proveriAlergije(int pid);
+	
+	public Pregled registerExamination(PregledDTO examinationDTO, Integer  dermatologistId, Integer  pharmacyId) throws Exception;
 }
