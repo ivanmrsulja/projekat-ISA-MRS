@@ -22,6 +22,12 @@ Vue.component("radni-kalendar", {
 
     <div class="agenda">
         <div class="table-responsive">
+        <input type="button" class="button1" v-on:click="sedmica" value="sedmica" />
+        <input type="button" class="button1" v-on:click="mesec" value="mesec" />
+        <input type="button" class="button1" v-on:click="godina" value="godina" />
+        <br/>
+        <br/>
+        
             <table class="table table-condensed table-bordered">
                <thead>
                     <tr>
@@ -66,10 +72,37 @@ Vue.component("radni-kalendar", {
 		zapocniPregled : function(r){
     		this.$router.push({ path: "/pacijenti/zapocniPregled/"+r.id });
 		},
+        sedmica:function()
+        {
+            axios
+				.get("api/dermatolog/preglediSedmica")
+				.then(response => {
+					this.pregledi = response.data;
+				});
+        },
+        mesec:function()
+        {
+            axios
+				.get("api/dermatolog/preglediMesec")
+				.then(response => {
+					this.pregledi = response.data;
+				});
+        },
+        godina:function()
+        {
+            axios
+				.get("api/dermatolog/preglediGodina")
+				.then(response => {
+					this.pregledi = response.data;
+				});
+        },
 	},
 	mounted: function() {
 		axios.get("/api/users/currentUser").then(response => {
             if(response.data){
+                if (!response.data.loggedBefore) {
+							this.$router.push({ path: "/promeniSifruDerFar" });
+							}
             	this.korisnik = response.data;
                 axios
 				.get("api/dermatolog/pregledi")

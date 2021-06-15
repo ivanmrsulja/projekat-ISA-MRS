@@ -90,5 +90,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Modifying
 	@Query("delete from Pregled p where p.zaposleni.id = ?2 and p.apoteka.id = ?1")
 	public void deleteOpenAppointmentsForDermatologistForPharmacy(int pharmacyId, int dermatologistId);
+	
+	@Query("select p from Pregled p join fetch p.terapija where p.id = ?1")
+	Pregled findByIdD(int id);
 
 }

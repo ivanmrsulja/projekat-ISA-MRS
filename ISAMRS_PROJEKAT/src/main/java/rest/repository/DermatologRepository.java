@@ -3,7 +3,10 @@ package rest.repository;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -30,5 +33,9 @@ public interface DermatologRepository extends JpaRepository<Dermatolog, Integer>
 	
 	@Query("select distinct d from Dermatolog d")
 	Collection<Dermatolog> getAllDerme();
+	
+	@Lock(LockModeType.OPTIMISTIC)
+	@Query("select d from Dermatolog d where d.id = ?1")
+	public Dermatolog getOneById(int id);
 	
 }

@@ -48,6 +48,7 @@ const KreiranjeTerminaPregleda = { template: '<kreiranje-termina-pregleda></krei
 const GodisnjiOdmor = { template: '<zakazivanje-godisnjegOdmora></zakazivanje-godisnjegOdmora>' };
 const DermatoloziAdminApoteke = { template: '<dermatolozi-admin-apoteke></dermatolozi-admin-apoteke>' };
 const tabelaApoteka = { template: '<tabela-apoteka></tabela-apoteka>' };
+const promenaSifreDerFar = { template: '<promena-sifre-derfar></promena-sifre-derfar>' };
 
 
 const listaZalbi = { template: '<lista-zalbi></lista-zalbi>' };
@@ -60,6 +61,8 @@ const registracijaTipa = { template: '<register-type></register-type>' };
 const sendQr = { template: '<send-qr></send-qr>' };
 const RezervacijaLeka = { template: '<rezervacija-leka></rezervacija-leka>'};
 const verifyAccount = {template: '<verify-account></verify-account>'};
+const zakaziTerminPacijentu = {template: '<zakazi-termin-pacijentu></zakazi-termin-pacijentu>'};
+
 
 const router = new VueRouter({
     mode: 'hash',
@@ -123,7 +126,9 @@ const router = new VueRouter({
         { path: '/pregledNotifikacija', component: PregledNotifikacija },
         { path: '/kreiranjeTerminaPregleda', component: KreiranjeTerminaPregleda },
         { path: '/dermatoloziAdminApoteke', component: DermatoloziAdminApoteke },
-        { path: '/rezervacijaLeka', component: RezervacijaLeka}
+        { path: '/rezervacijaLeka', component: RezervacijaLeka},
+        { path: '/promeniSifruDerFar', component: promenaSifreDerFar },
+        { path: '/zakaziTerminPacijentu', component: zakaziTerminPacijentu , name: "zakaziTerminPacijentu"},
     ]
 });
 

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class Dermatolog extends Korisnik implements Ocenjivo{
@@ -17,7 +18,7 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 	private double sumaOcena;
 	@Column(name = "ocena", nullable = true)
 	private double ocena;
-	
+		
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Zaposlenje> zaposlenja;
 	
@@ -34,7 +35,7 @@ public class Dermatolog extends Korisnik implements Ocenjivo{
 		this.zaposlenja = new HashSet<Zaposlenje>();
 		this.ocena=izracunajOcenu();
 	}
-	
+
 	public void addZaposlenje(Zaposlenje z) {
 		zaposlenja.add(z);
 		z.setKorisnik(this);

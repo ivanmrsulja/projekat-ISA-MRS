@@ -1,10 +1,16 @@
 package rest.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import rest.domain.Farmaceut;
 import rest.dto.FarmaceutDTO;
 import rest.dto.KorisnikDTO;
+import rest.dto.PregledDTO;
 
 
 public interface FarmaceutService {
@@ -23,5 +29,11 @@ public interface FarmaceutService {
 	public boolean checkIfPharmacistHasAppointments(int pharmacistId, int pharmacyId);
 
 	public void deletePharmacist(int pharmacistId);
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaSedmica(HttpSession s);
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaMesec(HttpSession s);
+	
+	public Map<LocalDate, ArrayList<PregledDTO>> getSavetovanjaGodina(HttpSession s);
 	
 }
