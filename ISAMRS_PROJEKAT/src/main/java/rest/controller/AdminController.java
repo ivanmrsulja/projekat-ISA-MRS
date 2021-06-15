@@ -462,7 +462,11 @@ public class AdminController {
 	@AsAdminApoteke
 	@PostMapping(value = "/registerCenovnik/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String registerCenovnik(@RequestBody CenovnikDTO cenovnikDTO, @PathVariable("id") int idApoteke) throws Exception{
-		adminService.registerPricelist(cenovnikDTO, idApoteke);
+		try {
+			adminService.registerPricelist(cenovnikDTO, idApoteke);
+		} catch (Exception e) {
+			return "ERR";
+		}
 
 		return "OK";
 	}

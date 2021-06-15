@@ -46,4 +46,7 @@ public interface CenaRepository extends JpaRepository<Cena, Integer> {
 	
 	@Query("select c from Cena c")
 	public Collection<Cena> getAll();
+
+	@Query("select c from Cena c where c.apoteka.id = ?1 and c.pocetakVazenja = ?2")
+	public Cena getForSameDate(int pharmacyId, LocalDate dateToday);
 }

@@ -49,7 +49,7 @@ public class PreparatServiceTest {
 	@Mock
 	private PreparatRepository preparatRepositoryMock;
 	
-	@Autowired	
+	@Autowired
 	private PreparatService service;
 	
 	

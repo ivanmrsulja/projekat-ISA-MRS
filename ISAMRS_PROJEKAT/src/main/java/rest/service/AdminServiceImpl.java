@@ -179,7 +179,12 @@ public class AdminServiceImpl implements AdminService {
 		Apoteka apoteka = apotekeRepository.getOneById(idApoteke);
 		
 		if (apoteka == null)
-			return;
+			throw new Exception("Apoteka sa trazenim ID-jem ne postoji.");
+
+		Cena temp_cenovnik = cenaRepository.getForSameDate(idApoteke, LocalDate.now());
+		
+		if (temp_cenovnik != null)
+			throw new Exception("Vec postoji cenovnik sa istim datumom pocetka vazenja.");
 
 		Cena cenovnik = new Cena();
 		for (DostupanProizvodDTO dpDTO : cenovnikDTO.getDostupniProizvodi()) {
@@ -295,7 +300,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<DostupanProizvodDTO> getProductsForPharmacy(int pharmacyId) {
-		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId);
+		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId, LocalDate.now());
 		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = new ArrayList<DostupanProizvodDTO>();
 		
 		for (DostupanProizvod dp : availablePharmacyProducts) {
@@ -398,7 +403,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(int pharmacyId) {
-		Collection<Preparat> preparati = dostupanProizvodRepository.getProductsOutsidePharmacy(pharmacyId);
+		Collection<Preparat> preparati = dostupanProizvodRepository.getProductsOutsidePharmacy(pharmacyId, LocalDate.now());
 		ArrayList<PreparatDTO> preparatiDTO = new ArrayList<>();
 		for (Preparat p : preparati) {
 			preparatiDTO.add(new PreparatDTO(p));
@@ -409,7 +414,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<DostupanProizvodDTO> searhProductsOfPharmacy(int pharmacyId, String name) {
-		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId);
+		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId, LocalDate.now());
 		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = new ArrayList<DostupanProizvodDTO>();
 		
 		for (DostupanProizvod dp : availablePharmacyProducts) {
