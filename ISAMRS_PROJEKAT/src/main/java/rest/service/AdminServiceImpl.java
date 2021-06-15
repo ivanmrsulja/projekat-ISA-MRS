@@ -300,7 +300,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<DostupanProizvodDTO> getProductsForPharmacy(int pharmacyId) {
-		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId);
+		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId, LocalDate.now());
 		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = new ArrayList<DostupanProizvodDTO>();
 		
 		for (DostupanProizvod dp : availablePharmacyProducts) {
@@ -403,7 +403,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<PreparatDTO> getProductsOutsidePharmacy(int pharmacyId) {
-		Collection<Preparat> preparati = dostupanProizvodRepository.getProductsOutsidePharmacy(pharmacyId);
+		Collection<Preparat> preparati = dostupanProizvodRepository.getProductsOutsidePharmacy(pharmacyId, LocalDate.now());
 		ArrayList<PreparatDTO> preparatiDTO = new ArrayList<>();
 		for (Preparat p : preparati) {
 			preparatiDTO.add(new PreparatDTO(p));
@@ -414,7 +414,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<DostupanProizvodDTO> searhProductsOfPharmacy(int pharmacyId, String name) {
-		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId);
+		Collection<DostupanProizvod> availablePharmacyProducts = dostupanProizvodRepository.getForPharmacy(pharmacyId, LocalDate.now());
 		ArrayList<DostupanProizvodDTO> availablePharmacyProductsDTO = new ArrayList<DostupanProizvodDTO>();
 		
 		for (DostupanProizvod dp : availablePharmacyProducts) {
