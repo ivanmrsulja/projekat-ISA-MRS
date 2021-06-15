@@ -23,7 +23,7 @@ To se radi na sledeći način:
 
 - Nakon toga potrebno je kreirati 2 baze sa proizvoljnim imenom.
 
-- To se radi tako što se se desnim klikom klikne na Databases, koji se nalazi u tree view-u sa leve strane.
+- To se radi tako što se se desnim klikom klikne na Databases, koji se nalazi u tree view-u sa leve strane, kliknuti na 'Create'->'Database' .
 
 - Zatim će se otvoriti meni gde je moguće uneti imena baza.
 
