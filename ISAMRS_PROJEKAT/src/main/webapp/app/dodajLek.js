@@ -91,8 +91,16 @@ Vue.component("add-cure", {
 			let rezim = $("#rezim").children("option:selected").val();
 			let tip = $("#tip").children("option:selected").val();
 			toast(rezim + tip);
-			if (naziv.trim() == "" || kontraindikacije.trim() == "" || sastav.trim() == "" || preporuceniUnos.trim() == "" || oblik.trim() == "" || proizvodjac.trim() == ""){
+			if (naziv.trim() == "" || kontraindikacije.trim() == "" || sastav.trim() == "" || preporuceniUnos.trim() == "" || oblik.trim() == "" || proizvodjac.trim() == "" || bodovi.trim() == ""){
 				toast("Popunite sva polja.");
+				return;
+			}
+			if(parseInt(bodovi)<0) {
+				toast("Ne sme biti negativan broj bodova");
+				return;
+			}
+			if(parseInt(preporuceniUnos)<0) {
+				toast("Ne sme biti negativan broj za preporuceni unos");
 				return;
 			}
 			let newCure = {"naziv": naziv, zamenskiPreparati:this.zamenski, poeni:parseInt(bodovi), "kontraindikacije": kontraindikacije, "sastav": sastav, "preporuceniUnos" : parseInt(preporuceniUnos), "oblik": oblik, "proizvodjac": proizvodjac, "rezim": rezim, "tip": tip, "ocena": 0.0};

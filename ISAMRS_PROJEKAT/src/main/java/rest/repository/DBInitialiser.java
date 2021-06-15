@@ -308,25 +308,26 @@ public class DBInitialiser implements ApplicationRunner {
 		p1.addRezervacija(rez3);
 		p1.addRezervacija(rez4);
 		korisnici.save(p1);
-		
 
 
-		Pregled pre1 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-07"), LocalTime.parse("10:00"), 45, 5000, d1, null, a1);
+
+		Pregled pre1 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-05-07"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
 		Pregled pre11 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-08"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
 		Pregled pre12 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-09"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
-		Pregled pre13 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-06-09"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
-		Pregled pre14 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-06-09"), LocalTime.parse("11:00"), 45, 5000, d1, p1, a1);
-		Pregled pre15 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-06-10"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
-		Pregled pre16 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-06-17"), LocalTime.parse("08:00"), 45, 5000, d1, p1, a1);
+		Pregled pre13 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-09"), LocalTime.parse("09:00"), 45, 5000, d1, p1, a1);
+		Pregled pre14 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-09"), LocalTime.parse("11:00"), 45, 5000, d1, p1, a1);
+		Pregled pre15 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-10"), LocalTime.parse("10:00"), 45, 5000, d1, p2, a1);
+		Pregled pre16 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.PREGLED, LocalDate.parse("2021-07-07"), LocalTime.parse("08:00"), 45, 5000, d1, p1, a1);
 		Pregled pre2 = new Pregled("", StatusPregleda.ZAKAZAN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2021-07-08"), LocalTime.parse("13:00"), 45, 4000, f1, p1, a1);
-		Pregled pre10 = new Pregled("", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-07-09"), LocalTime.parse("13:00"), 45, 4000, f1, null, a1);
+		Pregled pre10 = new Pregled("", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-06-09"), LocalTime.parse("13:00"), 45, 4000, f1, null, a1);
+
 
 
 		Pregled pre3 = new Pregled("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-09"), LocalTime.parse("10:00"), 45, 5500, d1, p1, a1);
 		Pregled pre4 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.SAVJETOVANJE, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, f2, p1, a2);
 		Pregled pre5 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.now(), LocalTime.parse("09:00"), 45, 5000, d1, null, a1);
-		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-04-23"), LocalTime.parse("13:00"), 45, 4000, d2, null, a2);
-		Pregled pre7 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-05-23"), LocalTime.parse("13:00"), 30, 4000, d2, null, a1);
+		Pregled pre6 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-06-23"), LocalTime.parse("13:00"), 45, 4000, d2, null, a2);
+		Pregled pre7 = new Pregled("", StatusPregleda.SLOBODAN, TipPregleda.PREGLED, LocalDate.parse("2021-06-25"), LocalTime.parse("13:00"), 30, 4000, d2, null, a1);
 		Pregled pre8 = new Pregled("Lorem ipsum dolor sit amet.", StatusPregleda.ZAVRSEN, TipPregleda.PREGLED, LocalDate.parse("2020-04-11"), LocalTime.parse("11:00"), 45, 5700, d1, p2, a1);
 
 		pregledRepo.save(pre1);

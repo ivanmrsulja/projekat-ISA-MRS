@@ -90,6 +90,10 @@ Vue.component("pocetna-stranas", {
     			toast("Morate uneti datum posle danasnjeg");
     			return;
     		}
+    		if(novacZaAzur < 0) {
+    			toast("Cena ne sme biti negativan broj");
+    			return;
+    		}
     		
     		axios
 			.put("api/admin/updateOffer/"+i+"/"+datumZaAzur+"/"+novacZaAzur)

@@ -57,6 +57,10 @@ Vue.component("jedna-narudzbenica", {
     			toast("Ne ostavljajte prazna polja");
     			return;
     		}
+    		if(cena<0){
+    			toast("Cena ne sme biti negativan broj");
+    			return;
+    		}
     		if(new Date(datum) < new Date()) {
     			toast("Morate uneti datum posle danasnjeg");
     			return;
