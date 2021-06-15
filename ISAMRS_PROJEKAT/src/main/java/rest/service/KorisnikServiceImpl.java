@@ -252,7 +252,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 			throw new Exception("Trazeni entitet nije pronadjen.");
 		}
 		if(korisnikRepository.getUserByUsername(updateInfo.getUsername())!= null) {
-			if(!korisnikRepository.getUserByUsername(updateInfo.getUsername()).getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.DOBAVLJAC)) {
+			if(!korisnikRepository.getUserByUsername(updateInfo.getUsername()).getZaposlenjeKorisnika().equals(ZaposlenjeKorisnika.DOBAVLJAC) || korisnikRepository.getUserByUsername(updateInfo.getUsername()).getId() != updateInfo.getId()) {
 				return null;
 			}
 		}
@@ -261,6 +261,7 @@ public class KorisnikServiceImpl implements KorisnikService {
 		userToUpdate.setIme(updateInfo.getIme());
 		userToUpdate.setPrezime(updateInfo.getPrezime());
 		userToUpdate.setUsername(updateInfo.getUsername());
+		userToUpdate.setEmail(updateInfo.getEmail());
 		userToUpdate.setTelefon(updateInfo.getTelefon());
 		lokacijaRepository.save(updateInfo.getLokacija());
 		userToUpdate.setLokacija(updateInfo.getLokacija());

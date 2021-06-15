@@ -35,6 +35,10 @@ Vue.component("promena-sifre", {
                 toast("Password-i moraju da se podudaraju.");
                 return;
             }
+            if (noviPass.trim() == "" || pass.trim() == "") {
+                toast("Password-i ne smeju biti prazni.");
+                return;
+            }
             
             axios
 					.get("/api/users/currentUser")

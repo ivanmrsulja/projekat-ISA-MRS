@@ -86,7 +86,7 @@ Vue.component("update-supplier", {
 
             let lok = { sirina: sir, duzina: duz, ulica: adr };
 
-            let newUser = { username: usr, noviPassw: pas, ime: ime, prezime: prz, email: email, telefon: tel, lokacija: lok, loggedBefore: false };
+            let newUser = { username: usr, noviPassw: pas, ime: ime, prezime: prz, email: email, telefon: tel, lokacija: lok, loggedBefore: false, id:this.user.id };
 
             console.log(newUser);
             axios.post("/api/users/updateSupp", newUser).then(data => {
