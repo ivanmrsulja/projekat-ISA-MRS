@@ -19,7 +19,7 @@ import rest.domain.Preparat;
 @Repository
 public interface CenaRepository extends JpaRepository<Cena, Integer> {
 	
-	@Query("select dp.preparat from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2)")
+	@Query("select dp.preparat from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2 and ce.apoteka.id = ?1)")
 	public Collection<Preparat> drugsForPharmacy(int id, LocalDate now);
 	
 	@Query("select c.apoteka from Cena c join c.dostupniProizvodi dp where dp.preparat.id = ?1")
@@ -35,10 +35,10 @@ public interface CenaRepository extends JpaRepository<Cena, Integer> {
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Optional<Cena> findById(int id);
 
-	@Query("select c from Cena c join fetch c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2)")
+	@Query("select c from Cena c join fetch c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2 and ce.apoteka.id = ?1)")
 	public Cena getLatestPricelistForPharmacy(int idApoteke, LocalDate now);
 
-	@Query("select dp from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2)")
+	@Query("select dp from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2 and ce.apoteka.id = ?1)")
 	public Collection<DostupanProizvod> getDostupniProizvodiZaApoteku(int idApoteke, LocalDate now);
 
 	@Query("delete from Cena c where c.krajVazenja = ?1")

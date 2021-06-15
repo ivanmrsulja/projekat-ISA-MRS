@@ -18,11 +18,11 @@ import rest.domain.Preparat;
 public interface DostupanProizvodRepository extends JpaRepository<DostupanProizvod, Integer>{
 
 	@Query("select dp from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = (select max(ce.pocetakVazenja) "
-			+ "from Cena ce where ce.pocetakVazenja <= ?2)")
+			+ "from Cena ce where ce.pocetakVazenja <= ?2 and ce.apoteka.id = ?1)")
 	public Collection<DostupanProizvod> getForPharmacy(int pharmacyId, LocalDate today);
 
 	@Query("select p from Preparat p where p.id not in (select dp.preparat.id from Cena c join c.dostupniProizvodi dp where c.apoteka.id = ?1 and c.pocetakVazenja = "
-			+ "(select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2))")
+			+ "(select max(ce.pocetakVazenja) from Cena ce where ce.pocetakVazenja <= ?2 and ce.apoteka.id = ?1))")
 	public Collection<Preparat> getProductsOutsidePharmacy(int pharmacyId, LocalDate today);
 
 }
