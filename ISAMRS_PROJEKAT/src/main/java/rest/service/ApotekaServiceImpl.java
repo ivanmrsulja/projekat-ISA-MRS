@@ -371,7 +371,7 @@ public class ApotekaServiceImpl implements ApotekaService {
 		Collection<LekProdajaDTO> lista = new ArrayList<LekProdajaDTO>();
 		for (Cena cena : sveCene) {
 			ArrayList<String> nazivi = new ArrayList<String>();
-			if(LocalDate.now().isAfter(cena.getPocetakVazenja()) && LocalDate.now().isBefore(cena.getKrajVazenja())) {
+			if((LocalDate.now().isAfter(cena.getPocetakVazenja()) && LocalDate.now().isBefore(cena.getKrajVazenja())) || cena.getPocetakVazenja().isEqual(LocalDate.now())) {
 				int foundCures = 0;
 				double price = 0;
 				for (DostupanProizvod dp : cena.getDostupniProizvodi()) {
